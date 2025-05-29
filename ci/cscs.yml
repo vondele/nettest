@@ -15,7 +15,7 @@ build_job:
   variables:
     DOCKERFILE: ci/docker/Dockerfile.build
 
-test_job:
+test_job1:
   stage: test1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
@@ -26,7 +26,7 @@ test_job:
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '60:00'
 
-test_job:
+test_job2:
   stage: test2
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
