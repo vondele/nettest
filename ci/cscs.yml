@@ -20,6 +20,8 @@ test1_job:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
+    - pwd
+    - ls -ltr
     - ./Stockfish/src/stockfish speedtest
   variables:
     SLURM_JOB_NUM_NODES: 1
