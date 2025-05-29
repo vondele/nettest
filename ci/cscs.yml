@@ -10,13 +10,13 @@ variables:
 
 build_job:
   stage: build
-  extends: .container-builder-cscs-zen2
+  extends: .container-builder-cscs-gh200
   variables:
     DOCKERFILE: ci/docker/Dockerfile.build
 
 test_job:
   stage: test
-  extends: .container-runner-eiger-zen2
+  extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
     - /opt/helloworld/bin/hello
