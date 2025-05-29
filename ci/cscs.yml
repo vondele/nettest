@@ -26,6 +26,11 @@ test_job1:
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '60:00'
     CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/data:/workspace/data"]'
+  artifacts:
+    name: "test_job1_artifacts"
+    paths:
+      - artifact1.txt
+    expire_in: 1 week
 
 test_job2:
   stage: test2
@@ -38,3 +43,8 @@ test_job2:
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '60:00'
     CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/data:/workspace/data"]'
+  artifacts:
+    name: "test_job2_artifacts"
+    paths:
+      - artifact2.txt
+    expire_in: 1 week
