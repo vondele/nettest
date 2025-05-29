@@ -3,7 +3,8 @@ include:
 
 stages:
   - build
-  - test
+  - test1
+  - test2
 
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/helloworld:$CI_COMMIT_SHORT_SHA
@@ -15,11 +16,22 @@ build_job:
     DOCKERFILE: ci/docker/Dockerfile.build
 
 test_job:
-  stage: test
+  stage: test1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - /opt/helloworld/bin/hello && ls -ltr && df
+    - echo "test 1" && /opt/helloworld/bin/hello && ls -ltr && df
+  variables:
+    SLURM_JOB_NUM_NODES: 1
+    SLURM_NTASKS: 1
+    SLURM_TIMELIMIT: '60:00'
+
+test_job:
+  stage: test2
+  extends: .container-runner-clariden-gh200
+  image: $PERSIST_IMAGE_NAME
+  script:
+    - echo "test 2" && /opt/helloworld/bin/hello && ls -ltr && df
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
