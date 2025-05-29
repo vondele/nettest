@@ -3,7 +3,8 @@ include:
 
 stages:
   - build
-  - test
+  - test1
+  - test2
 
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/helloworld:$CI_COMMIT_SHORT_SHA
@@ -14,12 +15,36 @@ build_job:
   variables:
     DOCKERFILE: ci/docker/Dockerfile.build
 
-test_job:
-  stage: test
+test_job1:
+  stage: test1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - /opt/helloworld/bin/hello
+    - echo "test 1" > artifact1.txt && /opt/helloworld/bin/hello && ls -ltr && ls -ltr /workspace/data
   variables:
-    SLURM_JOB_NUM_NODES: 2
-    SLURM_NTASKS: 2
+    SLURM_JOB_NUM_NODES: 1
+    SLURM_NTASKS: 1
+    SLURM_TIMELIMIT: '60:00'
+    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/data:/workspace/data"]'
+  artifacts:
+    name: "test_job1_artifacts"
+    paths:
+      - artifact1.txt
+    expire_in: 1 week
+
+test_job2:
+  stage: test2
+  extends: .container-runner-clariden-gh200
+  image: $PERSIST_IMAGE_NAME
+  script:
+    - echo "test 2" > artifact2.txt && /opt/helloworld/bin/hello && ls -ltr && ls -ltr /workspace/data
+  variables:
+    SLURM_JOB_NUM_NODES: 1
+    SLURM_NTASKS: 1
+    SLURM_TIMELIMIT: '60:00'
+    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/data:/workspace/data"]'
+  artifacts:
+    name: "test_job2_artifacts"
+    paths:
+      - artifact2.txt
+    expire_in: 1 week
