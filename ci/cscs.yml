@@ -20,7 +20,7 @@ test_job1:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - echo "test 1" > artifact1.txt && /opt/helloworld/bin/hello && ls -ltr 
+    - echo "test 1" > artifact1.txt && /opt/helloworld/bin/hello && ls -ltr && ls -ltr /workspace/data
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
@@ -32,7 +32,7 @@ test_job2:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - echo "test 2" > artifact2.txt && /opt/helloworld/bin/hello && ls -ltr
+    - echo "test 2" > artifact2.txt && /opt/helloworld/bin/hello && ls -ltr && ls -ltr /workspace/data
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
