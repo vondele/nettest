@@ -20,9 +20,7 @@ test1_job:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - pwd
-    - ls -ltr
-    - ./Stockfish/src/stockfish speedtest
+    - /workspace/Stockfish/src/stockfish speedtest
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
@@ -34,7 +32,7 @@ test2_job:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - cd nnue-pytorch && python train.py /workspace/data/dfrc_n5000.binpack --threads 16 --num-workers 16 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --max_epochs=3 --default_root_dir ./training/runs/run_0 --gpus="0,"
+    - cd /workspace/nnue-pytorch && python train.py /workspace/data/dfrc_n5000.binpack --threads 16 --num-workers 16 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --max_epochs=3 --default_root_dir ./training/runs/run_0 --gpus="0,"
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
