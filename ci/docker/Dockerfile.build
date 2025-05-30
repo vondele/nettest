@@ -1,15 +1,16 @@
-FROM ubuntu:22.04 as builder
+FROM nvcr.io/nvidia/pytorch:25.03-py3
 
-COPY . /helloworld/src
+RUN apt-get update && apt-get install -y \
+    g++ \
+    git \
+    curl \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update \
-  && env DEBIAN_FRONTEND=noninteractive TZ=Europe/Zurich apt-get -yqq install --no-install-recommends build-essential cmake \
-  && mkdir /helloworld/build \
-  && cd /helloworld/build \
-  && cmake -DCMAKE_INSTALL_PREFIX=/opt/hello ../src \
-  && make -j$(cat /proc/cpuinfo | grep '^processor' | wc -l) install \
-  && make install
+RUN pip install psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib "pytorch-lightning==1.9.5" tensorboard numba "numpy<2.0" requests
 
-FROM ubuntu:22.04
-COPY --from=builder /opt/hello /opt/helloworld
+RUN git clone https://github.com/official-stockfish/Stockfish.git && cd Stockfish/src && make -j profile-build && cd ../..
+RUN git clone https://github.com/Disservin/fastchess.git && cd fastchess && make -j && cd ..
+RUN git clone https://github.com/official-stockfish/nnue-pytorch.git && cd nnue-pytorch && bash compile_data_loader.bat && cd ..
 
+WORKDIR /workspace/
