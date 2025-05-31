@@ -20,6 +20,7 @@ testSF:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
+    - ls -ltr /workspace/
     - /workspace/Stockfish/src/stockfish speedtest
   variables:
     SLURM_JOB_NUM_NODES: 1
@@ -32,9 +33,10 @@ runTrain1:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - cd /workspace/nnue-pytorch && python train.py /workspace/data/dfrc_n5000.binpack --threads 16 --num-workers 16 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --max_epochs=3 --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_0 --gpus="0,"
+    - ls -ltr /workspace/data/*.binpack
+    - cd /workspace/nnue-pytorch && python train.py /workspace/data/dfrc_n5000.binpack --threads 16 --num-workers 16 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --max_epochs=40 --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_0 --gpus="0,"
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '01:00:00'
+    SLURM_TIMELIMIT: '12:00:00'
     CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
