@@ -14,8 +14,8 @@ RUN pip install psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib "pyt
 RUN cp -a /sourcecode /workspace/nettest/
 
 # todo, fix sha, or some more flexible setup?
-RUN git clone https://github.com/official-stockfish/Stockfish.git && cd Stockfish/src && make -j profile-build && cd ../..
-RUN git clone https://github.com/Disservin/fastchess.git && cd fastchess && make -j && cd ..
+RUN git clone https://github.com/official-stockfish/Stockfish.git && cd Stockfish/src && make -j$NUM_PROCS profile-build && cd ../..
+RUN git clone https://github.com/Disservin/fastchess.git && cd fastchess && make -j$NUM_PROCS && cd ..
 RUN git clone https://github.com/official-stockfish/nnue-pytorch.git && cd nnue-pytorch && bash compile_data_loader.bat && cd ..
 
 # note that the CI picks a different workdir (mounted by default in the workspace)
