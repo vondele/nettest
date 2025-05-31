@@ -22,7 +22,8 @@ testSF:
   stage: testSF
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
-  script: - ls -ltr /workspace/
+  script:
+    - ls -ltr /workspace/
     - ls -ltr /workspace/data/*.binpack
     - /workspace/Stockfish/src/stockfish speedtest
   variables:
