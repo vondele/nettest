@@ -44,7 +44,7 @@ runTrain1:
            --max_epochs 20 \
            --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ \
            --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1
-     - python serialize.py \
+    - python serialize.py \
          /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt \
          /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue \
          --features=HalfKAv2_hm --ft_optimize --ft_optimize_count=1000000 \
