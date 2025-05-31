@@ -39,15 +39,18 @@ runTrain1:
   image: $PERSIST_IMAGE_NAME
   script:
     - cd /workspace/nnue-pytorch
-    - python train.py /workspace/data/dfrc_n5000.binpack \
+    - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack \
            --gpus="0," --threads 16 --num-workers 16 \
-           --max_epochs=10 --network-save-period=10 \
-           --progress_bar_refresh_rate 100 \
+           --max_epochs=5 --network-save-period=5 \
            --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ \
-           --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1
-     - python serialize.py --features=HalfKAv2_hm \
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue
+           --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1 | \
+           awk '{if ($1 != "Epoch" || c%100==0) print $0; c++)}' # Fix, make progress bar output less verbose...
+     - python serialize.py 
+         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt \
+         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue \
+         --features=HalfKAv2_hm --ft_optimize --ft_optimize_count=1000000 \
+         --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+         
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
@@ -61,16 +64,18 @@ runTrain2:
   image: $PERSIST_IMAGE_NAME
   script:
     - cd /workspace/nnue-pytorch
-    - python train.py /workspace/data/dfrc_n5000.binpack \
+    - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack \
            --gpus="0," --threads 16 --num-workers 16 \
-           --max_epochs=20 --network-save-period=10 \
-           --progress_bar_refresh_rate 100 \
+           --max_epochs=10 --network-save-period=5 \
            --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ \
-           --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2
-           --resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt
-     - python serialize.py --features=HalfKAv2_hm \
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue
+           --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2 \
+           --resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt | \
+           awk '{if ($1 != "Epoch" || c%100==0) print $0; c++)}' # Fix, make progress bar output less verbose...
+     - python serialize.py 
+         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt \
+         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue \
+         --features=HalfKAv2_hm --ft_optimize --ft_optimize_count=1000000 \
+         --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
