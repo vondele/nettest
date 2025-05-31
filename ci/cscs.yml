@@ -41,7 +41,7 @@ runTrain1:
     - cd /workspace/nnue-pytorch
     - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack \
            --gpus="0," --threads 16 --num-workers 16 \
-           --max_epochs=5 --network-save-period=5 \
+           --max_epochs 5 --network-save-period 5 \
            --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ \
            --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1 | \
            awk '{if ($1 != "Epoch" || c%100==0) print $0; c++)}'
@@ -65,7 +65,7 @@ runTrain2:
     - cd /workspace/nnue-pytorch
     - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack \
            --gpus="0," --threads 16 --num-workers 16 \
-           --max_epochs=10 --network-save-period=5 \
+           --max_epochs 10 --network-save-period 5 \
            --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ \
            --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2 \
            --resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt | \
