@@ -3,8 +3,8 @@ include:
 
 stages:
   - build
-  - test1
-  - test2
+  - testSF
+  - runTrain1
 
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/helloworld:$CI_COMMIT_SHORT_SHA
@@ -15,25 +15,24 @@ build_job:
   variables:
     DOCKERFILE: ci/docker/Dockerfile.build
 
-test1_job:
-  stage: test1
+testSF:
+  stage: testSF
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
     - /workspace/Stockfish/src/stockfish speedtest
-    - echo "Hi! $CI_COMMIT_SHORT_SHA" > /workspace/scratch/test.txt
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '01:00:00'
+    SLURM_TIMELIMIT: '00:10:00'
     CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
-test2_job:
-  stage: test2
+runTrain1:
+  stage: runTrain1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - cd /workspace/nnue-pytorch && python train.py /workspace/data/dfrc_n5000.binpack --threads 16 --num-workers 16 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --max_epochs=3 --default_root_dir ./training/runs/run_0 --gpus="0,"
+    - cd /workspace/nnue-pytorch && python train.py /workspace/data/dfrc_n5000.binpack --threads 16 --num-workers 16 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --max_epochs=3 --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_0 --gpus="0,"
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
