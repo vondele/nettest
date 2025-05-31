@@ -7,10 +7,16 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
+# current set of nnue-pytorch dependencies, some already in the image
 RUN pip install psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib "pytorch-lightning==1.9.5" tensorboard numba "numpy<2.0" requests
 
-RUN git clone https://github.com/official-stockfish/Stockfish.git && cd Stockfish/src && make -j profile-build && cd ../..
-RUN git clone https://github.com/Disservin/fastchess.git && cd fastchess && make -j && cd ..
+# copy the current nettest sources to have them around
+RUN cp -a /sourcecode /workspace/nettest/
+
+# todo, fix sha, or some more flexible setup?
+RUN git clone https://github.com/official-stockfish/Stockfish.git && cd Stockfish/src && make -j$NUM_PROCS profile-build && cd ../..
+RUN git clone https://github.com/Disservin/fastchess.git && cd fastchess && make -j$NUM_PROCS && cd ..
 RUN git clone https://github.com/official-stockfish/nnue-pytorch.git && cd nnue-pytorch && bash compile_data_loader.bat && cd ..
 
+# note that the CI picks a different workdir (mounted by default in the workspace)
 WORKDIR /workspace/
