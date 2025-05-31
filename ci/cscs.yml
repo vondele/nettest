@@ -22,8 +22,7 @@ testSF:
   stage: testSF
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
-  script:
-    - ls -ltr /workspace/
+  script: - ls -ltr /workspace/
     - ls -ltr /workspace/data/*.binpack
     - /workspace/Stockfish/src/stockfish speedtest
   variables:
@@ -39,16 +38,8 @@ runTrain1:
   image: $PERSIST_IMAGE_NAME
   script:
     - cd /workspace/nnue-pytorch
-    - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack \
-           --gpus="0," --threads 16 --num-workers 16 \
-           --max_epochs 20 \
-           --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ \
-           --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1
-    - python serialize.py \
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt \
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue \
-         --features=HalfKAv2_hm --ft_optimize --ft_optimize_count=1000000 \
-         --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+    - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack --gpus="0," --threads 16 --num-workers 16 --max_epochs 20 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1
+    - python serialize.py /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm --ft_optimize --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
@@ -62,17 +53,8 @@ runTrain2:
   image: $PERSIST_IMAGE_NAME
   script:
     - cd /workspace/nnue-pytorch
-    - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack \
-           --gpus="0," --threads 16 --num-workers 16 \
-           --max_epochs 20 \
-           --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ \
-           --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2 \
-           --resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt
-    - python serialize.py \
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt \
-         /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue \
-         --features=HalfKAv2_hm --ft_optimize --ft_optimize_count=1000000 \
-         --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+    - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack --gpus="0," --threads 16 --num-workers 16 --max_epochs 20 --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2 --resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt
+    - python serialize.py /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm --ft_optimize --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
@@ -88,14 +70,7 @@ runMatch1:
   script:
     - mkdir -p /workspace/scratch/$CI_COMMIT_SHORT_SHA/match
     - cd /workspace/scratch/$CI_COMMIT_SHORT_SHA/match
-    - /workspace/fastchess/fastchess -rounds 1400 -games 2 -repeat -srand 42  \
-        -concurrency 280 -openings file=/workspace/data/UHO_Lichess_4852_v1.epd format=epd order=random \
-        -engine name=runTrain1 cmd=/workspace/Stockfish/src/stockfish \
-           option.EvalFile=/workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue \
-        -engine name=runTrain2 cmd=/workspace/Stockfish/src/stockfish \
-           option.EvalFile=/workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue \
-        -each proto=uci option.Threads=1 option.Hash=16 tc=10+0.1 \
-        -ratinginterval 280 -report penta=true -pgnout file=match.pgn
+    - /workspace/fastchess/fastchess -rounds 1400 -games 2 -repeat -srand 42  -concurrency 280 -openings file=/workspace/data/UHO_Lichess_4852_v1.epd format=epd order=random -engine name=runTrain1 cmd=/workspace/Stockfish/src/stockfish option.EvalFile=/workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue -engine name=runTrain2 cmd=/workspace/Stockfish/src/stockfish option.EvalFile=/workspace/scratch/$CI_COMMIT_SHORT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue -each proto=uci option.Threads=1 option.Hash=16 tc=10+0.1 -ratinginterval 280 -report penta=true -pgnout file=match.pgn
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
