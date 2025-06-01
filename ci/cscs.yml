@@ -61,7 +61,7 @@ runTrain1:
     - export NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
     - echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
     - mkdir $CI_PROJECT_DIR/networks/
-    - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue"
+    - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
@@ -90,7 +90,7 @@ runTrain2:
     - export NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
     - echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
     - mkdir $CI_PROJECT_DIR/networks/
-    - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue"
+    - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
