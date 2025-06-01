@@ -41,7 +41,7 @@ ensureDataAndSchedule:
     SLURM_TIMELIMIT: '04:00:00'
   artifacts:
     paths:
-      training_schedule.yml
+      - training_schedule.yml
 
 # run the training according to the previously generated schedule
 runTraining:
