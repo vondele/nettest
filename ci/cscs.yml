@@ -3,10 +3,9 @@ include:
 
 stages:
   - build
-  - ensureData
-  - runTrain1
-  - runTrain2
-  - runMatch1
+  - ensureDataAndSchedule
+  - runTraining
+  - runMatch
 
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
@@ -19,9 +18,9 @@ build_job:
     DOCKERFILE: ci/docker/Dockerfile.build
 
 # ensure data is in place
-ensureData:
+ensureDataAndSchedule:
   timeout: 48h
-  stage: ensureData
+  stage: ensureDataAndSchedule
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
@@ -35,76 +34,29 @@ ensureData:
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock dual-nnue
     - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-binpacks
     - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-smallnet-binpacks
+    - /workspace/nettest/do_generate_schedule.sh > $CI_PROJECT_DIR/training_schedule.yml
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '04:00:00'
-
-# A first step of training. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
-runTrain1:
-  timeout: 48h
-  stage: runTrain1
-  extends: .container-runner-clariden-gh200
-  image: $PERSIST_IMAGE_NAME
-  script:
-    - cd /workspace/nnue-pytorch
-    - export DATASETS="/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack"
-    - export ROOTDIR=/workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1
-    - export RESUMEOPT=""
-    - python train.py $DATASETS --gpus="0," --threads 16 --num-workers 16 --max_epochs 2 --network-save-period 2 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir $ROOTDIR $RESUMEOPT
-    - export OMP_NUM_THREADS=8
-    - export LASTCKPT=$ROOTDIR/lightning_logs/version_0/checkpoints/last.ckpt
-    - export LASTNNUE=$ROOTDIR/lightning_logs/version_0/checkpoints/last.nnue
-    - export FTOPTDATA=/workspace/data/official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-    - python serialize.py $LASTCKPT $LASTNNUE --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=$FTOPTDATA
-    - export NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
-    - echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
-    - mkdir -p $CI_PROJECT_DIR/networks/
-    - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue
-  variables:
-    SLURM_JOB_NUM_NODES: 1
-    SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '12:00:00'
   artifacts:
-    expire_in: 1 week
     paths:
-      - networks
+      training_schedule.yml
 
-# A second step of training. Not it resumes and continues a previous trainig. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
-runTrain2:
-  timeout: 48h
-  stage: runTrain2
-  extends: .container-runner-clariden-gh200
-  image: $PERSIST_IMAGE_NAME
-  script:
-    - cd /workspace/nnue-pytorch
-    - export DATASETS="/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack"
-    - export ROOTDIR=/workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2
-    - export RESUMEOPT="--resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt"
-    - python train.py $DATASETS --gpus="0," --threads 16 --num-workers 16 --max_epochs 4 --network-save-period 2 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir $ROOTDIR $RESUMEOPT
-    - export OMP_NUM_THREADS=8
-    - export LASTCKPT=$ROOTDIR/lightning_logs/version_0/checkpoints/last.ckpt
-    - export LASTNNUE=$ROOTDIR/lightning_logs/version_0/checkpoints/last.nnue
-    - export FTOPTDATA=/workspace/data/official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-    - python serialize.py $LASTCKPT $LASTNNUE --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=$FTOPTDATA
-    - export NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
-    - echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
-    - mkdir -p $CI_PROJECT_DIR/networks/
-    - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue
-  variables:
-    SLURM_JOB_NUM_NODES: 1
-    SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '12:00:00'
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - networks
+# run the training according to the previously generated schedule
+runTraining:
+  stage: runTraining
+  needs: [ensureDataAndSchedule]
+  trigger:
+    include:
+      - artifact: training_schedule.yml
+        job: ensureDataAndSchedule
+    strategy: depend
 
-# A final test with a match, need to see if we can run with 280 concurrency, probably not, rather 1 per socket?
-# Should probably become a sprt.
-runMatch1:
+# A final test with a match
+runMatch:
   timeout: 48h
-  stage: runMatch1
+  stage: runMatch
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:

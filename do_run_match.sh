@@ -20,6 +20,9 @@ done
 mkdir -p $MATCHDIR
 cd $MATCHDIR
 
+# need to see if we can run with 280 concurrency, probably not, rather 1 per socket?
+# Should probably become a sprt.
+
 /workspace/fastchess/fastchess -rounds $ROUNDS -games 2 -repeat -srand 42  -concurrency 280 \
                                -openings file=/workspace/data/UHO_Lichess_4852_v1.epd format=epd order=random \
                                -ratinginterval 280 -report penta=true -pgnout file=match.pgn \
