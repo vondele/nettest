@@ -18,19 +18,6 @@ build_job:
   variables:
     DOCKERFILE: ci/docker/Dockerfile.build
 
-# not so useful, but just demo... we can run SF
-testSF:
-  stage: testSF
-  extends: .container-runner-clariden-gh200
-  image: $PERSIST_IMAGE_NAME
-  script:
-    - /workspace/Stockfish/src/stockfish speedtest
-  variables:
-    SLURM_JOB_NUM_NODES: 1
-    SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '00:10:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
-
 # ensure data is in place
 ensureData:
   timeout: 24h
@@ -38,7 +25,14 @@ ensureData:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test60
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test77
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test78
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test79
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2022
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2023
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2024
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock dual-nnue
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
