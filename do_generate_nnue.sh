@@ -20,5 +20,5 @@ python serialize.py $LASTCKPT $LASTNNUE --features=HalfKAv2_hm^ --ft_compression
 NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
 echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
 mkdir -p $TARGET
-cp $LASTNNUE TARGET/nn-$NNUESHA.nnue
+cp $LASTNNUE $TARGET/nn-$NNUESHA.nnue
 
