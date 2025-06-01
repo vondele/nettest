@@ -26,4 +26,4 @@ cd $MATCHDIR
                                -engine name=master cmd=/workspace/Stockfish/src/stockfish \
                                $ENGINES \
                                -each proto=uci option.Threads=1 option.Hash=16 tc=10+0.1 \
-                               | tee fastchess.out | grep -v "Started game" | grep -v "Started game"
+                               | tee fastchess.out | grep -v "Started game" | grep -v "Finished game"
