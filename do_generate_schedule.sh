@@ -7,8 +7,6 @@ cat <<EOF
 training-run1:
   timeout: 48h
   stage: runTraining
-  extends: .container-runner-clariden-gh200
-  image: \$PERSIST_IMAGE_NAME
   script:
     - cd /workspace/nnue-pytorch
     - export DATASETS="/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack"
@@ -24,10 +22,6 @@ training-run1:
     - echo "copying \$LASTNNUE to nn-\$NNUESHA.nnue"
     - mkdir -p \$CI_PROJECT_DIR/networks/
     - cp \$LASTNNUE \$CI_PROJECT_DIR/networks/nn-\$NNUESHA.nnue
-  variables:
-    SLURM_JOB_NUM_NODES: 1
-    SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '12:00:00'
   artifacts:
     expire_in: 1 week
     paths:
@@ -38,8 +32,6 @@ training-run2:
   timeout: 48h
   stage: runTraining
   needs: [training-run1]
-  extends: .container-runner-clariden-gh200
-  image: \$PERSIST_IMAGE_NAME
   script:
     - cd /workspace/nnue-pytorch
     - export DATASETS="/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack"
@@ -55,10 +47,6 @@ training-run2:
     - echo "copying \$LASTNNUE to nn-\$NNUESHA.nnue"
     - mkdir -p \$CI_PROJECT_DIR/networks/
     - cp \$LASTNNUE \$CI_PROJECT_DIR/networks/nn-\$NNUESHA.nnue
-  variables:
-    SLURM_JOB_NUM_NODES: 1
-    SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '12:00:00'
   artifacts:
     expire_in: 1 week
     paths:

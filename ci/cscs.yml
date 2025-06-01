@@ -45,13 +45,20 @@ ensureDataAndSchedule:
 
 # run the training according to the previously generated schedule
 runTraining:
+  timeout: 48h
   stage: runTraining
+  extends: .container-runner-clariden-gh200
+  image: $PERSIST_IMAGE_NAME
   needs: [ensureDataAndSchedule]
   trigger:
     include:
       - artifact: training_schedule.yml
         job: ensureDataAndSchedule
     strategy: depend
+  variables:
+    SLURM_JOB_NUM_NODES: 1
+    SLURM_NTASKS: 1
+    SLURM_TIMELIMIT: '12:00:00'
 
 # A final test with a match
 runMatch:
