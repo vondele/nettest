@@ -11,6 +11,7 @@ stages:
 
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
+  CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 build_job:
   stage: build
@@ -33,14 +34,16 @@ ensureData:
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2023
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2024
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock dual-nnue
+    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-binpacks
+    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-smallnet-binpacks
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 # A first step of training. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
 runTrain1:
+  timeout: 24h
   stage: runTrain1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
@@ -48,15 +51,15 @@ runTrain1:
     - cd /workspace/nnue-pytorch
     - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack --gpus="0," --threads 16 --num-workers 16 --max_epochs 2 --network-save-period 2 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1
     - export OMP_NUM_THREADS=8
-    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 # A second step of training. Not it resumes and continues a previous trainig. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
 runTrain2:
+  timeout: 24h
   stage: runTrain2
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
@@ -64,16 +67,16 @@ runTrain2:
     - cd /workspace/nnue-pytorch
     - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack --gpus="0," --threads 16 --num-workers 16 --max_epochs 4 --network-save-period 2 --enable_progress_bar false --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2 --resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt
     - export OMP_NUM_THREADS=8
-    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 # A final test with a match, need to see if we can run with 280 concurrency, probably not, rather 1 per socket?
 # Should probably become a sprt.
 runMatch1:
+  timeout: 24h
   stage: runMatch1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
@@ -85,4 +88,3 @@ runMatch1:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
