@@ -7,8 +7,10 @@ ROUNDS=$3
 cd $NETDIR
 networks=$(echo nn-*.nnue)
 
+echo "Found networks: " $networks
+
 ENGINES=""
-for network in $networds
+for network in $networks
 do
     ENGINES="$ENGINES -engine name=$network cmd=/workspace/Stockfish/src/stockfish option.EvalFile=$NETDIR/$network "
 done
