@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 export BASE=$1
 export OWNER=$2
 export REPO=$3

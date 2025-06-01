@@ -67,6 +67,7 @@ runTrain1:
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
   artifacts:
+    expire_in: 1 week
     paths:
       - networks
 
@@ -96,6 +97,7 @@ runTrain2:
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
   artifacts:
+    expire_in: 1 week
     paths:
       - networks
 
@@ -107,10 +109,7 @@ runMatch1:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - ls -ltr $CI_PROJECT_DIR/networks/
-    - mkdir -p /workspace/scratch/$CI_COMMIT_SHA/match
-    - cd /workspace/scratch/$CI_COMMIT_SHA/match
-    - /workspace/fastchess/fastchess -rounds 600 -games 2 -repeat -srand 42  -concurrency 280 -openings file=/workspace/data/UHO_Lichess_4852_v1.epd format=epd order=random -engine name=master cmd=/workspace/Stockfish/src/stockfish -engine name=runTrain1 cmd=/workspace/Stockfish/src/stockfish option.EvalFile=/workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue -engine name=runTrain2 cmd=/workspace/Stockfish/src/stockfish option.EvalFile=/workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue -each proto=uci option.Threads=1 option.Hash=16 tc=10+0.1 -ratinginterval 280 -report penta=true -pgnout file=match.pgn
+    - /workspace/nettest/do_run_match.sh $CI_PROJECT_DIR/networks/ /workspace/scratch/$CI_COMMIT_SHA/match 600
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
