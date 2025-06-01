@@ -60,7 +60,7 @@ runTrain1:
     - python serialize.py $LASTCKPT $LASTNNUE --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=$FTOPTDATA
     - export NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
     - echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
-    - mkdir $CI_PROJECT_DIR/networks/
+    - mkdir -p $CI_PROJECT_DIR/networks/
     - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue
   variables:
     SLURM_JOB_NUM_NODES: 1
@@ -89,7 +89,7 @@ runTrain2:
     - python serialize.py $LASTCKPT $LASTNNUE --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=$FTOPTDATA
     - export NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
     - echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
-    - mkdir $CI_PROJECT_DIR/networks/
+    - mkdir -p $CI_PROJECT_DIR/networks/
     - cp $LASTNNUE $CI_PROJECT_DIR/networks/nn-$NNUESHA.nnue
   variables:
     SLURM_JOB_NUM_NODES: 1
