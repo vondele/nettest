@@ -11,6 +11,7 @@ stages:
 
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
+  CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 build_job:
   stage: build
@@ -37,10 +38,10 @@ ensureData:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 # A first step of training. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
 runTrain1:
+  timeout: 24h
   stage: runTrain1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
@@ -53,10 +54,10 @@ runTrain1:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 # A second step of training. Not it resumes and continues a previous trainig. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
 runTrain2:
+  timeout: 24h
   stage: runTrain2
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
@@ -69,11 +70,11 @@ runTrain2:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
 # A final test with a match, need to see if we can run with 280 concurrency, probably not, rather 1 per socket?
 # Should probably become a sprt.
 runMatch1:
+  timeout: 24h
   stage: runMatch1
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
@@ -85,4 +86,3 @@ runMatch1:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '12:00:00'
-    CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
