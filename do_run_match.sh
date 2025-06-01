@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 NETDIR=$1
 MATCHDIR=$2
 ROUNDS=$3
