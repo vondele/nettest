@@ -5,7 +5,11 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     python3-venv \
+    git-lfs \
     && rm -rf /var/lib/apt/lists/*
+
+# ensure git can deal with lfs
+RUN git lfs install
 
 # current set of nnue-pytorch dependencies, some already in the image
 RUN pip install psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib "pytorch-lightning==1.9.5" tensorboard numba "numpy<2.0" requests
