@@ -34,6 +34,8 @@ ensureData:
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2023
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2024
     - /workspace/nettest/do_ensure_data.sh /workspace/data linrock dual-nnue
+    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-binpacks
+    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-smallnet-binpacks
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
