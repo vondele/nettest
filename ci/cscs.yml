@@ -51,7 +51,7 @@ runTrain1:
     - cd /workspace/nnue-pytorch
     - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack --gpus="0," --threads 16 --num-workers 16 --max_epochs 2 --network-save-period 2 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1
     - export OMP_NUM_THREADS=8
-    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
@@ -67,7 +67,7 @@ runTrain2:
     - cd /workspace/nnue-pytorch
     - python train.py /workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack --gpus="0," --threads 16 --num-workers 16 --max_epochs 4 --network-save-period 2 --enable_progress_bar false --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2 --resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt
     - export OMP_NUM_THREADS=8
-    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+    - python serialize.py /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.ckpt /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2/lightning_logs/version_0/checkpoints/last.nnue --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=/workspace/data/official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
