@@ -38,10 +38,7 @@ ensureData:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - cd /workspace/data/
-    - export GIT_LFS_CONCURRENT_TRANSFERS=8
-    - export REPO=test80-2023
-    - [ -f $REPO/.git/config ] && (cd $REPO && git pull) || (rm -f $REPO && git clone https://huggingface.co/datasets/linrock/$REPO)
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2023
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
