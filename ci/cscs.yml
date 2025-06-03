@@ -51,6 +51,8 @@ runTraining:
     include:
       - artifact: training_schedule.yml
         job: ensureDataAndSchedule
+    forward:
+      pipeline_variables: true
     strategy: depend
 
 # A final test with a match

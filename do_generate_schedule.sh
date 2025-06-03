@@ -3,10 +3,17 @@
 set -e
 
 cat <<EOF
+
+include:
+  - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
+
+stages:
+  - runTrainingInt
+
 # A first step of training. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
 training-run1:
   timeout: 48h
-  stage: runTraining
+  stage: runTrainingInt
   extends: .container-runner-clariden-gh200
   image: \$PERSIST_IMAGE_NAME
   script:
@@ -36,7 +43,7 @@ training-run1:
 # A second step of training. Not it resumes and continues a previous trainig. Probably doing multiple step can be organized a bit differently, possibly dynamically ? TODO: --ft_optimize (too slow for testing)
 training-run2:
   timeout: 48h
-  stage: runTraining
+  stage: runTrainingInt
   needs: [training-run1]
   extends: .container-runner-clariden-gh200
   image: \$PERSIST_IMAGE_NAME
