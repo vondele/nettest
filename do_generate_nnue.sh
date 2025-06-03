@@ -18,7 +18,8 @@ export OMP_NUM_THREADS=8
 python serialize.py $LASTCKPT $LASTNNUE --features=HalfKAv2_hm^ --ft_compression=leb128 --ft_optimize_count=1000000 --ft_optimize_data=$FTOPTDATA
 
 NNUESHA=$(sha256sum $LASTNNUE | cut -c1-12)
-echo "copying $LASTNNUE to nn-$NNUESHA.nnue"
+echo "copying $LASTNNUE to $TARGET/nn-$NNUESHA.nnue"
 mkdir -p $TARGET
 cp $LASTNNUE $TARGET/nn-$NNUESHA.nnue
+ls -ltr $TARGET/
 
