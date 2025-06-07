@@ -6,6 +6,7 @@ NETDIR=$1
 MATCHDIR=$2
 ROUNDS=$3
 
+echo "Net dir: $NETDIR"
 cd $NETDIR
 networks=$(echo nn-*.nnue)
 
@@ -17,6 +18,7 @@ do
     ENGINES="$ENGINES -engine name=$network cmd=/workspace/Stockfish/src/stockfish option.EvalFile=$NETDIR/$network "
 done
 
+echo "Match dir: $MATCHDIR"
 mkdir -p $MATCHDIR
 cd $MATCHDIR
 
