@@ -1,12 +1,37 @@
+#!/bin/bash
+
 cat << EOF
 
 include:
   - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
 
 stages:
+  - ensureData
   - runTrain1
   - runTrain2
   - runMatch1
+
+# ensure data is in place
+ensureData:
+  timeout: 48h
+  stage: ensureData
+  extends: .container-runner-clariden-gh200
+  image: $PERSIST_IMAGE_NAME
+  script:
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test60
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test77
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test78
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test79
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2022
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2023
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2024
+    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock dual-nnue
+    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-binpacks
+    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-smallnet-binpacks
+  variables:
+    SLURM_JOB_NUM_NODES: 1
+    SLURM_NTASKS: 1
+    SLURM_TIMELIMIT: '04:00:00'
 
 # A first step of training. Probably doing multiple step can be organized a bit differently, possibly dynamically ? 
 runTrain1:

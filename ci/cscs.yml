@@ -3,41 +3,33 @@ include:
 
 stages:
   - build
-  - ensureDataAndSchedule
+  - generateSchedule
   - runTraining
 
+# image and mounts
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
   CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
 
-build_job:
+# build the container image
+build:
   stage: build
   extends: .container-builder-cscs-gh200
   variables:
     DOCKERFILE: ci/docker/Dockerfile.build
 
-# ensure data is in place
-ensureDataAndSchedule:
-  timeout: 48h
-  stage: ensureDataAndSchedule
+# generate the schedule to be executed in a child pipeline
+generateSchedule:
+  timeout: 24h
+  stage: generateSchedule
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test60
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test77
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test78
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test79
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2022
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2023
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock test80-2024
-    - /workspace/nettest/do_ensure_data.sh /workspace/data linrock dual-nnue
-    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-binpacks
-    - /workspace/nettest/do_ensure_data.sh /workspace/data official-stockfish master-smallnet-binpacks
     - /workspace/nettest/do_generate_schedule.sh > $CI_PROJECT_DIR/training_schedule.yml
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
-    SLURM_TIMELIMIT: '04:00:00'
+    SLURM_TIMELIMIT: '00:30:00'
   artifacts:
     paths:
       - training_schedule.yml
@@ -45,11 +37,11 @@ ensureDataAndSchedule:
 # run the training according to the previously generated schedule
 runTraining:
   stage: runTraining
-  needs: [ensureDataAndSchedule]
+  needs: [generateSchedule]
   trigger:
     include:
       - artifact: training_schedule.yml
-        job: ensureDataAndSchedule
+        job: generateSchedule
     forward:
       pipeline_variables: true
     strategy: depend
