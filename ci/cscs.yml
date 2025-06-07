@@ -51,7 +51,7 @@ runTrain1:
     - export DATASETS="/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack"
     - export ROOTDIR=/workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1
     - export RESUMEOPT=""
-    - python train.py $DATASETS --gpus="0," --threads 16 --num-workers 16 --max_epochs 2 --network-save-period 2 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir $ROOTDIR $RESUMEOPT
+    - python train.py $DATASETS --gpus="0," --threads 16 --num-workers 16 --max_epochs 300 --network-save-period 100 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir $ROOTDIR $RESUMEOPT
     - /workspace/nettest/do_generate_nnue.sh $ROOTDIR $CI_PROJECT_DIR/networks
   variables:
     SLURM_JOB_NUM_NODES: 1
@@ -73,7 +73,7 @@ runTrain2:
     - export DATASETS="/workspace/data/from_classical_04_pv-2_diff-100_nodes-5000.binpack"
     - export ROOTDIR=/workspace/scratch/$CI_COMMIT_SHA/training/runs/run_2
     - export RESUMEOPT="--resume_from_checkpoint /workspace/scratch/$CI_COMMIT_SHA/training/runs/run_1/lightning_logs/version_0/checkpoints/last.ckpt"
-    - python train.py $DATASETS --gpus="0," --threads 16 --num-workers 16 --max_epochs 4 --network-save-period 2 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir $ROOTDIR $RESUMEOPT
+    - python train.py $DATASETS --gpus="0," --threads 16 --num-workers 16 --max_epochs 600 --network-save-period 100 --enable_progress_bar false  --batch-size 16384 --random-fen-skipping 3 --features=HalfKAv2_hm^ --default_root_dir $ROOTDIR $RESUMEOPT
     - /workspace/nettest/do_generate_nnue.sh $ROOTDIR $CI_PROJECT_DIR/networks
   variables:
     SLURM_JOB_NUM_NODES: 1
