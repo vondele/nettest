@@ -5,13 +5,6 @@ import json
 from pprint import pprint
 from pathlib import Path
 
-#
-# these will be script arguments..
-#
-WORKSPACE_DIR = "/home/vondele/chess/vondele/nettest/workspace/scratch/"
-CI_COMMIT_SHA = "abcdefgh"
-
-
 class MyDumper(yaml.Dumper):
     """
     Adjust yaml output to what is expected in gitlab CI...
