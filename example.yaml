@@ -1,0 +1,52 @@
+training:
+  steps:
+    - description: "stepDescription"
+      datasets:
+        - hf:
+           owner: foo1
+           repo: bar1
+      restart: none
+      trainer:
+        owner:
+        sha:
+      run:
+        max_epochs: 800
+        binpacks:
+          - foo.binpack
+          - bar.binpack
+        options: "runOpts"
+      convert:
+        options: "convertOpts"
+    - description: "stepDescription"
+      datasets:
+        - hf:
+           owner: foo1
+           repo: bar1
+        - hf:
+           owner: foo2
+           repo: bar2
+      restart: model
+      trainer:
+        owner:
+        sha:
+      run:
+        max_epochs: 800
+        binpacks:
+          - foo.binpack
+          - bar.binpack
+        options: "runOpts"
+      convert:
+        options: "convertOpts"
+
+
+testing:
+  reference:
+     owner: foo
+     sha: bar
+  testing:
+     owner: testfoo
+     sha: testbar
+  settings:
+     tc: 
+     hash:
+     rounds:
