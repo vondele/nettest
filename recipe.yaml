@@ -1,52 +1,74 @@
+#
+# nnue-pytorch training steps
+#
 training:
   steps:
-    - description: "stepDescription"
-      datasets:
+#
+#
+#
+    - datasets:
         - hf:
-           owner: foo1
-           repo: bar1
-      restart: none
+           owner: official-stockfish
+           repo: master-binpacks
       trainer:
-        owner:
-        sha:
+        owner: official-stockfish
+        sha: a7a65f615a2f3477159541fb973f91250789bdaf
       run:
-        max_epochs: 800
-        binpacks:
-          - foo.binpack
-          - bar.binpack
-        options: "runOpts"
+        resume: none
+        max_epochs: 300
+        binpacks: 
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --batch-size=16384
+          - --random-fen-skipping=3
+          - --features=HalfKAv2_hm^
       convert:
-        options: "convertOpts"
-    - description: "stepDescription"
-      datasets:
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options: 
+          - --features=HalfKAv2_hm^
+          - --ft_optimize_count=1000000
+          # --ft_optimize (TODO too slow for testing)
+#
+#
+#
+    - datasets:
         - hf:
-           owner: foo1
-           repo: bar1
-        - hf:
-           owner: foo2
-           repo: bar2
-      restart: model
+           owner: official-stockfish
+           repo: master-binpacks
       trainer:
-        owner:
-        sha:
+        owner: official-stockfish
+        sha: a7a65f615a2f3477159541fb973f91250789bdaf
       run:
-        max_epochs: 800
+        resume: previous_checkpoint
+        max_epochs: 300
         binpacks:
-          - foo.binpack
-          - bar.binpack
-        options: "runOpts"
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options: 
+          - --batch-size=16384
+          - --random-fen-skipping=3
+          - --features=HalfKAv2_hm^
       convert:
-        options: "convertOpts"
-
-
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options: 
+          - --features=HalfKAv2_hm^
+          - --ft_optimize_count=1000000
+          # --ft_optimize (TODO too slow for testing)
+          
+#
+# Final testing stage using fastchess
+#
 testing:
   reference:
-     owner: foo
-     sha: bar
+    code:
+      owner: official-stockfish
+      sha: 5337edfdb6c9593e224be58225907682903db1a9
   testing:
-     owner: testfoo
-     sha: testbar
-  settings:
-     tc: 
-     hash:
-     rounds:
+    code:
+      owner: official-stockfish
+      sha: 5337edfdb6c9593e224be58225907682903db1a9
+  options:
+     tc: 10+0.1
+     hash: 16
+     rounds: 300 
