@@ -8,8 +8,8 @@ from pathlib import Path
 # these will be script arguments..
 #
 WORKSPACE_DIR = "/workspace/scratch/"
-WORKSPACE_DIR = "/Users/vjoost/code/nettest/workspace/scratch"
-CI_PROJECT_DIR = "/Users/vjoost/code/nettest/workspace/CIPROJabcd"
+WORKSPACE_DIR = "/home/vondele/chess/vondele/nettest/workspace/scratch/"
+CI_PROJECT_DIR = "/home/vondele/chess/vondele/nettest/workspace/ciprojectdir"
 CI_COMMIT_SHA = "abcdefgh"
 
 
@@ -17,6 +17,7 @@ class MyDumper(yaml.Dumper):
     """
     Adjust yaml output to what is expected in gitlab CI...
     """
+
     def increase_indent(self, flow=False, indentless=False):
         return super(MyDumper, self).increase_indent(flow, False)
 
@@ -64,7 +65,9 @@ def workspace_status(procedure):
         testing_dir.mkdir(parents=True, exist_ok=True)
         testing_yaml = testing_dir / "testing.yaml"
         with testing_yaml.open(mode="w", encoding="utf-8") as f:
-            yaml.dump(procedure["testing"], f, Dumper=MyDumper, default_flow_style=False)
+            yaml.dump(
+                procedure["testing"], f, Dumper=MyDumper, default_flow_style=False
+            )
 
     if not "training" in procedure:
         return
@@ -122,7 +125,7 @@ def generate_stages(procedure, yaml_out):
 
 def generate_job_base():
     """
-     Generate a base ci yaml setup for a computational job
+    Generate a base ci yaml setup for a computational job
     """
     variables = {
         "SLURM_JOB_NUM_NODES": 1,
@@ -141,7 +144,7 @@ def generate_job_base():
 
 def generate_ensure_data(procedure, yaml_out):
     """
-       Extract all datasets from the training steps, as a set of all needed Huggingface owner/repo tuples.
+    Extract all datasets from the training steps, as a set of all needed Huggingface owner/repo tuples.
     """
 
     hfs = set()
@@ -220,6 +223,7 @@ def generate_testing_stage(procedure, yaml_out):
     yaml_out["testingJob"] = job
 
     return
+
 
 def parse_procedure(input_path):
     """
