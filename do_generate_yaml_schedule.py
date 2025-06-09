@@ -1,3 +1,4 @@
+import sys
 import yaml
 import hashlib
 import json
@@ -7,9 +8,7 @@ from pathlib import Path
 #
 # these will be script arguments..
 #
-WORKSPACE_DIR = "/workspace/scratch/"
 WORKSPACE_DIR = "/home/vondele/chess/vondele/nettest/workspace/scratch/"
-CI_PROJECT_DIR = "/home/vondele/chess/vondele/nettest/workspace/ciprojectdir"
 CI_COMMIT_SHA = "abcdefgh"
 
 
@@ -40,24 +39,24 @@ def insert_shas(procedure):
     return
 
 
-def workspace_status(procedure):
+def workspace_status(procedure, workspace_dir, ci_commit_sha):
     """
     Ensure the workspace structure
 
     directories:
-       WORKSPACE_DIR / CI_COMMIT_SHA : a directory for this particular CI job
-       WORKSPACE_DIR / STEP_SHA : a directory for each step of this job, maybe already computed by other jobs
+       workspace_dir / ci_commit_sha : a directory for this particular CI job
+       workspace_dir / step["sha"] : a directory for each step of this job, maybe already computed by other jobs
 
     files:
-       WORKSPACE_DIR / STEP_SHA / step.yaml : the yaml description of this step
-       WORKSPACE_DIR / STEP_SHA / final.yaml : a yaml description generated when the step is complete
+       workspace_dir / step["sha"] / step.yaml : the yaml description of this step
+       workspace_dir / step["sha"] / final.yaml : a yaml description generated when the step is complete
 
     """
 
-    base_dir = Path(WORKSPACE_DIR)
+    base_dir = Path(workspace_dir)
     base_dir.mkdir(parents=True, exist_ok=True)
 
-    commit_dir = base_dir / CI_COMMIT_SHA
+    commit_dir = base_dir / ci_commit_sha
     commit_dir.mkdir(parents=True, exist_ok=True)
 
     if "testing" in procedure:
@@ -192,7 +191,9 @@ def generate_training_stages(procedure, yaml_out):
         stage_name = step["stage"]
         job["stage"] = stage_name
 
-        job["script"] = [f"/workspace/nettest/do_step.sh {this_sha} {previous_sha}"]
+        job["script"] = [
+            f"python /workspace/nettest/do_step.py {this_sha} {previous_sha}"
+        ]
         yaml_out[stage_name + "Job"] = job
 
         previous_sha = this_sha
@@ -218,14 +219,14 @@ def generate_testing_stage(procedure, yaml_out):
         previous_sha = "None"
 
     # TODO
-    job["script"] = [f"/workspace/nettest/do_testing.sh {previous_sha}"]
+    job["script"] = [f"python /workspace/nettest/do_testing.py {previous_sha}"]
 
     yaml_out["testingJob"] = job
 
     return
 
 
-def parse_procedure(input_path):
+def parse_procedure(input_path, workspace_dir, ci_commit_sha):
     """
     Given a file path, open that yaml, and turn that procedure into a CI pipeline..
     """
@@ -240,7 +241,7 @@ def parse_procedure(input_path):
     insert_shas(procedure)
 
     # setup workspace, and figure out status
-    workspace_status(procedure)
+    workspace_status(procedure, workspace_dir, ci_commit_sha)
 
     # generate the stage names / stages
     generate_stages(procedure, yaml_out)
@@ -258,5 +259,19 @@ def parse_procedure(input_path):
 
 
 if __name__ == "__main__":
-    yaml_out = parse_procedure("example.yaml")
-    print(yaml.dump(yaml_out, Dumper=MyDumper, default_flow_style=False))
+
+    if len(sys.argv) != 5:
+        print(
+            "Usage: python do_generate_yaml_schedule.py input_file output_file workspace_dir ci_commit_sha"
+        )
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
+    workspace_dir = sys.argv[3]
+    ci_commit_sha = sys.argv[4]
+
+    yaml_out = parse_procedure(input_file, workspace_dir, ci_commit_sha)
+
+    with Path(output_file).open(mode="w", encoding="utf-8") as f:
+        yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False)
