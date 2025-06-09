@@ -43,6 +43,7 @@ def workspace_status(procedure, workspace_dir, ci_commit_sha):
     files:
        workspace_dir / step["sha"] / step.yaml : the yaml description of this step
        workspace_dir / step["sha"] / final.yaml : a yaml description generated when the step is complete
+       workspace_dir / ci_commit_sha / testing / testing.yaml : a yaml description of the testing stage
 
     """
 
