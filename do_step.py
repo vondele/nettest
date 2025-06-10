@@ -1,11 +1,15 @@
 import yaml
 import sys
 import subprocess
+import shutil
 from pprint import pprint
 from pathlib import Path
 
 
 def execute(name, cmd, cwd, fail_is_ok):
+    """
+    wrapper to execute a shell command
+    """
 
     print(f"\n→ [{name}] {' '.join(cmd)} (cwd={cwd or '$(current)'})")
     print("-------------------------------------------------------------")
@@ -38,8 +42,11 @@ def execute(name, cmd, cwd, fail_is_ok):
 
 
 def ensure_trainer(current_sha, workspace_dir, trainer):
+    """
+    Install the specified nnue-pytorch trainer
+    """
 
-    trainer_dir = workspace_dir / current_sha / "trainer"
+    trainer_dir = workspace_dir / "scratch" / current_sha / "trainer"
     owner = trainer["owner"]
     repo = f"https://github.com/{owner}/nnue-pytorch.git"
     execute(
@@ -49,19 +56,95 @@ def ensure_trainer(current_sha, workspace_dir, trainer):
         True,
     )
 
-    trainer_dir = trainer_dir / "nnue-pytorch"
+    nnue_pytorch_dir = trainer_dir / "nnue-pytorch"
     sha = trainer["sha"]
-    execute("checkout sha", ["git", "checkout", sha], trainer_dir, False)
+    execute("checkout sha", ["git", "checkout", sha], nnue_pytorch_dir, False)
     execute(
-        "build data loader", ["bash", "compile_data_loader.bat"], trainer_dir, False
+        "build data loader",
+        ["bash", "compile_data_loader.bat"],
+        nnue_pytorch_dir,
+        False,
     )
 
     return
 
 
-def run_step(current_sha, previous_sha, workspace_dir):
+def run_trainer(current_sha, previous_sha, workspace_dir, run):
+    """
+    Run the training recipe for this step
+    """
 
-    with open(workspace_dir / current_sha / "step.yaml") as f:
+    nnue_pytorch_dir = (
+        workspace_dir / "scratch" / current_sha / "trainer" / "nnue-pytorch"
+    )
+    data_dir = workspace_dir / "data"
+    cmd = ["python", "train.py"]
+
+    for binpack in run["binpacks"]:
+        cmd.append(str(data_dir / binpack))
+
+    # some architecture specific options
+    cmd.append("--gpus=0,")
+    cmd.append("--threads=16")
+    cmd.append("--num-workers=16")
+
+    # TODO speedup testing.
+    cmd.append("--epoch-size=100000")
+    cmd.append("--validation-size=100000")
+
+    # TODO this is too much output by default
+    cmd.append("--enable_progress_bar=false")
+
+    # append all options
+    cmd = cmd + run["other_options"]
+
+    # TODO eventually deal with training that would exceed the maximum time limit (roughly 300+ epochs), probably needs splitting, restarting, etc.
+    max_epochs = int(run["max_epochs"])
+    assert max_epochs <= 300
+    cmd.append(f"--max_epochs={max_epochs}")
+    cmd.append(f"--network-save-period={max_epochs}")
+
+    # Where to store logs and eventually checkpoints
+    root_dir = workspace_dir / "scratch" / current_sha / "run"
+
+    # TODO handle the case of an interrupted/restarted run more cleanly, now just delete whatever is there
+    # this is also a race...
+    if root_dir.exists():
+        shutil.rmtree(root_dir)
+
+    assert not root_dir.exists()
+
+    cmd.append(f"--default_root_dir={root_dir}")
+
+    if run["resume"].lower() == "none":
+        assert previous_sha.lower() == "none"
+    elif run["resume"].lower() == "previous_checkpoint":
+        assert previous_sha.lower() != "none"
+        previous_checkpoint = (
+            workspace_dir
+            / "scratch"
+            / previous_sha
+            / "run"
+            / "lightning_logs"
+            / "version_0"
+            / "checkpoints"
+            / "last.ckpt"
+        )
+        cmd.append(f"--resume_from_checkpoint={previous_checkpoint}")
+    else:
+        assert False
+
+    execute("Train network", cmd, nnue_pytorch_dir, False)
+
+    return
+
+
+def run_step(current_sha, previous_sha, workspace_dir):
+    """
+    Driver to run the step
+    """
+
+    with open(workspace_dir / "scratch" / current_sha / "step.yaml") as f:
         step = yaml.safe_load(f)
 
     assert step["sha"] == current_sha
@@ -69,6 +152,7 @@ def run_step(current_sha, previous_sha, workspace_dir):
     pprint(step)
 
     ensure_trainer(current_sha, workspace_dir, step["trainer"])
+    run_trainer(current_sha, previous_sha, workspace_dir, step["run"])
 
 
 if __name__ == "__main__":

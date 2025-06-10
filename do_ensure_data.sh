@@ -2,9 +2,9 @@
 
 set -e
 
-export BASE=/workspace/data
-export OWNER=$1
-export REPO=$2
+export BASE="$1/data"
+export OWNER=$2
+export REPO=$3
 
 starttime=$(date +%s)
 

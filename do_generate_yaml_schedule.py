@@ -5,6 +5,7 @@ import json
 from pprint import pprint
 from pathlib import Path
 
+
 class MyDumper(yaml.Dumper):
     """
     Adjust yaml output to what is expected in gitlab CI...
@@ -37,17 +38,17 @@ def workspace_status(procedure, workspace_dir, ci_commit_sha):
     Ensure the workspace structure
 
     directories:
-       workspace_dir / ci_commit_sha : a directory for this particular CI job
-       workspace_dir / step["sha"] : a directory for each step of this job, maybe already computed by other jobs
+       workspace_dir / "scratch" / ci_commit_sha : a directory for this particular CI job
+       workspace_dir / "scratch" / step["sha"] : a directory for each step of this job, maybe already computed by other jobs
 
     files:
-       workspace_dir / step["sha"] / step.yaml : the yaml description of this step
-       workspace_dir / step["sha"] / final.yaml : a yaml description generated when the step is complete
-       workspace_dir / ci_commit_sha / testing / testing.yaml : a yaml description of the testing stage
+       workspace_dir / "scratch" / step["sha"] / step.yaml : the yaml description of this step
+       workspace_dir / "scratch" / step["sha"] / final.yaml : a yaml description generated when the step is complete
+       workspace_dir / "scratch" / ci_commit_sha / testing / testing.yaml : a yaml description of the testing stage
 
     """
 
-    base_dir = Path(workspace_dir)
+    base_dir = Path(workspace_dir) / "scratch"
     base_dir.mkdir(parents=True, exist_ok=True)
 
     commit_dir = base_dir / ci_commit_sha
@@ -135,7 +136,7 @@ def generate_job_base():
     return job
 
 
-def generate_ensure_data(procedure, yaml_out):
+def generate_ensure_data(procedure, workspace_dir, yaml_out):
     """
     Extract all datasets from the training steps, as a set of all needed Huggingface owner/repo tuples.
     """
@@ -157,7 +158,7 @@ def generate_ensure_data(procedure, yaml_out):
 
     job["script"] = []
     for hf in hfs:
-        job["script"].append(f"/workspace/nettest/do_ensure_data.sh {hf[0]} {hf[1]}")
+        job["script"].append(f"{workspace_dir}/nettest/do_ensure_data.sh {workspace_dir} {hf[0]} {hf[1]}")
 
     yaml_out["ensureDataJob"] = job
     return
@@ -186,7 +187,7 @@ def generate_training_stages(procedure, workspace_dir, yaml_out):
         job["stage"] = stage_name
 
         job["script"] = [
-            f"python /workspace/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir}"
+            f"python {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir}"
         ]
         yaml_out[stage_name + "Job"] = job
 
@@ -195,7 +196,7 @@ def generate_training_stages(procedure, workspace_dir, yaml_out):
     return
 
 
-def generate_testing_stage(procedure, yaml_out):
+def generate_testing_stage(procedure, workspace_dir, yaml_out):
     """
     Generate the testing stage
     """
@@ -213,7 +214,7 @@ def generate_testing_stage(procedure, yaml_out):
         previous_sha = "None"
 
     # TODO
-    job["script"] = [f"python /workspace/nettest/do_testing.py {previous_sha}"]
+    job["script"] = [f"python {workspace_dir}/nettest/do_testing.py {previous_sha}"]
 
     yaml_out["testingJob"] = job
 
@@ -241,13 +242,13 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha):
     generate_stages(procedure, yaml_out)
 
     # generate the ensureData stages
-    generate_ensure_data(procedure, yaml_out)
+    generate_ensure_data(procedure, workspace_dir, yaml_out)
 
     # tricky bit ... generate the training stages
     generate_training_stages(procedure, workspace_dir, yaml_out)
 
     # generate the match stage
-    generate_testing_stage(procedure, yaml_out)
+    generate_testing_stage(procedure, workspace_dir, yaml_out)
 
     return yaml_out
 
@@ -268,4 +269,4 @@ if __name__ == "__main__":
     yaml_out = parse_procedure(input_file, workspace_dir, ci_commit_sha)
 
     with Path(output_file).open(mode="w", encoding="utf-8") as f:
-        yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False)
+        yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)

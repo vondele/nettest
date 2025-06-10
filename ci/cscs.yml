@@ -9,7 +9,7 @@ stages:
 # image and mounts
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
-  CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch/:/workspace/scratch/"]'
+  CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch:/workspace/scratch"]'
 
 # build the container image
 build:
@@ -25,7 +25,7 @@ generateSchedule:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - python /workspace/nettest/do_generate_yaml_schedule.py /workspace/nettest/recipe.yaml $CI_PROJECT_DIR/training_schedule.yaml /workspace/scratch/ $CI_COMMIT_SHA
+    - python /workspace/nettest/do_generate_yaml_schedule.py /workspace/nettest/recipe.yaml $CI_PROJECT_DIR/training_schedule.yaml /workspace $CI_COMMIT_SHA
     - cat $CI_PROJECT_DIR/training_schedule.yaml
   variables:
     SLURM_JOB_NUM_NODES: 1

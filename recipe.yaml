@@ -15,7 +15,7 @@ training:
         sha: a7a65f615a2f3477159541fb973f91250789bdaf
       run:
         resume: none
-        max_epochs: 300
+        max_epochs: 10
         binpacks: 
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -41,7 +41,7 @@ training:
         sha: a7a65f615a2f3477159541fb973f91250789bdaf
       run:
         resume: previous_checkpoint
-        max_epochs: 300
+        max_epochs: 20
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options: 
