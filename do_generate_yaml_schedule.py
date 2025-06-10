@@ -163,7 +163,7 @@ def generate_ensure_data(procedure, yaml_out):
     return
 
 
-def generate_training_stages(procedure, yaml_out):
+def generate_training_stages(procedure, workspace_dir, yaml_out):
     """
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
@@ -186,7 +186,7 @@ def generate_training_stages(procedure, yaml_out):
         job["stage"] = stage_name
 
         job["script"] = [
-            f"python /workspace/nettest/do_step.py {this_sha} {previous_sha}"
+            f"python /workspace/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir}"
         ]
         yaml_out[stage_name + "Job"] = job
 
@@ -244,7 +244,7 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha):
     generate_ensure_data(procedure, yaml_out)
 
     # tricky bit ... generate the training stages
-    generate_training_stages(procedure, yaml_out)
+    generate_training_stages(procedure, workspace_dir, yaml_out)
 
     # generate the match stage
     generate_testing_stage(procedure, yaml_out)
