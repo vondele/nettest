@@ -158,13 +158,15 @@ def generate_ensure_data(procedure, workspace_dir, yaml_out):
 
     job["script"] = []
     for hf in hfs:
-        job["script"].append(f"{workspace_dir}/nettest/do_ensure_data.sh {workspace_dir} {hf[0]} {hf[1]}")
+        job["script"].append(
+            f"{workspace_dir}/nettest/do_ensure_data.sh {workspace_dir} {hf[0]} {hf[1]}"
+        )
 
     yaml_out["ensureDataJob"] = job
     return
 
 
-def generate_training_stages(procedure, workspace_dir, yaml_out):
+def generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out):
     """
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
@@ -187,8 +189,11 @@ def generate_training_stages(procedure, workspace_dir, yaml_out):
         job["stage"] = stage_name
 
         job["script"] = [
-            f"python {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir}"
+            f"python {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir} {ci_project_dir}"
         ]
+
+        job["artifacts"] = {"expire_in": "1 month", "paths": [f"step_{this_sha}"]}
+
         yaml_out[stage_name + "Job"] = job
 
         previous_sha = this_sha
@@ -204,24 +209,28 @@ def generate_testing_stage(procedure, workspace_dir, yaml_out):
     if not "testing" in procedure:
         return
 
+    if not "training" in procedure:
+        return
+
     job = generate_job_base()
     job["stage"] = "testing"
 
-    # pass the last training step sha as input
-    if "training" in procedure:
-        previous_sha = procedure["training"]["steps"][-1]["sha"]
-    else:
-        previous_sha = "None"
+    base = f"python {workspace_dir}/nettest/do_testing.py"
 
-    # TODO
-    job["script"] = [f"python {workspace_dir}/nettest/do_testing.py {previous_sha}"]
+    # pass the last training step sha as input, and all other steps that were computed in this run
+    steps = 0
+    for step in reversed(procedure["training"]["steps"]):
+        if step["status"] != "Final" or steps == 0:
+            steps += 1
+            base = base + " " + step["sha"]
 
+    job["script"] = [base]
     yaml_out["testingJob"] = job
 
     return
 
 
-def parse_procedure(input_path, workspace_dir, ci_commit_sha):
+def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
     """
     Given a file path, open that yaml, and turn that procedure into a CI pipeline..
     """
@@ -245,7 +254,7 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha):
     generate_ensure_data(procedure, workspace_dir, yaml_out)
 
     # tricky bit ... generate the training stages
-    generate_training_stages(procedure, workspace_dir, yaml_out)
+    generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out)
 
     # generate the match stage
     generate_testing_stage(procedure, workspace_dir, yaml_out)
@@ -255,9 +264,9 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha):
 
 if __name__ == "__main__":
 
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 6:
         print(
-            "Usage: python do_generate_yaml_schedule.py input_file output_file workspace_dir ci_commit_sha"
+            "Usage: python do_generate_yaml_schedule.py input_file output_file workspace_dir ci_commit_sha ci_project_dir"
         )
         sys.exit(1)
 
@@ -265,8 +274,9 @@ if __name__ == "__main__":
     output_file = sys.argv[2]
     workspace_dir = sys.argv[3]
     ci_commit_sha = sys.argv[4]
+    ci_project_dir = sys.argv[5]
 
-    yaml_out = parse_procedure(input_file, workspace_dir, ci_commit_sha)
+    yaml_out = parse_procedure(input_file, workspace_dir, ci_commit_sha, ci_project_dir)
 
     with Path(output_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)

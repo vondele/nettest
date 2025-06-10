@@ -25,8 +25,7 @@ training:
           - --epoch-size=100000
           - --validation-size=100000
       convert:
-        binpacks:
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options: 
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
@@ -53,8 +52,7 @@ training:
           - --epoch-size=100000
           - --validation-size=100000
       convert:
-        binpacks:
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options: 
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000

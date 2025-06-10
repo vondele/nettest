@@ -25,13 +25,14 @@ generateSchedule:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
-    - python /workspace/nettest/do_generate_yaml_schedule.py /workspace/nettest/recipe.yaml $CI_PROJECT_DIR/training_schedule.yaml /workspace $CI_COMMIT_SHA
+    - python /workspace/nettest/do_generate_yaml_schedule.py /workspace/nettest/recipe.yaml $CI_PROJECT_DIR/training_schedule.yaml /workspace $CI_COMMIT_SHA $CI_PROJECT_DIR
     - cat $CI_PROJECT_DIR/training_schedule.yaml
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '00:30:00'
   artifacts:
+    expire_in: 1 month
     paths:
       - training_schedule.yaml
 

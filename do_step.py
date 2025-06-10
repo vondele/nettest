@@ -4,6 +4,24 @@ import subprocess
 import shutil
 from pprint import pprint
 from pathlib import Path
+import hashlib
+
+
+def sha256sum(filename):
+    hash_sha256 = hashlib.sha256()
+    with open(filename, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            hash_sha256.update(chunk)
+    return hash_sha256.hexdigest()
+
+
+class MyDumper(yaml.Dumper):
+    """
+    Adjust yaml output to what is expected in gitlab CI...
+    """
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super(MyDumper, self).increase_indent(flow, False)
 
 
 def execute(name, cmd, cwd, fail_is_ok):
@@ -135,7 +153,67 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     return
 
 
-def run_step(current_sha, previous_sha, workspace_dir):
+def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
+    """
+    Convert the final checkpoint into a .nnue
+    """
+
+    nnue_pytorch_dir = (
+        workspace_dir / "scratch" / current_sha / "trainer" / "nnue-pytorch"
+    )
+
+    checkpoint_dir = (
+        workspace_dir
+        / "scratch"
+        / current_sha
+        / "run"
+        / "lightning_logs"
+        / "version_0"
+        / "checkpoints"
+    )
+
+    checkpoint = checkpoint_dir / "last.ckpt"
+    nnue = checkpoint_dir / "last.nnue"
+    binpack = workspace_dir / "data" / convert["binpack"]
+
+    # run the conversion to nnue
+    cmd = [
+        "python",
+        "serialize.py",
+        f"{checkpoint}",
+        f"{nnue}",
+        "--ft_compression=leb128",
+        f"--ft_optimize_data={binpack}",
+    ]
+    cmd = cmd + convert["other_options"]
+    execute("Convert to nnue", cmd, nnue_pytorch_dir, False)
+
+    # get sha
+    sha = sha256sum(nnue)
+    sha_short = sha[:12]
+    short_nnue = f"nn-{sha_short}.nnue"
+    std_nnue = checkpoint_dir / short_nnue
+    shutil.copy(nnue, std_nnue)
+    print(f"Last nnue for step {current_sha} is {short_nnue}")
+    print(f"nnue available as {std_nnue}")
+
+    # store as an artifact for this run
+    artifact_dir = ci_project_dir / f"step_{current_sha}"
+    artifact_dir.mkdir(parents=True, exist_ok=True)
+    artifact_nnue = artifact_dir / short_nnue
+    shutil.copy(nnue, artifact_nnue)
+    print(f"nnue available as artifact step_{current_sha}")
+
+    final_file = workspace_dir / "scratch" / current_sha / "final.yaml"
+    final = {"short_nnue": f"{short_nnue}", "std_nnue": f"{std_nnue}"}
+
+    with Path(final_file).open(mode="w", encoding="utf-8") as f:
+        yaml.dump(final, f, Dumper=MyDumper, default_flow_style=False, width=300)
+
+    return
+
+
+def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
     """
     Driver to run the step
     """
@@ -149,16 +227,22 @@ def run_step(current_sha, previous_sha, workspace_dir):
 
     ensure_trainer(current_sha, workspace_dir, step["trainer"])
     run_trainer(current_sha, previous_sha, workspace_dir, step["run"])
+    run_conversion(current_sha, workspace_dir, ci_project_dir, step["convert"])
+
+    return
 
 
 if __name__ == "__main__":
 
-    if len(sys.argv) != 4:
-        print("Usage: python do_step.py current_sha previous_sha workspace_dir")
+    if len(sys.argv) != 5:
+        print(
+            "Usage: python do_step.py current_sha previous_sha workspace_dir ci_project_dir"
+        )
         sys.exit(1)
 
     current_sha = sys.argv[1]
     previous_sha = sys.argv[2]
     workspace_dir = Path(sys.argv[3])
+    ci_project_dir = Path(sys.argv[4])
 
-    run_step(current_sha, previous_sha, workspace_dir)
+    run_step(current_sha, previous_sha, workspace_dir, ci_project_dir)
