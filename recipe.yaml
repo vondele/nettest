@@ -22,6 +22,8 @@ training:
           - --batch-size=16384
           - --random-fen-skipping=3
           - --features=HalfKAv2_hm^
+          - --epoch-size=100000
+          - --validation-size=100000
       convert:
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
@@ -48,6 +50,8 @@ training:
           - --batch-size=16384
           - --random-fen-skipping=3
           - --features=HalfKAv2_hm^
+          - --epoch-size=100000
+          - --validation-size=100000
       convert:
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack

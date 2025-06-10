@@ -88,10 +88,6 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     cmd.append("--threads=16")
     cmd.append("--num-workers=16")
 
-    # TODO speedup testing.
-    cmd.append("--epoch-size=100000")
-    cmd.append("--validation-size=100000")
-
     # TODO this is too much output by default
     cmd.append("--enable_progress_bar=false")
 
