@@ -2,7 +2,6 @@ import yaml
 import sys
 import subprocess
 import shutil
-from pprint import pprint
 from pathlib import Path
 import hashlib
 import utils
@@ -178,8 +177,6 @@ def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
         step = yaml.safe_load(f)
 
     assert step["sha"] == current_sha
-
-    pprint(step)
 
     ensure_trainer(current_sha, workspace_dir, step["trainer"])
     run_trainer(current_sha, previous_sha, workspace_dir, step["run"])

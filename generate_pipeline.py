@@ -2,7 +2,6 @@ import sys
 import yaml
 import hashlib
 import json
-from pprint import pprint
 from pathlib import Path
 from utils import MyDumper
 
@@ -160,7 +159,9 @@ def generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out):
     return
 
 
-def generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out, shell_out):
+def generate_training_stages(
+    procedure, workspace_dir, ci_project_dir, yaml_out, shell_out
+):
     """
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
@@ -256,7 +257,9 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
     generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out)
 
     # tricky bit ... generate the training stages
-    generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out, shell_out)
+    generate_training_stages(
+        procedure, workspace_dir, ci_project_dir, yaml_out, shell_out
+    )
 
     # generate the match stage
     generate_testing_stage(
@@ -288,5 +291,5 @@ if __name__ == "__main__":
         yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
 
     with Path(output_file).with_suffix(".sh").open(mode="w", encoding="utf-8") as f:
-       for line in shell_out:
-          print(line, file=f)
+        for line in shell_out:
+            print(line, file=f)

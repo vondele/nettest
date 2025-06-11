@@ -2,7 +2,6 @@ import sys
 import yaml
 import hashlib
 import json
-from pprint import pprint
 from pathlib import Path
 from utils import execute
 
@@ -173,8 +172,6 @@ def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
         workspace_dir / "scratch" / ci_commit_sha / "testing" / "testing.yaml"
     ) as f:
         test = yaml.safe_load(f)
-
-    pprint(test)
 
     ensure_fastchess(workspace_dir, ci_commit_sha, test["fastchess"])
     ensure_stockfish(workspace_dir, ci_commit_sha, "reference", test)
