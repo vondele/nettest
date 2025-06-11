@@ -128,7 +128,7 @@ def generate_job_base():
     return job
 
 
-def generate_ensure_data(procedure, workspace_dir, yaml_out):
+def generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out):
     """
     Extract all datasets from the training steps, as a set of all needed Huggingface owner/repo tuples.
     """
@@ -154,11 +154,13 @@ def generate_ensure_data(procedure, workspace_dir, yaml_out):
             f"{workspace_dir}/nettest/do_ensure_data.sh {workspace_dir} {hf[0]} {hf[1]}"
         )
 
+    shell_out += job["script"]
+
     yaml_out["ensureDataJob"] = job
     return
 
 
-def generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out):
+def generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out, shell_out):
     """
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
@@ -184,6 +186,8 @@ def generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out)
             f"python {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir} {ci_project_dir}"
         ]
 
+        shell_out += job["script"]
+
         job["artifacts"] = {"expire_in": "1 month", "paths": [f"step_{this_sha}"]}
 
         yaml_out[stage_name + "Job"] = job
@@ -194,7 +198,7 @@ def generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out)
 
 
 def generate_testing_stage(
-    procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out
+    procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out, shell_out
 ):
     """
     Generate the testing stage
@@ -219,6 +223,9 @@ def generate_testing_stage(
             base = base + " " + step["sha"]
 
     job["script"] = [base]
+
+    shell_out += job["script"]
+
     yaml_out["testingJob"] = job
 
     return
@@ -234,6 +241,7 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
 
     # ci yaml header
     yaml_out = start_yaml()
+    shell_out = ["#!/bin/bash", ""]
 
     # insert shas that uniquely identify each step based on the full history of the training procedure
     insert_shas(procedure)
@@ -245,17 +253,17 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
     generate_stages(procedure, yaml_out)
 
     # generate the ensureData stages
-    generate_ensure_data(procedure, workspace_dir, yaml_out)
+    generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out)
 
     # tricky bit ... generate the training stages
-    generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out)
+    generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out, shell_out)
 
     # generate the match stage
     generate_testing_stage(
-        procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out
+        procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out, shell_out
     )
 
-    return yaml_out
+    return yaml_out, shell_out
 
 
 if __name__ == "__main__":
@@ -272,7 +280,13 @@ if __name__ == "__main__":
     ci_commit_sha = sys.argv[4]
     ci_project_dir = sys.argv[5]
 
-    yaml_out = parse_procedure(input_file, workspace_dir, ci_commit_sha, ci_project_dir)
+    yaml_out, shell_out = parse_procedure(
+        input_file, workspace_dir, ci_commit_sha, ci_project_dir
+    )
 
     with Path(output_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
+
+    with Path(output_file).with_suffix(".sh").open(mode="w", encoding="utf-8") as f:
+       for line in shell_out:
+          print(line, file=f)
