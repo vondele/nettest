@@ -82,7 +82,10 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
 
     if run["resume"].lower() == "none":
         assert previous_sha.lower() == "none"
-    elif run["resume"].lower() == "previous_checkpoint":
+    elif (
+        run["resume"].lower() == "previous_checkpoint"
+        or run["resume"].lower() == "previous_model"
+    ):
         assert previous_sha.lower() != "none"
         previous_checkpoint = (
             workspace_dir
@@ -94,7 +97,10 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
             / "checkpoints"
             / "last.ckpt"
         )
-        cmd.append(f"--resume_from_checkpoint={previous_checkpoint}")
+        if run["resume"].lower() == "previous_checkpoint":
+            cmd.append(f"--resume_from_checkpoint={previous_checkpoint}")
+        else:
+            cmd.append(f"--resume_from_model={previous_checkpoint}")
     else:
         assert False
 
