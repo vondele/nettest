@@ -114,6 +114,7 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
     option_hash = test["fastchess"]["options"]["hash"]
 
     # fastchess config
+    # TODO in principle one could run SPRT instead of fixed games?
     cmd = [f"{fastchess}"]
     cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
 
@@ -157,6 +158,7 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
         cmd,
         match_dir,
         False,
+        r"Finished game|Started game",
     )
 
     return

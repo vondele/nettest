@@ -2,8 +2,7 @@ import yaml
 import sys
 import subprocess
 import shutil
-from pprint import pprint
-from pathlib import Path
+import re
 import hashlib
 
 
@@ -24,30 +23,36 @@ class MyDumper(yaml.Dumper):
         return super(MyDumper, self).increase_indent(flow, False)
 
 
-def execute(name, cmd, cwd, fail_is_ok):
+def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
     """
     wrapper to execute a shell command
     """
 
-    print(f"\n→ [{name}] {' '.join(cmd)} (cwd={cwd or '$(current)'})")
+    if filter_re and isinstance(filter_re, str):
+        filter_re = re.compile(filter_re)
+
+    print(f"\n➡️  [{name}] {' '.join(cmd)} (cwd={cwd or '$(current)'})")
     print("-------------------------------------------------------------")
 
     cwd.mkdir(parents=True, exist_ok=True)
 
     process = subprocess.Popen(
-        cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+        cmd,
+        cwd=cwd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1,
     )
 
     while True:
         stdout_line = process.stdout.readline()
-        stderr_line = process.stderr.readline()
 
         if stdout_line:
-            print(stdout_line, end="")
-        if stderr_line:
-            print(stderr_line, end="")
+            if not filter_re or not filter_re.search(stdout_line):
+                print(stdout_line, end="")
 
-        if not stdout_line and not stderr_line and process.poll() is not None:
+        if not stdout_line and process.poll() is not None:
             break
 
     if process.returncode:
