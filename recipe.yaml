@@ -70,7 +70,11 @@ testing:
     code:
       owner: official-stockfish
       sha: 5337edfdb6c9593e224be58225907682903db1a9
-  options:
-     tc: 10+0.1
-     hash: 16
-     rounds: 300 
+  fastchess:
+    code:
+      owner: Disservin
+      sha: ab36677c82f776542815b801279ecba17470d996
+    options:
+       tc: 10+0.1
+       hash: 16
+       rounds: 300 

@@ -4,15 +4,7 @@ import hashlib
 import json
 from pprint import pprint
 from pathlib import Path
-
-
-class MyDumper(yaml.Dumper):
-    """
-    Adjust yaml output to what is expected in gitlab CI...
-    """
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super(MyDumper, self).increase_indent(flow, False)
+from utils import MyDumper
 
 
 def insert_shas(procedure):
@@ -201,7 +193,9 @@ def generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out)
     return
 
 
-def generate_testing_stage(procedure, workspace_dir, yaml_out):
+def generate_testing_stage(
+    procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out
+):
     """
     Generate the testing stage
     """
@@ -215,7 +209,7 @@ def generate_testing_stage(procedure, workspace_dir, yaml_out):
     job = generate_job_base()
     job["stage"] = "testing"
 
-    base = f"python {workspace_dir}/nettest/do_testing.py"
+    base = f"python {workspace_dir}/nettest/do_testing.py {workspace_dir} {ci_project_dir} {ci_commit_sha} "
 
     # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
@@ -257,7 +251,9 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
     generate_training_stages(procedure, workspace_dir, ci_project_dir, yaml_out)
 
     # generate the match stage
-    generate_testing_stage(procedure, workspace_dir, yaml_out)
+    generate_testing_stage(
+        procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out
+    )
 
     return yaml_out
 
