@@ -65,6 +65,103 @@ def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
     return
 
 
+def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_shas):
+    """
+    Run fastchess to rank nets relative to the reference
+    """
+
+    stockfish_reference = (
+        workspace_dir
+        / "scratch"
+        / ci_commit_sha
+        / "testing"
+        / "reference"
+        / "Stockfish"
+        / "src"
+        / "stockfish"
+    )
+    assert stockfish_reference.exists()
+    stockfish_testing = (
+        workspace_dir
+        / "scratch"
+        / ci_commit_sha
+        / "testing"
+        / "testing"
+        / "Stockfish"
+        / "src"
+        / "stockfish"
+    )
+    assert stockfish_testing.exists()
+    fastchess = (
+        workspace_dir
+        / "scratch"
+        / ci_commit_sha
+        / "testing"
+        / "fastchess"
+        / "fastchess"
+    )
+    assert fastchess.exists()
+
+    match_dir = workspace_dir / "scratch" / ci_commit_sha / "testing" / "match"
+    match_dir.mkdir(parents=True, exist_ok=True)
+
+    # TODO ... cleanup how to get the book in place
+    book = workspace_dir / "data" / "UHO_Lichess_4852_v1.epd"
+
+    # collect specific options
+    rounds = test["fastchess"]["options"]["rounds"]
+    tc = test["fastchess"]["options"]["tc"]
+    option_hash = test["fastchess"]["options"]["hash"]
+
+    # fastchess config
+    cmd = [f"{fastchess}"]
+    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
+
+    # TODO should this be configurable for better local testing?
+    cmd += ["-concurrency", "280", "--force-concurrency"]
+    cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
+    cmd += ["-ratinginterval", "280"]
+    cmd += ["-report", "penta=true"]
+    cmd += ["-pgnout", "file=match.pgn"]
+
+    # reference engine
+    cmd += ["-engine", "name=reference", f"cmd={stockfish_reference}"]
+
+    # add nets to be tested
+    for sha in testing_shas:
+        final_yaml_file = workspace_dir / "scratch" / sha / "final.yaml"
+        assert final_yaml_file.exists()
+        with open(final_yaml_file) as f:
+            final_config = yaml.safe_load(f)
+        short_nnue = final_config["short_nnue"]
+        std_nnue = final_config["std_nnue"]
+        name = f"step_{sha}_{short_nnue}"
+        cmd += [
+            "-engine",
+            f"name={name}",
+            f"cmd={stockfish_testing}",
+            f"option.EvalFile={std_nnue}",
+        ]
+
+    # engine configs
+    cmd += [
+        "-each",
+        "proto=uci",
+        "option.Threads=1",
+        f"option.Hash={option_hash}",
+        f"tc={tc}",
+    ]
+
+    execute(
+        "Run fastchess match",
+        cmd,
+        match_dir,
+        False,
+    )
+
+    return
+
+
 def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
     """
     Driver to run the test
@@ -80,6 +177,7 @@ def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
     ensure_fastchess(workspace_dir, ci_commit_sha, test["fastchess"])
     ensure_stockfish(workspace_dir, ci_commit_sha, "reference", test)
     ensure_stockfish(workspace_dir, ci_commit_sha, "testing", test)
+    run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_shas)
 
     return
 

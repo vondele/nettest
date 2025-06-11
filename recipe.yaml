@@ -77,4 +77,4 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 300 
+       rounds: 10
