@@ -55,7 +55,7 @@ def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
     sha = target_config["code"]["sha"]
     execute(f"checkout sha {sha}", ["git", "checkout", sha], stockfish_dir, False)
 
-    execute(f"check proc cpu", ["cat", "/proc/cpuinfo"], stockfish_dir, False)
+    execute(f"check env ", ["env"], stockfish_dir, False)
     execute(f"check native ", ["bash", "../scripts/get_native_properties.sh"], stockfish_dir, False)
 
     execute(
