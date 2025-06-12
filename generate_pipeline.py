@@ -1,9 +1,23 @@
 import sys
+import re
 import yaml
 import hashlib
 import json
 from pathlib import Path
 from utils import MyDumper
+
+
+def needs_quotes(value):
+    # You can tweak this to match other patterns too
+    return isinstance(value, str) and re.match(r"^\d{1,2}:\d{2}:\d{2}$", value)
+
+
+def quoted_scalar_representer(dumper, data):
+    style = '"' if needs_quotes(data) else None
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data, style=style)
+
+
+yaml.add_representer(str, quoted_scalar_representer, Dumper=MyDumper)
 
 
 def insert_shas(procedure):
