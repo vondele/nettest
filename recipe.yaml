@@ -1,0 +1,86 @@
+#
+# nnue-pytorch training steps
+#
+training:
+  steps:
+#
+#
+#
+    - datasets:
+        - hf:
+           owner: official-stockfish
+           repo: master-binpacks
+      trainer:
+        owner: official-stockfish
+        sha: a7a65f615a2f3477159541fb973f91250789bdaf
+      run:
+        resume: none
+        max_epochs: 10
+        binpacks: 
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --batch-size=16384
+          - --features=HalfKAv2_hm^
+          - --random-fen-skipping=3
+          - --lr=4.375e-4 
+          - --gamma=0.995
+          - --early-fen-skipping=30
+          - --epoch-size=100000
+          - --validation-size=100000
+      convert:
+        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options: 
+          - --features=HalfKAv2_hm^
+          - --ft_optimize_count=1000000
+          # --ft_optimize (TODO too slow for testing)
+#
+#
+#
+    - datasets:
+        - hf:
+           owner: official-stockfish
+           repo: master-binpacks
+      trainer:
+        owner: official-stockfish
+        sha: a7a65f615a2f3477159541fb973f91250789bdaf
+      run:
+        resume: previous_checkpoint
+        max_epochs: 20
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options: 
+          - --batch-size=16384
+          - --features=HalfKAv2_hm^
+          - --random-fen-skipping=3
+          - --lr=4.375e-4 
+          - --gamma=0.995
+          - --early-fen-skipping=30
+          - --epoch-size=100000
+          - --validation-size=100000
+      convert:
+        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options: 
+          - --features=HalfKAv2_hm^
+          - --ft_optimize_count=1000000
+          # --ft_optimize (TODO too slow for testing)
+          
+#
+# Final testing stage using fastchess
+#
+testing:
+  reference:
+    code:
+      owner: official-stockfish
+      sha: 5337edfdb6c9593e224be58225907682903db1a9
+  testing:
+    code:
+      owner: official-stockfish
+      sha: 5337edfdb6c9593e224be58225907682903db1a9
+  fastchess:
+    code:
+      owner: Disservin
+      sha: ab36677c82f776542815b801279ecba17470d996
+    options:
+       tc: 10+0.1
+       hash: 16
+       rounds: 10

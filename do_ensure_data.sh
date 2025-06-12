@@ -2,7 +2,7 @@
 
 set -e
 
-export BASE=$1
+export BASE="$1/data"
 export OWNER=$2
 export REPO=$3
 
