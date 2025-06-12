@@ -42,7 +42,7 @@ runTraining:
   needs: [generateSchedule]
   trigger:
     include:
-      - artifact: training_schedule.yml
+      - artifact: training_schedule.yaml
         job: generateSchedule
     forward:
       pipeline_variables: true
