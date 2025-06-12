@@ -60,7 +60,7 @@ def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
 
     execute(
         "build Stockfish",
-        ["make", "-j", "profile-build", "ARCH=armv8-dotprod"],
+        ["make", "-j", "profile-build", "ARCH=native"],
         stockfish_dir,
         False,
     )
