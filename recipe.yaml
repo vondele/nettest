@@ -11,8 +11,8 @@ training:
            owner: official-stockfish
            repo: master-binpacks
       trainer:
-        owner: official-stockfish
-        sha: 63728670b4817c824403e4827d7688ef8f550173
+        owner: vondele
+        sha: 6e406f0d3919b22c42e360150806a5be561ad34b
       run:
         resume: none
         max_epochs: 10
@@ -41,8 +41,8 @@ training:
            owner: official-stockfish
            repo: master-binpacks
       trainer:
-        owner: official-stockfish
-        sha: 63728670b4817c824403e4827d7688ef8f550173
+        owner: vondele
+        sha: 6e406f0d3919b22c42e360150806a5be561ad34b
       run:
         resume: previous_checkpoint
         max_epochs: 20
