@@ -94,9 +94,9 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
             / "last.ckpt"
         )
         if run["resume"].lower() == "previous_checkpoint":
-            cmd.append(f"--resume_from_checkpoint={previous_checkpoint}")
+            cmd.append(f"--resume-from-checkpoint={previous_checkpoint}")
         else:
-            cmd.append(f"--resume_from_model={previous_checkpoint}")
+            cmd.append(f"--resume-from-model={previous_checkpoint}")
     else:
         assert False
 

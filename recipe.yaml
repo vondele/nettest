@@ -12,7 +12,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: vondele
-        sha: 6e406f0d3919b22c42e360150806a5be561ad34b
+        sha: 1d7a2a10e4515ebfb381f5e7f65f75b00c2aa547
       run:
         resume: none
         max_epochs: 10
@@ -42,7 +42,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: vondele
-        sha: 6e406f0d3919b22c42e360150806a5be561ad34b
+        sha: 1d7a2a10e4515ebfb381f5e7f65f75b00c2aa547
       run:
         resume: previous_checkpoint
         max_epochs: 20
