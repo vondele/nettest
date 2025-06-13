@@ -55,9 +55,6 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     cmd.append("--threads=16")
     cmd.append("--num-workers=16")
 
-    # TODO this is too much output by default
-    cmd.append("--enable_progress_bar=false")
-
     # append all options
     cmd = cmd + run["other_options"]
 
