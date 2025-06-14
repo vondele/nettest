@@ -63,7 +63,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
 
     # TODO eventually deal with training that would exceed the maximum time limit (roughly 300+ epochs), probably needs splitting, restarting, etc.
     max_epochs = int(run["max_epochs"])
-    assert max_epochs <= 300
+    # assert max_epochs <= 300
     cmd.append(f"--max_epochs={max_epochs}")
     cmd.append(f"--network-save-period={max_epochs}")
 
