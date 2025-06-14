@@ -45,15 +45,18 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         workspace_dir / "scratch" / current_sha / "trainer" / "nnue-pytorch"
     )
     data_dir = workspace_dir / "data"
-    cmd = ["python", "train.py"]
+ 
+    # binding all threads to the same socket is important for performance
+    cmd = ["numactl", "--cpunodebind=0", "--membind=0", "python", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
 
     # some architecture specific options
     cmd.append("--gpus=0,")
-    cmd.append("--threads=16")
-    cmd.append("--num-workers=16")
+    cmd.append("--threads=4")
+    # large net needs at least 16 threads, small net 64
+    cmd.append("--num-workers=64")
 
     # append all options
     cmd = cmd + run["other_options"]
