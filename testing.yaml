@@ -15,19 +15,21 @@ training:
         sha: 6d951d93efe5b8efc6a176f18d10ef24c8bb1a1b
       run:
         resume: none
-        max_epochs: 300
-        binpacks: 
+        max_epochs: 10
+        binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --random-fen-skipping=3
-          - --lr=4.375e-4 
+          - --lr=4.375e-4
           - --gamma=0.995
-          - --early-fen-skipping=30
+          - --early-fen-skipping=2
+          - --epoch-size=100000
+          - --validation-size=100000
       convert:
         binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options: 
+        other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           # --ft_optimize (TODO too slow for testing)
@@ -43,23 +45,25 @@ training:
         sha: 6d951d93efe5b8efc6a176f18d10ef24c8bb1a1b
       run:
         resume: previous_checkpoint
-        max_epochs: 600
+        max_epochs: 20
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options: 
+        other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --random-fen-skipping=3
-          - --lr=4.375e-4 
+          - --lr=4.375e-4
           - --gamma=0.995
-          - --early-fen-skipping=30
+          - --early-fen-skipping=2
+          - --epoch-size=100000
+          - --validation-size=100000
       convert:
         binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options: 
+        other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           # --ft_optimize (TODO too slow for testing)
-          
+
 #
 # Final testing stage using fastchess
 #
@@ -79,4 +83,4 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 4000
+       rounds: 10
