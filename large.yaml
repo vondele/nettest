@@ -12,10 +12,10 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: 6d951d93efe5b8efc6a176f18d10ef24c8bb1a1b
+        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
       run:
         resume: none
-        max_epochs: 300
+        max_epochs: 400
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -40,10 +40,66 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: 6d951d93efe5b8efc6a176f18d10ef24c8bb1a1b
+        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
       run:
         resume: previous_checkpoint
-        max_epochs: 600
+        max_epochs: 800
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --batch-size=16384
+          - --features=HalfKAv2_hm^
+          - --random-fen-skipping=3
+          - --lr=4.375e-4
+          - --gamma=0.995
+          - --early-fen-skipping=30
+      convert:
+        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --features=HalfKAv2_hm^
+          - --ft_optimize_count=1000000
+          # --ft_optimize (TODO too slow for testing)
+#
+#
+#
+    - datasets:
+        - hf:
+           owner: official-stockfish
+           repo: master-binpacks
+      trainer:
+        owner: official-stockfish
+        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
+      run:
+        resume: previous_model
+        max_epochs: 400
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --batch-size=16384
+          - --features=HalfKAv2_hm^
+          - --random-fen-skipping=3
+          - --lr=4.375e-4
+          - --gamma=0.995
+          - --early-fen-skipping=30
+      convert:
+        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --features=HalfKAv2_hm^
+          - --ft_optimize_count=1000000
+          # --ft_optimize (TODO too slow for testing)
+#
+#
+#
+    - datasets:
+        - hf:
+           owner: official-stockfish
+           repo: master-binpacks
+      trainer:
+        owner: official-stockfish
+        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
+      run:
+        resume: previous_checkpoint
+        max_epochs: 800
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
