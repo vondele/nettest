@@ -1,0 +1,15 @@
+FROM nvcr.io/nvidia/pytorch:25.03-py3
+
+RUN apt-get update && apt-get install -y \
+    g++ \
+    git \
+    curl \
+    python3-venv \
+    git-lfs \
+    && rm -rf /var/lib/apt/lists/*
+
+# ensure git can deal with lfs
+RUN git lfs install
+
+# current set of nnue-pytorch dependencies, some already in the image
+RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib tensorboard numba "numpy<2.0" requests pytorch-lightning

@@ -2,21 +2,32 @@ include:
   - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
 
 stages:
+  - base_build
   - build
   - generateSchedule
   - runTraining
 
 # image and mounts
 variables:
-  PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
   CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch:/workspace/scratch"]'
+
+# build the base container image, update only if it changes
+base_build:
+  stage: base_build
+  extends: [.container-builder-cscs-gh200, .dynamic-image-name]
+  variables:
+    PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest_base_image
+    DOCKERFILE: ci/docker/Dockerfile.base
+    WATCH_FILECHANGES: 'ci/docker/Dockerfile.base'
 
 # build the container image
 build:
   stage: build
   extends: .container-builder-cscs-gh200
   variables:
+    PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
     DOCKERFILE: ci/docker/Dockerfile.build
+    DOCKER_BUILD_ARGS: '["BASE_IMG=$BASE_IMAGE"]'
 
 # generate the schedule to be executed in a child pipeline
 generateSchedule:
@@ -28,6 +39,7 @@ generateSchedule:
     - python /workspace/nettest/generate_pipeline.py /workspace/nettest/${RECIPE:-testing}.yaml $CI_PROJECT_DIR/training_schedule.yaml /workspace $CI_COMMIT_SHA $CI_PROJECT_DIR
     - cat $CI_PROJECT_DIR/training_schedule.yaml
   variables:
+    PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '00:30:00'
