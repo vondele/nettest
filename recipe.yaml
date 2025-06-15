@@ -79,4 +79,4 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 1000
+       rounds: 4000
