@@ -16,20 +16,20 @@ training:
       run:
         resume: none
         max_epochs: 10
-        binpacks: 
+        binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --random-fen-skipping=3
-          - --lr=4.375e-4 
+          - --lr=4.375e-4
           - --gamma=0.995
-          - --early-fen-skipping=30
+          - --early-fen-skipping=2
           - --epoch-size=100000
           - --validation-size=100000
       convert:
         binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options: 
+        other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           # --ft_optimize (TODO too slow for testing)
@@ -48,22 +48,22 @@ training:
         max_epochs: 20
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options: 
+        other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --random-fen-skipping=3
-          - --lr=4.375e-4 
+          - --lr=4.375e-4
           - --gamma=0.995
-          - --early-fen-skipping=30
+          - --early-fen-skipping=2
           - --epoch-size=100000
           - --validation-size=100000
       convert:
         binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options: 
+        other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           # --ft_optimize (TODO too slow for testing)
-          
+
 #
 # Final testing stage using fastchess
 #

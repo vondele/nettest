@@ -297,13 +297,17 @@ if __name__ == "__main__":
     ci_commit_sha = sys.argv[4]
     ci_project_dir = sys.argv[5]
 
+    print("Translating recipe: ", input_file)
+
     yaml_out, shell_out = parse_procedure(
         input_file, workspace_dir, ci_commit_sha, ci_project_dir
     )
 
+    print("Resulting pipeline: ", Path(output_file))
     with Path(output_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
 
+    print("Resulting shell script: ", Path(output_file).with_suffix(".sh"))
     with Path(output_file).with_suffix(".sh").open(mode="w", encoding="utf-8") as f:
         for line in shell_out:
             print(line, file=f)
