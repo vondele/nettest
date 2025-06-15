@@ -45,7 +45,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         workspace_dir / "scratch" / current_sha / "trainer" / "nnue-pytorch"
     )
     data_dir = workspace_dir / "data"
- 
+
     # binding all threads to the same socket is important for performance
     cmd = ["numactl", "--cpunodebind=0", "--membind=0", "python", "train.py"]
 
@@ -99,7 +99,8 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         if run["resume"].lower() == "previous_checkpoint":
             cmd.append(f"--resume-from-checkpoint={previous_checkpoint}")
         else:
-            cmd.append(f"--resume-from-model={previous_checkpoint}")
+            previous_model = previous_checkpoint.with_suffix(".pt")
+            cmd.append(f"--resume-from-model={previous_model}")
     else:
         assert False
 
@@ -110,7 +111,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
 
 def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     """
-    Convert the final checkpoint into a .nnue
+    Convert the final checkpoint into a .nnue and a .pt
     """
 
     nnue_pytorch_dir = (
@@ -130,6 +131,17 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     checkpoint = checkpoint_dir / "last.ckpt"
     nnue = checkpoint_dir / "last.nnue"
     binpack = workspace_dir / "data" / convert["binpack"]
+
+    # run the conversion to model
+    model = checkpoint.with_suffix(".pt")
+    cmd = [
+        "python",
+        "serialize.py",
+        f"{checkpoint}",
+        f"{model}",
+    ]
+    cmd = cmd + convert["other_options"]
+    execute("Convert to pt", cmd, nnue_pytorch_dir, False)
 
     # run the conversion to nnue
     cmd = [
