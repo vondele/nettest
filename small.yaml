@@ -31,6 +31,8 @@ training:
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
+          - --l1
+          - 128
           # --ft_optimize (TODO too slow for testing)
 #
 #
@@ -60,6 +62,8 @@ training:
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
+          - --l1
+          - 128
           # --ft_optimize (TODO too slow for testing)
 
 #
