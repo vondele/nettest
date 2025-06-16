@@ -114,6 +114,16 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
     tc = test["fastchess"]["options"]["tc"]
     option_hash = test["fastchess"]["options"]["hash"]
 
+    # take care of small vs big net
+    target_net = "EvalFile"
+    if "evalfile" in test["fastchess"]["options"]:
+       if test["fastchess"]["options"]["evalfile"].lower() == "small":
+          target_net = "EvalFileSmall"
+       elif test["fastchess"]["options"]["evalfile"].lower() == "big":
+          target_net = "EvalFile"
+       else:
+          assert False, "EvalFile needs to be either small or big"
+
     # fastchess config
     # TODO in principle one could run SPRT instead of fixed games?
     cmd = [f"{fastchess}"]
@@ -142,7 +152,7 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
             "-engine",
             f"name={name}",
             f"cmd={stockfish_testing}",
-            f"option.EvalFile={std_nnue}",
+            f"option.{target_net}={std_nnue}",
         ]
 
     # engine configs

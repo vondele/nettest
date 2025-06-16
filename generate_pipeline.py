@@ -198,7 +198,7 @@ def generate_training_stages(
         job["stage"] = stage_name
 
         job["script"] = [
-            f"python {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir} {ci_project_dir}"
+            f"python -u {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir} {ci_project_dir}"
         ]
 
         shell_out += job["script"]
@@ -228,7 +228,7 @@ def generate_testing_stage(
     job = generate_job_base()
     job["stage"] = "testing"
 
-    base = f"python {workspace_dir}/nettest/do_testing.py {workspace_dir} {ci_project_dir} {ci_commit_sha} "
+    base = f"python -u {workspace_dir}/nettest/do_testing.py {workspace_dir} {ci_project_dir} {ci_commit_sha} "
 
     # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
@@ -287,7 +287,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 6:
         print(
-            "Usage: python do_generate_yaml_schedule.py input_file output_file workspace_dir ci_commit_sha ci_project_dir"
+            "Usage: python -u do_generate_yaml_schedule.py input_file output_file workspace_dir ci_commit_sha ci_project_dir"
         )
         sys.exit(1)
 
