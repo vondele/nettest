@@ -32,7 +32,7 @@ training:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           - --l1
-          - 128
+          - "128"
           # --ft_optimize (TODO too slow for testing)
 #
 #
@@ -63,7 +63,7 @@ training:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           - --l1
-          - 128
+          - "128"
           # --ft_optimize (TODO too slow for testing)
 
 #
