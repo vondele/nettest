@@ -117,9 +117,9 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
     # take care of small vs big net
     target_net = "EvalFile"
     if "evalfile" in test["fastchess"]["options"]:
-       if test["fastchess"]["options"].lower() == "small":
+       if test["fastchess"]["options"]["evalfile"].lower() == "small":
           target_net = "EvalFileSmall"
-       elif test["fastchess"]["options"].lower() == "big":
+       elif test["fastchess"]["options"]["evalfile"].lower() == "big":
           target_net = "EvalFile"
        else:
           assert False, "EvalFile needs to be either small or big"
