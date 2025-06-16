@@ -30,7 +30,6 @@ training:
         binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
           - --features=HalfKAv2_hm^
-          - --l1=128
           - --ft_optimize_count=1000000
           # --ft_optimize (TODO too slow for testing)
 #
@@ -60,7 +59,6 @@ training:
         binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
           - --features=HalfKAv2_hm^
-          - --l1=128
           - --ft_optimize_count=1000000
           # --ft_optimize (TODO too slow for testing)
 
