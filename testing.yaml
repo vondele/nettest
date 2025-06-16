@@ -110,7 +110,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: ab36677c82f776542815b801279ecba17470d996
+      sha: a369acfd73c45b17c2148a777815efd67408b874
     options:
        tc: 10+0.1
        hash: 16
