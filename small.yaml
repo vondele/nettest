@@ -12,7 +12,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: Disservin
-        sha: 4a52e67bfe0ef1442ed7db01fc7ff4373818ba0f
+        sha: 130e90b91da270e1244b2aac740761775e27bf61
       run:
         resume: none
         max_epochs: 4
@@ -31,8 +31,7 @@ training:
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
-          - --l1
-          - "128"
+          - --l1=128
           # --ft_optimize (TODO too slow for testing)
 #
 #
@@ -43,7 +42,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: Disservin
-        sha: 4a52e67bfe0ef1442ed7db01fc7ff4373818ba0f
+        sha: 130e90b91da270e1244b2aac740761775e27bf61
       run:
         resume: previous_checkpoint
         max_epochs: 8
@@ -62,8 +61,7 @@ training:
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
-          - --l1
-          - "128"
+          - --l1=128
           # --ft_optimize (TODO too slow for testing)
 
 #
