@@ -136,7 +136,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     model = checkpoint.with_suffix(".pt")
     cmd = [
         "python",
-        "-u"
+        "-u",
         "serialize.py",
         f"{checkpoint}",
         f"{model}",
