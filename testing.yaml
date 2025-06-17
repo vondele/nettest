@@ -41,8 +41,8 @@ training:
            owner: official-stockfish
            repo: master-binpacks
       trainer:
-        owner: official-stockfish
-        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
+        owner: vondele
+        sha: 34a9257cf2f9fba850f959d68c2f0bd2dc4d7dd3
       run:
         resume: previous_checkpoint
         max_epochs: 20
@@ -62,7 +62,7 @@ training:
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
-          # --ft_optimize (TODO too slow for testing)
+          - --ft_optimize # (TODO slow for testing ..)
 
 #
 #
