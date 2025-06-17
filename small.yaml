@@ -15,7 +15,7 @@ training:
         sha: 62f3b8fe0ab192b56e9a1df645dc7837759e595a
       run:
         resume: none
-        max_epochs: 20
+        max_epochs: 300
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -45,7 +45,7 @@ training:
         sha: 62f3b8fe0ab192b56e9a1df645dc7837759e595a
       run:
         resume: previous_checkpoint
-        max_epochs: 40
+        max_epochs: 600
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -79,9 +79,9 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: ab36677c82f776542815b801279ecba17470d996
+      sha: a369acfd73c45b17c2148a777815efd67408b874
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 100
+       rounds: 16000
        evalfile: small

@@ -132,7 +132,7 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
     # TODO should this be configurable for better local testing?
     cmd += ["-concurrency", "280", "--force-concurrency"]
     cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
-    cmd += ["-ratinginterval", "280"]
+    cmd += ["-ratinginterval", "100"]
     cmd += ["-report", "penta=true"]
     cmd += ["-pgnout", "file=match.pgn"]
 
