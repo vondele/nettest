@@ -47,7 +47,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     data_dir = workspace_dir / "data"
 
     # binding all threads to the same socket is important for performance
-    cmd = ["numactl", "--cpunodebind=0", "--membind=0", "python", "train.py"]
+    cmd = ["numactl", "--cpunodebind=0", "--membind=0", "python", "-u", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
@@ -136,6 +136,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     model = checkpoint.with_suffix(".pt")
     cmd = [
         "python",
+        "-u"
         "serialize.py",
         f"{checkpoint}",
         f"{model}",
@@ -146,6 +147,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     # run the conversion to nnue
     cmd = [
         "python",
+        "-u",
         "serialize.py",
         f"{checkpoint}",
         f"{nnue}",
@@ -201,7 +203,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 5:
         print(
-            "Usage: python do_step.py current_sha previous_sha workspace_dir ci_project_dir"
+            "Usage: python -u do_step.py current_sha previous_sha workspace_dir ci_project_dir"
         )
         sys.exit(1)
 
