@@ -83,5 +83,5 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 4000
+       rounds: 16000
        evalfile: small
