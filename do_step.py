@@ -46,13 +46,13 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     )
     data_dir = workspace_dir / "data"
 
-    # binding all threads to the same socket is important for performance
+    # binding all threads to the same socket is important for performance TODO fix domain
     cmd = ["numactl", "--cpunodebind=0", "--membind=0", "python", "-u", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
 
-    # some architecture specific options
+    # some architecture specific options TODO: fix GPU
     cmd.append("--gpus=0,")
     cmd.append("--threads=4")
     # large net needs at least 16 threads, small net 64
@@ -136,7 +136,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     model = checkpoint.with_suffix(".pt")
     cmd = [
         "python",
-        "-u"
+        "-u",
         "serialize.py",
         f"{checkpoint}",
         f"{model}",
@@ -144,7 +144,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     cmd = cmd + convert["other_options"]
     execute("Convert to pt", cmd, nnue_pytorch_dir, False)
 
-    # run the conversion to nnue
+    # run the conversion to nnue TODO fix device
     cmd = [
         "python",
         "-u",
@@ -153,6 +153,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
         f"{nnue}",
         "--ft_compression=leb128",
         f"--ft_optimize_data={binpack}",
+        "--device=0"
     ]
     cmd = cmd + convert["other_options"]
     execute("Convert to nnue", cmd, nnue_pytorch_dir, False)

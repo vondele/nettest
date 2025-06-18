@@ -12,7 +12,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
+        sha: c75a624689b32c161e2a42b78d5ddf04d81b6825
       run:
         resume: none
         max_epochs: 10
@@ -42,7 +42,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
+        sha: c75a624689b32c161e2a42b78d5ddf04d81b6825
       run:
         resume: previous_checkpoint
         max_epochs: 20
@@ -62,7 +62,7 @@ training:
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
-          # --ft_optimize (TODO too slow for testing)
+          # - --ft_optimize # (TODO slow for testing ..)
 
 #
 #
@@ -73,7 +73,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
+        sha: c75a624689b32c161e2a42b78d5ddf04d81b6825
       run:
         resume: previous_model
         max_epochs: 10
@@ -93,7 +93,7 @@ training:
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
-          # --ft_optimize (TODO too slow for testing)
+          - --ft_optimize # (TODO too slow for testing)
 
 #
 # Final testing stage using fastchess
@@ -110,7 +110,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: a369acfd73c45b17c2148a777815efd67408b874
+      sha: 3d41404f34478d98489adf07cefc0af60aa1995d
     options:
        tc: 10+0.1
        hash: 16
