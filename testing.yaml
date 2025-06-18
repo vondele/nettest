@@ -73,7 +73,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: fb27a0bf1501ff40bb6d2513f469f3d6f628dc9d
+        sha: f65456d0fc40a52a07d28f3244a35e1980711acf
       run:
         resume: previous_model
         max_epochs: 10
