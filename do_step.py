@@ -51,7 +51,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         full_path = data_dir / binpack
         # check if it is available in compressed form, and uncompress as needed
         if not full_path.exists():
-            full_path_zst = full_path.append_suffix(".zst")
+            full_path_zst = Path(str(full_path)+".zst")
             if full_path_zst.exists():
                 cmd = ["zstd", "-d", str(full_path_zst), "-o", str(full_path)]
                 execute("Uncompress binpack.zst", cmd, nnue_pytorch_dir, False)
