@@ -12,12 +12,14 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: 62f3b8fe0ab192b56e9a1df645dc7837759e595a
+        sha: fc87f7098162ca414e2bfac58f6994be4d232c59
       run:
         resume: none
-        max_epochs: 300
+        max_epochs: 400
         binpacks:
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+          - official-stockfish/master-binpacks/dfrc_n5000.binpack
+          - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
+          - official-stockfish/master-binpacks/T60T70wIsRightFarseer.binpack
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
@@ -25,14 +27,14 @@ training:
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
-          - --early-fen-skipping=30
+          - --early-fen-skipping=20
       convert:
-        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           - --l1=128
-          # --ft_optimize (TODO too slow for testing)
+          - --ft_optimize # (TODO too slow for testing)
 #
 #
 #
@@ -42,11 +44,13 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: 62f3b8fe0ab192b56e9a1df645dc7837759e595a
+        sha: fc87f7098162ca414e2bfac58f6994be4d232c59
       run:
         resume: previous_checkpoint
-        max_epochs: 600
+        max_epochs: 800
         binpacks:
+          - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
+          - official-stockfish/master-binpacks/farseerT75.binpack
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
           - --batch-size=16384
@@ -55,14 +59,14 @@ training:
           - --l1=128
           - --lr=4.375e-4
           - --gamma=0.995
-          - --early-fen-skipping=30
+          - --early-fen-skipping=40
       convert:
-        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           - --l1=128
-          # --ft_optimize (TODO too slow for testing)
+          - --ft_optimize # (TODO too slow for testing)
 
 #
 # Final testing stage using fastchess
@@ -83,5 +87,5 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 1000
+       rounds: 8000
        evalfile: small
