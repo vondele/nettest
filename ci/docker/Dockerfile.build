@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     python3-venv \
     git-lfs \
+    zstd \
     strace \
     linux-tools-common linux-tools-generic \
     && rm -rf /var/lib/apt/lists/*

@@ -46,6 +46,18 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     )
     data_dir = workspace_dir / "data"
 
+    # first check all binpacks are available in non-compressed form
+    for binpack in run["binpacks"]:
+        full_path = data_dir / binpack
+        # check if it is available in compressed form, and uncompress as needed
+        if not full_path.exists():
+            full_path_zst = full_path.append_suffix(".zst")
+            if full_path_zst.exists():
+                cmd = ["zstd", "-d", str(full_path_zst), "-o", str(full_path)]
+                execute("Uncompress binpack.zst", cmd, nnue_pytorch_dir, False)
+            else:
+                assert False, f"The following binpack could not be found: {binpack}"
+
     # binding all threads to the same socket is important for performance TODO fix domain
     cmd = ["numactl", "--cpunodebind=0", "--membind=0", "python", "-u", "train.py"]
 
@@ -153,7 +165,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
         f"{nnue}",
         "--ft_compression=leb128",
         f"--ft_optimize_data={binpack}",
-        "--device=0"
+        "--device=0",
     ]
     cmd = cmd + convert["other_options"]
     execute("Convert to nnue", cmd, nnue_pytorch_dir, False)
