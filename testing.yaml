@@ -18,6 +18,7 @@ training:
         max_epochs: 10
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
