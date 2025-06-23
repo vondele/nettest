@@ -12,7 +12,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: 62f3b8fe0ab192b56e9a1df645dc7837759e595a
+        sha: fc87f7098162ca414e2bfac58f6994be4d232c59
       run:
         resume: none
         max_epochs: 300
@@ -42,7 +42,7 @@ training:
            repo: master-binpacks
       trainer:
         owner: official-stockfish
-        sha: 62f3b8fe0ab192b56e9a1df645dc7837759e595a
+        sha: fc87f7098162ca414e2bfac58f6994be4d232c59
       run:
         resume: previous_checkpoint
         max_epochs: 600
@@ -83,5 +83,5 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 1000
+       rounds: 4000
        evalfile: small
