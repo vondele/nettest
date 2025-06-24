@@ -126,11 +126,11 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
 
     # fastchess config
     # TODO in principle one could run SPRT instead of fixed games?
-    cmd = [f"{fastchess}"]
+    cmd = ["taskset","--cpu-list","0-71",f"{fastchess}"]
     cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
 
     # TODO should this be configurable for better local testing?
-    cmd += ["-concurrency", "280", "--force-concurrency","-use-affinity","2-71,74-143,146-215,218-287"]
+    cmd += ["-concurrency", "70"]
     cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
     cmd += ["-ratinginterval", "100"]
     cmd += ["-report", "penta=true"]
