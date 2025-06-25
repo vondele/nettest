@@ -4,66 +4,83 @@
 training:
   steps:
 #
-#
+# attempt to mimic SF cb4a62311985f685ba6f5457851527a3289073e6 data sets missing or approximate..
 #
     - datasets:
         - hf:
            owner: official-stockfish
            repo: master-binpacks
+        - hf:
+           owner: linrock
+           repo: dual-nnue
+        - hf:
+           owner: linrock
+           repo: test80-2022
+        - hf:
+           owner: linrock
+           repo: test80-2023
+        - hf:
+           owner: linrock
+           repo: test80-2024
       trainer:
-        owner: official-stockfish
-        sha: fc87f7098162ca414e2bfac58f6994be4d232c59
+        owner: vondele
+        sha: ec7e6d2ccc39d655701600735e1c7dc5689e1123
       run:
         resume: none
-        max_epochs: 300
+        max_epochs: 400
         binpacks:
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+          - linrock/dual-nnue/hse-v1/dfrc99-16tb7p-eval-filt-v2.min.high-simple-eval-1k.min-v2.binpack # TODO only an approx /data/dfrc99-16tb7p.v2.min.binpack?
+          - linrock/dual-nnue/hse-v1/leela96-filt-v2.min.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test60-novdec2021-12tb7p-filter-v6-dd.min-mar2023.unmin.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test77-nov2021-2tb7p.no-db.min.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test77-dec2021-16tb7p.no-db.min.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test77-jan2022-2tb7p.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test78-jantomay2022-16tb7p-filter-v6-dd.min-mar2023.unmin.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test78-juntosep2022-16tb7p-filter-v6-dd.min-mar2023.unmin.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test79-apr2022-16tb7p.min.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test79-may2022-16tb7p-filter-v6-dd.min-mar2023.unmin.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test80-apr2022-16tb7p.min.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test80-may2022-16tb7p.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test80-jun2022-16tb7p-filter-v6-dd.min-mar2023.unmin.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test80-jul2022-16tb7p.v6-dd.min.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test80-sep2022-16tb7p-filter-v6-dd.min-mar2023.unmin.high-simple-eval-1k.min-v2.binpack
+          - linrock/dual-nnue/hse-v1/test80-nov2022-16tb7p-v6-dd.min.high-simple-eval-1k.min-v2.binpack
+#
+          - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
+          - linrock/test80-2022/test80-2022-12-dec-16tb7p.min.binpack
+#
+          - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
+          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack # test80-2023-02-feb-16tb7p.v6-sk20.min.binpack
+          - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
+          - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
+          - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
+          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.binpack
+          - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.binpack
+          - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
+          - linrock/test80-2023/test80-2023-09-sep-2tb7p.binpack # hse-v6.binpack ?
+          - linrock/test80-2023/test80-2023-10-oct-2tb7p.binpack # idem
+          - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.binpack # idem
+          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.binpack
+#
+          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
-          - --random-fen-skipping=3
-          - --lr=4.375e-4
-          - --gamma=0.995
-          - --early-fen-skipping=30
+          - --no-wld-fen-skipping
+          - --start-lambda 1.0
+          - --end-lambda 1.0
+          - --simple-eval-skipping 950
       convert:
-        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
         other_options:
           - --features=HalfKAv2_hm^
           - --ft_optimize_count=1000000
           - --l1=128
-          # --ft_optimize (TODO too slow for testing)
-#
-#
-#
-    - datasets:
-        - hf:
-           owner: official-stockfish
-           repo: master-binpacks
-      trainer:
-        owner: official-stockfish
-        sha: fc87f7098162ca414e2bfac58f6994be4d232c59
-      run:
-        resume: previous_checkpoint
-        max_epochs: 600
-        binpacks:
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --random-fen-skipping=3
-          - --l1=128
-          - --lr=4.375e-4
-          - --gamma=0.995
-          - --early-fen-skipping=30
-      convert:
-        binpack: official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options:
-          - --features=HalfKAv2_hm^
-          - --ft_optimize_count=1000000
-          - --l1=128
-          # --ft_optimize (TODO too slow for testing)
-
+          # --ft_optimize (TODO seemingly buggy?)
 #
 # Final testing stage using fastchess
 #
