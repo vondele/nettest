@@ -71,9 +71,9 @@ training:
           - --features=HalfKAv2_hm^
           - --l1=128
           - --no-wld-fen-skipping
-          - --start-lambda 1.0
-          - --end-lambda 1.0
-          - --simple-eval-skipping 950
+          - --start-lambda=1.0
+          - --end-lambda=1.0
+          - --simple-eval-skipping=950
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         other_options:
