@@ -67,8 +67,8 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     # some architecture specific options TODO: fix GPU
     cmd.append("--gpus=0,")
     cmd.append("--threads=4")
-    # large net needs at least 16 threads, small net 64
-    cmd.append("--num-workers=64")
+    # large net needs at least 16 threads, small net >64, number of active threads is seems also roughly half specified
+    cmd.append("--num-workers=96")
 
     # append all options
     cmd = cmd + run["other_options"]
