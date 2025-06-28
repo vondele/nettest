@@ -257,7 +257,7 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
 
     # ci yaml header
     yaml_out = start_yaml()
-    shell_out = ["#!/bin/bash", ""]
+    shell_out = ["#!/bin/bash", "", "set -e", ""]
 
     # insert shas that uniquely identify each step based on the full history of the training procedure
     insert_shas(procedure)
@@ -288,7 +288,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) != 6:
         print(
-            "Usage: python -u do_generate_yaml_schedule.py input_file output_file workspace_dir ci_commit_sha ci_project_dir"
+            "Usage: python -u generate_pipeline.py input_file output_file workspace_dir ci_commit_sha ci_project_dir"
         )
         sys.exit(1)
 

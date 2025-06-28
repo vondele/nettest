@@ -73,9 +73,12 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
     # append all options
     cmd = cmd + run["other_options"]
 
-    # TODO eventually deal with training that would exceed the maximum time limit (roughly 300+ epochs), probably needs splitting, restarting, etc.
+    # TODO probably a bit better handling with the maximum time in the pipeline creation.
+    # for now, assume 12h minus 30min safety (eventual net conversion).
+    max_time = "00:11:30:00"
     max_epochs = int(run["max_epochs"])
     # assert max_epochs <= 300
+    cmd.append(f"--max_time={max_time}")
     cmd.append(f"--max_epochs={max_epochs}")
     cmd.append(f"--network-save-period={max_epochs}")
 
@@ -98,16 +101,13 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         or run["resume"].lower() == "previous_model"
     ):
         assert previous_sha.lower() != "none"
-        previous_checkpoint = (
-            workspace_dir
-            / "scratch"
-            / previous_sha
-            / "run"
-            / "lightning_logs"
-            / "version_0"
-            / "checkpoints"
-            / "last.ckpt"
-        )
+
+        final_yaml_file = workspace_dir / "scratch" / previous_sha / "final.yaml"
+        assert final_yaml_file.exists(), "The final final yaml file does not exist"
+        with open(final_yaml_file) as f:
+           final = yaml.safe_load(f)
+        previous_checkpoint = Path(final["checkpoint"])
+
         if run["resume"].lower() == "previous_checkpoint":
             cmd.append(f"--resume-from-checkpoint={previous_checkpoint}")
         else:
@@ -187,7 +187,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     print(f"nnue available as artifact step_{current_sha}")
 
     final_file = workspace_dir / "scratch" / current_sha / "final.yaml"
-    final = {"short_nnue": f"{short_nnue}", "std_nnue": f"{std_nnue}"}
+    final = {"short_nnue": f"{short_nnue}", "std_nnue": f"{std_nnue}", "checkpoint": f"{checkpoint}"}
 
     with Path(final_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(final, f, Dumper=MyDumper, default_flow_style=False, width=300)

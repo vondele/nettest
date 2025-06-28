@@ -56,7 +56,8 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
             break
 
     if process.returncode:
-        print(f"❌ Step '{name}' failed with exit code {process.returncode}")
+        fail_symbol= "⚠️" if fail_is_ok else "❌"
+        print(f"{fail_symbol} Step '{name}' failed with exit code {process.returncode}")
         assert fail_is_ok
     else:
         print(f"✅ Step '{name}' completed successfully.")
