@@ -24,7 +24,7 @@ training:
            repo: test80-2024
       trainer:
         owner: vondele
-        sha: ec7e6d2ccc39d655701600735e1c7dc5689e1123
+        sha: 401a91f2922d529ca10bf9ce9d096c7def8869f1
       run:
         resume: none
         max_epochs: 400
@@ -74,6 +74,7 @@ training:
           - --start-lambda=1.0
           - --end-lambda=1.0
           - --simple-eval-skipping=950
+          - --compile-backend=cudagraphs
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         other_options:
