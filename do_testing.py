@@ -117,16 +117,16 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
     # take care of small vs big net
     target_net = "EvalFile"
     if "evalfile" in test["fastchess"]["options"]:
-       if test["fastchess"]["options"]["evalfile"].lower() == "small":
-          target_net = "EvalFileSmall"
-       elif test["fastchess"]["options"]["evalfile"].lower() == "big":
-          target_net = "EvalFile"
-       else:
-          assert False, "EvalFile needs to be either small or big"
+        if test["fastchess"]["options"]["evalfile"].lower() == "small":
+            target_net = "EvalFileSmall"
+        elif test["fastchess"]["options"]["evalfile"].lower() == "big":
+            target_net = "EvalFile"
+        else:
+            assert False, "EvalFile needs to be either small or big"
 
     # fastchess config
     # TODO in principle one could run SPRT instead of fixed games?
-    cmd = ["taskset","--cpu-list","0-71",f"{fastchess}"]
+    cmd = ["taskset", "--cpu-list", "0-71", f"{fastchess}"]
     cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
 
     # TODO should this be configurable for better local testing?

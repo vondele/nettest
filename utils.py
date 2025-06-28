@@ -4,6 +4,18 @@ import subprocess
 import shutil
 import re
 import hashlib
+from pathlib import Path
+
+
+def find_most_recent(root, file):
+
+    last_files = list(root.rglob(file))
+    if not last_files:
+        return None
+
+    # Sort by modification time
+    last_files.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+    return last_files[0]
 
 
 def sha256sum(filename):
@@ -56,7 +68,7 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
             break
 
     if process.returncode:
-        fail_symbol= "⚠️" if fail_is_ok else "❌"
+        fail_symbol = "⚠️" if fail_is_ok else "❌"
         print(f"{fail_symbol} Step '{name}' failed with exit code {process.returncode}")
         assert fail_is_ok
     else:

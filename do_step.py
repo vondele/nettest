@@ -4,8 +4,8 @@ import subprocess
 import shutil
 from pathlib import Path
 import hashlib
-import utils
-from utils import execute, MyDumper, sha256sum
+from utils import execute, MyDumper, sha256sum, find_most_recent
+import torch
 
 
 def ensure_trainer(current_sha, workspace_dir, trainer):
@@ -36,6 +36,18 @@ def ensure_trainer(current_sha, workspace_dir, trainer):
     return
 
 
+def ckpt_reached_end(ckpt_path, max_epochs):
+
+    reached_end = False
+    if ckpt_path is not None:
+        ckpt = torch.load(ckpt_path, map_location="cpu")
+        epoch = ckpt["epoch"]
+        print(f"The {ckpt_path} was trained for {epoch + 1} epochs")
+        reached_end = epoch + 1 >= max_epochs
+
+    return reached_end
+
+
 def run_trainer(current_sha, previous_sha, workspace_dir, run):
     """
     Run the training recipe for this step
@@ -51,7 +63,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         full_path = data_dir / binpack
         # check if it is available in compressed form, and uncompress as needed
         if not full_path.exists():
-            full_path_zst = Path(str(full_path)+".zst")
+            full_path_zst = Path(str(full_path) + ".zst")
             if full_path_zst.exists():
                 cmd = ["zstd", "-d", str(full_path_zst), "-o", str(full_path)]
                 execute("Uncompress binpack.zst", cmd, nnue_pytorch_dir, False)
@@ -84,41 +96,58 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
 
     # Where to store logs and eventually checkpoints
     root_dir = workspace_dir / "scratch" / current_sha / "run"
-
-    # TODO handle the case of an interrupted/restarted run more cleanly, now just delete whatever is there
-    # this is also a race...
-    if root_dir.exists():
-        shutil.rmtree(root_dir)
-
-    assert not root_dir.exists()
-
     cmd.append(f"--default_root_dir={root_dir}")
 
-    if run["resume"].lower() == "none":
-        assert previous_sha.lower() == "none"
-    elif (
-        run["resume"].lower() == "previous_checkpoint"
-        or run["resume"].lower() == "previous_model"
-    ):
-        assert previous_sha.lower() != "none"
-
-        final_yaml_file = workspace_dir / "scratch" / previous_sha / "final.yaml"
-        assert final_yaml_file.exists(), "The final final yaml file does not exist"
-        with open(final_yaml_file) as f:
-           final = yaml.safe_load(f)
-        previous_checkpoint = Path(final["checkpoint"])
-
-        if run["resume"].lower() == "previous_checkpoint":
-            cmd.append(f"--resume-from-checkpoint={previous_checkpoint}")
-        else:
-            previous_model = previous_checkpoint.with_suffix(".pt")
-            cmd.append(f"--resume-from-model={previous_model}")
+    # if the root_dir exists, assume we try to restart from the latest found checkpoint
+    resume_this_ckpt = None
+    if root_dir.exists():
+        resume_this_ckpt = find_most_recent(root_dir, "last.ckpt")
+        reached_end = ckpt_reached_end(resume_this_ckpt, max_epochs)
     else:
-        assert False
+        reached_end = False
 
-    execute("Train network", cmd, nnue_pytorch_dir, False)
+    if resume_this_ckpt:
+        cmd.append(f"--resume-from-checkpoint={resume_this_ckpt}")
+    else:
+        # this is a clean run, follow the description in the recipe
+        if run["resume"].lower() == "none":
+            assert previous_sha.lower() == "none"
+        elif (
+            run["resume"].lower() == "previous_checkpoint"
+            or run["resume"].lower() == "previous_model"
+        ):
+            assert previous_sha.lower() != "none"
 
-    return
+            final_yaml_file = workspace_dir / "scratch" / previous_sha / "final.yaml"
+            assert (
+                final_yaml_file.exists()
+            ), "The final final yaml file does not exist, a previous step training step did not complete"
+            with open(final_yaml_file) as f:
+                final = yaml.safe_load(f)
+            previous_checkpoint = Path(final["checkpoint"])
+
+            if run["resume"].lower() == "previous_checkpoint":
+                cmd.append(f"--resume-from-checkpoint={previous_checkpoint}")
+            else:
+                previous_model = previous_checkpoint.with_suffix(".pt")
+                cmd.append(f"--resume-from-model={previous_model}")
+        else:
+            assert False
+
+    if not reached_end:
+        execute("Train network", cmd, nnue_pytorch_dir, False)
+        # now verify if we have reached max_epoch or not
+        final_ckpt = find_most_recent(root_dir, "last.ckpt")
+        reached_end = ckpt_reached_end(final_ckpt, max_epochs)
+
+    if reached_end:
+        print("Success: training reached max_epochs")
+        return True
+    else:
+        print(
+            "⚠️  Training did not reach max_epochs ... more iterations will be needed to generate a .nnue"
+        )
+        return False
 
 
 def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
@@ -130,18 +159,11 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
         workspace_dir / "scratch" / current_sha / "trainer" / "nnue-pytorch"
     )
 
-    checkpoint_dir = (
-        workspace_dir
-        / "scratch"
-        / current_sha
-        / "run"
-        / "lightning_logs"
-        / "version_0"
-        / "checkpoints"
-    )
+    root_dir = workspace_dir / "scratch" / current_sha / "run"
 
-    checkpoint = checkpoint_dir / "last.ckpt"
-    nnue = checkpoint_dir / "last.nnue"
+    checkpoint = find_most_recent(root_dir, "last.ckpt")
+
+    nnue = checkpoint.with_suffix(".nnue")
     binpack = workspace_dir / "data" / convert["binpack"]
 
     # run the conversion to model
@@ -174,7 +196,7 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     sha = sha256sum(nnue)
     sha_short = sha[:12]
     short_nnue = f"nn-{sha_short}.nnue"
-    std_nnue = checkpoint_dir / short_nnue
+    std_nnue = nnue.parent / short_nnue
     shutil.copy(nnue, std_nnue)
     print(f"Last nnue for step {current_sha} is {short_nnue}")
     print(f"nnue available as {std_nnue}")
@@ -187,7 +209,11 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
     print(f"nnue available as artifact step_{current_sha}")
 
     final_file = workspace_dir / "scratch" / current_sha / "final.yaml"
-    final = {"short_nnue": f"{short_nnue}", "std_nnue": f"{std_nnue}", "checkpoint": f"{checkpoint}"}
+    final = {
+        "short_nnue": f"{short_nnue}",
+        "std_nnue": f"{std_nnue}",
+        "checkpoint": f"{checkpoint}",
+    }
 
     with Path(final_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(final, f, Dumper=MyDumper, default_flow_style=False, width=300)
@@ -206,8 +232,10 @@ def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
     assert step["sha"] == current_sha
 
     ensure_trainer(current_sha, workspace_dir, step["trainer"])
-    run_trainer(current_sha, previous_sha, workspace_dir, step["run"])
-    run_conversion(current_sha, workspace_dir, ci_project_dir, step["convert"])
+    reached_end = run_trainer(current_sha, previous_sha, workspace_dir, step["run"])
+
+    if reached_end:
+        run_conversion(current_sha, workspace_dir, ci_project_dir, step["convert"])
 
     return
 
