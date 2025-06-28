@@ -74,6 +74,7 @@ training:
           - --start-lambda=1.0
           - --end-lambda=1.0
           - --simple-eval-skipping=950
+          - --compile-backend=cudagraphs
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         other_options:
