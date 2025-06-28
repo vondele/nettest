@@ -23,8 +23,8 @@ training:
            owner: linrock
            repo: test80-2024
       trainer:
-        owner: vondele
-        sha: ec7e6d2ccc39d655701600735e1c7dc5689e1123
+        owner: xu-shawn
+        sha: 6545cd04284f22f66cec48fab66190ca9ce2a178
       run:
         resume: none
         max_epochs: 400
