@@ -163,9 +163,6 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
 
     checkpoint = find_most_recent(root_dir, "last.ckpt")
 
-    nnue = checkpoint.with_suffix(".nnue")
-    binpack = workspace_dir / "data" / convert["binpack"]
-
     # run the conversion to model
     model = checkpoint.with_suffix(".pt")
     cmd = [
@@ -175,22 +172,45 @@ def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
         f"{checkpoint}",
         f"{model}",
     ]
-    cmd = cmd + convert["other_options"]
+    cmd = cmd + convert["checkpoint2nnue"]
     execute("Convert to pt", cmd, nnue_pytorch_dir, False)
 
-    # run the conversion to nnue TODO fix device
+    # run the conversion to nnue, no optimization here
+    if "optimize" in convert:
+        destination = checkpoint.parent / "nonopt.nnue"
+    else:
+        destination = checkpoint.with_suffix(".nnue")
+
     cmd = [
         "python",
         "-u",
         "serialize.py",
         f"{checkpoint}",
-        f"{nnue}",
-        "--ft_compression=leb128",
-        f"--ft_optimize_data={binpack}",
-        "--device=0",
+        f"{destination}",
     ]
-    cmd = cmd + convert["other_options"]
+    cmd = cmd + convert["checkpoint2nnue"]
     execute("Convert to nnue", cmd, nnue_pytorch_dir, False)
+
+    # optimize as a second step (see https://github.com/official-stockfish/nnue-pytorch/issues/322)
+    if "optimize" in convert:
+        assert "binpack" in convert, "optimize on conversion, requires binpack entry"
+        binpack = workspace_dir / "data" / convert["binpack"]
+        source = destination
+        nnue = checkpoint.with_suffix(".nnue")
+        # TODO fix device
+        cmd = [
+            "python",
+            "-u",
+            "serialize.py",
+            f"{source}",
+            f"{nnue}",
+            f"--ft_optimize_data={binpack}",
+            "--device=0",
+        ]
+        cmd = cmd + convert["optimize"]
+        execute("Optimize nnue", cmd, nnue_pytorch_dir, False)
+    else:
+        nnue = destination
 
     # get sha
     sha = sha256sum(nnue)
