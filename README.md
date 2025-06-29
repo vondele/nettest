@@ -24,7 +24,7 @@ Currently, the repo contains three recipes:
 An authorized person can trigger a CI pipeline for the corresponding recipe
 (e.g. `small.yaml`) by commenting on the PR:
 ```
- cscs-ci run default;RECIPE=small
+ cscs-ci run RECIPE=small
 ```
 
 The recipes have a training stage and a testing stage, the former potentially
