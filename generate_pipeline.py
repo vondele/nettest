@@ -110,9 +110,12 @@ def generate_stages(procedure, yaml_out):
         for step in procedure["training"]["steps"]:
             if step["status"] == "Final":
                 continue
-            stage_name = f"step_{step['sha']}"
-            step["stage"] = stage_name
-            stages.append(stage_name)
+            repetitions = step["run"].get("repetitions", 1)
+            for rep in range(0, repetitions):
+                stage_base_name = f"step_{step['sha']}"
+                step["stage"] = stage_base_name
+                stage_name = f"{stage_base_name}_{rep}"
+                stages.append(stage_name)
 
     if "testing" in procedure:
         stages.append("testing")
@@ -193,20 +196,24 @@ def generate_training_stages(
 
         this_sha = step["sha"]
 
-        job = generate_job_base()
+        repetitions = step["run"].get("repetitions", 1)
+        for rep in range(0, repetitions):
 
-        stage_name = step["stage"]
-        job["stage"] = stage_name
+            job = generate_job_base()
 
-        job["script"] = [
-            f"python -u {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir} {ci_project_dir}"
-        ]
+            stage_base_name = step["stage"]
+            stage_name = f"{stage_base_name}_{rep}"
+            job["stage"] = stage_name
 
-        shell_out += job["script"]
+            job["script"] = [
+                f"python -u {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir} {ci_project_dir}"
+            ]
 
-        job["artifacts"] = {"expire_in": "1 month", "paths": [f"step_{this_sha}"]}
+            shell_out += job["script"]
 
-        yaml_out[stage_name + "Job"] = job
+            job["artifacts"] = {"expire_in": "1 month", "paths": [f"step_{this_sha}"]}
+
+            yaml_out[stage_name + "Job"] = job
 
         previous_sha = this_sha
 

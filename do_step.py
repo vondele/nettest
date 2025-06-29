@@ -141,11 +141,11 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         reached_end = ckpt_reached_end(final_ckpt, max_epochs)
 
     if reached_end:
-        print("Success: training reached max_epochs")
+        print("🎉 Success: training reached max_epochs")
         return True
     else:
         print(
-            "⚠️  Training did not reach max_epochs ... more iterations will be needed to generate a .nnue"
+            "⚠️  Training did not reach max_epochs ... more repetitions will be needed to generate a .nnue"
         )
         return False
 
@@ -225,6 +225,12 @@ def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
     """
     Driver to run the step
     """
+
+    if Path(workspace_dir / "scratch" / current_sha / "final.yaml").exists():
+        print(
+            f"⚠️  Step {current_sha} is already final, no work to be done, quick return! Maybe too many repetititions?"
+        )
+        return
 
     with open(workspace_dir / "scratch" / current_sha / "step.yaml") as f:
         step = yaml.safe_load(f)

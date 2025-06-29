@@ -75,31 +75,18 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
         workspace_dir
         / "scratch"
         / ci_commit_sha
-        / "testing"
-        / "reference"
-        / "Stockfish"
-        / "src"
-        / "stockfish"
+        / "testing/reference/Stockfish/src/stockfish"
     )
     assert stockfish_reference.exists()
     stockfish_testing = (
         workspace_dir
         / "scratch"
         / ci_commit_sha
-        / "testing"
-        / "testing"
-        / "Stockfish"
-        / "src"
-        / "stockfish"
+        / "testing/testing/Stockfish/src/stockfish"
     )
     assert stockfish_testing.exists()
     fastchess = (
-        workspace_dir
-        / "scratch"
-        / ci_commit_sha
-        / "testing"
-        / "fastchess"
-        / "fastchess"
+        workspace_dir / "scratch" / ci_commit_sha / "testing/fastchess/fastchess"
     )
     assert fastchess.exists()
 

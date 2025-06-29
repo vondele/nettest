@@ -45,6 +45,7 @@ training:
         sha: 129b8ccf488df1125c4bcd40b27b218c7547a145
       run:
         resume: previous_checkpoint
+        repetitions: 2
         max_epochs: 60
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
