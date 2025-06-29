@@ -113,4 +113,8 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 10
+    sprt:
+       # midpoint will be the target to reach, relative to reference, to have a passing CI
+       elo_interval_midpoint: 0
+       elo_interval_width: 10
+       max_rounds: 100

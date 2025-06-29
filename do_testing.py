@@ -97,9 +97,13 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
     book = workspace_dir / "data" / "UHO_Lichess_4852_v1.epd"
 
     # collect specific options
-    rounds = test["fastchess"]["options"]["rounds"]
     tc = test["fastchess"]["options"]["tc"]
     option_hash = test["fastchess"]["options"]["hash"]
+    rounds = test["fastchess"]["sprt"]["max_rounds"]
+    elo_interval_midpoint = float(test["fastchess"]["sprt"]["elo_interval_midpoint"])
+    elo_interval_width = float(test["fastchess"]["sprt"]["elo_interval_width"])
+    elo0 = elo_interval_midpoint - elo_interval_width / 2
+    elo1 = elo0 + elo_interval_width
 
     # take care of small vs big net
     target_net = "EvalFile"
@@ -111,23 +115,30 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
         else:
             assert False, "EvalFile needs to be either small or big"
 
-    # fastchess config
-    # TODO in principle one could run SPRT instead of fixed games?
-    cmd = ["taskset", "--cpu-list", "0-71", f"{fastchess}"]
-    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
+    winning_net = None
 
-    # TODO should this be configurable for better local testing?
-    cmd += ["-concurrency", "70", "--force-concurrency"]
-    cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
-    cmd += ["-ratinginterval", "100"]
-    cmd += ["-report", "penta=true"]
-    cmd += ["-pgnout", "file=match.pgn"]
-
-    # reference engine
-    cmd += ["-engine", "name=reference", f"cmd={stockfish_reference}"]
-
-    # add nets to be tested
     for sha in testing_shas:
+        # fastchess config
+        # TODO should this be configurable for better local testing?
+        cmd = ["taskset", "--cpu-list", "0-71", f"{fastchess}"]
+        cmd += ["-concurrency", "70", "--force-concurrency"]
+
+        cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
+        cmd += [
+            "-sprt",
+            f"elo0={elo0}",
+            f"elo1={elo1}",
+            "alpha=0.05",
+            "beta=0.05",
+            "model=normalized",
+        ]
+        cmd += ["-ratinginterval", "100"]
+
+        cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
+        cmd += ["-report", "penta=true"]
+        cmd += ["-pgnout", f"file=match-{sha}.pgn"]
+
+        # add net to be tested
         final_yaml_file = workspace_dir / "scratch" / sha / "final.yaml"
         assert final_yaml_file.exists()
         with open(final_yaml_file) as f:
@@ -142,24 +153,37 @@ def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_sh
             f"option.{target_net}={std_nnue}",
         ]
 
-    # engine configs
-    cmd += [
-        "-each",
-        "proto=uci",
-        "option.Threads=1",
-        f"option.Hash={option_hash}",
-        f"tc={tc}",
-    ]
+        # reference engine
+        cmd += ["-engine", "name=reference", f"cmd={stockfish_reference}"]
 
-    execute(
-        "Run fastchess match",
-        cmd,
-        match_dir,
-        False,
-        r"Finished game|Started game",
-    )
+        # engine configs
+        cmd += [
+            "-each",
+            "proto=uci",
+            "option.Threads=1",
+            f"option.Hash={option_hash}",
+            f"tc={tc}",
+        ]
 
-    return
+        output = execute(
+            f"Run fastchess match for {sha}: {short_nnue}",
+            cmd,
+            match_dir,
+            False,
+            r"Finished game|Started game",
+        )
+
+        for line in output:
+            if "H0 was accepted" in line:
+                print(f"⚠️  No pass: {short_nnue} failed SPRT")
+                break
+
+            if "H1 was accepted" in line:
+                print(f"🎉 Success: {short_nnue} passed SPRT")
+                winning_net = short_nnue
+                break
+
+    return winning_net
 
 
 def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
@@ -175,9 +199,11 @@ def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
     ensure_fastchess(workspace_dir, ci_commit_sha, test["fastchess"])
     ensure_stockfish(workspace_dir, ci_commit_sha, "reference", test)
     ensure_stockfish(workspace_dir, ci_commit_sha, "testing", test)
-    run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_shas)
+    winning_net = run_fastchess(
+        workspace_dir, ci_project_dir, ci_commit_sha, test, testing_shas
+    )
 
-    return
+    return winning_net
 
 
 if __name__ == "__main__":
@@ -193,4 +219,6 @@ if __name__ == "__main__":
     ci_commit_sha = sys.argv[3]
     testing_shas = sys.argv[4:]
 
-    run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas)
+    winning_net = run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas)
+
+    # TODO exit with error code if winning_net is None ?

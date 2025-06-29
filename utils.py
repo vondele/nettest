@@ -40,6 +40,8 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
     wrapper to execute a shell command
     """
 
+    output = []
+
     if filter_re and isinstance(filter_re, str):
         filter_re = re.compile(filter_re)
 
@@ -63,6 +65,7 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
         if stdout_line:
             if not filter_re or not filter_re.search(stdout_line):
                 print(stdout_line, end="")
+                output.append(stdout_line)
 
         if not stdout_line and process.poll() is not None:
             break
@@ -74,4 +77,4 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
     else:
         print(f"✅ Step '{name}' completed successfully.")
 
-    return
+    return output
