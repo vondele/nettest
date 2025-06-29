@@ -77,11 +77,15 @@ training:
           - --compile-backend=cudagraphs
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
-        other_options:
-          - --features=HalfKAv2_hm^
-          - --ft_optimize_count=1000000
-          - --l1=128
-          # --ft_optimize (TODO seemingly buggy?)
+        optimize:
+           - --features=HalfKAv2_hm
+           - --ft_optimize_count=100000
+           - --ft_optimize
+           - --ft_compression=leb128
+        checkpoint2nnue:
+           - --features=HalfKAv2_hm^
+           - --ft_compression=leb128
+
 #
 # Final testing stage using fastchess
 #
