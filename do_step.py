@@ -6,6 +6,7 @@ from pathlib import Path
 import hashlib
 from utils import execute, MyDumper, sha256sum, find_most_recent
 import torch
+import time
 
 
 def ensure_trainer(current_sha, workspace_dir, trainer):
@@ -13,27 +14,56 @@ def ensure_trainer(current_sha, workspace_dir, trainer):
     Install the specified nnue-pytorch trainer
     """
 
-    trainer_dir = workspace_dir / "scratch" / current_sha / "trainer"
+    max_retries = 3
+    retry_delay = 30
+
+    sha = trainer["sha"]
+    trainer_dir = workspace_dir / f"scratch/packages/trainer/{sha}"
+    trainer_dir.mkdir(parents=True, exist_ok=True)
+
     owner = trainer["owner"]
     repo = f"https://github.com/{owner}/nnue-pytorch.git"
-    execute(
-        "clone trainer",
-        ["git", "clone", repo],
-        trainer_dir,
-        True,
-    )
-
     nnue_pytorch_dir = trainer_dir / "nnue-pytorch"
-    sha = trainer["sha"]
-    execute("checkout sha", ["git", "checkout", sha], nnue_pytorch_dir, False)
-    execute(
-        "build data loader",
-        ["bash", "compile_data_loader.bat"],
-        nnue_pytorch_dir,
-        False,
-    )
+    artifact = nnue_pytorch_dir / "libtraining_data_loader.so"
 
-    return
+    for attempt in range(1, max_retries + 1):
+        try:
+            if not nnue_pytorch_dir.exists():
+                execute(
+                    f"[attempt {attempt}] clone trainer",
+                    ["git", "clone", "--no-checkout", repo],
+                    trainer_dir,
+                    True,
+                )
+
+            if not artifact.exists():
+                execute(
+                    f"[attempt {attempt}] checkout sha",
+                    ["git", "checkout", "--detach", sha],
+                    nnue_pytorch_dir,
+                    False,
+                )
+                execute(
+                    f"[attempt {attempt}] build data loader",
+                    ["bash", "compile_data_loader.bat"],
+                    nnue_pytorch_dir,
+                    False,
+                )
+
+            return nnue_pytorch_dir
+
+        except Exception as e:
+            print(f"⚠️ Attempt {attempt} failed: {e}")
+            # Clean up directory for a fresh retry
+            if nnue_pytorch_dir.exists():
+                shutil.rmtree(nnue_pytorch_dir, ignore_errors=True)
+
+            if attempt < max_retries:
+                print(f"🔁 Retrying after {retry_delay} seconds...")
+                time.sleep(retry_delay)
+            else:
+                print("❌ All attempts failed.")
+                raise
 
 
 def ckpt_reached_end(ckpt_path, max_epochs):
@@ -48,14 +78,11 @@ def ckpt_reached_end(ckpt_path, max_epochs):
     return reached_end
 
 
-def run_trainer(current_sha, previous_sha, workspace_dir, run):
+def run_trainer(current_sha, previous_sha, workspace_dir, run, nnue_pytorch_dir):
     """
     Run the training recipe for this step
     """
 
-    nnue_pytorch_dir = (
-        workspace_dir / "scratch" / current_sha / "trainer" / "nnue-pytorch"
-    )
     data_dir = workspace_dir / "data"
 
     # first check all binpacks are available in non-compressed form
@@ -150,14 +177,12 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run):
         return False
 
 
-def run_conversion(current_sha, workspace_dir, ci_project_dir, convert):
+def run_conversion(
+    current_sha, workspace_dir, ci_project_dir, convert, nnue_pytorch_dir
+):
     """
     Convert the final checkpoint into a .nnue and a .pt
     """
-
-    nnue_pytorch_dir = (
-        workspace_dir / "scratch" / current_sha / "trainer" / "nnue-pytorch"
-    )
 
     root_dir = workspace_dir / "scratch" / current_sha / "run"
 
@@ -257,11 +282,19 @@ def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
 
     assert step["sha"] == current_sha
 
-    ensure_trainer(current_sha, workspace_dir, step["trainer"])
-    reached_end = run_trainer(current_sha, previous_sha, workspace_dir, step["run"])
+    nnue_pytorch_dir = ensure_trainer(current_sha, workspace_dir, step["trainer"])
+    reached_end = run_trainer(
+        current_sha, previous_sha, workspace_dir, step["run"], nnue_pytorch_dir
+    )
 
     if reached_end:
-        run_conversion(current_sha, workspace_dir, ci_project_dir, step["convert"])
+        run_conversion(
+            current_sha,
+            workspace_dir,
+            ci_project_dir,
+            step["convert"],
+            nnue_pytorch_dir,
+        )
 
     return
 

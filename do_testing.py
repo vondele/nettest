@@ -8,86 +8,139 @@ from utils import execute
 
 def ensure_fastchess(workspace_dir, ci_commit_sha, fastchess):
     """
-    Install the specified fastchess
+    Install the specified fastchess version
     """
 
-    fastchess_dir = workspace_dir / "scratch" / ci_commit_sha / "testing"
-    fastchess_dir.mkdir(parents=True, exist_ok=True)
+    max_retries = 3
+    retry_delay = 30
 
+    sha = fastchess["code"]["sha"]
     owner = fastchess["code"]["owner"]
     repo = f"https://github.com/{owner}/fastchess.git"
 
-    execute(
-        f"clone fastchess",
-        ["git", "clone", repo],
-        fastchess_dir,
-        True,
-    )
+    base_dir = workspace_dir / f"scratch/packages/fastchess/{sha}"
+    base_dir.mkdir(parents=True, exist_ok=True)
 
-    fastchess_dir = fastchess_dir / "fastchess"
-    sha = fastchess["code"]["sha"]
-    execute(f"checkout sha {sha}", ["git", "checkout", sha], fastchess_dir, False)
-    execute("build fastchess", ["make", "-j"], fastchess_dir, False)
+    clone_dir = base_dir / "fastchess"
+    fastchess_binary = clone_dir / "fastchess"
 
-    return
+    for attempt in range(1, max_retries + 1):
+        try:
+            if not clone_dir.exists():
+                execute(
+                    f"[attempt {attempt}] clone fastchess",
+                    ["git", "clone", "--no-checkout", repo],
+                    base_dir,
+                    True,
+                )
+
+            if not fastchess_binary.exists():
+                execute(
+                    f"[attempt {attempt}] checkout sha {sha}",
+                    ["git", "checkout", "--detach", sha],
+                    clone_dir,
+                    False,
+                )
+
+                execute(
+                    f"[attempt {attempt}] build fastchess",
+                    ["make", "-j"],
+                    clone_dir,
+                    False,
+                )
+
+            return fastchess_binary
+
+        except Exception as e:
+            print(f"⚠️ Attempt {attempt} failed: {e}")
+            if clone_dir.exists():
+                shutil.rmtree(clone_dir, ignore_errors=True)
+
+            if attempt < max_retries:
+                print(f"🔁 Retrying after {retry_delay} seconds...")
+                time.sleep(retry_delay)
+            else:
+                print("❌ All attempts to build fastchess failed.")
+                raise
 
 
 def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
     """
-    Install the specified stockfish
+    Install the specified Stockfish version
     """
 
-    target_config = test[target]
-    target_dir = workspace_dir / "scratch" / ci_commit_sha / "testing" / target
-    target_dir.mkdir(parents=True, exist_ok=True)
+    max_retries = 3
+    retry_delay = 30
 
+    target_config = test[target]
+    sha = target_config["code"]["sha"]
     owner = target_config["code"]["owner"]
     repo = f"https://github.com/{owner}/Stockfish.git"
 
-    execute(
-        f"clone Stockfish {target} ",
-        ["git", "clone", repo],
-        target_dir,
-        True,
-    )
+    target_dir = workspace_dir / f"scratch/packages/stockfish/{sha}"
+    target_dir.mkdir(parents=True, exist_ok=True)
 
-    stockfish_dir = target_dir / "Stockfish" / "src"
-    sha = target_config["code"]["sha"]
-    execute(f"checkout sha {sha}", ["git", "checkout", sha], stockfish_dir, False)
+    clone_dir = target_dir / "Stockfish"
+    stockfish_src_dir = clone_dir / "src"
+    stockfish_binary = stockfish_src_dir / "stockfish"
 
-    # explicitly specify native, as ARCH is defined differently in the CI pipeline
-    execute(
-        "build Stockfish",
-        ["make", "-j", "profile-build", "ARCH=native"],
-        stockfish_dir,
-        False,
-    )
+    for attempt in range(1, max_retries + 1):
+        try:
+            if not clone_dir.exists():
+                execute(
+                    f"[attempt {attempt}] clone Stockfish {target}",
+                    ["git", "clone", "--no-checkout", repo],
+                    target_dir,
+                    True,
+                )
 
-    return
+            if not stockfish_binary.exists():
+                execute(
+                    f"[attempt {attempt}] checkout sha {sha}",
+                    ["git", "checkout", "--detach", sha],
+                    stockfish_src_dir,
+                    False,
+                )
+
+                # explicitly specify native, as ARCH is defined differently in the CI pipeline
+                execute(
+                    f"[attempt {attempt}] build Stockfish",
+                    ["make", "-j", "profile-build", "ARCH=native"],
+                    stockfish_src_dir,
+                    False,
+                )
+
+            return stockfish_binary
+
+        except Exception as e:
+            print(f"⚠️ Attempt {attempt} failed: {e}")
+            if clone_dir.exists():
+                shutil.rmtree(clone_dir, ignore_errors=True)
+
+            if attempt < max_retries:
+                print(f"🔁 Retrying after {retry_delay} seconds...")
+                time.sleep(retry_delay)
+            else:
+                print("❌ All attempts to build Stockfish failed.")
+                raise
 
 
-def run_fastchess(workspace_dir, ci_project_dir, ci_commit_sha, test, testing_shas):
+def run_fastchess(
+    workspace_dir,
+    ci_project_dir,
+    ci_commit_sha,
+    test,
+    testing_shas,
+    fastchess,
+    stockfish_reference,
+    stockfish_testing,
+):
     """
     Run fastchess to rank nets relative to the reference
     """
 
-    stockfish_reference = (
-        workspace_dir
-        / "scratch"
-        / ci_commit_sha
-        / "testing/reference/Stockfish/src/stockfish"
-    )
     assert stockfish_reference.exists()
-    stockfish_testing = (
-        workspace_dir
-        / "scratch"
-        / ci_commit_sha
-        / "testing/testing/Stockfish/src/stockfish"
-    )
     assert stockfish_testing.exists()
-    fastchess = (
-        workspace_dir / "scratch" / ci_commit_sha / "testing/fastchess/fastchess"
-    )
     assert fastchess.exists()
 
     match_dir = workspace_dir / "scratch" / ci_commit_sha / "testing" / "match"
@@ -196,11 +249,20 @@ def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
     ) as f:
         test = yaml.safe_load(f)
 
-    ensure_fastchess(workspace_dir, ci_commit_sha, test["fastchess"])
-    ensure_stockfish(workspace_dir, ci_commit_sha, "reference", test)
-    ensure_stockfish(workspace_dir, ci_commit_sha, "testing", test)
+    fastchess = ensure_fastchess(workspace_dir, ci_commit_sha, test["fastchess"])
+    stockfish_reference = ensure_stockfish(
+        workspace_dir, ci_commit_sha, "reference", test
+    )
+    stockfish_testing = ensure_stockfish(workspace_dir, ci_commit_sha, "testing", test)
     winning_net = run_fastchess(
-        workspace_dir, ci_project_dir, ci_commit_sha, test, testing_shas
+        workspace_dir,
+        ci_project_dir,
+        ci_commit_sha,
+        test,
+        testing_shas,
+        fastchess,
+        stockfish_reference,
+        stockfish_testing,
     )
 
     return winning_net
