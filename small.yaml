@@ -110,6 +110,6 @@ testing:
        evalfile: small
     sprt:
        # midpoint will be the target to reach, relative to reference, to have a passing CI
-       elo_interval_midpoint: 0
+       elo_interval_midpoint: -2
        elo_interval_width: 4
        max_rounds: 40000

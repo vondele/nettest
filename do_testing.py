@@ -43,7 +43,6 @@ def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
 
     owner = target_config["code"]["owner"]
     repo = f"https://github.com/{owner}/Stockfish.git"
-
     execute(
         f"clone Stockfish {target} ",
         ["git", "clone", repo],
@@ -53,6 +52,7 @@ def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
 
     stockfish_dir = target_dir / "Stockfish" / "src"
     sha = target_config["code"]["sha"]
+    # TODO deal with failure...
     execute(f"checkout sha {sha}", ["git", "checkout", sha], stockfish_dir, False)
 
     # explicitly specify native, as ARCH is defined differently in the CI pipeline
