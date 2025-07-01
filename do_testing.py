@@ -173,8 +173,8 @@ def run_fastchess(
     for sha in testing_shas:
         # fastchess config
         # TODO should this be configurable for better local testing?
-        cmd = ["taskset", "--cpu-list", "0-71", f"{fastchess}"]
-        cmd += ["-concurrency", "70", "--force-concurrency"]
+        cmd = [f"{fastchess}"]
+        cmd += ["-concurrency", "280", "-force-concurrency", "-use-affinity", "2-71,74-143,146-215,218-287"]
 
         cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
         cmd += [
