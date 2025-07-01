@@ -115,6 +115,6 @@ testing:
        hash: 16
        rounds: 6000
     sprt:
-       elo_interval_midpoint: -57
-       elo_interval_width: 4
+       nElo_interval_midpoint: -64
+       nElo_interval_width: 4
        max_rounds: 40000

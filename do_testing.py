@@ -153,10 +153,10 @@ def run_fastchess(
     tc = test["fastchess"]["options"]["tc"]
     option_hash = test["fastchess"]["options"]["hash"]
     rounds = test["fastchess"]["sprt"]["max_rounds"]
-    elo_interval_midpoint = float(test["fastchess"]["sprt"]["elo_interval_midpoint"])
-    elo_interval_width = float(test["fastchess"]["sprt"]["elo_interval_width"])
-    elo0 = elo_interval_midpoint - elo_interval_width / 2
-    elo1 = elo0 + elo_interval_width
+    nElo_interval_midpoint = float(test["fastchess"]["sprt"]["nElo_interval_midpoint"])
+    nElo_interval_width = float(test["fastchess"]["sprt"]["nElo_interval_width"])
+    elo0 = nElo_interval_midpoint - nElo_interval_width / 2
+    elo1 = elo0 + nElo_interval_width
 
     # take care of small vs big net
     target_net = "EvalFile"
