@@ -114,3 +114,7 @@ testing:
        tc: 10+0.1
        hash: 16
        rounds: 6000
+    sprt:
+       elo_interval_midpoint: -30
+       elo_interval_width: 4
+       max_rounds: 40000
