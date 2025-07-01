@@ -24,7 +24,7 @@ training:
            repo: test80-2024
       trainer:
         owner: vondele
-        sha: 401a91f2922d529ca10bf9ce9d096c7def8869f1
+        sha: e06ffda3e927850997487c57d49fbff64ac8d69b
       run:
         resume: none
         max_epochs: 400
@@ -79,11 +79,13 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         optimize:
            - --features=HalfKAv2_hm
+           - --l1=128
            - --ft_optimize_count=100000
            - --ft_optimize
            - --ft_compression=leb128
         checkpoint2nnue:
            - --features=HalfKAv2_hm^
+           - --l1=128
            - --ft_compression=leb128
 
 #
@@ -105,5 +107,9 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 4000
        evalfile: small
+    sprt:
+       # midpoint will be the target to reach, relative to reference, to have a passing CI
+       elo_interval_midpoint: 0
+       elo_interval_width: 4
+       max_rounds: 40000
