@@ -113,4 +113,8 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       rounds: 4000
+       rounds: 6000
+    sprt:
+       nElo_interval_midpoint: -64
+       nElo_interval_width: 4
+       max_rounds: 40000
