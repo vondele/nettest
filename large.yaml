@@ -108,8 +108,8 @@ testing:
       sha: 5337edfdb6c9593e224be58225907682903db1a9
   fastchess:
     code:
-      owner: vondele
-      sha: d3a0286050d5950f6cd3e3b1e5a9f3a1e6b5bdba
+      owner: Disservin
+      sha: 6072a9bd24c07b300e3feb70ce7f77c2be8537cc
     options:
        tc: 10+0.1
        hash: 16
