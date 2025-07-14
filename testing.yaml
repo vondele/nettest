@@ -100,12 +100,14 @@ training:
 testing:
   reference:
     code:
-      owner: official-stockfish
-      sha: 5337edfdb6c9593e224be58225907682903db1a9
+      owner: vondele
+      sha: a7819929223358228c82ab02a62ce64aff63b6da
   testing:
     code:
-      owner: official-stockfish
-      sha: 5337edfdb6c9593e224be58225907682903db1a9
+      owner: vondele
+      sha: a7819929223358228c82ab02a62ce64aff63b6da
+    options:
+      - smallNetThreshold=962
   fastchess:
     code:
       owner: Disservin
