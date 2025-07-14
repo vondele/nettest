@@ -101,11 +101,11 @@ testing:
   reference:
     code:
       owner: vondele
-      sha: a7819929223358228c82ab02a62ce64aff63b6da
+      sha: 2e243e308a86072e6b3d8181f53068ff15e4b614
   testing:
     code:
       owner: vondele
-      sha: a7819929223358228c82ab02a62ce64aff63b6da
+      sha: 2e243e308a86072e6b3d8181f53068ff15e4b614
     options:
       - smallNetThreshold=962
   fastchess:
