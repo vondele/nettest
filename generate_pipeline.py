@@ -25,7 +25,7 @@ def insert_shas(procedure):
     Insert in each training step a sha that unique identifies it for later reuse.
     It is based on the shas of preceding steps (assume some restart), and the content of the step.
     """
-    if not "training" in procedure:
+    if "training" not in procedure:
         return
 
     stepHash = ""
@@ -68,7 +68,7 @@ def workspace_status(procedure, workspace_dir, ci_commit_sha):
                 procedure["testing"], f, Dumper=MyDumper, default_flow_style=False
             )
 
-    if not "training" in procedure:
+    if "training" not in procedure:
         return
 
     for step in procedure["training"]["steps"]:
@@ -184,7 +184,7 @@ def generate_training_stages(
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
     """
-    if not "training" in procedure:
+    if "training" not in procedure:
         return
 
     previous_sha = "None"
@@ -198,7 +198,6 @@ def generate_training_stages(
 
         repetitions = step["run"].get("repetitions", 1)
         for rep in range(0, repetitions):
-
             job = generate_job_base()
 
             stage_base_name = step["stage"]
@@ -227,10 +226,10 @@ def generate_testing_stage(
     Generate the testing stage
     """
 
-    if not "testing" in procedure:
+    if "testing" not in procedure:
         return
 
-    if not "training" in procedure:
+    if "training" not in procedure:
         return
 
     job = generate_job_base()
@@ -292,7 +291,6 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) != 6:
         print(
             "Usage: python -u generate_pipeline.py input_file output_file workspace_dir ci_commit_sha ci_project_dir"
