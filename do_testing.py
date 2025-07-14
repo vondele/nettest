@@ -1,12 +1,12 @@
 import sys
 import yaml
-import hashlib
-import json
 from pathlib import Path
 from utils import execute
+import shutil
+import time
 
 
-def ensure_fastchess(workspace_dir, ci_commit_sha, fastchess):
+def ensure_fastchess(workspace_dir, fastchess):
     """
     Install the specified fastchess version
     """
@@ -64,7 +64,7 @@ def ensure_fastchess(workspace_dir, ci_commit_sha, fastchess):
                 raise
 
 
-def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
+def ensure_stockfish(workspace_dir, target, test):
     """
     Install the specified Stockfish version
     """
@@ -127,7 +127,6 @@ def ensure_stockfish(workspace_dir, ci_commit_sha, target, test):
 
 def run_fastchess(
     workspace_dir,
-    ci_project_dir,
     ci_commit_sha,
     test,
     testing_shas,
@@ -174,7 +173,13 @@ def run_fastchess(
         # fastchess config
         # TODO should this be configurable for better local testing?
         cmd = [f"{fastchess}"]
-        cmd += ["-concurrency", "280", "-force-concurrency", "-use-affinity", "2-71,74-143,146-215,218-287"]
+        cmd += [
+            "-concurrency",
+            "280",
+            "-force-concurrency",
+            "-use-affinity",
+            "2-71,74-143,146-215,218-287",
+        ]
 
         cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
         cmd += [
@@ -239,7 +244,7 @@ def run_fastchess(
     return winning_net
 
 
-def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
+def run_test(workspace_dir, ci_commit_sha, testing_shas):
     """
     Driver to run the test
     """
@@ -249,14 +254,11 @@ def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
     ) as f:
         test = yaml.safe_load(f)
 
-    fastchess = ensure_fastchess(workspace_dir, ci_commit_sha, test["fastchess"])
-    stockfish_reference = ensure_stockfish(
-        workspace_dir, ci_commit_sha, "reference", test
-    )
-    stockfish_testing = ensure_stockfish(workspace_dir, ci_commit_sha, "testing", test)
+    fastchess = ensure_fastchess(workspace_dir, test["fastchess"])
+    stockfish_reference = ensure_stockfish(workspace_dir, "reference", test)
+    stockfish_testing = ensure_stockfish(workspace_dir, "testing", test)
     winning_net = run_fastchess(
         workspace_dir,
-        ci_project_dir,
         ci_commit_sha,
         test,
         testing_shas,
@@ -269,7 +271,6 @@ def run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas):
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) < 5:
         print(
             "Usage: python do_testing.py workspace_dir ci_project_dir ci_commit_sha testing_sha1 testing_sha2 ..."
@@ -281,6 +282,6 @@ if __name__ == "__main__":
     ci_commit_sha = sys.argv[3]
     testing_shas = sys.argv[4:]
 
-    winning_net = run_test(workspace_dir, ci_project_dir, ci_commit_sha, testing_shas)
+    winning_net = run_test(workspace_dir, ci_commit_sha, testing_shas)
 
-    # TODO exit with error code if winning_net is None ?
+    # TODO: exit with error code if winning_net is None ?

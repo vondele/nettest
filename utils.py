@@ -1,14 +1,10 @@
 import yaml
-import sys
 import subprocess
-import shutil
 import re
 import hashlib
-from pathlib import Path
 
 
 def find_most_recent(root, file):
-
     last_files = list(root.rglob(file))
     if not last_files:
         return None
@@ -32,6 +28,7 @@ class MyDumper(yaml.Dumper):
     """
 
     def increase_indent(self, flow=False, indentless=False):
+        _ = indentless  # intentionally unused, kept for compatibility
         return super(MyDumper, self).increase_indent(flow, False)
 
 
@@ -58,6 +55,8 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
         text=True,
         bufsize=1,
     )
+    assert process is not None, f"Failed to start process for command: {cmd}"
+    assert process.stdout is not None, f"Process {cmd} has no stdout"
 
     while True:
         stdout_line = process.stdout.readline()

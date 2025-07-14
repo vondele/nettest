@@ -1,15 +1,13 @@
 import yaml
 import sys
-import subprocess
 import shutil
 from pathlib import Path
-import hashlib
 from utils import execute, MyDumper, sha256sum, find_most_recent
 import torch
 import time
 
 
-def ensure_trainer(current_sha, workspace_dir, trainer):
+def ensure_trainer(workspace_dir, trainer):
     """
     Install the specified nnue-pytorch trainer
     """
@@ -67,7 +65,6 @@ def ensure_trainer(current_sha, workspace_dir, trainer):
 
 
 def ckpt_reached_end(ckpt_path, max_epochs):
-
     reached_end = False
     if ckpt_path is not None:
         ckpt = torch.load(ckpt_path, map_location="cpu")
@@ -146,9 +143,9 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run, nnue_pytorch_dir)
             assert previous_sha.lower() != "none"
 
             final_yaml_file = workspace_dir / "scratch" / previous_sha / "final.yaml"
-            assert (
-                final_yaml_file.exists()
-            ), "The final final yaml file does not exist, a previous step training step did not complete"
+            assert final_yaml_file.exists(), (
+                "The final final yaml file does not exist, a previous step training step did not complete"
+            )
             with open(final_yaml_file) as f:
                 final = yaml.safe_load(f)
             previous_checkpoint = Path(final["checkpoint"])
@@ -187,6 +184,7 @@ def run_conversion(
     root_dir = workspace_dir / "scratch" / current_sha / "run"
 
     checkpoint = find_most_recent(root_dir, "last.ckpt")
+    assert checkpoint is not None, "No checkpoint found in the run directory"
 
     # run the conversion to model
     model = checkpoint.with_suffix(".pt")
@@ -282,7 +280,7 @@ def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
 
     assert step["sha"] == current_sha
 
-    nnue_pytorch_dir = ensure_trainer(current_sha, workspace_dir, step["trainer"])
+    nnue_pytorch_dir = ensure_trainer(workspace_dir, step["trainer"])
     reached_end = run_trainer(
         current_sha, previous_sha, workspace_dir, step["run"], nnue_pytorch_dir
     )
@@ -300,7 +298,6 @@ def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) != 5:
         print(
             "Usage: python -u do_step.py current_sha previous_sha workspace_dir ci_project_dir"
