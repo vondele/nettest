@@ -211,8 +211,16 @@ def run_fastchess(
             f"option.{target_net}={std_nnue}",
         ]
 
+        if "options" in test["testing"]:
+            for option in test["testing"]["options"]:
+                cmd += [f"option.{option}"]
+
         # reference engine
         cmd += ["-engine", "name=reference", f"cmd={stockfish_reference}"]
+
+        if "options" in test["reference"]:
+            for option in test["reference"]["options"]:
+                cmd += [f"option.{option}"]
 
         # engine configs
         cmd += [
