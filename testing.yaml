@@ -21,6 +21,7 @@ training:
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
+          - --l1=128
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -29,8 +30,9 @@ training:
           - --validation-size=100000
       convert:
         checkpoint2nnue:
-           - --features=HalfKAv2_hm^
-           - --ft_compression=leb128
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --ft_compression=leb128
 #
 #
 #
@@ -50,6 +52,7 @@ training:
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
+          - --l1=128
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -58,8 +61,9 @@ training:
           - --validation-size=100000
       convert:
         checkpoint2nnue:
-           - --features=HalfKAv2_hm^
-           - --ft_compression=leb128
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --ft_compression=leb128
 #
 #
 #
@@ -78,6 +82,7 @@ training:
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
+          - --l1=128
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -87,13 +92,15 @@ training:
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         optimize:
-           - --features=HalfKAv2_hm
-           - --ft_optimize_count=10000
-           - --ft_optimize
-           - --ft_compression=leb128
+          - --features=HalfKAv2_hm
+          - --l1=128
+          - --ft_optimize_count=10000
+          - --ft_optimize
+          - --ft_compression=leb128
         checkpoint2nnue:
-           - --features=HalfKAv2_hm^
-           - --ft_compression=leb128
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --ft_compression=leb128
 #
 # Final testing stage using fastchess
 #
@@ -115,6 +122,7 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
+       evalfile: small
     sprt:
        # midpoint will be the target to reach, relative to reference, to have a passing CI
        nElo_interval_midpoint: 0

@@ -22,14 +22,21 @@ yaml.add_representer(str, quoted_scalar_representer, Dumper=MyDumper)
 
 def insert_shas(procedure):
     """
-    Insert in each training step a sha that unique identifies it for later reuse.
-    It is based on the shas of preceding steps (assume some restart), and the content of the step.
+    1. Insert in each training step a sha that unique identifies it for later reuse.
+       It is based on the shas of preceding steps (assume some restart), and the content of the step.
+    2. Insert a sha in the testing phase
     """
-    if "training" not in procedure:
-        return
+    if "training" in procedure:
+        stepHash = ""
+        for step in procedure["training"]["steps"]:
+            step_content = json.dumps(step, sort_keys=True)
+            combined = stepHash + step_content
+            stepHash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:12]
+            step["sha"] = stepHash
 
-    stepHash = ""
-    for step in procedure["training"]["steps"]:
+    if "testing" in procedure:
+        stepHash = ""
+        step = procedure["testing"]
         step_content = json.dumps(step, sort_keys=True)
         combined = stepHash + step_content
         stepHash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:12]
@@ -38,29 +45,26 @@ def insert_shas(procedure):
     return
 
 
-def workspace_status(procedure, workspace_dir, ci_commit_sha):
+def workspace_status(procedure, workspace_dir):
     """
     Ensure the workspace structure
 
     directories:
-       workspace_dir / "scratch" / ci_commit_sha : a directory for this particular CI job
        workspace_dir / "scratch" / step["sha"] : a directory for each step of this job, maybe already computed by other jobs
+       workspace_dir / "scratch" / testing["sha"] : a directory for testing nnues that result from this job
 
     files:
        workspace_dir / "scratch" / step["sha"] / step.yaml : the yaml description of this step
        workspace_dir / "scratch" / step["sha"] / final.yaml : a yaml description generated when the step is complete
-       workspace_dir / "scratch" / ci_commit_sha / testing / testing.yaml : a yaml description of the testing stage
+       workspace_dir / "scratch" / testing["sha"] / testing.yaml : a yaml description of the testing stage
 
     """
 
     base_dir = Path(workspace_dir) / "scratch"
     base_dir.mkdir(parents=True, exist_ok=True)
 
-    commit_dir = base_dir / ci_commit_sha
-    commit_dir.mkdir(parents=True, exist_ok=True)
-
     if "testing" in procedure:
-        testing_dir = commit_dir / "testing"
+        testing_dir = base_dir / procedure["testing"]["sha"]
         testing_dir.mkdir(parents=True, exist_ok=True)
         testing_yaml = testing_dir / "testing.yaml"
         with testing_yaml.open(mode="w", encoding="utf-8") as f:
@@ -219,9 +223,7 @@ def generate_training_stages(
     return
 
 
-def generate_testing_stage(
-    procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out, shell_out
-):
+def generate_testing_stage(procedure, workspace_dir, yaml_out, shell_out):
     """
     Generate the testing stage
     """
@@ -229,13 +231,12 @@ def generate_testing_stage(
     if "testing" not in procedure:
         return
 
-    if "training" not in procedure:
-        return
+    test_config_sha = procedure["testing"]["sha"]
 
     job = generate_job_base()
     job["stage"] = "testing"
 
-    base = f"python -u {workspace_dir}/nettest/do_testing.py {workspace_dir} {ci_project_dir} {ci_commit_sha} "
+    base = f"python -u {workspace_dir}/nettest/do_testing.py {workspace_dir} {test_config_sha} "
 
     # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
@@ -253,7 +254,7 @@ def generate_testing_stage(
     return
 
 
-def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
+def parse_procedure(input_path, workspace_dir, ci_project_dir):
     """
     Given a file path, open that yaml, and turn that procedure into a CI pipeline..
     """
@@ -269,7 +270,7 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
     insert_shas(procedure)
 
     # setup workspace, and figure out status
-    workspace_status(procedure, workspace_dir, ci_commit_sha)
+    workspace_status(procedure, workspace_dir)
 
     # generate the stage names / stages
     generate_stages(procedure, yaml_out)
@@ -283,31 +284,26 @@ def parse_procedure(input_path, workspace_dir, ci_commit_sha, ci_project_dir):
     )
 
     # generate the match stage
-    generate_testing_stage(
-        procedure, workspace_dir, ci_commit_sha, ci_project_dir, yaml_out, shell_out
-    )
+    generate_testing_stage(procedure, workspace_dir, yaml_out, shell_out)
 
     return yaml_out, shell_out
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 5:
         print(
-            "Usage: python -u generate_pipeline.py input_file output_file workspace_dir ci_commit_sha ci_project_dir"
+            "Usage: python -u generate_pipeline.py input_file output_file workspace_dir ci_project_dir"
         )
         sys.exit(1)
 
     input_file = sys.argv[1]
     output_file = sys.argv[2]
     workspace_dir = sys.argv[3]
-    ci_commit_sha = sys.argv[4]
-    ci_project_dir = sys.argv[5]
+    ci_project_dir = sys.argv[4]
 
     print("Translating recipe: ", input_file)
 
-    yaml_out, shell_out = parse_procedure(
-        input_file, workspace_dir, ci_commit_sha, ci_project_dir
-    )
+    yaml_out, shell_out = parse_procedure(input_file, workspace_dir, ci_project_dir)
 
     print("Resulting pipeline: ", Path(output_file))
     with Path(output_file).open(mode="w", encoding="utf-8") as f:

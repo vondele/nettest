@@ -127,7 +127,7 @@ def ensure_stockfish(workspace_dir, target, test):
 
 def run_fastchess(
     workspace_dir,
-    ci_commit_sha,
+    test_config_sha,
     test,
     testing_shas,
     fastchess,
@@ -141,9 +141,6 @@ def run_fastchess(
     assert stockfish_reference.exists()
     assert stockfish_testing.exists()
     assert fastchess.exists()
-
-    match_dir = workspace_dir / "scratch" / ci_commit_sha / "testing" / "match"
-    match_dir.mkdir(parents=True, exist_ok=True)
 
     # TODO ... cleanup how to get the book in place
     book = workspace_dir / "data" / "UHO_Lichess_4852_v1.epd"
@@ -170,8 +167,12 @@ def run_fastchess(
     winning_net = None
 
     for sha in testing_shas:
+        match_dir = workspace_dir / "scratch" / test_config_sha / "match" / sha
+        match_dir.mkdir(parents=True, exist_ok=True)
+
         # fastchess config
-        # TODO should this be configurable for better local testing?
+        # TODO: should this be configurable for better local testing?
+        # TODO: presence of a config file would imply that a restart is possible?
         cmd = [f"{fastchess}"]
         cmd += [
             "-concurrency",
@@ -194,7 +195,7 @@ def run_fastchess(
 
         cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
         cmd += ["-report", "penta=true"]
-        cmd += ["-pgnout", f"file=match-{sha}.pgn"]
+        cmd += ["-pgnout", "file=match.pgn"]
 
         # add net to be tested
         final_yaml_file = workspace_dir / "scratch" / sha / "final.yaml"
@@ -252,14 +253,12 @@ def run_fastchess(
     return winning_net
 
 
-def run_test(workspace_dir, ci_commit_sha, testing_shas):
+def run_test(workspace_dir, test_config_sha, testing_shas):
     """
     Driver to run the test
     """
 
-    with open(
-        workspace_dir / "scratch" / ci_commit_sha / "testing" / "testing.yaml"
-    ) as f:
+    with open(workspace_dir / "scratch" / test_config_sha / "testing.yaml") as f:
         test = yaml.safe_load(f)
 
     fastchess = ensure_fastchess(workspace_dir, test["fastchess"])
@@ -267,7 +266,7 @@ def run_test(workspace_dir, ci_commit_sha, testing_shas):
     stockfish_testing = ensure_stockfish(workspace_dir, "testing", test)
     winning_net = run_fastchess(
         workspace_dir,
-        ci_commit_sha,
+        test_config_sha,
         test,
         testing_shas,
         fastchess,
@@ -279,17 +278,16 @@ def run_test(workspace_dir, ci_commit_sha, testing_shas):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 4:
         print(
-            "Usage: python do_testing.py workspace_dir ci_project_dir ci_commit_sha testing_sha1 testing_sha2 ..."
+            "Usage: python do_testing.py workspace_dir test_config_sha testing_sha1 testing_sha2 ..."
         )
         sys.exit(1)
 
     workspace_dir = Path(sys.argv[1])
-    ci_project_dir = Path(sys.argv[2])
-    ci_commit_sha = sys.argv[3]
-    testing_shas = sys.argv[4:]
+    test_config_sha = sys.argv[2]
+    testing_shas = sys.argv[3:]
 
-    winning_net = run_test(workspace_dir, ci_commit_sha, testing_shas)
+    winning_net = run_test(workspace_dir, test_config_sha, testing_shas)
 
     # TODO: exit with error code if winning_net is None ?
