@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y \
     git-lfs \
     zstd \
     strace \
+    gdb \
+    python3-dbg \
     linux-tools-common linux-tools-generic \
     && rm -rf /var/lib/apt/lists/*
 
