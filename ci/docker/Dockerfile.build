@@ -17,7 +17,15 @@ RUN apt-get update && apt-get install -y \
 RUN git lfs install
 
 # current set of nnue-pytorch dependencies, some already in the image
-RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib tensorboard numba "numpy<2.0" requests pytorch-lightning dill
+RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib tensorboard numba "numpy<2.0" requests pytorch-lightning
+
+# for optimization
+RUN pip install --no-cache-dir  nevergrad
+
+# firecrest deps are tricky, to be fixed once upstream is fixed, in which case just the last package is needed
+RUN pip install --no-cache-dir aiofiles PyJWT dill
+RUN pip install --no-cache-dir pyfirecrest --no-deps
+RUN pip install firecrest-executor --no-deps
 
 # copy the current nettest sources to have them around
 RUN cp -a /sourcecode /workspace/nettest/
