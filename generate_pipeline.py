@@ -290,16 +290,21 @@ def parse_procedure(input_path, workspace_dir, ci_project_dir):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print(
-            "Usage: python -u generate_pipeline.py input_file output_file workspace_dir ci_project_dir"
-        )
-        sys.exit(1)
+    import argparse
 
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-    workspace_dir = sys.argv[3]
-    ci_project_dir = sys.argv[4]
+    parser = argparse.ArgumentParser(
+        description="Translate recipe to pipeline and shell script."
+    )
+    parser.add_argument("input_file", help="Input recipe file")
+    parser.add_argument("output_file", help="Output pipeline YAML file")
+    parser.add_argument("workspace_dir", help="Workspace directory")
+    parser.add_argument("ci_project_dir", help="CI project directory")
+    args = parser.parse_args()
+
+    input_file = args.input_file
+    output_file = args.output_file
+    workspace_dir = args.workspace_dir
+    ci_project_dir = args.ci_project_dir
 
     print("Translating recipe: ", input_file)
 

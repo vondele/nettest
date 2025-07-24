@@ -37,12 +37,14 @@ def run_data_update(workspace_dir: Path, owner: str, repo: str):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python -u ensure_data.py workspace_dir owner repo")
-        sys.exit(1)
+    import argparse
 
-    workspace_dir = Path(sys.argv[1])
-    owner = sys.argv[2]
-    repo = sys.argv[3]
+    parser = argparse.ArgumentParser(
+        description="Ensure data for a given workspace, owner, and repo."
+    )
+    parser.add_argument("workspace_dir", type=Path, help="Workspace directory")
+    parser.add_argument("owner", help="Repository owner")
+    parser.add_argument("repo", help="Repository name")
+    args = parser.parse_args()
 
-    run_data_update(workspace_dir, owner, repo)
+    run_data_update(args.workspace_dir, args.owner, args.repo)
