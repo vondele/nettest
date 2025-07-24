@@ -278,15 +278,19 @@ def run_test(workspace_dir, test_config_sha, testing_shas):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print(
-            "Usage: python do_testing.py workspace_dir test_config_sha testing_sha1 testing_sha2 ..."
-        )
-        sys.exit(1)
+    import argparse
 
-    workspace_dir = Path(sys.argv[1])
-    test_config_sha = sys.argv[2]
-    testing_shas = sys.argv[3:]
+    parser = argparse.ArgumentParser(
+        description="Run tests for given workspace and SHAs."
+    )
+    parser.add_argument("workspace_dir", type=Path, help="Workspace directory")
+    parser.add_argument("test_config_sha", help="Test config SHA")
+    parser.add_argument("testing_shas", nargs="+", help="Testing SHA(s)")
+    args = parser.parse_args()
+
+    workspace_dir = args.workspace_dir
+    test_config_sha = args.test_config_sha
+    testing_shas = args.testing_shas
 
     winning_net = run_test(workspace_dir, test_config_sha, testing_shas)
 
