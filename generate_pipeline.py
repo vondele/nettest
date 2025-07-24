@@ -172,7 +172,7 @@ def generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out):
     job["script"] = []
     for hf in hfs:
         job["script"].append(
-            f"{workspace_dir}/nettest/do_ensure_data.sh {workspace_dir} {hf[0]} {hf[1]}"
+            f"python -u {workspace_dir}/nettest/ensure_data.py {workspace_dir} {hf[0]} {hf[1]}"
         )
 
     shell_out += job["script"]
@@ -264,7 +264,7 @@ def parse_procedure(input_path, workspace_dir, ci_project_dir):
 
     # ci yaml header
     yaml_out = start_yaml()
-    shell_out = ["#!/bin/bash", "", "set -e", ""]
+    shell_out = ["#!/bin/bash", "", "set -ex", ""]
 
     # insert shas that uniquely identify each step based on the full history of the training procedure
     insert_shas(procedure)
