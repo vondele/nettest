@@ -129,7 +129,7 @@ def run_fastchess(
     workspace_dir,
     test_config_sha,
     test,
-    testing_shas,
+    testing_sha,
     fastchess,
     stockfish_reference,
     stockfish_testing,
@@ -166,89 +166,89 @@ def run_fastchess(
 
     winning_net = None
 
-    for sha in testing_shas:
-        match_dir = workspace_dir / "scratch" / test_config_sha / "match" / sha
-        match_dir.mkdir(parents=True, exist_ok=True)
+    sha = testing_sha
+    match_dir = workspace_dir / "scratch" / test_config_sha / "match" / sha
+    match_dir.mkdir(parents=True, exist_ok=True)
 
-        # fastchess config
-        # TODO: should this be configurable for better local testing?
-        # TODO: presence of a config file would imply that a restart is possible?
-        cmd = [f"{fastchess}"]
-        cmd += [
-            "-concurrency",
-            "280",
-            "-force-concurrency",
-            "-use-affinity",
-            "2-71,74-143,146-215,218-287",
-        ]
+    # fastchess config
+    # TODO: should this be configurable for better local testing?
+    # TODO: presence of a config file would imply that a restart is possible?
+    cmd = [f"{fastchess}"]
+    cmd += [
+        "-concurrency",
+        "280",
+        "-force-concurrency",
+        "-use-affinity",
+        "2-71,74-143,146-215,218-287",
+    ]
 
-        cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
-        cmd += [
-            "-sprt",
-            f"elo0={elo0}",
-            f"elo1={elo1}",
-            "alpha=0.05",
-            "beta=0.05",
-            "model=normalized",
-        ]
-        cmd += ["-ratinginterval", "100"]
+    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
+    cmd += [
+        "-sprt",
+        f"elo0={elo0}",
+        f"elo1={elo1}",
+        "alpha=0.05",
+        "beta=0.05",
+        "model=normalized",
+    ]
+    cmd += ["-ratinginterval", "100"]
 
-        cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
-        cmd += ["-report", "penta=true"]
-        cmd += ["-pgnout", "file=match.pgn"]
+    cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
+    cmd += ["-report", "penta=true"]
+    cmd += ["-pgnout", "file=match.pgn"]
 
-        # add net to be tested
-        final_yaml_file = workspace_dir / "scratch" / sha / "final.yaml"
-        assert final_yaml_file.exists()
-        with open(final_yaml_file) as f:
-            final_config = yaml.safe_load(f)
-        short_nnue = final_config["short_nnue"]
-        std_nnue = final_config["std_nnue"]
-        name = f"step_{sha}_{short_nnue}"
-        cmd += [
-            "-engine",
-            f"name={name}",
-            f"cmd={stockfish_testing}",
-            f"option.{target_net}={std_nnue}",
-        ]
+    # add net to be tested
+    final_yaml_file = workspace_dir / "scratch" / sha / "final.yaml"
+    assert final_yaml_file.exists()
+    with open(final_yaml_file) as f:
+        final_config = yaml.safe_load(f)
+    short_nnue = final_config["short_nnue"]
+    std_nnue = final_config["std_nnue"]
+    name = f"step_{sha}_{short_nnue}"
+    cmd += [
+        "-engine",
+        f"name={name}",
+        f"cmd={stockfish_testing}",
+        f"option.{target_net}={std_nnue}",
+    ]
 
-        if "options" in test["testing"]:
-            for option in test["testing"]["options"]:
-                cmd += [f"option.{option}"]
+    if "options" in test["testing"]:
+        for option in test["testing"]["options"]:
+            cmd += [f"option.{option}"]
 
-        # reference engine
-        cmd += ["-engine", "name=reference", f"cmd={stockfish_reference}"]
+    # reference engine
+    cmd += ["-engine", "name=reference", f"cmd={stockfish_reference}"]
 
-        if "options" in test["reference"]:
-            for option in test["reference"]["options"]:
-                cmd += [f"option.{option}"]
+    if "options" in test["reference"]:
+        for option in test["reference"]["options"]:
+            cmd += [f"option.{option}"]
 
-        # engine configs
-        cmd += [
-            "-each",
-            "proto=uci",
-            "option.Threads=1",
-            f"option.Hash={option_hash}",
-            f"tc={tc}",
-        ]
+    # engine configs
+    cmd += [
+        "-each",
+        "proto=uci",
+        "option.Threads=1",
+        f"option.Hash={option_hash}",
+        f"tc={tc}",
+    ]
 
-        output = execute(
-            f"Run fastchess match for {sha}: {short_nnue}",
-            cmd,
-            match_dir,
-            False,
-            r"Finished game|Started game",
-        )
+    output = execute(
+        f"Run fastchess match for {sha}: {short_nnue}",
+        cmd,
+        match_dir,
+        False,
+        r"Finished game|Started game",
+    )
 
-        for line in output:
-            if "H0 was accepted" in line:
-                print(f"⚠️  No pass: {short_nnue} failed SPRT")
-                break
+    for line in output:
+        if "H0 was accepted" in line:
+            print(f"⚠️  No pass: {short_nnue} failed SPRT")
+            break
 
-            if "H1 was accepted" in line:
-                print(f"🎉 Success: {short_nnue} passed SPRT")
-                winning_net = short_nnue
-                break
+        if "H1 was accepted" in line:
+            print(f"🎉 Success: {short_nnue} passed SPRT")
+            winning_net = short_nnue
+            break
 
     return winning_net
 
@@ -285,13 +285,13 @@ if __name__ == "__main__":
     )
     parser.add_argument("workspace_dir", type=Path, help="Workspace directory")
     parser.add_argument("test_config_sha", help="Test config SHA")
-    parser.add_argument("testing_shas", nargs="+", help="Testing SHA(s)")
+    parser.add_argument("testing_sha", help="Testing SHA")
     args = parser.parse_args()
 
     workspace_dir = args.workspace_dir
     test_config_sha = args.test_config_sha
-    testing_shas = args.testing_shas
+    testing_sha = args.testing_sha
 
-    winning_net = run_test(workspace_dir, test_config_sha, testing_shas)
+    winning_net = run_test(workspace_dir, test_config_sha, testing_sha)
 
     # TODO: exit with error code if winning_net is None ?

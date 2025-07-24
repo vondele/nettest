@@ -239,16 +239,16 @@ def generate_testing_stage(procedure, workspace_dir, yaml_out, shell_out):
     base = f"python -u {workspace_dir}/nettest/do_testing.py {workspace_dir} {test_config_sha} "
 
     # pass the last training step sha as input, and all other steps that were computed in this run
+    job["script"] = []
     steps = 0
     for step in reversed(procedure["training"]["steps"]):
         if step["status"] != "Final" or steps == 0:
             steps += 1
-            base = base + " " + step["sha"]
-
-    job["script"] = [base]
+            step_sha = step["sha"]
+            task = f"python -u {workspace_dir}/nettest/do_testing.py {workspace_dir} {test_config_sha} {step_sha}"
+            job["script"].append(task)
 
     shell_out += job["script"]
-
     yaml_out["testingJob"] = job
 
     return
