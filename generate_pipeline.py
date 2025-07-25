@@ -166,7 +166,7 @@ def generate_ensure_data(recipe, workspace_dir, ci_yaml_out, schedule):
     job["variables"]["SLURM_TIMELIMIT"] = "04:00:00"
     job["stage"] = "ensureData"
 
-    job["script"] = []
+    job["script"] = ["cd /workspace"]
     for hf in hfs:
         job["script"].append(
             f"python -u -m nettest.ensure_data {workspace_dir} {hf[0]} {hf[1]}"
@@ -206,7 +206,7 @@ def generate_training_stages(
             stage_name = f"{stage_base_name}_{rep}"
             job["stage"] = stage_name
 
-            job["script"] = [
+            job["script"] = ["cd /workspace/",
                 f"python -u -m nettest.train {workspace_dir} {current_sha} {previous_sha} {ci_project_dir}"
             ]
 
@@ -245,7 +245,7 @@ def generate_testing_stage(recipe, workspace_dir, ci_yaml_out, schedule):
     job["stage"] = "testing"
 
     # pass the last training step sha as input, and all other steps that were computed in this run
-    job["script"] = []
+    job["script"] = ["cd /workspace/"]
     steps = 0
     for step in reversed(recipe["training"]["steps"]):
         if step["status"] != "Final" or steps == 0:

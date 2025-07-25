@@ -25,6 +25,7 @@ generateSchedule:
   extends: .container-runner-clariden-gh200
   image: $PERSIST_IMAGE_NAME
   script:
+    - cd /workspace/
     - python -u -m nettest.generate_pipeline /workspace /workspace/nettest/${RECIPE:-testing}.yaml $CI_PROJECT_DIR/training_schedule.yaml $CI_PROJECT_DIR
     - cat $CI_PROJECT_DIR/training_schedule.yaml
   variables:
