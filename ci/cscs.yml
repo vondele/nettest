@@ -26,7 +26,7 @@ generateSchedule:
   image: $PERSIST_IMAGE_NAME
   script:
     - cd /workspace/
-    - ln -s $CI_PROJECT_DIR ./cidir/
+    - ln -s $CI_PROJECT_DIR ./cidir
     - python -u -m nettest.generate_pipeline nettest/${RECIPE:-testing}.yaml ./cidir/training_schedule.yaml
     - cat ./cidir/training_schedule.yaml
   variables:
