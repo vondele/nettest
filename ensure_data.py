@@ -1,4 +1,3 @@
-import sys
 from utils import execute
 from pathlib import Path
 from time import sleep

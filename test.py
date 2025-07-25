@@ -1,4 +1,3 @@
-import sys
 import yaml
 from pathlib import Path
 from utils import execute

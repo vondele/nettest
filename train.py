@@ -302,9 +302,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Run step with provided SHAs and directories."
     )
+    parser.add_argument("workspace_dir", type=Path, help="Workspace directory")
     parser.add_argument("current_sha", help="Current SHA")
     parser.add_argument("previous_sha", help="Previous SHA")
-    parser.add_argument("workspace_dir", type=Path, help="Workspace directory")
     parser.add_argument("ci_project_dir", type=Path, help="CI project directory")
     args = parser.parse_args()
 
