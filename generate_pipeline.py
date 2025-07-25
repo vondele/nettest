@@ -1,10 +1,9 @@
-import sys
 import re
 import yaml
 import hashlib
 import json
 from pathlib import Path
-from utils import MyDumper
+from .utils import MyDumper
 
 
 def needs_quotes(value):
@@ -20,23 +19,23 @@ def quoted_scalar_representer(dumper, data):
 yaml.add_representer(str, quoted_scalar_representer, Dumper=MyDumper)
 
 
-def insert_shas(procedure):
+def insert_shas(recipe):
     """
     1. Insert in each training step a sha that unique identifies it for later reuse.
        It is based on the shas of preceding steps (assume some restart), and the content of the step.
     2. Insert a sha in the testing phase
     """
-    if "training" in procedure:
+    if "training" in recipe:
         stepHash = ""
-        for step in procedure["training"]["steps"]:
+        for step in recipe["training"]["steps"]:
             step_content = json.dumps(step, sort_keys=True)
             combined = stepHash + step_content
             stepHash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:12]
             step["sha"] = stepHash
 
-    if "testing" in procedure:
+    if "testing" in recipe:
         stepHash = ""
-        step = procedure["testing"]
+        step = recipe["testing"]
         step_content = json.dumps(step, sort_keys=True)
         combined = stepHash + step_content
         stepHash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:12]
@@ -45,7 +44,7 @@ def insert_shas(procedure):
     return
 
 
-def workspace_status(procedure, workspace_dir):
+def workspace_status(recipe, workspace_dir):
     """
     Ensure the workspace structure
 
@@ -63,19 +62,17 @@ def workspace_status(procedure, workspace_dir):
     base_dir = Path(workspace_dir) / "scratch"
     base_dir.mkdir(parents=True, exist_ok=True)
 
-    if "testing" in procedure:
-        testing_dir = base_dir / procedure["testing"]["sha"]
+    if "testing" in recipe:
+        testing_dir = base_dir / recipe["testing"]["sha"]
         testing_dir.mkdir(parents=True, exist_ok=True)
         testing_yaml = testing_dir / "testing.yaml"
         with testing_yaml.open(mode="w", encoding="utf-8") as f:
-            yaml.dump(
-                procedure["testing"], f, Dumper=MyDumper, default_flow_style=False
-            )
+            yaml.dump(recipe["testing"], f, Dumper=MyDumper, default_flow_style=False)
 
-    if "training" not in procedure:
+    if "training" not in recipe:
         return
 
-    for step in procedure["training"]["steps"]:
+    for step in recipe["training"]["steps"]:
         step_dir = base_dir / step["sha"]
         step_dir.mkdir(parents=True, exist_ok=True)
         final_status_file = step_dir / "final.yaml"
@@ -90,28 +87,28 @@ def workspace_status(procedure, workspace_dir):
     return
 
 
-def start_yaml():
+def start_ci_yaml():
     """
     Needed header for the CI pipeline
     """
-    yaml_out = dict()
-    yaml_out["include"] = [
+    ci_yaml_out = dict()
+    ci_yaml_out["include"] = [
         {
             "remote": "https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml"
         }
     ]
-    return yaml_out
+    return ci_yaml_out
 
 
-def generate_stages(procedure, yaml_out):
+def generate_stages(recipe, ci_yaml_out):
     """
-    List the needed stages in the procedure.
+    List the needed stages in the recipe.
     Will skip training steps that are already in  Final stage.
     """
     stages = ["ensureData"]
 
-    if "training" in procedure:
-        for step in procedure["training"]["steps"]:
+    if "training" in recipe:
+        for step in recipe["training"]["steps"]:
             if step["status"] == "Final":
                 continue
             repetitions = step["run"].get("repetitions", 1)
@@ -121,10 +118,10 @@ def generate_stages(procedure, yaml_out):
                 stage_name = f"{stage_base_name}_{rep}"
                 stages.append(stage_name)
 
-    if "testing" in procedure:
+    if "testing" in recipe:
         stages.append("testing")
 
-    yaml_out["stages"] = stages
+    ci_yaml_out["stages"] = stages
 
     return
 
@@ -149,7 +146,7 @@ def generate_job_base():
     return job
 
 
-def generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out):
+def generate_ensure_data(recipe, workspace_dir, ci_yaml_out, schedule):
     """
     Extract all datasets from the training steps, as a set of all needed Huggingface owner/repo tuples.
     """
@@ -159,8 +156,8 @@ def generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out):
     hfs.add(("official-stockfish", "master-binpacks"))
 
     # see what is needed, do not skip what is needed in finalized steps, might be useful to keep these datasets warm.
-    if "training" in procedure:
-        for step in procedure["training"]["steps"]:
+    if "training" in recipe:
+        for step in recipe["training"]["steps"]:
             for dataset in step["datasets"]:
                 hfs.add((dataset["hf"]["owner"], dataset["hf"]["repo"]))
 
@@ -169,36 +166,37 @@ def generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out):
     job["variables"]["SLURM_TIMELIMIT"] = "04:00:00"
     job["stage"] = "ensureData"
 
-    job["script"] = []
+    job["script"] = ["cd /workspace"]
     for hf in hfs:
         job["script"].append(
-            f"python -u {workspace_dir}/nettest/ensure_data.py {workspace_dir} {hf[0]} {hf[1]}"
+            f"python -u -m nettest.ensure_data {workspace_dir} {hf[0]} {hf[1]}"
+        )
+        schedule["data"].append(
+            {"workspace_dir": workspace_dir, "owner": hf[0], "repo": hf[1]}
         )
 
-    shell_out += job["script"]
-
-    yaml_out["ensureDataJob"] = job
+    ci_yaml_out["ensureDataJob"] = job
     return
 
 
 def generate_training_stages(
-    procedure, workspace_dir, ci_project_dir, yaml_out, shell_out
+    recipe, workspace_dir, ci_project_dir, ci_yaml_out, schedule
 ):
     """
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
     """
-    if "training" not in procedure:
+    if "training" not in recipe:
         return
 
     previous_sha = "None"
 
-    for step in procedure["training"]["steps"]:
+    for step in recipe["training"]["steps"]:
         if step["status"] == "Final":
             previous_sha = step["sha"]
             continue
 
-        this_sha = step["sha"]
+        current_sha = step["sha"]
 
         repetitions = step["run"].get("repetitions", 1)
         for rep in range(0, repetitions):
@@ -208,96 +206,107 @@ def generate_training_stages(
             stage_name = f"{stage_base_name}_{rep}"
             job["stage"] = stage_name
 
-            job["script"] = [
-                f"python -u {workspace_dir}/nettest/do_step.py {this_sha} {previous_sha} {workspace_dir} {ci_project_dir}"
+            job["script"] = ["cd /workspace/",
+                f"python -u -m nettest.train {workspace_dir} {current_sha} {previous_sha} {ci_project_dir}"
             ]
 
-            shell_out += job["script"]
+            schedule["train"].append(
+                {
+                    "workspace_dir": workspace_dir,
+                    "current_sha": current_sha,
+                    "previous_sha": previous_sha,
+                    "ci_project_dir": ci_project_dir,
+                }
+            )
 
-            job["artifacts"] = {"expire_in": "1 month", "paths": [f"step_{this_sha}"]}
+            job["artifacts"] = {
+                "expire_in": "1 month",
+                "paths": [f"step_{current_sha}"],
+            }
 
-            yaml_out[stage_name + "Job"] = job
+            ci_yaml_out[stage_name + "Job"] = job
 
-        previous_sha = this_sha
+        previous_sha = current_sha
 
     return
 
 
-def generate_testing_stage(procedure, workspace_dir, yaml_out, shell_out):
+def generate_testing_stage(recipe, workspace_dir, ci_yaml_out, schedule):
     """
     Generate the testing stage
     """
 
-    if "testing" not in procedure:
+    if "testing" not in recipe:
         return
 
-    test_config_sha = procedure["testing"]["sha"]
+    test_config_sha = recipe["testing"]["sha"]
 
     job = generate_job_base()
     job["stage"] = "testing"
 
-    base = f"python -u {workspace_dir}/nettest/do_testing.py {workspace_dir} {test_config_sha} "
-
     # pass the last training step sha as input, and all other steps that were computed in this run
-    job["script"] = []
+    job["script"] = ["cd /workspace/"]
     steps = 0
-    for step in reversed(procedure["training"]["steps"]):
+    for step in reversed(recipe["training"]["steps"]):
         if step["status"] != "Final" or steps == 0:
             steps += 1
-            step_sha = step["sha"]
-            task = f"python -u {workspace_dir}/nettest/do_testing.py {workspace_dir} {test_config_sha} {step_sha}"
+            testing_sha = step["sha"]
+            task = f"python -u -m nettest.test {workspace_dir} {test_config_sha} {testing_sha}"
             job["script"].append(task)
+            schedule["test"].append(
+                {
+                    "workspace_dir": workspace_dir,
+                    "test_config_sha": test_config_sha,
+                    "testing_sha": testing_sha,
+                }
+            )
 
-    shell_out += job["script"]
-    yaml_out["testingJob"] = job
+    ci_yaml_out["testingJob"] = job
 
     return
 
 
-def parse_procedure(input_path, workspace_dir, ci_project_dir):
+def parse_recipe(recipe, workspace_dir, ci_project_dir):
     """
-    Given a file path, open that yaml, and turn that procedure into a CI pipeline..
+    Given recipe turn that recipe into a CI pipeline..
     """
-
-    with open(input_path) as f:
-        procedure = yaml.safe_load(f)
 
     # ci yaml header
-    yaml_out = start_yaml()
-    shell_out = ["#!/bin/bash", "", "set -ex", ""]
+    ci_yaml_out = start_ci_yaml()
+    schedule = {"data": [], "train": [], "test": []}
 
-    # insert shas that uniquely identify each step based on the full history of the training procedure
-    insert_shas(procedure)
+    # insert shas that uniquely identify each step based on the full history of the training recipe
+    insert_shas(recipe)
 
     # setup workspace, and figure out status
-    workspace_status(procedure, workspace_dir)
+    workspace_status(recipe, workspace_dir)
 
     # generate the stage names / stages
-    generate_stages(procedure, yaml_out)
+    generate_stages(recipe, ci_yaml_out)
 
     # generate the ensureData stages
-    generate_ensure_data(procedure, workspace_dir, yaml_out, shell_out)
+    generate_ensure_data(recipe, workspace_dir, ci_yaml_out, schedule)
 
     # tricky bit ... generate the training stages
     generate_training_stages(
-        procedure, workspace_dir, ci_project_dir, yaml_out, shell_out
+        recipe, workspace_dir, ci_project_dir, ci_yaml_out, schedule
     )
 
     # generate the match stage
-    generate_testing_stage(procedure, workspace_dir, yaml_out, shell_out)
+    generate_testing_stage(recipe, workspace_dir, ci_yaml_out, schedule)
 
-    return yaml_out, shell_out
+    return ci_yaml_out, schedule
 
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Translate recipe to pipeline and shell script."
+        description="Translate recipe to pipeline and schedule"
     )
+    parser.add_argument("workspace_dir", help="Workspace directory")
     parser.add_argument("input_file", help="Input recipe file")
     parser.add_argument("output_file", help="Output pipeline YAML file")
-    parser.add_argument("workspace_dir", help="Workspace directory")
     parser.add_argument("ci_project_dir", help="CI project directory")
     args = parser.parse_args()
 
@@ -308,13 +317,11 @@ if __name__ == "__main__":
 
     print("Translating recipe: ", input_file)
 
-    yaml_out, shell_out = parse_procedure(input_file, workspace_dir, ci_project_dir)
+    with open(input_file) as f:
+        recipe = yaml.safe_load(f)
+
+    ci_yaml_out, schedule = parse_recipe(recipe, workspace_dir, ci_project_dir)
 
     print("Resulting pipeline: ", Path(output_file))
     with Path(output_file).open(mode="w", encoding="utf-8") as f:
-        yaml.dump(yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
-
-    print("Resulting shell script: ", Path(output_file).with_suffix(".sh"))
-    with Path(output_file).with_suffix(".sh").open(mode="w", encoding="utf-8") as f:
-        for line in shell_out:
-            print(line, file=f)
+        yaml.dump(ci_yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
