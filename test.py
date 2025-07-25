@@ -1,4 +1,5 @@
 import yaml
+import re
 from pathlib import Path
 from .utils import execute
 import shutil
@@ -162,8 +163,6 @@ def run_fastchess(
         else:
             assert False, "EvalFile needs to be either small or big"
 
-    winning_net = None
-
     sha = testing_sha
     match_dir = Path.cwd() / "scratch" / test_config_sha / "match" / sha
     match_dir.mkdir(parents=True, exist_ok=True)
@@ -238,17 +237,23 @@ def run_fastchess(
         r"Finished game|Started game",
     )
 
+    pattern = re.compile(r"^\s*Elo\s*:\s*(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)")
+    winning_net = None
+    Elo = None
+
     for line in output:
         if "H0 was accepted" in line:
             print(f"⚠️  No pass: {short_nnue} failed SPRT")
-            break
 
         if "H1 was accepted" in line:
             print(f"🎉 Success: {short_nnue} passed SPRT")
             winning_net = short_nnue
-            break
 
-    return winning_net
+        match = pattern.match(line)
+        if match:
+            Elo = float(match.group(1))
+
+    return winning_net, Elo
 
 
 def run_test(test_config_sha, testing_sha):
@@ -262,7 +267,7 @@ def run_test(test_config_sha, testing_sha):
     fastchess = ensure_fastchess(test["fastchess"])
     stockfish_reference = ensure_stockfish("reference", test)
     stockfish_testing = ensure_stockfish("testing", test)
-    winning_net = run_fastchess(
+    return run_fastchess(
         test_config_sha,
         test,
         testing_sha,
@@ -270,8 +275,6 @@ def run_test(test_config_sha, testing_sha):
         stockfish_reference,
         stockfish_testing,
     )
-
-    return winning_net
 
 
 if __name__ == "__main__":
@@ -285,6 +288,6 @@ if __name__ == "__main__":
     test_config_sha = args.test_config_sha
     testing_sha = args.testing_sha
 
-    winning_net = run_test(test_config_sha, testing_sha)
+    winning_net, Elo = run_test(test_config_sha, testing_sha)
 
     # TODO: exit with error code if winning_net is None ?

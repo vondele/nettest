@@ -1,4 +1,6 @@
 import yaml
+from concurrent.futures import ProcessPoolExecutor, wait, ALL_COMPLETED
+from firecrest_executor import FirecrestExecutor
 
 from .generate_pipeline import parse_recipe
 from .ensure_data import run_data_update
@@ -6,31 +8,72 @@ from .train import run_step
 from .test import run_test
 
 
-def execute_local(recipe):
-    _, schedule = parse_recipe(recipe)
+def execute(executor, recipe):
+    _, schedule = executor.submit(parse_recipe, recipe).result()
 
-    for args in schedule["data"]:
-        run_data_update(**args)
+    # useful to batch a number of calls,
+    # needs to pass the function so it can be found remotely
+    # to avoid (attempted relative import with no known parent package)
+    def batch_function(f, items):
+        for kwargs in items:
+            f(**kwargs)
 
-    for args in schedule["train"]:
-        run_step(**args)
+    executor.submit(batch_function, run_data_update, schedule["data"]).result()
 
-    for args in schedule["test"]:
-        run_test(**args)
+    for kwargs in schedule["train"]:
+        executor.submit(run_step, **kwargs).result()
+
+    # do parallel tests, if the executor supports it
+    futures = []
+    for kwargs in schedule["test"]:
+        futures.append(executor.submit(run_test, **kwargs))
+
+    done, _ = wait(futures, return_when=ALL_COMPLETED)
+
+    # if there are multiple tests, we only return the highest Elo
+    Elo = None
+    for future in done:
+        _, result = future.result()
+        if Elo is None or result > Elo:
+            Elo = result
+
+    return Elo
 
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Execute a recipe")
-    parser.add_argument("input_file", help="Input recipe file")
+    parser.add_argument(
+        "--executor",
+        choices=["local", "remote"],
+        default="local",
+        help="Executor type: local or remote",
+    )
+    parser.add_argument("--recipe", required=True, help="Input recipe file")
     args = parser.parse_args()
 
-    input_file = args.input_file
-
-    print("Executing recipe: ", input_file)
-
-    with open(input_file) as f:
+    print("Executing recipe: ", args.recipe)
+    with open(args.recipe) as f:
         recipe = yaml.safe_load(f)
 
-    execute_local(recipe)
+    if args.executor == "local":
+        executor = ProcessPoolExecutor(max_workers=1)
+    else:
+        executor = FirecrestExecutor(
+            working_dir="/users/vjoost/fish/workspace/",
+            sbatch_options=[
+                "--job-name=FirecrestExecutor",
+                "--time=12:00:00",
+                "--nodes=1",
+                "--partition=normal",
+            ],
+            srun_options=["--environment=/users/vjoost/fish/workspace/nettest.toml"],
+            sleep_interval=5,
+            max_workers=64,
+        )
+
+    Elo = execute(executor, recipe)
+    print(f"Execution of the recipe led to a net of {Elo} Elo.")
+
+    executor.shutdown(wait=True, cancel_futures=False)

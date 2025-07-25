@@ -63,7 +63,7 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
 
         if stdout_line:
             if not filter_re or not filter_re.search(stdout_line):
-                print(stdout_line, end="")
+                print(stdout_line, end="", flush=True)
                 output.append(stdout_line)
 
         if not stdout_line and process.poll() is not None:
