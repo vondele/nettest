@@ -3,8 +3,8 @@ from pathlib import Path
 from time import sleep
 
 
-def run_data_update(workspace_dir: str, owner: str, repo: str):
-    owner_dir = Path(workspace_dir) / "data" / owner
+def run_data_update(owner: str, repo: str):
+    owner_dir = Path().cwd() / "data" / owner
     repo_dir = owner_dir / repo
 
     # try a couple of times, since we might be overloading hf
@@ -39,11 +39,10 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Ensure data for a given workspace, owner, and repo."
+        description="Ensure HF data is present in cwd/data for a given owner, and repo."
     )
-    parser.add_argument("workspace_dir", help="Workspace directory")
     parser.add_argument("owner", help="Repository owner")
     parser.add_argument("repo", help="Repository name")
     args = parser.parse_args()
 
-    run_data_update(args.workspace_dir, args.owner, args.repo)
+    run_data_update(args.owner, args.repo)

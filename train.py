@@ -6,7 +6,7 @@ import torch
 import time
 
 
-def ensure_trainer(workspace_dir, trainer):
+def ensure_trainer(trainer):
     """
     Install the specified nnue-pytorch trainer
     """
@@ -15,7 +15,7 @@ def ensure_trainer(workspace_dir, trainer):
     retry_delay = 30
 
     sha = trainer["sha"]
-    trainer_dir = Path(workspace_dir) / f"scratch/packages/trainer/{sha}"
+    trainer_dir = Path.cwd() / f"scratch/packages/trainer/{sha}"
     trainer_dir.mkdir(parents=True, exist_ok=True)
 
     owner = trainer["owner"]
@@ -74,12 +74,12 @@ def ckpt_reached_end(ckpt_path, max_epochs):
     return reached_end
 
 
-def run_trainer(current_sha, previous_sha, workspace_dir, run, nnue_pytorch_dir):
+def run_trainer(current_sha, previous_sha, run, nnue_pytorch_dir):
     """
     Run the training recipe for this step
     """
 
-    data_dir = Path(workspace_dir) / "data"
+    data_dir = Path.cwd() / "data"
 
     # first check all binpacks are available in non-compressed form
     for binpack in run["binpacks"]:
@@ -118,7 +118,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run, nnue_pytorch_dir)
     cmd.append(f"--network-save-period={max_epochs}")
 
     # Where to store logs and eventually checkpoints
-    root_dir = Path(workspace_dir) / "scratch" / current_sha / "run"
+    root_dir = Path.cwd() / "scratch" / current_sha / "run"
     cmd.append(f"--default_root_dir={root_dir}")
 
     # if the root_dir exists, assume we try to restart from the latest found checkpoint
@@ -141,9 +141,7 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run, nnue_pytorch_dir)
         ):
             assert previous_sha.lower() != "none"
 
-            final_yaml_file = (
-                Path(workspace_dir) / "scratch" / previous_sha / "final.yaml"
-            )
+            final_yaml_file = Path.cwd() / "scratch" / previous_sha / "final.yaml"
             assert (
                 final_yaml_file.exists()
             ), "The final final yaml file does not exist, a previous step training step did not complete"
@@ -175,14 +173,12 @@ def run_trainer(current_sha, previous_sha, workspace_dir, run, nnue_pytorch_dir)
         return False
 
 
-def run_conversion(
-    current_sha, workspace_dir, ci_project_dir, convert, nnue_pytorch_dir
-):
+def run_conversion(current_sha, convert, nnue_pytorch_dir):
     """
     Convert the final checkpoint into a .nnue and a .pt
     """
 
-    root_dir = Path(workspace_dir) / "scratch" / current_sha / "run"
+    root_dir = Path.cwd() / "scratch" / current_sha / "run"
 
     checkpoint = find_most_recent(root_dir, "last.ckpt")
     assert checkpoint is not None, "No checkpoint found in the run directory"
@@ -218,7 +214,7 @@ def run_conversion(
     # optimize as a second step (see https://github.com/official-stockfish/nnue-pytorch/issues/322)
     if "optimize" in convert:
         assert "binpack" in convert, "optimize on conversion, requires binpack entry"
-        binpack = Path(workspace_dir) / "data" / convert["binpack"]
+        binpack = Path.cwd() / "data" / convert["binpack"]
         source = destination
         nnue = checkpoint.with_suffix(".nnue")
         # TODO fix device
@@ -246,13 +242,13 @@ def run_conversion(
     print(f"nnue available as {std_nnue}")
 
     # store as an artifact for this run
-    artifact_dir = Path(ci_project_dir) / f"step_{current_sha}"
+    artifact_dir = Path.cwd() / "cidir" / f"step_{current_sha}"
     artifact_dir.mkdir(parents=True, exist_ok=True)
     artifact_nnue = artifact_dir / short_nnue
     shutil.copy(nnue, artifact_nnue)
     print(f"nnue available as artifact step_{current_sha}")
 
-    final_file = Path(workspace_dir) / "scratch" / current_sha / "final.yaml"
+    final_file = Path.cwd() / "scratch" / current_sha / "final.yaml"
     final = {
         "short_nnue": f"{short_nnue}",
         "std_nnue": f"{std_nnue}",
@@ -265,32 +261,28 @@ def run_conversion(
     return
 
 
-def run_step(current_sha, previous_sha, workspace_dir, ci_project_dir):
+def run_step(current_sha, previous_sha):
     """
     Driver to run the step
     """
 
-    if (Path(workspace_dir) / "scratch" / current_sha / "final.yaml").exists():
+    if (Path.cwd() / "scratch" / current_sha / "final.yaml").exists():
         print(
             f"⚠️  Step {current_sha} is already final, no work to be done, quick return! Maybe too many repetititions?"
         )
         return
 
-    with open(Path(workspace_dir) / "scratch" / current_sha / "step.yaml") as f:
+    with open(Path.cwd() / "scratch" / current_sha / "step.yaml") as f:
         step = yaml.safe_load(f)
 
     assert step["sha"] == current_sha
 
-    nnue_pytorch_dir = ensure_trainer(workspace_dir, step["trainer"])
-    reached_end = run_trainer(
-        current_sha, previous_sha, workspace_dir, step["run"], nnue_pytorch_dir
-    )
+    nnue_pytorch_dir = ensure_trainer(step["trainer"])
+    reached_end = run_trainer(current_sha, previous_sha, step["run"], nnue_pytorch_dir)
 
     if reached_end:
         run_conversion(
             current_sha,
-            workspace_dir,
-            ci_project_dir,
             step["convert"],
             nnue_pytorch_dir,
         )
@@ -304,12 +296,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Run step with provided SHAs and directories."
     )
-    parser.add_argument("workspace_dir", help="Workspace directory")
     parser.add_argument("current_sha", help="Current SHA")
     parser.add_argument("previous_sha", help="Previous SHA")
-    parser.add_argument("ci_project_dir", help="CI project directory")
     args = parser.parse_args()
 
-    run_step(
-        args.current_sha, args.previous_sha, args.workspace_dir, args.ci_project_dir
-    )
+    run_step(args.current_sha, args.previous_sha)

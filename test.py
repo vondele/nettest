@@ -5,7 +5,7 @@ import shutil
 import time
 
 
-def ensure_fastchess(workspace_dir, fastchess):
+def ensure_fastchess(fastchess):
     """
     Install the specified fastchess version
     """
@@ -17,7 +17,7 @@ def ensure_fastchess(workspace_dir, fastchess):
     owner = fastchess["code"]["owner"]
     repo = f"https://github.com/{owner}/fastchess.git"
 
-    base_dir = Path(workspace_dir) / f"scratch/packages/fastchess/{sha}"
+    base_dir = Path.cwd() / f"scratch/packages/fastchess/{sha}"
     base_dir.mkdir(parents=True, exist_ok=True)
 
     clone_dir = base_dir / "fastchess"
@@ -63,7 +63,7 @@ def ensure_fastchess(workspace_dir, fastchess):
                 raise
 
 
-def ensure_stockfish(workspace_dir, target, test):
+def ensure_stockfish(target, test):
     """
     Install the specified Stockfish version
     """
@@ -76,7 +76,7 @@ def ensure_stockfish(workspace_dir, target, test):
     owner = target_config["code"]["owner"]
     repo = f"https://github.com/{owner}/Stockfish.git"
 
-    target_dir = Path(workspace_dir) / f"scratch/packages/stockfish/{sha}"
+    target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}"
     target_dir.mkdir(parents=True, exist_ok=True)
 
     clone_dir = target_dir / "Stockfish"
@@ -125,7 +125,6 @@ def ensure_stockfish(workspace_dir, target, test):
 
 
 def run_fastchess(
-    workspace_dir,
     test_config_sha,
     test,
     testing_sha,
@@ -142,7 +141,7 @@ def run_fastchess(
     assert fastchess.exists()
 
     # TODO ... cleanup how to get the book in place
-    book = Path(workspace_dir) / "data" / "UHO_Lichess_4852_v1.epd"
+    book = Path.cwd() / "data" / "UHO_Lichess_4852_v1.epd"
 
     # collect specific options
     tc = test["fastchess"]["options"]["tc"]
@@ -166,7 +165,7 @@ def run_fastchess(
     winning_net = None
 
     sha = testing_sha
-    match_dir = Path(workspace_dir) / "scratch" / test_config_sha / "match" / sha
+    match_dir = Path.cwd() / "scratch" / test_config_sha / "match" / sha
     match_dir.mkdir(parents=True, exist_ok=True)
 
     # fastchess config
@@ -197,7 +196,7 @@ def run_fastchess(
     cmd += ["-pgnout", "file=match.pgn"]
 
     # add net to be tested
-    final_yaml_file = Path(workspace_dir) / "scratch" / sha / "final.yaml"
+    final_yaml_file = Path.cwd() / "scratch" / sha / "final.yaml"
     assert final_yaml_file.exists()
     with open(final_yaml_file) as f:
         final_config = yaml.safe_load(f)
@@ -252,19 +251,18 @@ def run_fastchess(
     return winning_net
 
 
-def run_test(workspace_dir, test_config_sha, testing_sha):
+def run_test(test_config_sha, testing_sha):
     """
     Driver to run the test
     """
 
-    with open(Path(workspace_dir) / "scratch" / test_config_sha / "testing.yaml") as f:
+    with open(Path.cwd() / "scratch" / test_config_sha / "testing.yaml") as f:
         test = yaml.safe_load(f)
 
-    fastchess = ensure_fastchess(workspace_dir, test["fastchess"])
-    stockfish_reference = ensure_stockfish(workspace_dir, "reference", test)
-    stockfish_testing = ensure_stockfish(workspace_dir, "testing", test)
+    fastchess = ensure_fastchess(test["fastchess"])
+    stockfish_reference = ensure_stockfish("reference", test)
+    stockfish_testing = ensure_stockfish("testing", test)
     winning_net = run_fastchess(
-        workspace_dir,
         test_config_sha,
         test,
         testing_sha,
@@ -279,18 +277,14 @@ def run_test(workspace_dir, test_config_sha, testing_sha):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Run tests for given workspace and SHAs."
-    )
-    parser.add_argument("workspace_dir", help="Workspace directory")
+    parser = argparse.ArgumentParser(description="Run tests for given SHAs.")
     parser.add_argument("test_config_sha", help="Test config SHA")
     parser.add_argument("testing_sha", help="Testing SHA")
     args = parser.parse_args()
 
-    workspace_dir = args.workspace_dir
     test_config_sha = args.test_config_sha
     testing_sha = args.testing_sha
 
-    winning_net = run_test(workspace_dir, test_config_sha, testing_sha)
+    winning_net = run_test(test_config_sha, testing_sha)
 
     # TODO: exit with error code if winning_net is None ?

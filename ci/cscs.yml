@@ -26,8 +26,9 @@ generateSchedule:
   image: $PERSIST_IMAGE_NAME
   script:
     - cd /workspace/
-    - python -u -m nettest.generate_pipeline /workspace /workspace/nettest/${RECIPE:-testing}.yaml $CI_PROJECT_DIR/training_schedule.yaml $CI_PROJECT_DIR
-    - cat $CI_PROJECT_DIR/training_schedule.yaml
+    - ln -s $CI_PROJECT_DIR ./cidir
+    - python -u -m nettest.generate_pipeline nettest/${RECIPE:-testing}.yaml ./cidir/training_schedule.yaml
+    - cat ./cidir/training_schedule.yaml
   variables:
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
