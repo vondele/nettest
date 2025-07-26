@@ -7,16 +7,15 @@ from .ensure_data import run_data_update
 from .train import run_step
 from .test import run_test
 
+# useful to batch a number of calls,
+# needs to pass the function so it can be found remotely
+# to avoid (attempted relative import with no known parent package)
+def batch_function(f, items):
+    for kwargs in items:
+        f(**kwargs)
 
 def execute(executor, recipe):
     _, schedule = executor.submit(parse_recipe, recipe).result()
-
-    # useful to batch a number of calls,
-    # needs to pass the function so it can be found remotely
-    # to avoid (attempted relative import with no known parent package)
-    def batch_function(f, items):
-        for kwargs in items:
-            f(**kwargs)
 
     executor.submit(batch_function, run_data_update, schedule["data"]).result()
 
