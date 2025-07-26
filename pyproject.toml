@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nettest"
+version = "0.1.0"
+description = "tools to execute net recipes"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later"}
+keywords = ["Stockfish", "NNUE"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+authors = [
+    { name = "Joost VandeVondele", email = "Joost.VandeVondele@gmail.com" }
+]
+dependencies = [
+    "firecrest-executor>=0.3.0",
+]
+requires-python = ">=3.8"
+
+[project.optional-dependencies]
+optimize = [
+    "nevergrad"
+]
+
+[project.urls]
+Repository = "https://github.com/vondele/nettest"
+
+[tool.setuptools]
+py-modules = ["nettest"]
+
+[tool.setuptools.package-data]
+firecrest_executor = ["README.md", "LICENSE"]
+

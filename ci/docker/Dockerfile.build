@@ -30,5 +30,8 @@ RUN pip install firecrest-executor --no-deps
 # copy the current nettest sources to have them around
 RUN cp -a /sourcecode /workspace/nettest/
 
+# pip install nettest (in editable mode)
+RUN cd /workspace/nettest/ && pip install -e .
+
 # note that the CI picks a different workdir (mounted by default in the workspace)
 WORKDIR /workspace/
