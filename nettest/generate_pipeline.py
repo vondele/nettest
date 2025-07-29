@@ -204,7 +204,7 @@ def generate_training_stages(recipe, ci_yaml_out, schedule):
 
             job["script"] = [
                 "cd /workspace/",
-                "ln -s $CI_PROJECT_DIR ./cidir"
+                "ln -s $CI_PROJECT_DIR ./cidir",
                 f"python -u -m nettest.train {current_sha} {previous_sha}",
             ]
 
