@@ -1,99 +1,44 @@
-#
-# nnue-pytorch training steps
-#
-training:
-  steps:
-#
-#
-#
-    - datasets:
-        - hf:
-           owner: official-stockfish
-           repo: master-binpacks
-      trainer:
-        owner: vondele
-        sha: e06ffda3e927850997487c57d49fbff64ac8d69b
-      run:
-        resume: none
-        max_epochs: 800
-        repetitions: 2
-        binpacks:
-          - official-stockfish/master-binpacks/dfrc_n5000.binpack
-          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-          - official-stockfish/master-binpacks/farseerT76.binpack
-          - official-stockfish/master-binpacks/farseerT74.binpack
-          - official-stockfish/master-binpacks/farseerT75.binpack
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --random-fen-skipping=3
-          - --lr=4.375e-4
-          - --gamma=0.995
-          - --early-fen-skipping=10
-      convert:
-        binpack: official-stockfish/master-binpacks/fishpack32.binpack
-        optimize:
-           - --features=HalfKAv2_hm
-           - --ft_optimize_count=100000
-           - --ft_optimize
-           - --ft_compression=leb128
-        checkpoint2nnue:
-           - --features=HalfKAv2_hm^
-           - --ft_compression=leb128
-#
-#
-#
-    - datasets:
-        - hf:
-           owner: official-stockfish
-           repo: master-binpacks
-        - hf:
-           owner: linrock
-           repo: test80-2022
-        - hf:
-           owner: linrock
-           repo: test80-2023
-      trainer:
-        owner: vondele
-        sha: e06ffda3e927850997487c57d49fbff64ac8d69b
-      run:
-        resume: previous_model
-        max_epochs: 800
-        repetitions: 2
-        binpacks:
-          - official-stockfish/master-binpacks/dfrc_n5000.binpack
-          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-          - official-stockfish/master-binpacks/farseerT76.binpack
-          - official-stockfish/master-binpacks/farseerT74.binpack
-          - official-stockfish/master-binpacks/farseerT75.binpack
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-05-may-16tb7p.binpack
-          - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.binpack
-          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
-          - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.binpack
-          - linrock/test80-2023/test80-2023-06-jun-2tb7p.binpack
-          - linrock/test80-2023/test80-2023-07-jul-2tb7p.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.binpack
-          - linrock/test80-2023/test80-2023-10-oct-2tb7p.binpack
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --random-fen-skipping=3
-          - --lr=4.375e-4
-          - --gamma=0.995
-          - --early-fen-skipping=25
-      convert:
-        binpack: official-stockfish/master-binpacks/fishpack32.binpack
-        optimize:
-           - --features=HalfKAv2_hm
-           - --ft_optimize_count=100000
-           - --ft_optimize
-           - --ft_compression=leb128
-        checkpoint2nnue:
-           - --features=HalfKAv2_hm^
-           - --ft_compression=leb128
-
+convert:
+  binpack: official-stockfish/master-binpacks/fishpack32.binpack
+  checkpoint2nnue:
+    - --features=HalfKAv2_hm^
+    - --ft_compression=leb128
+  optimize:
+    - --features=HalfKAv2_hm
+    - --ft_optimize_count=100000
+    - --ft_optimize
+    - --ft_compression=leb128
+datasets:
+  - hf:
+      owner: official-stockfish
+      repo: master-binpacks
+  - hf:
+      owner: vondele
+      repo: from_classical
+run:
+  binpacks:
+    - vondele/from_classical/from_classical_05_pv-2_diff-100_nodes-5000.binpack
+    - vondele/from_classical/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+    - vondele/from_classical/from_classical_03_pv-2_diff-100_nodes-5000.binpack
+  max_epochs: 800
+  repetitions: 2
+  other_options:
+    - --batch-size=16384
+    - --features=HalfKAv2_hm^
+    - --start-lambda=1.0
+    - --end-lambda=0.70
+    - --gamma=0.997
+    - --lr=0.0012181558724738395
+    - --in-scaling=317.5
+    - --out-scaling=379.8
+    - --in-offset=269.5
+    - --out-offset=253.5
+    - --pow-exp=2.5
+    - --random-fen-skipping=5
+  resume: none
+trainer:
+  owner: official-stockfish
+  sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
 #
 # Final testing stage using fastchess
 #
@@ -101,19 +46,20 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 5337edfdb6c9593e224be58225907682903db1a9
+      sha: 64e8e1b247367018ebbce15f0d7cf5a56c7eaf56
   testing:
     code:
       owner: official-stockfish
-      sha: 5337edfdb6c9593e224be58225907682903db1a9
+      sha: 64e8e1b247367018ebbce15f0d7cf5a56c7eaf56
   fastchess:
     code:
       owner: Disservin
-      sha: 6072a9bd24c07b300e3feb70ce7f77c2be8537cc
+      sha: 7676d4961518a7a0156bcd200149acc8c921f977
     options:
        tc: 10+0.1
        hash: 16
     sprt:
-       nElo_interval_midpoint: -63
+       # midpoint will be the target to reach, relative to reference, to have a passing CI
+       nElo_interval_midpoint: -30
        nElo_interval_width: 4
-       max_rounds: 100000
+       max_rounds: 160000
