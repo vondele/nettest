@@ -1,3 +1,6 @@
+#
+# basis of https://tests.stockfishchess.org/tests/view/6888fb097b562f5f7b732701
+#
 training:
   steps:
     - convert:
