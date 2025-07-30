@@ -22,12 +22,21 @@ class RemoteNet:
                 srun_options=[
                     "--environment=/users/vjoost/fish/workspace/nettest.toml"
                 ],
-                sleep_interval=5,
+                sleep_interval=10,
                 max_workers=max_workers,
             )
 
     # the recipe to optimize
-    def train_and_test_net(self, pow_exp, random_fen_skipping):
+    def train_and_test_net(
+        self,
+        pow_exp,
+        end_lambda,
+        in_scaling,
+        out_scaling,
+        in_offset,
+        out_offset,
+        simple_eval_skipping,
+    ):
         recipe_str = f"""
                #
                # nnue-pytorch training steps
@@ -103,16 +112,16 @@ class RemoteNet:
                          - --l1=128
                          - --no-wld-fen-skipping
                          - --start-lambda=1.0
-                         - --end-lambda=1.0
+                         - --end-lambda={end_lambda}
                          - --gamma=0.9942746303116422
                          - --lr=0.0012181558724738395
-                         - --in-scaling=320.15446837357985
-                         - --out-scaling=396.8462790115712
-                         - --in-offset=278.73702665289676
-                         - --out-offset=234.10701378957856
+                         - --in-scaling={in_scaling}
+                         - --out-scaling={out_scaling}
+                         - --in-offset={in_offset}
+                         - --out-offset={out_offset}
                          - --pow-exp={pow_exp}
-                         - --random-fen-skipping={random_fen_skipping}
-                         - --simple-eval-skipping=920
+                         - --random-fen-skipping=3
+                         - --simple-eval-skipping={simple_eval_skipping}
                          - --compile-backend=cudagraphs
                      convert:
                        binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -174,13 +183,16 @@ class RemoteNet:
 if __name__ == "__main__":
     instrumentation = ng.p.Instrumentation(
         ng.p.Scalar(init=2.5).set_bounds(lower=2.0, upper=3.0).set_mutation(sigma=0.15),
-        ng.p.Scalar(init=10)
-        .set_bounds(lower=2, upper=20)
-        .set_mutation(sigma=2)
-        .set_integer_casting(),
+        ng.p.Scalar(init=0.8).set_bounds(lower=0.5, upper=1.0).set_mutation(sigma=0.05),
+        ng.p.Scalar(init=320).set_bounds(lower=280, upper=360).set_mutation(sigma=20),
+        ng.p.Scalar(init=380).set_bounds(lower=360, upper=440).set_mutation(sigma=20),
+        ng.p.Scalar(init=280).set_bounds(lower=240, upper=320).set_mutation(sigma=20),
+        ng.p.Scalar(init=235).set_bounds(lower=195, upper=275).set_mutation(sigma=20),
+        ng.p.Scalar(init=920).set_bounds(lower=800, upper=1050).set_mutation(sigma=50).set_integer_casting(),
     )
-    budget = 64  # Total number of evaluations to perform
-    num_workers = 32  # Number of parallel workers to use
+
+    budget = 256  # Total number of evaluations to perform
+    num_workers = 128  # Number of parallel workers to use
 
     # The remotely trainable net
     remoteNet = RemoteNet(max_workers=num_workers, local=False)
