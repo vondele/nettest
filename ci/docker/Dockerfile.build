@@ -22,16 +22,14 @@ RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" 
 # for optimization
 RUN pip install --no-cache-dir  nevergrad
 
-# firecrest deps are tricky, to be fixed once upstream is fixed, in which case just the last package is needed
-RUN pip install --no-cache-dir aiofiles PyJWT dill
-RUN pip install --no-cache-dir pyfirecrest --no-deps
-RUN pip install firecrest-executor --no-deps
+# firecrest-executor will allow for remote execution
+RUN pip install --no-cache-dir firecrest-executor
 
 # copy the current nettest sources to have them around
 RUN cp -a /sourcecode /workspace/nettest/
 
 # pip install nettest (in editable mode)
-RUN cd /workspace/nettest/ && pip install -e . --no-deps
+RUN cd /workspace/nettest/ && pip install -e .
 
 # note that the CI picks a different workdir (mounted by default in the workspace)
 WORKDIR /workspace/
