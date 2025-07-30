@@ -19,6 +19,9 @@ training:
             repo: from_classical
       run:
         binpacks:
+          - vondele/from_classical/from_classical_05_pv-2_diff-100_nodes-5000.binpack
+          - vondele/from_classical/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+          - vondele/from_classical/from_classical_03_pv-2_diff-100_nodes-5000.binpack
         max_epochs: 800
         repetitions: 2
         other_options:
