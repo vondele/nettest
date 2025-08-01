@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" 
 RUN pip install --no-cache-dir  nevergrad
 
 # firecrest-executor will allow for remote execution
-RUN pip install --no-cache-dir firecrest-executor
+RUN pip install --no-cache-dir "firecrest-executor>=0.3.1"
 
 # copy the current nettest sources to have them around
 RUN cp -a /sourcecode /workspace/nettest/
