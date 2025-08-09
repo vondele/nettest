@@ -143,6 +143,7 @@ def run_fastchess(
 
     # TODO ... cleanup how to get the book in place
     book = Path.cwd() / "data" / "UHO_Lichess_4852_v1.epd"
+    assert book.exists(), f"{book} does not exist"
 
     # collect specific options
     tc = test["fastchess"]["options"]["tc"]
@@ -196,11 +197,13 @@ def run_fastchess(
 
     # add net to be tested
     final_yaml_file = Path.cwd() / "scratch" / sha / "final.yaml"
-    assert final_yaml_file.exists()
+    assert final_yaml_file.exists(), f"{final_yaml_file} does not exist"
     with open(final_yaml_file) as f:
         final_config = yaml.safe_load(f)
     short_nnue = final_config["short_nnue"]
     std_nnue = final_config["std_nnue"]
+    assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
+
     name = f"step_{sha}_{short_nnue}"
     cmd += [
         "-engine",
@@ -260,6 +263,8 @@ def run_test(test_config_sha, testing_sha):
     """
     Driver to run the test
     """
+
+    print(f"Testing config {test_config_sha} for sha {testing_sha}", flush=True)
 
     with open(Path.cwd() / "scratch" / test_config_sha / "testing.yaml") as f:
         test = yaml.safe_load(f)

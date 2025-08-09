@@ -36,7 +36,16 @@ class RemoteNet:
         in_offset,
         out_offset,
     ):
-        print("Starting:",pow_exp, end_lambda, in_scaling, out_scaling, in_offset, out_offset)
+        print(
+            "Starting:",
+            pow_exp,
+            end_lambda,
+            in_scaling,
+            out_scaling,
+            in_offset,
+            out_offset,
+            flush=True,
+        )
         recipe_str = f"""
 training:
   steps:
@@ -63,7 +72,7 @@ training:
           - vondele/from_classical/from_classical_04_pv-2_diff-100_nodes-5000.binpack
           - vondele/from_classical/from_classical_03_pv-2_diff-100_nodes-5000.binpack
         max_epochs: 800
-        repetitions: 2
+        repetitions: 3
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
@@ -101,7 +110,7 @@ testing:
        tc: 10+0.1
        hash: 16
     sprt:
-       nElo_interval_midpoint: -80
+       nElo_interval_midpoint: -85
        nElo_interval_width: 4
        max_rounds: 160000
                """
@@ -118,19 +127,41 @@ testing:
                 "execute returned None, something went wrong during execution."
             )
 
-        print("Done:",pow_exp, end_lambda, in_scaling, out_scaling, in_offset, out_offset, Elo)
+        print(
+            "Done:",
+            pow_exp,
+            end_lambda,
+            in_scaling,
+            out_scaling,
+            in_offset,
+            out_offset,
+            Elo,
+            flush=True,
+        )
 
         return -Elo
 
 
 if __name__ == "__main__":
     instrumentation = ng.p.Instrumentation(
-        ng.p.Scalar(init=2.5).set_bounds(lower=2.0, upper=3.0).set_mutation(sigma=0.15),
-        ng.p.Scalar(init=0.8).set_bounds(lower=0.5, upper=1.0).set_mutation(sigma=0.05),
-        ng.p.Scalar(init=320).set_bounds(lower=280, upper=360).set_mutation(sigma=20),
-        ng.p.Scalar(init=380).set_bounds(lower=360, upper=440).set_mutation(sigma=20),
-        ng.p.Scalar(init=280).set_bounds(lower=240, upper=320).set_mutation(sigma=20),
-        ng.p.Scalar(init=235).set_bounds(lower=195, upper=275).set_mutation(sigma=20),
+        ng.p.Scalar(init=2.8697536284675236)
+        .set_bounds(lower=2.0, upper=3.0)
+        .set_mutation(sigma=0.15),
+        ng.p.Scalar(init=0.6076801355005521)
+        .set_bounds(lower=0.5, upper=1.0)
+        .set_mutation(sigma=0.05),
+        ng.p.Scalar(init=293.81161997194454)
+        .set_bounds(lower=280, upper=360)
+        .set_mutation(sigma=20),
+        ng.p.Scalar(init=363.8749471909022)
+        .set_bounds(lower=360, upper=440)
+        .set_mutation(sigma=20),
+        ng.p.Scalar(init=290.8956602257791)
+        .set_bounds(lower=240, upper=320)
+        .set_mutation(sigma=20),
+        ng.p.Scalar(init=235.1574641440425)
+        .set_bounds(lower=195, upper=275)
+        .set_mutation(sigma=20),
     )
 
     budget = 128  # Total number of evaluations to perform
