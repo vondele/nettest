@@ -1,0 +1,68 @@
+
+training:
+  steps:
+    - convert:
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
+        checkpoint2nnue:
+          - --features=HalfKAv2_hm^
+          - --ft_compression=leb128
+        optimize:
+          - --features=HalfKAv2_hm
+          - --ft_optimize_count=100000
+          - --ft_optimize
+          - --ft_compression=leb128
+      datasets:
+        - hf:
+            owner: official-stockfish
+            repo: master-binpacks
+        - hf:
+            owner: vondele
+            repo: from_classical
+      run:
+        binpacks:
+          - vondele/from_classical/from_classical_05_pv-2_diff-100_nodes-5000.binpack
+          - vondele/from_classical/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+          - vondele/from_classical/from_classical_03_pv-2_diff-100_nodes-5000.binpack
+        max_epochs: 800
+        repetitions: 2
+        other_options:
+          - --batch-size=16384
+          - --features=HalfKAv2_hm^
+          - --start-lambda=1.0
+          - --end-lambda=0.6076801355005521
+          - --gamma=0.997
+          - --lr=0.0012
+          - --in-scaling=293.81161997194454
+          - --out-scaling=363.8749471909022
+          - --in-offset=290.8956602257791
+          - --out-offset=235.1574641440425
+          - --pow-exp=2.8697536284675236
+          - --random-fen-skipping=10
+        resume: none
+      trainer:
+        owner: official-stockfish
+        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+#
+# Final testing stage using fastchess
+#
+testing:
+  reference:
+    code:
+      owner: official-stockfish
+      sha: 64e8e1b247367018ebbce15f0d7cf5a56c7eaf56
+  testing:
+    code:
+      owner: official-stockfish
+      sha: 64e8e1b247367018ebbce15f0d7cf5a56c7eaf56
+  fastchess:
+    code:
+      owner: Disservin
+      sha: 7676d4961518a7a0156bcd200149acc8c921f977
+    options:
+       tc: 10+0.1
+       hash: 16
+    sprt:
+       nElo_interval_midpoint: -85
+       nElo_interval_width: 4
+       max_rounds: 160000
+               
