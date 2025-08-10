@@ -110,7 +110,7 @@ testing:
        tc: 10+0.1
        hash: 16
     sprt:
-       nElo_interval_midpoint: -85
+       nElo_interval_midpoint: -185
        nElo_interval_width: 4
        max_rounds: 160000
                """
