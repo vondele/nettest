@@ -240,9 +240,9 @@ def run_fastchess(
         r"Finished game|Started game",
     )
 
-    pattern = re.compile(r"^\s*Elo\s*:\s*(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)")
+    pattern = re.compile(r"nElo\s*:\s*(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)")
     winning_net = None
-    Elo = None
+    nElo = None
 
     for line in output:
         if "H0 was accepted" in line:
@@ -254,9 +254,9 @@ def run_fastchess(
 
         match = pattern.match(line)
         if match:
-            Elo = float(match.group(1))
+            nElo = float(match.group(1))
 
-    return winning_net, Elo
+    return winning_net, nElo
 
 
 def run_test(test_config_sha, testing_sha):
@@ -293,6 +293,6 @@ if __name__ == "__main__":
     test_config_sha = args.test_config_sha
     testing_sha = args.testing_sha
 
-    winning_net, Elo = run_test(test_config_sha, testing_sha)
+    winning_net, nElo = run_test(test_config_sha, testing_sha)
 
     # TODO: exit with error code if winning_net is None ?

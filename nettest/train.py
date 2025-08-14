@@ -142,9 +142,9 @@ def run_trainer(current_sha, previous_sha, run, nnue_pytorch_dir):
             assert previous_sha.lower() != "none"
 
             final_yaml_file = Path.cwd() / "scratch" / previous_sha / "final.yaml"
-            assert (
-                final_yaml_file.exists()
-            ), "The final final yaml file does not exist, a previous step training step did not complete"
+            assert final_yaml_file.exists(), (
+                "The final final yaml file does not exist, a previous step training step did not complete"
+            )
             with open(final_yaml_file) as f:
                 final = yaml.safe_load(f)
             previous_checkpoint = Path(final["checkpoint"])

@@ -6,7 +6,7 @@ import yaml
 
 
 class RemoteNet:
-    def __init__(self, max_workers=16, local=False):
+    def __init__(self, max_workers=16, local=False, nElo_target=0):
         # we could probably share the executor between calls to train_and_test_net
         if local:
             self.executor = ProcessPoolExecutor(max_workers=max_workers)
@@ -25,6 +25,7 @@ class RemoteNet:
                 sleep_interval=10,
                 max_workers=max_workers,
             )
+        self.nElo_target = nElo_target
 
     # the recipe to optimize
     def train_and_test_net(
@@ -110,19 +111,19 @@ testing:
        tc: 10+0.1
        hash: 16
     sprt:
-       nElo_interval_midpoint: -185
+       nElo_interval_midpoint: {self.nElo_target}
        nElo_interval_width: 4
        max_rounds: 160000
                """
 
         recipe = yaml.safe_load(recipe_str)
 
-        Elo = execute(
+        nElo = execute(
             recipe=recipe,
             executor=self.executor,
         )
 
-        if Elo is None:
+        if nElo is None:
             raise ValueError(
                 "execute returned None, something went wrong during execution."
             )
@@ -135,40 +136,42 @@ testing:
             out_scaling,
             in_offset,
             out_offset,
-            Elo,
+            nElo,
             flush=True,
         )
 
-        return -Elo
+        if nElo > self.nElo_target:
+            self.nElo_target = nElo
 
+        return -nElo
 
 if __name__ == "__main__":
     instrumentation = ng.p.Instrumentation(
-        ng.p.Scalar(init=2.8697536284675236)
+        ng.p.Scalar(init=2.673732874691348)
         .set_bounds(lower=2.0, upper=3.0)
         .set_mutation(sigma=0.15),
-        ng.p.Scalar(init=0.6076801355005521)
+        ng.p.Scalar(init=0.6223563199076579)
         .set_bounds(lower=0.5, upper=1.0)
         .set_mutation(sigma=0.05),
-        ng.p.Scalar(init=293.81161997194454)
+        ng.p.Scalar(init=307.67200848506064)
         .set_bounds(lower=280, upper=360)
         .set_mutation(sigma=20),
-        ng.p.Scalar(init=363.8749471909022)
+        ng.p.Scalar(init=393.5506102214191)
         .set_bounds(lower=360, upper=440)
         .set_mutation(sigma=20),
-        ng.p.Scalar(init=290.8956602257791)
+        ng.p.Scalar(init=309.11358877093744)
         .set_bounds(lower=240, upper=320)
         .set_mutation(sigma=20),
-        ng.p.Scalar(init=235.1574641440425)
+        ng.p.Scalar(init=242.54626388787534)
         .set_bounds(lower=195, upper=275)
         .set_mutation(sigma=20),
     )
 
     budget = 128  # Total number of evaluations to perform
-    num_workers = 8  # Number of parallel workers to use
+    num_workers = 16  # Number of parallel workers to use
 
     # The remotely trainable net
-    remoteNet = RemoteNet(max_workers=num_workers, local=False)
+    remoteNet = RemoteNet(max_workers=num_workers, local=False, nElo_target=-170)
 
     # Use TBPSA optimizer
     optimizer = ng.optimizers.TBPSA(

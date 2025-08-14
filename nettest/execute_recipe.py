@@ -7,12 +7,14 @@ from .ensure_data import run_data_update
 from .train import run_step
 from .test import run_test
 
+
 # useful to batch a number of calls,
 # needs to pass the function so it can be found remotely
 # to avoid (attempted relative import with no known parent package)
 def batch_function(f, items):
     for kwargs in items:
         f(**kwargs)
+
 
 def execute(executor, recipe):
     _, schedule = executor.submit(parse_recipe, recipe).result()
@@ -30,13 +32,13 @@ def execute(executor, recipe):
     done, _ = wait(futures, return_when=ALL_COMPLETED)
 
     # if there are multiple tests, we only return the highest Elo
-    Elo = None
+    nElo = None
     for future in done:
         _, result = future.result()
-        if Elo is None or result > Elo:
-            Elo = result
+        if nElo is None or result > nElo:
+            nElo = result
 
-    return Elo
+    return nElo
 
 
 if __name__ == "__main__":
@@ -72,7 +74,7 @@ if __name__ == "__main__":
             max_workers=64,
         )
 
-    Elo = execute(executor, recipe)
-    print(f"Execution of the recipe led to a net of {Elo} Elo.")
+    nElo = execute(executor, recipe)
+    print(f"Execution of the recipe led to a net of {nElo} nElo.")
 
     executor.shutdown(wait=True, cancel_futures=False)
