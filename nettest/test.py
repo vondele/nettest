@@ -252,7 +252,7 @@ def run_fastchess(
             print(f"🎉 Success: {short_nnue} passed SPRT")
             winning_net = short_nnue
 
-        match = pattern.match(line)
+        match = pattern.search(line)
         if match:
             nElo = float(match.group(1))
 
