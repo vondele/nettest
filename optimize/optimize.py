@@ -124,9 +124,9 @@ testing:
         )
 
         if nElo is None:
-            raise ValueError(
-                "execute returned None, something went wrong during execution."
-            )
+            # TODO ... better error handling possible ?
+            print("Something went wrong during evaluation .... continuing with lower bound estimate"
+            nElo = self.nElo_target - 10
 
         print(
             "Done:",
@@ -147,23 +147,23 @@ testing:
 
 if __name__ == "__main__":
     instrumentation = ng.p.Instrumentation(
-        ng.p.Scalar(init=2.673732874691348)
+        ng.p.Scalar(init=2.173) # pow_exp
         .set_bounds(lower=2.0, upper=3.0)
         .set_mutation(sigma=0.15),
-        ng.p.Scalar(init=0.6223563199076579)
+        ng.p.Scalar(init=0.7) # end_lambda
         .set_bounds(lower=0.5, upper=1.0)
         .set_mutation(sigma=0.05),
-        ng.p.Scalar(init=307.67200848506064)
-        .set_bounds(lower=280, upper=360)
+        ng.p.Scalar(init=281) # in_scaling
+        .set_bounds(lower=220, upper=360)
         .set_mutation(sigma=20),
-        ng.p.Scalar(init=393.5506102214191)
-        .set_bounds(lower=360, upper=440)
+        ng.p.Scalar(init=440) # out_scaling
+        .set_bounds(lower=360, upper=500)
         .set_mutation(sigma=20),
-        ng.p.Scalar(init=309.11358877093744)
-        .set_bounds(lower=240, upper=320)
+        ng.p.Scalar(init=291) # in_offset
+        .set_bounds(lower=240, upper=340)
         .set_mutation(sigma=20),
-        ng.p.Scalar(init=242.54626388787534)
-        .set_bounds(lower=195, upper=275)
+        ng.p.Scalar(init=218) # out_offset
+        .set_bounds(lower=180, upper=275)
         .set_mutation(sigma=20),
     )
 
