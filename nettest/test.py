@@ -141,8 +141,21 @@ def run_fastchess(
     assert stockfish_testing.exists()
     assert fastchess.exists()
 
-    # TODO ... cleanup how to get the book in place
-    book = Path.cwd() / "data" / "UHO_Lichess_4852_v1.epd"
+    # download book for testing as needed
+    book_dir = Path.cwd() / "data"
+    book = book_dir / "UHO_Lichess_4852_v1.epd"
+    if not book.exists():
+        execute(
+            "download book",
+            [
+                "wget",
+                "https://github.com/official-stockfish/books/raw/refs/heads/master/UHO_Lichess_4852_v1.epd.zip",
+            ],
+            book_dir,
+            False,
+        )
+        execute("unzip book", ["unzip", "UHO_Lichess_4852_v1.epd.zip"], book_dir, False)
+
     assert book.exists(), f"{book} does not exist"
 
     # collect specific options
