@@ -257,6 +257,7 @@ def run_fastchess(
     winning_net = None
     nElo = None
 
+    # currently there could be multiple lines with H0/H1 accepted, so repeated output is to be expected
     for line in output:
         if "H0 was accepted" in line:
             print(f"⚠️  No pass: {short_nnue} failed SPRT")
