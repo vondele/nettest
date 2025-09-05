@@ -188,11 +188,16 @@ def generate_training_stages(recipe, ci_yaml_out, schedule):
     previous_sha = "None"
 
     for step in recipe["training"]["steps"]:
+        current_sha = step["sha"]
+        print(f"Step starting from {previous_sha} leading to {current_sha}", flush=True)
+
         if step["status"] == "Final":
-            previous_sha = step["sha"]
+            print("--> step is final already", flush=True)
+            previous_sha = current_sha
             continue
 
-        current_sha = step["sha"]
+        max_epochs = step["run"].get("max_epochs", 0)
+        print(f"--> step needs {max_epochs} epochs", flush=True)
 
         repetitions = step["run"].get("repetitions", 1)
         for rep in range(0, repetitions):
@@ -273,6 +278,9 @@ def parse_recipe(recipe):
     # insert shas that uniquely identify each step based on the full history of the training recipe
     insert_shas(recipe)
 
+    print("Recipe, augmented with shas:")
+    print(yaml.dump(recipe, Dumper=MyDumper, default_flow_style=False, width=300))
+
     # setup workspace, and figure out status
     workspace_status(recipe)
 
@@ -287,6 +295,8 @@ def parse_recipe(recipe):
 
     # generate the match stage
     generate_testing_stage(recipe, ci_yaml_out, schedule)
+    print("schedule information:")
+    print(yaml.dump(schedule, Dumper=MyDumper, default_flow_style=False, width=300))
 
     return ci_yaml_out, schedule
 
