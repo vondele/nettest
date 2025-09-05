@@ -19,14 +19,22 @@ def batch_function(f, items):
 def execute(executor, recipe):
     _, schedule = executor.submit(parse_recipe, recipe).result()
 
+    print("submitting data update", flush=True)
     executor.submit(batch_function, run_data_update, schedule["data"]).result()
 
+    itrain = 0
+    ntrain = len(schedule["train"])
     for kwargs in schedule["train"]:
+        itrain += 1
+        print(f"submitting training step {itrain} / {ntrain}", flush=True)
         executor.submit(run_step, **kwargs).result()
 
     # do parallel tests, if the executor supports it
     futures = []
+    itest = 0
+    ntest = len(schedule["test"])
     for kwargs in schedule["test"]:
+        print(f"submitting testing step {itest} / {ntest}", flush=True)
         futures.append(executor.submit(run_test, **kwargs))
 
     done, _ = wait(futures, return_when=ALL_COMPLETED)
@@ -37,6 +45,8 @@ def execute(executor, recipe):
         _, result = future.result()
         if nElo is None or result > nElo:
             nElo = result
+
+    print("all done", flush=True)
 
     return nElo
 
