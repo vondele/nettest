@@ -118,6 +118,9 @@ training:
             owner: official-stockfish
             repo: master-binpacks
         - hf:
+            owner: vondele
+            repo: from_kaggle_1
+        - hf:
             owner: linrock
             repo: test60
         - hf:
@@ -138,12 +141,13 @@ training:
         - hf:
             owner: linrock
             repo: test80-2024
-        - hf:
-            owner: linrock
-            repo: dual-nnue
       run:
         binpacks:
-          - kaggle/leela96-filt-v2.min.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
@@ -217,6 +221,9 @@ training:
             owner: official-stockfish
             repo: master-binpacks
         - hf:
+            owner: vondele
+            repo: from_kaggle_1
+        - hf:
             owner: linrock
             repo: test60
         - hf:
@@ -237,12 +244,13 @@ training:
         - hf:
             owner: linrock
             repo: test80-2024
-        - hf:
-            owner: linrock
-            repo: dual-nnue
       run:
         binpacks:
-          - kaggle/leela96-filt-v2.min.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
@@ -316,6 +324,9 @@ training:
             owner: official-stockfish
             repo: master-binpacks
         - hf:
+            owner: vondele
+            repo: from_kaggle_1
+        - hf:
             owner: linrock
             repo: test60
         - hf:
@@ -336,12 +347,13 @@ training:
         - hf:
             owner: linrock
             repo: test80-2024
-        - hf:
-            owner: linrock
-            repo: dual-nnue
       run:
         binpacks:
-          - kaggle/leela96-filt-v2.min.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
@@ -415,6 +427,9 @@ training:
             owner: official-stockfish
             repo: master-binpacks
         - hf:
+            owner: vondele
+            repo: from_kaggle_1
+        - hf:
             owner: linrock
             repo: test60
         - hf:
@@ -435,12 +450,13 @@ training:
         - hf:
             owner: linrock
             repo: test80-2024
-        - hf:
-            owner: linrock
-            repo: dual-nnue
       run:
         binpacks:
-          - kaggle/leela96-filt-v2.min.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
