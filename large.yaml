@@ -1,3 +1,15 @@
+#
+# accurately measured Elo for the 6 stages in this recipe
+#
+#   # PLAYER                  :  RATING  ERROR    POINTS   PLAYED   (%)
+#   1 master                  :     0.0   ----  816891.5  1559209    52
+#   2 nn-385f5e92693f.nnue    :    -6.9    0.8  188265.0   384000    49
+#   3 nn-3c0ad80612b0.nnue    :    -7.3    0.8  188050.5   384000    49
+#   4 nn-987723557728.nnue    :    -8.9    1.0  124814.0   256000    49
+#   5 nn-c58470727ee0.nnue    :   -12.7    0.9  135585.0   281209    48
+#   6 nn-2725d01cf124.nnue    :   -34.4    1.4   57377.0   127000    45
+#   7 nn-b7f6fc9de040.nnue    :   -87.2    1.4   48226.0   127000    38
+#
 training:
   steps:
     #
