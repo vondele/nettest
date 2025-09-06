@@ -80,6 +80,9 @@ def workspace_status(recipe):
         final_status_file = step_dir / "final.yaml"
         if final_status_file.is_file():
             step["status"] = "Final"
+            with open(final_status_file) as f:
+                final_info = yaml.safe_load(f)
+                step["std_nnue"] = final_info["std_nnue"]
         else:
             step["status"] = "New"  # TODO might need to deal with running steps etc.
             step_yaml = step_dir / "step.yaml"
@@ -192,7 +195,8 @@ def generate_training_stages(recipe, ci_yaml_out, schedule):
         print(f"Step starting from {previous_sha} leading to {current_sha}", flush=True)
 
         if step["status"] == "Final":
-            print("--> step is final already", flush=True)
+            std_nnue = step.get("std_nnue", "unknown")
+            print(f"--> step is final already. Result: {std_nnue}", flush=True)
             previous_sha = current_sha
             continue
 
