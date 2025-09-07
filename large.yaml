@@ -46,7 +46,7 @@ training:
           - --end-lambda=0.75
           - --random-fen-skipping=10
           - --early-fen-skipping=12
-        resume: previous_model
+        resume: none
       trainer:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
