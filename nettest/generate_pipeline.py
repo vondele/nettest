@@ -3,6 +3,7 @@ import yaml
 import hashlib
 import json
 from pathlib import Path
+from collections import defaultdict
 from .utils import MyDumper
 
 
@@ -153,18 +154,23 @@ def generate_job_base():
 
 def generate_ensure_data(recipe, ci_yaml_out, schedule):
     """
-    Extract all datasets from the training steps, as a set of all needed Huggingface owner/repo tuples.
+    Extract all datasets from the training steps
     """
 
-    hfs = set()
-    # Guarantee the presence of this one in all cases
-    hfs.add(("official-stockfish", "master-binpacks"))
-
-    # see what is needed, do not skip what is needed in finalized steps, might be useful to keep these datasets warm.
+    # collect all binpacks that are needed
+    binpacks = set()
     if "training" in recipe:
         for step in recipe["training"]["steps"]:
-            for dataset in step["datasets"]:
-                hfs.add((dataset["hf"]["owner"], dataset["hf"]["repo"]))
+            if "convert" in step and "binpack" in step["convert"]:
+                binpacks.add(step["convert"]["binpack"])
+            if "run" in step and "binpacks" in step["run"]:
+                for binpack in step["run"]["binpacks"]:
+                    binpacks.add(binpack)
+
+    repos = defaultdict(list)
+    for binpack in binpacks:
+        owner, repo, filename = binpack.split("/", 2)
+        repos[(owner, repo)].append(filename)
 
     # actual job script steps..
     job = generate_job_base()
@@ -172,9 +178,11 @@ def generate_ensure_data(recipe, ci_yaml_out, schedule):
     job["stage"] = "ensureData"
 
     job["script"] = ["cd /workspace", "ln -s $CI_PROJECT_DIR ./cidir"]
-    for hf in hfs:
-        job["script"].append(f"python -u -m nettest.ensure_data {hf[0]} {hf[1]}")
-        schedule["data"].append({"owner": hf[0], "repo": hf[1]})
+    for (owner, repo), filenames in repos.items():
+        job["script"].append(
+            f"python -u -m nettest.ensure_data {owner} {repo} " + " ".join(filenames)
+        )
+        schedule["data"].append({"owner": owner, "repo": repo, "filenames": filenames})
 
     ci_yaml_out["ensureDataJob"] = job
     return
