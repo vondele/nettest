@@ -5,16 +5,12 @@ RUN apt-get update && apt-get install -y \
   git \
   curl \
   python3-venv \
-  git-lfs \
   zstd \
   strace \
   gdb \
   python3-dbg \
   linux-tools-common linux-tools-generic \
   && rm -rf /var/lib/apt/lists/*
-
-# ensure git can deal with lfs
-RUN git lfs install
 
 # current set of nnue-pytorch dependencies, some already in the image
 RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib tensorboard numba "numpy<2.0" requests pytorch-lightning
@@ -26,7 +22,7 @@ RUN pip install --no-cache-dir  nevergrad
 RUN pip install --no-cache-dir "firecrest-executor>=0.3.1"
 
 # enabler for hf downloads
-RUN pip install huggingface_hub
+RUN pip install huggingface_hub zstandard
 
 # copy the current nettest sources to have them around
 COPY . /workspace/nettest/
