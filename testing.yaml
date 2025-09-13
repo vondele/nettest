@@ -6,11 +6,7 @@ training:
 #
 #
 #
-    - datasets:
-        - hf:
-           owner: official-stockfish
-           repo: master-binpacks
-      trainer:
+    - trainer:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
       run:
@@ -36,11 +32,7 @@ training:
 #
 #
 #
-    - datasets:
-        - hf:
-           owner: official-stockfish
-           repo: master-binpacks
-      trainer:
+    - trainer:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
       run:
@@ -67,11 +59,7 @@ training:
 #
 #
 #
-    - datasets:
-        - hf:
-           owner: official-stockfish
-           repo: master-binpacks
-      trainer:
+    - trainer:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
       run:
