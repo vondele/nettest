@@ -1,58 +1,6 @@
 #
-# accurately measured Elo for the 6 stages in this recipe
-#
-#   # PLAYER                  :  RATING  ERROR    POINTS   PLAYED   (%)
-#   1 master                  :     0.0   ----  816891.5  1559209    52
-#   2 nn-385f5e92693f.nnue    :    -6.9    0.8  188265.0   384000    49
-#   3 nn-3c0ad80612b0.nnue    :    -7.3    0.8  188050.5   384000    49
-#   4 nn-987723557728.nnue    :    -8.9    1.0  124814.0   256000    49
-#   5 nn-c58470727ee0.nnue    :   -12.7    0.9  135585.0   281209    48
-#   6 nn-2725d01cf124.nnue    :   -34.4    1.4   57377.0   127000    45
-#   7 nn-b7f6fc9de040.nnue    :   -87.2    1.4   48226.0   127000    38
-#
 training:
   steps:
-    #
-    # S1 
-    #
-    - convert:
-        binpack: official-stockfish/master-binpacks/fishpack32.binpack
-        checkpoint2nnue:
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --ft_compression=leb128
-        optimize:
-          - --features=HalfKAv2_hm
-          - --l1=3072
-          - --ft_optimize_count=100000
-          - --ft_optimize
-          - --ft_compression=leb128
-      datasets:
-        - hf:
-            owner: official-stockfish
-            repo: master-binpacks
-      run:
-        binpacks:
-          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack # 2x
-          - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
-          - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
-          - official-stockfish/master-binpacks/dfrc_n5000.binpack
-        max_epochs: 400
-        repetitions: 1
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --lr=4.375e-4
-          - --gamma=0.995
-          - --start-lambda=1.0
-          - --end-lambda=1.0
-          - --random-fen-skipping=10
-        resume: none
-      trainer:
-        owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
     #
     # S2 
     #
@@ -82,6 +30,10 @@ training:
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
+          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
+          - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
+          - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
+          - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         repetitions: 3
         other_options:
@@ -94,7 +46,7 @@ training:
           - --end-lambda=0.75
           - --random-fen-skipping=10
           - --early-fen-skipping=12
-        resume: previous_model
+        resume: none
       trainer:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
