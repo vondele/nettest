@@ -11,13 +11,6 @@ training:
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
-      datasets:
-        - hf:
-            owner: official-stockfish
-            repo: master-binpacks
-        - hf:
-            owner: vondele
-            repo: from_classical
       run:
         binpacks:
           - vondele/from_classical/from_classical_05_pv-2_diff-100_nodes-5000.binpack
