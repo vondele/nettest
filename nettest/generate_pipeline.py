@@ -269,7 +269,7 @@ def generate_testing_stage(recipe, ci_yaml_out, schedule):
             job["stage"] = "testing"
             job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
             job["script"].append(task)
-            ci_yaml_out[f"testingJob_{steps}"] = job
+            ci_yaml_out[f"testingJob_{testing_sha}"] = job
 
             schedule["test"].append(
                 {
