@@ -254,26 +254,29 @@ def generate_testing_stage(recipe, ci_yaml_out, schedule):
 
     test_config_sha = recipe["testing"]["sha"]
 
-    job = generate_job_base()
-    job["stage"] = "testing"
-
     # pass the last training step sha as input, and all other steps that were computed in this run
-    job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
     steps = 0
     for step in reversed(recipe["training"]["steps"]):
         if step["status"] != "Final" or steps == 0:
             steps += 1
             testing_sha = step["sha"]
             task = f"python -u -m nettest.test {test_config_sha} {testing_sha}"
+
+            # should lead to independent jobs for each stage.
+            # TODO: building fastchess might be racy in this case.
+            # TODO: in principle we could launch the testing job as soon as the training stage is done.
+            job = generate_job_base()
+            job["stage"] = "testing"
+            job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
             job["script"].append(task)
+            ci_yaml_out[f"testingJob_{testing_sha}"] = job
+
             schedule["test"].append(
                 {
                     "test_config_sha": test_config_sha,
                     "testing_sha": testing_sha,
                 }
             )
-
-    ci_yaml_out["testingJob"] = job
 
     return
 
