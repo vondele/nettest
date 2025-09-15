@@ -11,7 +11,7 @@ training:
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
       run:
         resume: none
-        max_epochs: 10
+        max_epochs: 15
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
