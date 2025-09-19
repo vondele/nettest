@@ -2,7 +2,7 @@
 training:
   steps:
     #
-    # S2 
+    # S1
     #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -16,13 +16,6 @@ training:
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
-      datasets:
-        - hf:
-            owner: official-stockfish
-            repo: master-binpacks
-        - hf:
-            owner: vondele
-            repo: from_kaggle_2
       run:
         binpacks:
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
@@ -51,7 +44,7 @@ training:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
     #
-    # S3 
+    # S2
     #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -65,34 +58,6 @@ training:
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
-      datasets:
-        - hf:
-            owner: official-stockfish
-            repo: master-binpacks
-        - hf:
-            owner: vondele
-            repo: from_kaggle_1
-        - hf:
-            owner: linrock
-            repo: test60
-        - hf:
-            owner: linrock
-            repo: test77
-        - hf:
-            owner: linrock
-            repo: test78
-        - hf:
-            owner: linrock
-            repo: test79
-        - hf:
-            owner: linrock
-            repo: test80-2022
-        - hf:
-            owner: linrock
-            repo: test80-2023
-        - hf:
-            owner: linrock
-            repo: test80-2024
       run:
         binpacks:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
@@ -154,7 +119,7 @@ training:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
     #
-    # S4 repeat S3
+    # S3
     #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -168,34 +133,6 @@ training:
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
-      datasets:
-        - hf:
-            owner: official-stockfish
-            repo: master-binpacks
-        - hf:
-            owner: vondele
-            repo: from_kaggle_1
-        - hf:
-            owner: linrock
-            repo: test60
-        - hf:
-            owner: linrock
-            repo: test77
-        - hf:
-            owner: linrock
-            repo: test78
-        - hf:
-            owner: linrock
-            repo: test79
-        - hf:
-            owner: linrock
-            repo: test80-2022
-        - hf:
-            owner: linrock
-            repo: test80-2023
-        - hf:
-            owner: linrock
-            repo: test80-2024
       run:
         binpacks:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
@@ -257,7 +194,7 @@ training:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
     #
-    # S5 repeat S4
+    # S4
     #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -271,34 +208,6 @@ training:
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
-      datasets:
-        - hf:
-            owner: official-stockfish
-            repo: master-binpacks
-        - hf:
-            owner: vondele
-            repo: from_kaggle_1
-        - hf:
-            owner: linrock
-            repo: test60
-        - hf:
-            owner: linrock
-            repo: test77
-        - hf:
-            owner: linrock
-            repo: test78
-        - hf:
-            owner: linrock
-            repo: test79
-        - hf:
-            owner: linrock
-            repo: test80-2022
-        - hf:
-            owner: linrock
-            repo: test80-2023
-        - hf:
-            owner: linrock
-            repo: test80-2024
       run:
         binpacks:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
@@ -360,7 +269,7 @@ training:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
     #
-    # S6 repeat S5
+    # S5
     #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -374,34 +283,6 @@ training:
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
-      datasets:
-        - hf:
-            owner: official-stockfish
-            repo: master-binpacks
-        - hf:
-            owner: vondele
-            repo: from_kaggle_1
-        - hf:
-            owner: linrock
-            repo: test60
-        - hf:
-            owner: linrock
-            repo: test77
-        - hf:
-            owner: linrock
-            repo: test78
-        - hf:
-            owner: linrock
-            repo: test79
-        - hf:
-            owner: linrock
-            repo: test80-2022
-        - hf:
-            owner: linrock
-            repo: test80-2023
-        - hf:
-            owner: linrock
-            repo: test80-2024
       run:
         binpacks:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
@@ -482,6 +363,6 @@ testing:
        tc: 10+0.1
        hash: 16
     sprt:
-       nElo_interval_midpoint: -15
+       nElo_interval_midpoint: -10
        nElo_interval_width: 2
        max_rounds: 100000
