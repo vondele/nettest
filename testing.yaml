@@ -93,6 +93,7 @@ training:
 # Final testing stage using fastchess
 #
 testing:
+  steps: all
   reference:
     code:
       owner: vondele

@@ -253,11 +253,23 @@ def generate_testing_stage(recipe, ci_yaml_out, schedule):
         return
 
     test_config_sha = recipe["testing"]["sha"]
+    test_steps = recipe["testing"].get("steps", "new")
+    assert test_steps in ["new", "all", "last"], (
+        "testing steps must be 'new', 'all' or 'last'"
+    )
 
     # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
     for step in reversed(recipe["training"]["steps"]):
-        if step["status"] != "Final" or steps == 0:
+        use_step = False
+        if test_steps == "all":
+            use_step = True
+        elif test_steps == "new" and (step["status"] != "Final" or steps == 0):
+            use_step = True
+        elif test_steps == "last" and steps == 0:
+            use_step = True
+
+        if use_step:
             steps += 1
             testing_sha = step["sha"]
             task = f"python -u -m nettest.test {test_config_sha} {testing_sha}"
