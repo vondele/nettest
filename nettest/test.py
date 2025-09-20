@@ -204,8 +204,8 @@ def run_fastchess(
     # fastchess config
     cmd = [f"{fastchess}"]
 
-    if "fastchess" in environment and "concurrency" in environment["fastchess"]:
-        concurrency = environment["fastchess"]["concurrency"]
+    if "test" in environment and "concurrency" in environment["test"]:
+        concurrency = environment["test"]["concurrency"]
     else:
         concurrency = os.cpu_count()
 
@@ -214,8 +214,8 @@ def run_fastchess(
         f"{concurrency}",
     ]
 
-    if "fastchess" in environment and "affinity" in environment["fastchess"]:
-        affinity = environment["fastchess"]["affinity"]
+    if "test" in environment and "affinity" in environment["test"]:
+        affinity = environment["test"]["affinity"]
         cmd += [
             "-use-affinity",
             f"{affinity}",
