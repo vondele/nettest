@@ -3,6 +3,7 @@ import re
 from pathlib import Path
 from .utils import execute
 import shutil
+import uuid
 import time
 
 
@@ -79,45 +80,53 @@ def ensure_stockfish(target, test):
     repo = f"https://github.com/{owner}/Stockfish.git"
 
     target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}-{target_build}"
-    target_dir.mkdir(parents=True, exist_ok=True)
+    stockfish_binary = target_dir / "Stockfish" / "src" / "stockfish"
 
-    clone_dir = target_dir / "Stockfish"
-    stockfish_src_dir = clone_dir / "src"
-    stockfish_binary = stockfish_src_dir / "stockfish"
+    if stockfish_binary.exists():
+        return stockfish_binary
 
     for attempt in range(1, max_retries + 1):
+        unique_suffix = str(uuid.uuid4())
+        temp_build_dir = target_dir.parent / f"{target_dir.name}_build_{unique_suffix}"
+        temp_stockfish_src_dir = temp_build_dir / "Stockfish" / "src"
+
         try:
-            if not clone_dir.exists():
-                execute(
-                    f"[attempt {attempt}] clone Stockfish {target}",
-                    ["git", "clone", "--no-checkout", repo],
-                    target_dir,
-                    True,
-                )
+            temp_build_dir.mkdir(parents=True, exist_ok=True)
+            execute(
+                f"[attempt {attempt}] clone Stockfish {target}",
+                ["git", "clone", "--no-checkout", repo],
+                temp_build_dir,
+                False,
+            )
 
-            if not stockfish_binary.exists():
-                execute(
-                    f"[attempt {attempt}] checkout sha {sha}",
-                    ["git", "checkout", "--detach", sha],
-                    stockfish_src_dir,
-                    False,
-                )
+            execute(
+                f"[attempt {attempt}] checkout sha {sha}",
+                ["git", "checkout", "--detach", sha],
+                temp_stockfish_src_dir,
+                False,
+            )
 
-                # explicitly specify native, as ARCH is defined differently in the CI pipeline
-                execute(
-                    f"[attempt {attempt}] build Stockfish",
-                    ["make", "-j", f"{target_build}", "ARCH=native"],
-                    stockfish_src_dir,
-                    False,
-                )
+            # explicitly define ARCH, as the variable exists in the CI environment
+            execute(
+                f"[attempt {attempt}] build Stockfish",
+                ["make", "-j", f"{target_build}", "ARCH=native"],
+                temp_stockfish_src_dir,
+                False,
+            )
 
+            # Try to atomically move the build to the target location
+            try:
+                temp_build_dir.rename(target_dir)
+            except Exception:
+                # If rename fails clean up (maybe another process was faster), cleanup
+                shutil.rmtree(temp_build_dir, ignore_errors=True)
+
+            assert stockfish_binary.exists(), "The binary should, but does not, exist."
             return stockfish_binary
 
         except Exception as e:
             print(f"⚠️ Attempt {attempt} failed: {e}")
-            if clone_dir.exists():
-                shutil.rmtree(clone_dir, ignore_errors=True)
-
+            shutil.rmtree(temp_build_dir, ignore_errors=True)
             if attempt < max_retries:
                 print(f"🔁 Retrying after {retry_delay} seconds...")
                 time.sleep(retry_delay)
