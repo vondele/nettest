@@ -16,7 +16,7 @@ def batch_function(f, items):
         f(**kwargs)
 
 
-def execute(executor, recipe):
+def execute(executor, recipe, environment):
     _, schedule = executor.submit(parse_recipe, recipe).result()
 
     print("submitting data update", flush=True)
@@ -27,7 +27,7 @@ def execute(executor, recipe):
     for kwargs in schedule["train"]:
         itrain += 1
         print(f"submitting training step {itrain} / {ntrain}", flush=True)
-        executor.submit(run_step, **kwargs).result()
+        executor.submit(run_step, environment, **kwargs).result()
 
     # do parallel tests, if the executor supports it
     futures = []
@@ -35,7 +35,7 @@ def execute(executor, recipe):
     ntest = len(schedule["test"])
     for kwargs in schedule["test"]:
         print(f"submitting testing step {itest} / {ntest}", flush=True)
-        futures.append(executor.submit(run_test, **kwargs))
+        futures.append(executor.submit(run_test, environment, **kwargs))
 
     done, _ = wait(futures, return_when=ALL_COMPLETED)
 
@@ -62,11 +62,21 @@ if __name__ == "__main__":
         help="Executor type: local or remote",
     )
     parser.add_argument("--recipe", required=True, help="Input recipe file")
+    parser.add_argument(
+        "--environment", required=False, help="Definition of the environment file"
+    )
     args = parser.parse_args()
 
     print("Executing recipe: ", args.recipe)
     with open(args.recipe) as f:
         recipe = yaml.safe_load(f)
+
+    if args.environment:
+        print("Using environment file: ", args.environment)
+        with open(args.environment) as f:
+            environment = yaml.safe_load(f)
+    else:
+        environment = dict()
 
     if args.executor == "local":
         executor = ProcessPoolExecutor(max_workers=1)
@@ -84,7 +94,7 @@ if __name__ == "__main__":
             max_workers=64,
         )
 
-    nElo = execute(executor, recipe)
+    nElo = execute(executor, recipe, environment)
     print(f"Execution of the recipe led to a net of {nElo} nElo.")
 
     executor.shutdown(wait=True, cancel_futures=False)

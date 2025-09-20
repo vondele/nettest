@@ -1,0 +1,10 @@
+# example setup for a local system.
+# However, on a non-numa system with a single GPU, an environment file is not necessary, and defaults will work.
+test:
+  concurrency: 32
+  affinity: 0-31
+train:
+  devices: 0,
+  workers: 48
+  cpunodebind: 0
+  membind: 0

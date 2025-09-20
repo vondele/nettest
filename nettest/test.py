@@ -5,6 +5,7 @@ from .utils import execute
 import shutil
 import uuid
 import time
+import os
 
 
 def ensure_fastchess(fastchess):
@@ -144,6 +145,7 @@ def ensure_stockfish(target, test):
 
 
 def run_fastchess(
+    environment,
     test_config_sha,
     test,
     testing_sha,
@@ -200,16 +202,24 @@ def run_fastchess(
     match_dir.mkdir(parents=True, exist_ok=True)
 
     # fastchess config
-    # TODO: should this be configurable for better local testing?
-    # TODO: presence of a config file would imply that a restart is possible?
     cmd = [f"{fastchess}"]
+
+    if "fastchess" in environment and "concurrency" in environment["fastchess"]:
+        concurrency = environment["fastchess"]["concurrency"]
+    else:
+        concurrency = os.cpu_count()
+
     cmd += [
         "-concurrency",
-        "280",
-        "-force-concurrency",
-        "-use-affinity",
-        "2-71,74-143,146-215,218-287",
+        f"{concurrency}",
     ]
+
+    if "fastchess" in environment and "affinity" in environment["fastchess"]:
+        affinity = environment["fastchess"]["affinity"]
+        cmd += [
+            "-use-affinity",
+            f"{affinity}",
+        ]
 
     cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
     cmd += [
@@ -291,7 +301,7 @@ def run_fastchess(
     return winning_net, nElo
 
 
-def run_test(test_config_sha, testing_sha):
+def run_test(environment, test_config_sha, testing_sha):
     """
     Driver to run the test
     """
@@ -305,6 +315,7 @@ def run_test(test_config_sha, testing_sha):
     stockfish_reference = ensure_stockfish("reference", test)
     stockfish_testing = ensure_stockfish("testing", test)
     return run_fastchess(
+        environment,
         test_config_sha,
         test,
         testing_sha,
@@ -318,13 +329,23 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Run tests for given SHAs.")
+    parser.add_argument(
+        "--environment", required=False, help="Definition of the environment file"
+    )
     parser.add_argument("test_config_sha", help="Test config SHA")
     parser.add_argument("testing_sha", help="Testing SHA")
     args = parser.parse_args()
 
+    if args.environment:
+        print("Using environment file: ", args.environment)
+        with open(args.environment) as f:
+            environment = yaml.safe_load(f)
+    else:
+        environment = dict()
+
     test_config_sha = args.test_config_sha
     testing_sha = args.testing_sha
 
-    winning_net, nElo = run_test(test_config_sha, testing_sha)
+    winning_net, nElo = run_test(environment, test_config_sha, testing_sha)
 
     # TODO: exit with error code if winning_net is None ?

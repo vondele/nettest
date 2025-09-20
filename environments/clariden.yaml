@@ -1,0 +1,9 @@
+# example setup 4 x GH200 node, using GPU 0
+test:
+  concurrency: 280
+  affinity: 2-71,74-143,146-215,218-287
+train:
+  devices: 0,
+  workers: 96
+  cpunodebind: 0
+  membind: 0
