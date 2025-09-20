@@ -65,7 +65,7 @@ training:
           - --out-offset=235.1574641440425
           - --pow-exp=2.8697536284675236
           - --random-fen-skipping=10
-        resume: from_model
+        resume: previous_model
       trainer:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
