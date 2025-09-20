@@ -35,6 +35,40 @@ training:
       trainer:
         owner: official-stockfish
         sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+    - convert:
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
+        checkpoint2nnue:
+          - --features=HalfKAv2_hm^
+          - --ft_compression=leb128
+        optimize:
+          - --features=HalfKAv2_hm
+          - --ft_optimize_count=100000
+          - --ft_optimize
+          - --ft_compression=leb128
+      run:
+        binpacks:
+          - vondele/from_classical/from_classical_05_pv-2_diff-100_nodes-5000.binpack
+          - vondele/from_classical/from_classical_04_pv-2_diff-100_nodes-5000.binpack
+          - vondele/from_classical/from_classical_03_pv-2_diff-100_nodes-5000.binpack
+        max_epochs: 800
+        repetitions: 2
+        other_options:
+          - --batch-size=16384
+          - --features=HalfKAv2_hm^
+          - --start-lambda=1.0
+          - --end-lambda=0.6076801355005521
+          - --gamma=0.997
+          - --lr=0.0012
+          - --in-scaling=293.81161997194454
+          - --out-scaling=363.8749471909022
+          - --in-offset=290.8956602257791
+          - --out-offset=235.1574641440425
+          - --pow-exp=2.8697536284675236
+          - --random-fen-skipping=10
+        resume: from_model
+      trainer:
+        owner: official-stockfish
+        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
 #
 # Final testing stage using fastchess
 #
