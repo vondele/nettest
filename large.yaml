@@ -1,4 +1,28 @@
 #
+# Summary of results
+#
+# Step starting from None leading to 0e57fd2dd5ba
+# --> step is final already. Result: /workspace/scratch/0e57fd2dd5ba/run/lightning_logs/version_1/checkpoints/nn-7d7b6eca1f11.nnue
+# Elo: -57.73 +/- 7.90, nElo: -113.99 +/- 15.30
+# 
+# Step starting from 0e57fd2dd5ba leading to 48ceded9d725
+# --> step is final already. Result: /workspace/scratch/48ceded9d725/run/lightning_logs/version_1/checkpoints/nn-8ab545ed4f05.nnue
+# Elo: -13.39 +/- 3.33, nElo: -25.39 +/- 6.31
+# 
+# Step starting from 48ceded9d725 leading to b0ba8a4bf8f7
+# --> step is final already. Result: /workspace/scratch/b0ba8a4bf8f7/run/lightning_logs/version_1/checkpoints/nn-f4abc91128c0.nnue
+# Elo: -12.01 +/- 3.04, nElo: -22.58 +/- 5.71
+# 
+# Step starting from b0ba8a4bf8f7 leading to e92a006c5ee5
+# --> step is final already. Result: /workspace/scratch/e92a006c5ee5/run/lightning_logs/version_1/checkpoints/nn-1879c86cfe18.nnue
+# Elo: -6.86 +/- 1.46, nElo: -12.87 +/- 2.73
+# 
+# Step starting from e92a006c5ee5 leading to 26b32dcd0588
+# --> step is final already. Result: /workspace/scratch/26b32dcd0588/run/lightning_logs/version_1/checkpoints/nn-6a02704c6f1f.nnue
+# Elo: -5.83 +/- 0.85, nElo: -10.98 +/- 1.60
+#
+#
+#
 training:
   steps:
     #
