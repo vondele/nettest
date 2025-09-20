@@ -75,9 +75,10 @@ def ensure_stockfish(target, test):
     target_config = test[target]
     sha = target_config["code"]["sha"]
     owner = target_config["code"]["owner"]
+    target_build = target_config["code"].get("target", "profile-build")
     repo = f"https://github.com/{owner}/Stockfish.git"
 
-    target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}"
+    target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}-{target_build}"
     target_dir.mkdir(parents=True, exist_ok=True)
 
     clone_dir = target_dir / "Stockfish"
@@ -105,7 +106,7 @@ def ensure_stockfish(target, test):
                 # explicitly specify native, as ARCH is defined differently in the CI pipeline
                 execute(
                     f"[attempt {attempt}] build Stockfish",
-                    ["make", "-j", "profile-build", "ARCH=native"],
+                    ["make", "-j", f"{target_build}", "ARCH=native"],
                     stockfish_src_dir,
                     False,
                 )
