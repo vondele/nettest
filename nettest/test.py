@@ -20,43 +20,51 @@ def ensure_fastchess(fastchess):
     repo = f"https://github.com/{owner}/fastchess.git"
 
     base_dir = Path.cwd() / f"scratch/packages/fastchess/{sha}"
-    base_dir.mkdir(parents=True, exist_ok=True)
+    fastchess_binary = base_dir / "fastchess" / "fastchess"
 
-    clone_dir = base_dir / "fastchess"
-    fastchess_binary = clone_dir / "fastchess"
+    if fastchess_binary.exists():
+        return fastchess_binary
 
     for attempt in range(1, max_retries + 1):
+        unique_suffix = str(uuid.uuid4())
+        temp_build_dir = base_dir.parent / f"{base_dir.name}_build_{unique_suffix}"
+        temp_fastchess_dir = temp_build_dir / "fastchess"
+
         try:
-            if not clone_dir.exists():
-                execute(
-                    f"[attempt {attempt}] clone fastchess",
-                    ["git", "clone", "--no-checkout", repo],
-                    base_dir,
-                    True,
-                )
+            temp_build_dir.mkdir(parents=True, exist_ok=True)
+            execute(
+                f"[attempt {attempt}] clone fastchess",
+                ["git", "clone", "--no-checkout", repo],
+                temp_build_dir,
+                False,
+            )
 
-            if not fastchess_binary.exists():
-                execute(
-                    f"[attempt {attempt}] checkout sha {sha}",
-                    ["git", "checkout", "--detach", sha],
-                    clone_dir,
-                    False,
-                )
+            execute(
+                f"[attempt {attempt}] checkout sha {sha}",
+                ["git", "checkout", "--detach", sha],
+                temp_fastchess_dir,
+                False,
+            )
 
-                execute(
-                    f"[attempt {attempt}] build fastchess",
-                    ["make", "-j"],
-                    clone_dir,
-                    False,
-                )
+            execute(
+                f"[attempt {attempt}] build fastchess",
+                ["make", "-j"],
+                temp_fastchess_dir,
+                False,
+            )
 
+            # Try to atomically move the build to the target location
+            try:
+                temp_build_dir.rename(base_dir)
+            except Exception:
+                shutil.rmtree(temp_build_dir, ignore_errors=True)
+
+            assert fastchess_binary.exists(), "The binary should, but does not, exist."
             return fastchess_binary
 
         except Exception as e:
             print(f"⚠️ Attempt {attempt} failed: {e}")
-            if clone_dir.exists():
-                shutil.rmtree(clone_dir, ignore_errors=True)
-
+            shutil.rmtree(temp_build_dir, ignore_errors=True)
             if attempt < max_retries:
                 print(f"🔁 Retrying after {retry_delay} seconds...")
                 time.sleep(retry_delay)

@@ -2,6 +2,7 @@ import yaml
 import shutil
 from pathlib import Path
 from .utils import execute, MyDumper, sha256sum, find_most_recent
+import uuid
 import torch
 import time
 
@@ -15,45 +16,56 @@ def ensure_trainer(trainer):
     retry_delay = 30
 
     sha = trainer["sha"]
-    trainer_dir = Path.cwd() / f"scratch/packages/trainer/{sha}"
-    trainer_dir.mkdir(parents=True, exist_ok=True)
-
     owner = trainer["owner"]
     repo = f"https://github.com/{owner}/nnue-pytorch.git"
+
+    trainer_dir = Path.cwd() / f"scratch/packages/trainer/{sha}"
     nnue_pytorch_dir = trainer_dir / "nnue-pytorch"
     artifact = nnue_pytorch_dir / "libtraining_data_loader.so"
 
+    if artifact.exists():
+        return nnue_pytorch_dir
+
     for attempt in range(1, max_retries + 1):
+        unique_suffix = str(uuid.uuid4())
+        temp_trainer_dir = (
+            trainer_dir.parent / f"{trainer_dir.name}_build_{unique_suffix}"
+        )
+        temp_nnue_pytorch_dir = temp_trainer_dir / "nnue-pytorch"
+
         try:
-            if not nnue_pytorch_dir.exists():
-                execute(
-                    f"[attempt {attempt}] clone trainer",
-                    ["git", "clone", "--no-checkout", repo],
-                    trainer_dir,
-                    True,
-                )
+            temp_trainer_dir.mkdir(parents=True, exist_ok=True)
+            execute(
+                f"[attempt {attempt}] clone trainer",
+                ["git", "clone", "--no-checkout", repo],
+                temp_trainer_dir,
+                False,
+            )
 
-            if not artifact.exists():
-                execute(
-                    f"[attempt {attempt}] checkout sha",
-                    ["git", "checkout", "--detach", sha],
-                    nnue_pytorch_dir,
-                    False,
-                )
-                execute(
-                    f"[attempt {attempt}] build data loader",
-                    ["bash", "compile_data_loader.bat"],
-                    nnue_pytorch_dir,
-                    False,
-                )
+            execute(
+                f"[attempt {attempt}] checkout sha",
+                ["git", "checkout", "--detach", sha],
+                temp_nnue_pytorch_dir,
+                False,
+            )
+            execute(
+                f"[attempt {attempt}] build data loader",
+                ["bash", "compile_data_loader.bat"],
+                temp_nnue_pytorch_dir,
+                False,
+            )
 
+            try:
+                temp_trainer_dir.rename(trainer_dir)
+            except Exception:
+                shutil.rmtree(temp_trainer_dir, ignore_errors=True)
+
+            assert artifact.exists(), "Trainer build failed, artifact not found"
             return nnue_pytorch_dir
 
         except Exception as e:
             print(f"⚠️ Attempt {attempt} failed: {e}")
-            # Clean up directory for a fresh retry
-            if nnue_pytorch_dir.exists():
-                shutil.rmtree(nnue_pytorch_dir, ignore_errors=True)
+            shutil.rmtree(temp_trainer_dir, ignore_errors=True)
 
             if attempt < max_retries:
                 print(f"🔁 Retrying after {retry_delay} seconds...")
