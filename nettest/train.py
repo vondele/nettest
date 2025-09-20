@@ -114,7 +114,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
         if "cpunodebind" in environment["train"]:
             cpunodebind = environment["train"]["cpunodebind"]
             cmd += [f"--cpunodebind={cpunodebind}"]
-        elif "membind" in environment["train"]:
+        if "membind" in environment["train"]:
             membind = environment["train"]["membind"]
             cmd += [f"--membind={membind}"]
     else:
