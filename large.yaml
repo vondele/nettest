@@ -66,7 +66,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: 2789ff3aaa54edaeca6f40f812a192fed8aaaa94
     #
     # S2
     #
@@ -141,7 +141,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: 2789ff3aaa54edaeca6f40f812a192fed8aaaa94
     #
     # S3
     #
@@ -216,7 +216,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: 2789ff3aaa54edaeca6f40f812a192fed8aaaa94
     #
     # S4
     #
@@ -291,7 +291,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: 2789ff3aaa54edaeca6f40f812a192fed8aaaa94
     #
     # S5
     #
@@ -371,7 +371,7 @@ training:
 # Final testing stage using fastchess
 #
 testing:
-  steps: last
+  steps: all
   reference:
     code:
       owner: official-stockfish
@@ -383,7 +383,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 66cac47f06dc1a09d3d1865cdbf560a7814f82ea
+      sha: 47e686f604e6b6f1f872d6e8b2831b4a47d70dae
     options:
        tc: 10+0.1
        hash: 16
