@@ -103,8 +103,10 @@ docker run -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 \
 It is also possible to mount a local directory over `/workspace/nettest/` to be
 able to easily modify and test recipes.
 
-TODO: some work remains to decouple some system characteristics from the
-container, right now some concurrency and affinity settings are hardcoded.
+For more advanced hardware environments (e.g. multi GPUs, multi socket), it is
+possible to influence the resource allocation by adding the argument
+`--environment nettest/environments/local.yaml` (or a suitably modified yaml
+file).
 
 #### remote execution
 
