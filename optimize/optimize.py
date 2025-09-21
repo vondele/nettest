@@ -100,7 +100,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
     #
     # S2 
     #
@@ -145,7 +145,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
     #
     # S3 
     #
@@ -244,7 +244,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
     #
     # S4 repeat S3
     #
@@ -343,7 +343,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
     #
     # S5 repeat S4
     #
@@ -442,7 +442,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
     #
     # S6 repeat S5
     #
@@ -541,7 +541,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
 #
 # Final testing stage using fastchess
 #

@@ -72,7 +72,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
 #
 # Final testing stage using fastchess
 #
@@ -90,11 +90,11 @@ testing:
       owner: Disservin
       sha: 7676d4961518a7a0156bcd200149acc8c921f977
     options:
-       tc: 10+0.1
-       hash: 16
-       evalfile: small
+      tc: 10+0.1
+      hash: 16
+      evalfile: small
     sprt:
-       # midpoint will be the target to reach, relative to reference, to have a passing CI
-       nElo_interval_midpoint: -0.75
-       nElo_interval_width: 2
-       max_rounds: 160000
+      # midpoint will be the target to reach, relative to reference, to have a passing CI
+      nElo_interval_midpoint: -0.75
+      nElo_interval_width: 2
+      max_rounds: 160000

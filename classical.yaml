@@ -1,4 +1,3 @@
-
 training:
   steps:
     - convert:
@@ -34,7 +33,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: e6b9f54946b91009c527e1109ca7408e954157c9
 #
 # Final testing stage using fastchess
 #
@@ -52,10 +51,9 @@ testing:
       owner: Disservin
       sha: 7676d4961518a7a0156bcd200149acc8c921f977
     options:
-       tc: 10+0.1
-       hash: 16
+      tc: 10+0.1
+      hash: 16
     sprt:
-       nElo_interval_midpoint: -185
-       nElo_interval_width: 3
-       max_rounds: 160000
-               
+      nElo_interval_midpoint: -185
+      nElo_interval_width: 3
+      max_rounds: 160000
