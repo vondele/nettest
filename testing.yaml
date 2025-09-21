@@ -11,7 +11,7 @@ training:
         sha: afa0f5a82048355ee5614e096776a0454a73c858
       run:
         resume: none
-        max_epochs: 10
+        max_epochs: 17
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -64,7 +64,7 @@ training:
         sha: afa0f5a82048355ee5614e096776a0454a73c858
       run:
         resume: previous_model
-        max_epochs: 10
+        max_epochs: 12
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -93,7 +93,7 @@ training:
 # Final testing stage using fastchess
 #
 testing:
-  steps: all
+  steps: last
   reference:
     code:
       owner: vondele

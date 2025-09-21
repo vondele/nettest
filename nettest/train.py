@@ -1,10 +1,11 @@
-import yaml
-import shutil
+import os
 from pathlib import Path
-from .utils import execute, MyDumper, sha256sum, find_most_recent
-import uuid
+import shutil
 import torch
 import time
+from .utils import execute, MyDumper, sha256sum, find_most_recent
+import uuid
+import yaml
 
 
 def ensure_trainer(trainer):
@@ -86,7 +87,7 @@ def ckpt_reached_end(ckpt_path, max_epochs):
     return reached_end
 
 
-def run_trainer(current_sha, previous_sha, run, nnue_pytorch_dir):
+def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     """
     Run the training recipe for this step
     """
@@ -105,17 +106,42 @@ def run_trainer(current_sha, previous_sha, run, nnue_pytorch_dir):
             else:
                 assert False, f"The following binpack could not be found: {binpack}"
 
-    # binding all threads to the same socket is important for performance TODO fix domain
-    cmd = ["numactl", "--cpunodebind=0", "--membind=0", "python", "-u", "train.py"]
+    # binding all threads to the same socket is important for performance on some systems
+    if "train" in environment and (
+        "cpunodebind" in environment["train"] or "membind" in environment["train"]
+    ):
+        cmd = ["numactl"]
+        if "cpunodebind" in environment["train"]:
+            cpunodebind = environment["train"]["cpunodebind"]
+            cmd += [f"--cpunodebind={cpunodebind}"]
+        if "membind" in environment["train"]:
+            membind = environment["train"]["membind"]
+            cmd += [f"--membind={membind}"]
+    else:
+        cmd = []
+
+    cmd += ["python", "-u", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
 
-    # some architecture specific options TODO: fix GPU
-    cmd.append("--gpus=0,")
+    # seems always a reasonable default
     cmd.append("--threads=4")
+
+    # some architecture specific options
+    if "train" in environment and "devices" in environment["train"]:
+        devices = environment["train"]["devices"]
+    else:
+        devices = "0,"
+    cmd.append(f"--gpus={devices}")
+
     # large net needs at least 16 threads, small net >64, number of active threads is seems also roughly half specified
-    cmd.append("--num-workers=96")
+    if "train" in environment and "workers" in environment["train"]:
+        workers = environment["train"]["workers"]
+    else:
+        cpu_count = os.cpu_count()
+        workers = cpu_count * 3 // 2 if cpu_count is not None else 16
+    cmd.append(f"--num-workers={workers}")
 
     # append all options
     cmd = cmd + run["other_options"]
@@ -123,9 +149,9 @@ def run_trainer(current_sha, previous_sha, run, nnue_pytorch_dir):
     # TODO probably a bit better handling with the maximum time in the pipeline creation.
     # for now, assume 12h minus 30min safety (eventual net conversion).
     max_time = "00:11:30:00"
-    max_epochs = int(run["max_epochs"])
-    # assert max_epochs <= 300
     cmd.append(f"--max_time={max_time}")
+
+    max_epochs = int(run["max_epochs"])
     cmd.append(f"--max_epochs={max_epochs}")
     cmd.append(f"--network-save-period={max_epochs}")
 
@@ -185,7 +211,7 @@ def run_trainer(current_sha, previous_sha, run, nnue_pytorch_dir):
         return False
 
 
-def run_conversion(current_sha, convert, nnue_pytorch_dir):
+def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
     """
     Convert the final checkpoint into a .nnue and a .pt
     """
@@ -229,7 +255,12 @@ def run_conversion(current_sha, convert, nnue_pytorch_dir):
         binpack = Path.cwd() / "data" / convert["binpack"]
         source = destination
         nnue = checkpoint.with_suffix(".nnue")
-        # TODO fix device
+        if "train" in environment and "devices" in environment["train"]:
+            device = [
+                int(x) for x in environment["train"]["devices"].rstrip(",").split(",")
+            ][0]
+        else:
+            device = "0"
         cmd = [
             "python",
             "-u",
@@ -237,7 +268,7 @@ def run_conversion(current_sha, convert, nnue_pytorch_dir):
             f"{source}",
             f"{nnue}",
             f"--ft_optimize_data={binpack}",
-            "--device=0",
+            f"--device={device}",
         ]
         cmd = cmd + convert["optimize"]
         execute("Optimize nnue", cmd, nnue_pytorch_dir, False)
@@ -273,7 +304,7 @@ def run_conversion(current_sha, convert, nnue_pytorch_dir):
     return
 
 
-def run_step(current_sha, previous_sha):
+def run_step(environment, current_sha, previous_sha):
     """
     Driver to run the step
     """
@@ -290,10 +321,13 @@ def run_step(current_sha, previous_sha):
     assert step["sha"] == current_sha
 
     nnue_pytorch_dir = ensure_trainer(step["trainer"])
-    reached_end = run_trainer(current_sha, previous_sha, step["run"], nnue_pytorch_dir)
+    reached_end = run_trainer(
+        environment, current_sha, previous_sha, step["run"], nnue_pytorch_dir
+    )
 
     if reached_end:
         run_conversion(
+            environment,
             current_sha,
             step["convert"],
             nnue_pytorch_dir,
@@ -308,8 +342,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Run step with provided SHAs and directories."
     )
+    parser.add_argument(
+        "--environment", required=False, help="Definition of the environment file"
+    )
     parser.add_argument("current_sha", help="Current SHA")
     parser.add_argument("previous_sha", help="Previous SHA")
     args = parser.parse_args()
 
-    run_step(args.current_sha, args.previous_sha)
+    if args.environment:
+        print("Using environment file: ", args.environment)
+        with open(args.environment) as f:
+            environment = yaml.safe_load(f)
+    else:
+        environment = dict()
+
+    run_step(environment, args.current_sha, args.previous_sha)
