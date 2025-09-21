@@ -27,7 +27,7 @@ generateSchedule:
   script:
     - cd /workspace/
     - ln -s $CI_PROJECT_DIR ./cidir
-    - python -u -m nettest.generate_pipeline nettest/${RECIPE:-testing}.yaml ./cidir/training_schedule.yaml
+    - python -u -m nettest.generate_pipeline --environment /workspace/nettest/environments/clariden.yaml nettest/${RECIPE:-testing}.yaml ./cidir/training_schedule.yaml
     - cat ./cidir/training_schedule.yaml
   variables:
     SLURM_JOB_NUM_NODES: 1

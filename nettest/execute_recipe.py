@@ -17,7 +17,7 @@ def batch_function(f, items):
 
 
 def execute(executor, recipe, environment):
-    _, schedule = executor.submit(parse_recipe, recipe).result()
+    _, schedule = executor.submit(parse_recipe, recipe, None).result()
 
     print("submitting data update", flush=True)
     executor.submit(batch_function, run_data_update, schedule["data"]).result()

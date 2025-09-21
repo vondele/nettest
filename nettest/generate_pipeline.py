@@ -188,7 +188,7 @@ def generate_ensure_data(recipe, ci_yaml_out, schedule):
     return
 
 
-def generate_training_stages(recipe, ci_yaml_out, schedule):
+def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
     """
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
@@ -197,6 +197,8 @@ def generate_training_stages(recipe, ci_yaml_out, schedule):
         return
 
     previous_sha = "None"
+
+    envarg = f"--environment {environment}" if environment else ""
 
     for step in recipe["training"]["steps"]:
         current_sha = step["sha"]
@@ -222,7 +224,7 @@ def generate_training_stages(recipe, ci_yaml_out, schedule):
             job["script"] = [
                 "cd /workspace/",
                 "ln -s $CI_PROJECT_DIR ./cidir",
-                f"python -u -m nettest.train {current_sha} {previous_sha}",
+                f"python -u -m nettest.train {envarg} {current_sha} {previous_sha}",
             ]
 
             schedule["train"].append(
@@ -244,7 +246,7 @@ def generate_training_stages(recipe, ci_yaml_out, schedule):
     return
 
 
-def generate_testing_stage(recipe, ci_yaml_out, schedule):
+def generate_testing_stage(recipe, environment, ci_yaml_out, schedule):
     """
     Generate the testing stage
     """
@@ -257,6 +259,8 @@ def generate_testing_stage(recipe, ci_yaml_out, schedule):
     assert test_steps in ["new", "all", "last"], (
         "testing steps must be 'new', 'all' or 'last'"
     )
+
+    envarg = f"--environment {environment}" if environment else ""
 
     # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
@@ -272,10 +276,9 @@ def generate_testing_stage(recipe, ci_yaml_out, schedule):
         if use_step:
             steps += 1
             testing_sha = step["sha"]
-            task = f"python -u -m nettest.test {test_config_sha} {testing_sha}"
+            task = f"python -u -m nettest.test {envarg} {test_config_sha} {testing_sha}"
 
             # should lead to independent jobs for each stage.
-            # TODO: building fastchess might be racy in this case.
             # TODO: in principle we could launch the testing job as soon as the training stage is done.
             job = generate_job_base()
             job["stage"] = "testing"
@@ -293,7 +296,7 @@ def generate_testing_stage(recipe, ci_yaml_out, schedule):
     return
 
 
-def parse_recipe(recipe):
+def parse_recipe(recipe, environment):
     """
     Given recipe turn that recipe into a CI pipeline..
     """
@@ -318,10 +321,10 @@ def parse_recipe(recipe):
     generate_ensure_data(recipe, ci_yaml_out, schedule)
 
     # tricky bit ... generate the training stages
-    generate_training_stages(recipe, ci_yaml_out, schedule)
+    generate_training_stages(recipe, environment, ci_yaml_out, schedule)
 
     # generate the match stage
-    generate_testing_stage(recipe, ci_yaml_out, schedule)
+    generate_testing_stage(recipe, environment, ci_yaml_out, schedule)
     print("schedule information:")
     print(yaml.dump(schedule, Dumper=MyDumper, default_flow_style=False, width=300))
 
@@ -333,6 +336,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description="Translate recipe to pipeline and schedule"
+    )
+    parser.add_argument(
+        "--environment", required=False, help="Definition of the environment file"
     )
     parser.add_argument("input_file", help="Input recipe file")
     parser.add_argument("output_file", help="Output pipeline YAML file")
@@ -346,7 +352,7 @@ if __name__ == "__main__":
     with open(input_file) as f:
         recipe = yaml.safe_load(f)
 
-    ci_yaml_out, schedule = parse_recipe(recipe)
+    ci_yaml_out, schedule = parse_recipe(recipe, args.environment)
 
     print("Resulting pipeline: ", Path(output_file))
     with Path(output_file).open(mode="w", encoding="utf-8") as f:
