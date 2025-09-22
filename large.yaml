@@ -521,7 +521,7 @@ training:
 # Final testing stage using fastchess
 #
 testing:
-  steps: all
+  steps: last
   reference:
     code:
       owner: official-stockfish
@@ -538,6 +538,6 @@ testing:
        tc: 10+0.1
        hash: 16
     sprt:
-       nElo_interval_midpoint: -10
+       nElo_interval_midpoint: -8
        nElo_interval_width: 2
        max_rounds: 100000
