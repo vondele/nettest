@@ -123,7 +123,7 @@ def generate_stages(recipe, ci_yaml_out):
             for rep in range(0, repetitions):
                 stage_base_name = f"step_{step_number}_{step['sha']}"
                 step["stage"] = stage_base_name
-                stage_name = f"{stage_base_name}_{rep}"
+                stage_name = f"{stage_base_name}_rep_{rep}"
                 stages.append(stage_name)
 
     if "testing" in recipe:
