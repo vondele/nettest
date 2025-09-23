@@ -228,7 +228,7 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
             job = generate_job_base()
 
             stage_base_name = step["stage"]
-            stage_name = f"{stage_base_name}_{rep}"
+            stage_name = f"{stage_base_name}_rep_{rep}"
             job["stage"] = stage_name
 
             job["script"] = [

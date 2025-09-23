@@ -4,14 +4,14 @@
 training:
   steps:
 #
-#
+# S1
 #
     - trainer:
         owner: official-stockfish
         sha: 9a6cfde1de88db602a553812b7ddd9d2abbafeaa
       run:
         resume: none
-        max_epochs: 17
+        max_epochs: 18
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -30,7 +30,7 @@ training:
           - --l1=128
           - --ft_compression=leb128
 #
-#
+# S2
 #
     - trainer:
         owner: official-stockfish
@@ -57,7 +57,7 @@ training:
           - --l1=128
           - --ft_compression=leb128
 #
-#
+# S3
 #
     - trainer:
         owner: official-stockfish
@@ -93,7 +93,7 @@ training:
 # Final testing stage using fastchess
 #
 testing:
-  steps: last
+  steps: all
   reference:
     code:
       owner: vondele
