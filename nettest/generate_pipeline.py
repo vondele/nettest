@@ -114,12 +114,14 @@ def generate_stages(recipe, ci_yaml_out):
     stages = ["ensureData"]
 
     if "training" in recipe:
+        step_number = 0
         for step in recipe["training"]["steps"]:
+            step_number += 1
             if step["status"] == "Final":
                 continue
             repetitions = step["run"].get("repetitions", 1)
             for rep in range(0, repetitions):
-                stage_base_name = f"step_{step['sha']}"
+                stage_base_name = f"step_{step_number}_{step['sha']}"
                 step["stage"] = stage_base_name
                 stage_name = f"{stage_base_name}_{rep}"
                 stages.append(stage_name)
@@ -199,19 +201,27 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
     previous_sha = "None"
 
     envarg = f"--environment {environment}" if environment else ""
+    step_number = 0
 
     for step in recipe["training"]["steps"]:
+        step_number += 1
         current_sha = step["sha"]
-        print(f"Step starting from {previous_sha} leading to {current_sha}", flush=True)
+        print(
+            f"Step {step_number} : starting from {previous_sha} leading to {current_sha}",
+            flush=True,
+        )
 
         if step["status"] == "Final":
             std_nnue = step.get("std_nnue", "unknown")
-            print(f"--> step is final already. Result: {std_nnue}", flush=True)
+            print(
+                f"--> step {step_number} is final already. Result: {std_nnue}",
+                flush=True,
+            )
             previous_sha = current_sha
             continue
 
         max_epochs = step["run"].get("max_epochs", 0)
-        print(f"--> step needs {max_epochs} epochs", flush=True)
+        print(f"--> step {step_number} needs {max_epochs} epochs", flush=True)
 
         repetitions = step["run"].get("repetitions", 1)
         for rep in range(0, repetitions):
@@ -239,7 +249,7 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
                 "paths": [f"step_{current_sha}"],
             }
 
-            ci_yaml_out[stage_name + "Job"] = job
+            ci_yaml_out[stage_name + "_train"] = job
 
         previous_sha = current_sha
 
@@ -264,6 +274,7 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule):
 
     # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
+    step_number = len(recipe["training"]["steps"])
     for step in reversed(recipe["training"]["steps"]):
         use_step = False
         if test_steps == "all":
@@ -284,7 +295,7 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule):
             job["stage"] = "testing"
             job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
             job["script"].append(task)
-            ci_yaml_out[f"testingJob_{testing_sha}"] = job
+            ci_yaml_out[f"step_{step_number}_{testing_sha}_test"] = job
 
             schedule["test"].append(
                 {
@@ -292,6 +303,8 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule):
                     "testing_sha": testing_sha,
                 }
             )
+
+        step_number -= 1
 
     return
 
