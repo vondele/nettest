@@ -384,7 +384,7 @@ training:
           - --ft_compression=leb128
       run:
         binpacks: 
-          - official-stockfish/master-binpacks/fishpack32.binpack
+          - Disservin/binpacks/fishpack-diss-v1.binpack
         max_epochs: 50
         repetitions: 1
         other_options:
