@@ -143,6 +143,8 @@ def generate_job_base():
         "SLURM_NTASKS": 1,
         "SLURM_TIMELIMIT": "12:00:00",
         "SLURM_CPU_BIND": "none",
+        "USE_MPI": "YES",
+        "USE_NCCL": "cuda12",
     }
     job = {
         "timeout": "48h",
