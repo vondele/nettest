@@ -140,8 +140,8 @@ training:
           - --early-fen-skipping=28
         resume: previous_model
       trainer:
-        owner: Disservin
-        sha: f305080190078fc73676b716b02ed81c19573664
+        owner: vondele
+        sha: 6d29016a25497c2ac017642fb3cd44e3f488236d
 #    #
 #    # S3
 #    #
