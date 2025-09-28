@@ -51,7 +51,7 @@ training:
           - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
           - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
-        max_epochs: 800
+        max_epochs: 799
         repetitions: 3
         other_options:
           - --batch-size=16384
@@ -65,8 +65,8 @@ training:
           - --early-fen-skipping=12
         resume: none
       trainer:
-        owner: Disservin
-        sha: f305080190078fc73676b716b02ed81c19573664
+        owner: vondele
+        sha: 6d29016a25497c2ac017642fb3cd44e3f488236d
     #
     # S2
     #
