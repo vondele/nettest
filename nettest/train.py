@@ -106,11 +106,6 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
             else:
                 assert False, f"The following binpack could not be found: {binpack}"
 
-    import subprocess
-
-    with open(Path.cwd() / "scratch" / "env.out", "w") as f:
-        subprocess.run(["env"], stdout=f)
-
     # binding all threads to the same socket is important for performance on some systems
     if "train" in environment and (
         "cpunodebind" in environment["train"] or "membind" in environment["train"]
