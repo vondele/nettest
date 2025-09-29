@@ -141,7 +141,7 @@ training:
         resume: previous_model
       trainer:
         owner: vondele
-        sha: 6d29016a25497c2ac017642fb3cd44e3f488236d
+        sha: d1ea8b65e842ae59fad5c6eaf775fc99a9dae926
 #    #
 #    # S3
 #    #
