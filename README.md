@@ -70,7 +70,7 @@ executes it. The CI service is described in these [docs](https://docs.cscs.ch/se
 
 ### Execution in a container environment
 
-The workflows are executed in a [container](ci/docker/Dockerfile.build) with
+The workflows are executed in a [container](ci/docker/Dockerfile.NVIDIA) with
 proper mounts. In particular, the container contains this repo as
 `/workspace/nettest/`, and mounted directories `/workspace/data/`,
 `/workspace/scratch/`, and `/workspace/cidir/`. The former will be used to store
@@ -89,7 +89,7 @@ locally:
 git clone https://github.com/vondele/nettest.git
 # build the container
 cd nettest
-docker build -t nettest.docker -f ci/docker/Dockerfile.build .
+docker build -t nettest.docker -f ci/docker/Dockerfile.NVIDIA .
 # local execution, adjust data, scratch and cidir mounts as needed
 docker run -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 \
        --gpus all --cap-add=sys_nice \
