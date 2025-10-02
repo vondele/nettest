@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
   gdb \
   python3-dbg \
   linux-tools-common linux-tools-generic \
+  rclone \
   && rm -rf /var/lib/apt/lists/*
 
 # current set of nnue-pytorch dependencies, some already in the image
