@@ -366,7 +366,7 @@ training:
         resume: previous_model
       trainer:
         owner: Disservin
-        sha: b4d24463a4347e69e1d38f929e3336bdb9d61fa9
+        sha: c5cde5ab53c493878c1dcf03d7f8701424271e19
 #
 # Final testing stage using fastchess
 #
