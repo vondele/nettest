@@ -397,9 +397,9 @@ training:
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
           - --end-lambda=0.7490913625693039
-          - --in-scaling=294.7193839807687
+          - --in-scaling=382
           - --out-scaling=364.552099066772
-          - --in-offset=281.4186220835457
+          - --in-offset=365
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
