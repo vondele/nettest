@@ -384,7 +384,7 @@ training:
           - --ft_compression=leb128
       run:
         binpacks: 
-          - vondele/rescored/test80-2023-06-jun-2tb7p.min-v2-rescore_SF_n3000.binpack
+          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.binpack
         max_epochs: 50
         repetitions: 1
         other_options:
@@ -406,7 +406,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
+        sha: 042262fdc83b44b4554dc407053582a7f4c0efbd
 #
 # Final testing stage using fastchess
 #
