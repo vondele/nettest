@@ -405,7 +405,7 @@ training:
           - --early-fen-skipping=28
         resume: previous_model
       trainer:
-        owner: official-stockfish
+        owner: Disservin
         sha: 042262fdc83b44b4554dc407053582a7f4c0efbd
 #
 # Final testing stage using fastchess
