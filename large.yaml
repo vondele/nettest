@@ -1,28 +1,3 @@
-#
-# Summary of results
-#
-# Step starting from None leading to 0e57fd2dd5ba
-# --> step is final already. Result: /workspace/scratch/0e57fd2dd5ba/run/lightning_logs/version_1/checkpoints/nn-7d7b6eca1f11.nnue
-# Elo: -57.73 +/- 7.90, nElo: -113.99 +/- 15.30
-# 
-# Step starting from 0e57fd2dd5ba leading to 48ceded9d725
-# --> step is final already. Result: /workspace/scratch/48ceded9d725/run/lightning_logs/version_1/checkpoints/nn-8ab545ed4f05.nnue
-# Elo: -13.39 +/- 3.33, nElo: -25.39 +/- 6.31
-# 
-# Step starting from 48ceded9d725 leading to b0ba8a4bf8f7
-# --> step is final already. Result: /workspace/scratch/b0ba8a4bf8f7/run/lightning_logs/version_1/checkpoints/nn-f4abc91128c0.nnue
-# Elo: -12.01 +/- 3.04, nElo: -22.58 +/- 5.71
-# 
-# Step starting from b0ba8a4bf8f7 leading to e92a006c5ee5
-# --> step is final already. Result: /workspace/scratch/e92a006c5ee5/run/lightning_logs/version_1/checkpoints/nn-1879c86cfe18.nnue
-# Elo: -6.86 +/- 1.46, nElo: -12.87 +/- 2.73
-# 
-# Step starting from e92a006c5ee5 leading to 26b32dcd0588
-# --> step is final already. Result: /workspace/scratch/26b32dcd0588/run/lightning_logs/version_1/checkpoints/nn-6a02704c6f1f.nnue
-# Elo: -5.83 +/- 0.85, nElo: -10.98 +/- 1.60
-#
-#
-#
 training:
   steps:
     #
@@ -42,15 +17,7 @@ training:
           - --ft_compression=leb128
       run:
         binpacks:
-          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
-          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
-          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
-          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
-          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
-          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-          - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
-          - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
-          - official-stockfish/master-binpacks/dfrc_n5000.binpack
+          - vondele/rescored/test80-2023-06-jun-2tb7p.min-v2-orig_Leela.binpack
         max_epochs: 800
         repetitions: 3
         other_options:
@@ -66,7 +33,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: d4a5bb22aad8ac55f99e5db1d097c0beda0a9cd8
+        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
     #
     # S2
     #
@@ -84,42 +51,7 @@ training:
           - --ft_compression=leb128
       run:
         binpacks:
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
-          - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
-          - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-09-sep-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
-          - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
-          - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
-          - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+          - vondele/rescored/test80-2023-06-jun-2tb7p.min-v2-orig_Leela.binpack
         max_epochs: 800
         repetitions: 3
         other_options:
@@ -141,232 +73,7 @@ training:
         resume: previous_model
       trainer:
         owner: official-stockfish
-        sha: d4a5bb22aad8ac55f99e5db1d097c0beda0a9cd8
-    #
-    # S3
-    #
-    - convert:
-        binpack: official-stockfish/master-binpacks/fishpack32.binpack
-        checkpoint2nnue:
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --ft_compression=leb128
-        optimize:
-          - --features=HalfKAv2_hm
-          - --l1=3072
-          - --ft_optimize_count=100000
-          - --ft_optimize
-          - --ft_compression=leb128
-      run:
-        binpacks:
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
-          - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
-          - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-09-sep-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
-          - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
-          - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
-          - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
-        repetitions: 3
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
-          - --pow-exp=2.442037790427722
-          - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.8460635942002347
-          - --end-lambda=0.7490913625693039
-          - --in-scaling=294.7193839807687
-          - --out-scaling=364.552099066772
-          - --in-offset=281.4186220835457
-          - --out-offset=279.93991915496105
-          - --random-fen-skipping=10
-          - --early-fen-skipping=28
-        resume: previous_model
-      trainer:
-        owner: official-stockfish
-        sha: d4a5bb22aad8ac55f99e5db1d097c0beda0a9cd8
-    #
-    # S4
-    #
-    - convert:
-        binpack: official-stockfish/master-binpacks/fishpack32.binpack
-        checkpoint2nnue:
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --ft_compression=leb128
-        optimize:
-          - --features=HalfKAv2_hm
-          - --l1=3072
-          - --ft_optimize_count=100000
-          - --ft_optimize
-          - --ft_compression=leb128
-      run:
-        binpacks:
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
-          - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
-          - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-09-sep-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
-          - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
-          - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
-          - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
-        repetitions: 3
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
-          - --pow-exp=2.442037790427722
-          - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.8460635942002347
-          - --end-lambda=0.7490913625693039
-          - --in-scaling=294.7193839807687
-          - --out-scaling=364.552099066772
-          - --in-offset=281.4186220835457
-          - --out-offset=279.93991915496105
-          - --random-fen-skipping=10
-          - --early-fen-skipping=28
-        resume: previous_model
-      trainer:
-        owner: official-stockfish
-        sha: d4a5bb22aad8ac55f99e5db1d097c0beda0a9cd8
-    #
-    # S5
-    #
-    - convert:
-        binpack: official-stockfish/master-binpacks/fishpack32.binpack
-        checkpoint2nnue:
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --ft_compression=leb128
-        optimize:
-          - --features=HalfKAv2_hm
-          - --l1=3072
-          - --ft_optimize_count=100000
-          - --ft_optimize
-          - --ft_compression=leb128
-      run:
-        binpacks:
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
-          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
-          - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
-          - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
-          - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-09-sep-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
-          - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
-          - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
-          - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
-          - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
-          - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
-        repetitions: 3
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --l1=3072
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
-          - --pow-exp=2.442037790427722
-          - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.8460635942002347
-          - --end-lambda=0.7490913625693039
-          - --in-scaling=294.7193839807687
-          - --out-scaling=364.552099066772
-          - --in-offset=281.4186220835457
-          - --out-offset=279.93991915496105
-          - --random-fen-skipping=10
-          - --early-fen-skipping=28
-        resume: previous_model
-      trainer:
-        owner: official-stockfish
-        sha: d4a5bb22aad8ac55f99e5db1d097c0beda0a9cd8
+        sha: ba499f2819dab17ec1784ea6522ee004ff32fd57
 #
 # Final testing stage using fastchess
 #
@@ -375,15 +82,15 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 3073d82ccf25a8ab31e0e0215a2a661d0dcdadd7
+      sha: adfddd2c984fac5f2ac02d87575af821ec118fa8
   testing:
     code:
       owner: official-stockfish
-      sha: 3073d82ccf25a8ab31e0e0215a2a661d0dcdadd7
+      sha: adfddd2c984fac5f2ac02d87575af821ec118fa8
   fastchess:
     code:
       owner: Disservin
-      sha: eee904f5dbe601257c450a60759c7479988ed595
+      sha: 66cac47f06dc1a09d3d1865cdbf560a7814f82ea
     options:
        tc: 10+0.1
        hash: 16
