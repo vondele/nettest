@@ -55,7 +55,7 @@ training:
           - --ft_compression=leb128
       run:
         binpacks:
-          - test80-2023-06-jun-2tb7p.min-v2-rescore_SF_n80000.binpack
+          - vondele/rescored/test80-2023-06-jun-2tb7p.min-v2-rescore_SF_n80000.binpack
         max_epochs: 800
         repetitions: 3
         other_options:
