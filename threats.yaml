@@ -351,7 +351,7 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: adfddd2c984fac5f2ac02d87575af821ec118fa8
+      sha: ee243f0fdccd943fbba5a0eb5afa3531c23feffa
       target: build
   testing:
     code:
