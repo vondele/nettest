@@ -361,11 +361,11 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 66cac47f06dc1a09d3d1865cdbf560a7814f82ea
+      sha: e06cb1a55d80d768fdce29771b1749b40daeeab3
     options:
        tc: 10+0.1
        hash: 16
-    sprt:
-       nElo_interval_midpoint: -100
-       nElo_interval_width: 2
-       max_rounds: 100000
+       max_rounds: 10000
+#    sprt:
+#       nElo_interval_midpoint: -100
+#       nElo_interval_width: 2
