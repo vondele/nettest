@@ -356,7 +356,7 @@ testing:
   testing:
     code:
       owner: sscg13
-      sha: adfddd2c984fac5f2ac02d87575af821ec118fa8
+      sha: 049746e243a22b102d37b36410d231e793475f00
       target: build
   fastchess:
     code:
