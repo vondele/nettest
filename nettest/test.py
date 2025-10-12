@@ -179,13 +179,33 @@ def run_fastchess(
     assert book.exists(), f"{book} does not exist"
 
     # collect specific options
-    tc = test["fastchess"]["options"]["tc"]
     option_hash = test["fastchess"]["options"]["hash"]
-    rounds = test["fastchess"]["sprt"]["max_rounds"]
-    nElo_interval_midpoint = float(test["fastchess"]["sprt"]["nElo_interval_midpoint"])
-    nElo_interval_width = float(test["fastchess"]["sprt"]["nElo_interval_width"])
-    elo0 = nElo_interval_midpoint - nElo_interval_width / 2
-    elo1 = elo0 + nElo_interval_width
+    tc = test["fastchess"]["options"].get("tc", None)
+    nodes = test["fastchess"]["options"].get("nodes", None)
+
+    if "max_rounds" in test["fastchess"]["options"]:
+        rounds = test["fastchess"]["options"]["max_rounds"]
+    else:
+        rounds = test["fastchess"]["sprt"][
+            "max_rounds"
+        ]  # TODO: remove else after fixing all test configs
+
+    sprt_options = []
+    if "sprt" in test["fastchess"]:
+        nElo_interval_midpoint = float(
+            test["fastchess"]["sprt"]["nElo_interval_midpoint"]
+        )
+        nElo_interval_width = float(test["fastchess"]["sprt"]["nElo_interval_width"])
+        elo0 = nElo_interval_midpoint - nElo_interval_width / 2
+        elo1 = elo0 + nElo_interval_width
+        sprt_options += [
+            "-sprt",
+            f"elo0={elo0}",
+            f"elo1={elo1}",
+            "alpha=0.05",
+            "beta=0.05",
+            "model=normalized",
+        ]
 
     # take care of small vs big net
     target_net = "EvalFile"
@@ -222,14 +242,7 @@ def run_fastchess(
         ]
 
     cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
-    cmd += [
-        "-sprt",
-        f"elo0={elo0}",
-        f"elo1={elo1}",
-        "alpha=0.05",
-        "beta=0.05",
-        "model=normalized",
-    ]
+    cmd += sprt_options
     cmd += ["-ratinginterval", "100"]
 
     cmd += ["-openings", f"file={book}", "format=epd", "order=random"]
@@ -245,6 +258,7 @@ def run_fastchess(
     std_nnue = final_config["std_nnue"]
     assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
 
+    # configure engines
     name = f"step_{sha}_{short_nnue}"
     cmd += [
         "-engine",
@@ -264,15 +278,21 @@ def run_fastchess(
         for option in test["reference"]["options"]:
             cmd += [f"option.{option}"]
 
-    # engine configs
+    # econfigs used for both engines
     cmd += [
         "-each",
         "proto=uci",
         "option.Threads=1",
         f"option.Hash={option_hash}",
-        f"tc={tc}",
     ]
 
+    if tc is not None:
+        cmd += [f"tc={tc}"]
+
+    if nodes is not None:
+        cmd += [f"nodes={nodes}"]
+
+    # Done setup, run fastchess
     output = execute(
         f"Run fastchess match for {sha}: {short_nnue}",
         cmd,
