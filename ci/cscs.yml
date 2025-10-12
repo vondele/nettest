@@ -16,7 +16,7 @@ build:
   stage: build
   extends: .container-builder-cscs-gh200
   variables:
-    DOCKERFILE: ci/docker/Dockerfile.build
+    DOCKERFILE: ci/docker/Dockerfile.NVIDIA
 
 # generate the schedule to be executed in a child pipeline
 generateSchedule:
