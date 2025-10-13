@@ -8,7 +8,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: 9a6cfde1de88db602a553812b7ddd9d2abbafeaa
+        sha: 70781454bb9fbd5fbaf3d47281daa22a82565984
       run:
         resume: none
         max_epochs: 18
@@ -23,7 +23,7 @@ training:
           - --gamma=0.995
           - --early-fen-skipping=3
           - --epoch-size=100000
-          - --validation-size=100000
+          - --validation-size=0
       convert:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
@@ -34,7 +34,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: 9a6cfde1de88db602a553812b7ddd9d2abbafeaa
+        sha: 70781454bb9fbd5fbaf3d47281daa22a82565984
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -50,7 +50,7 @@ training:
           - --gamma=0.995
           - --early-fen-skipping=2
           - --epoch-size=100000
-          - --validation-size=100000
+          - --validation-size=0
       convert:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
@@ -61,7 +61,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: 9a6cfde1de88db602a553812b7ddd9d2abbafeaa
+        sha: 70781454bb9fbd5fbaf3d47281daa22a82565984
       run:
         resume: previous_model
         max_epochs: 12
@@ -76,7 +76,7 @@ training:
           - --gamma=0.995
           - --early-fen-skipping=2
           - --epoch-size=100000
-          - --validation-size=100000
+          - --validation-size=0
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         optimize:
@@ -109,13 +109,14 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 9aad63ec6e146185158b951de4a82f11a7d575a5
+      sha: e06cb1a55d80d768fdce29771b1749b40daeeab3
     options:
-       tc: 10+0.1
+#       tc: 10+0.1
+       nodes: 10000
        hash: 16
        evalfile: small
-    sprt:
-       # midpoint will be the target to reach, relative to reference, to have a passing CI
-       nElo_interval_midpoint: 0
-       nElo_interval_width: 10
-       max_rounds: 100
+       max_rounds: 1000
+#    sprt:
+#       # midpoint will be the target to reach, relative to reference, to have a passing CI
+#       nElo_interval_midpoint: 0
+#       nElo_interval_width: 10
