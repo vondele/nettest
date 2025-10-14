@@ -4,10 +4,12 @@ from time import sleep
 from huggingface_hub import snapshot_download
 import threading
 import zstandard as zstd
+import gzip
+import shutil
 import os
 
 
-def decompress_file(file_path):
+def decompress_file_zstd(file_path):
     output_path = file_path[:-4]  # Remove .zst extension
     try:
         print(f"Decompressing: {file_path}")
@@ -22,7 +24,20 @@ def decompress_file(file_path):
         print(f"Error processing {file_path}: {e}")
 
 
-def decompress_files_in_threads(file_list):
+def decompress_file_gz(file_path):
+    output_path = file_path[:-3]  # Remove .gz extension
+    try:
+        print(f"Decompressing: {file_path}")
+        with open(output_path, "wb") as decompressed:
+            with gzip.open(file_path, "rb") as gzfile:
+                shutil.copyfileobj(gzfile, decompressed)
+        os.remove(file_path)
+        print(f"Decompressed and removed: {file_path}")
+    except Exception as e:
+        print(f"Error processing {file_path}: {e}")
+
+
+def decompress_files_in_threads(file_list, decompress_file):
     threads = []
     for file_path in file_list:
         t = threading.Thread(target=decompress_file, args=(file_path,))
@@ -46,6 +61,7 @@ def run_data_update(owner: str, repo: str, filenames: list[str]) -> None:
             continue
         pattern_filenames.append(filename)
         pattern_filenames.append(f"{filename}.zst")
+        pattern_filenames.append(f"{filename}.gz")
 
     # try a couple of times, since we might be overloading hf
     n_repeats = 3
@@ -80,8 +96,17 @@ def run_data_update(owner: str, repo: str, filenames: list[str]) -> None:
         std_file = repo_dir / filename
         if zst_file.exists() and not std_file.exists():
             zst_files.append(str(zst_file))
+    decompress_files_in_threads(zst_files, decompress_file_zstd)
 
-    decompress_files_in_threads(zst_files)
+    # collect the .gz files that need decompression
+    gz_files = []
+    for filename in filenames:
+        gz_file = repo_dir / f"{filename}.gz"
+        std_file = repo_dir / filename
+        if gz_file.exists() and not std_file.exists():
+            gz_files.append(str(gz_file))
+    decompress_files_in_threads(gz_files, decompress_file_gz)
+
     execute("Repo disk usage: ", ["du", "-sh", "."], repo_dir, True)
 
     # final check
