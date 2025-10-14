@@ -14,6 +14,7 @@ training:
         max_epochs: 18
         binpacks:
           - Viren6/MontyValue7/687f4aff48629dc8d8a9fccb.binpack.gz
+          - Viren6/MontyValue7/6882a5e448629dc8d8a9fcd5.binpack.gz
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^

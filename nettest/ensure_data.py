@@ -28,10 +28,8 @@ def decompress_file_gz(file_path):
     output_path = file_path[:-3]  # Remove .gz extension
     try:
         print(f"Decompressing: {file_path}")
-        with open(file_path, "rb") as compressed, open(
-            output_path, "wb"
-        ) as decompressed:
-            with gzip.open(compressed, "rb") as gzfile:
+        with open(output_path, "wb") as decompressed:
+            with gzip.open(file_path, "rb") as gzfile:
                 shutil.copyfileobj(gzfile, decompressed)
         os.remove(file_path)
         print(f"Decompressed and removed: {file_path}")
