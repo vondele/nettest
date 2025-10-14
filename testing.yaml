@@ -13,8 +13,7 @@ training:
         resume: none
         max_epochs: 18
         binpacks:
-          - Viren6/MontyValue7/687f4aff48629dc8d8a9fccb.binpack
-          - Viren6/MontyValue7/6882a5e448629dc8d8a9fcd5.binpack
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
