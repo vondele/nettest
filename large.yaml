@@ -427,7 +427,7 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=3072
-          - --lr=0.00010783148702050778
+          - --lr=0.00021566297
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
@@ -449,7 +449,7 @@ training:
 # Final testing stage using fastchess
 #
 testing:
-  steps: all
+  steps: last
   reference:
     code:
       owner: official-stockfish
