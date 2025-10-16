@@ -377,12 +377,6 @@ training:
           - --features=HalfKAv2_hm^
           - --l1=3072
           - --ft_compression=leb128
-        optimize:
-          - --features=HalfKAv2_hm
-          - --l1=3072
-          - --ft_optimize_count=100000
-          - --ft_optimize
-          - --ft_compression=leb128
       run:
         binpacks:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
@@ -431,8 +425,8 @@ training:
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.7560635942002347
-          - --end-lambda=0.7490913625693039
+          - --start-lambda=0.8560635942002347
+          - --end-lambda=0.8490913625693039
           - --in-scaling=294.7193839807687
           - --out-scaling=364.552099066772
           - --in-offset=281.4186220835457
