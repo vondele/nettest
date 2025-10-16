@@ -12,7 +12,7 @@ training:
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1280
+          - --l1=128
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
