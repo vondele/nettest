@@ -42,7 +42,7 @@ training:
         resume: none
       trainer:
         owner: sscg13
-        sha: 73696ad5f56e6ba216ba693bf5ad41a278004e36
+        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
     #
     # S2
     #
@@ -117,7 +117,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 73696ad5f56e6ba216ba693bf5ad41a278004e36
+        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
     #
     # S3
     #
@@ -192,7 +192,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 73696ad5f56e6ba216ba693bf5ad41a278004e36
+        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
     #
     # S4
     #
@@ -267,7 +267,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 73696ad5f56e6ba216ba693bf5ad41a278004e36
+        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
     #
     # S5
     #
@@ -342,7 +342,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 73696ad5f56e6ba216ba693bf5ad41a278004e36
+        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
 #
 # Final testing stage using fastchess
 #
@@ -356,7 +356,7 @@ testing:
   testing:
     code:
       owner: xu-shawn
-      sha: b7f553ee8b28a4abace6c1056dceb1d69169873a
+      sha: d5fad05e412e3118f94ab79aa5e03067ac86d204
       target: profile-build
   fastchess:
     code:
