@@ -7,7 +7,7 @@ training:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --ft_compression=leb128
         optimize:
@@ -31,7 +31,7 @@ training:
         repetitions: 3
         other_options:
           - --batch-size=16384
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --lr=4.375e-4
           - --gamma=0.995
@@ -49,7 +49,7 @@ training:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --ft_compression=leb128
         optimize:
@@ -100,7 +100,7 @@ training:
         repetitions: 3
         other_options:
           - --batch-size=16384
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
@@ -124,7 +124,7 @@ training:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --ft_compression=leb128
         optimize:
@@ -175,7 +175,7 @@ training:
         repetitions: 3
         other_options:
           - --batch-size=16384
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
@@ -199,7 +199,7 @@ training:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --ft_compression=leb128
         optimize:
@@ -250,7 +250,7 @@ training:
         repetitions: 3
         other_options:
           - --batch-size=16384
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
@@ -274,7 +274,7 @@ training:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --ft_compression=leb128
         optimize:
@@ -325,7 +325,7 @@ training:
         repetitions: 3
         other_options:
           - --batch-size=16384
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
