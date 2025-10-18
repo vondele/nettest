@@ -34,6 +34,7 @@ def execute(executor, recipe, environment):
     itest = 0
     ntest = len(schedule["test"])
     for kwargs in schedule["test"]:
+        itest += 1
         print(f"submitting testing step {itest} / {ntest}", flush=True)
         futures.append(executor.submit(run_test, environment, **kwargs))
 
