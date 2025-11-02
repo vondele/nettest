@@ -42,7 +42,7 @@ training:
         resume: none
       trainer:
         owner: sscg13
-        sha: 59655c8c2ba02893d071b068b540fa5496a0b866
+        sha: 38b97640f70e51911d731dc3b7a2dd0d3d7cadf2
 #    #
 #    # S2
 #    #
