@@ -42,7 +42,7 @@ training:
         resume: none
       trainer:
         owner: sscg13
-        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
+        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
     #
     # S2
     #
@@ -117,7 +117,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
+        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
     #
     # S3
     #
@@ -192,7 +192,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
+        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
     #
     # S4
     #
@@ -267,7 +267,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
+        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
     #
     # S5
     #
@@ -342,7 +342,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
+        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
 #
 # Final testing stage using fastchess
 #
