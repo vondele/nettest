@@ -41,8 +41,8 @@ training:
           - --early-fen-skipping=12
         resume: none
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: xu-shawn
+        sha: ff987e34ddf263e8f30f9300f5e704f6106f050e
     #
     # S2
     #
@@ -116,8 +116,8 @@ training:
           - --early-fen-skipping=28
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: xu-shawn
+        sha: ff987e34ddf263e8f30f9300f5e704f6106f050e
     #
     # S3
     #
@@ -191,8 +191,8 @@ training:
           - --early-fen-skipping=28
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: xu-shawn
+        sha: ff987e34ddf263e8f30f9300f5e704f6106f050e
     #
     # S4
     #
@@ -266,8 +266,8 @@ training:
           - --early-fen-skipping=28
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: xu-shawn
+        sha: ff987e34ddf263e8f30f9300f5e704f6106f050e
     #
     # S5
     #
@@ -341,8 +341,8 @@ training:
           - --early-fen-skipping=28
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: xu-shawn
+        sha: ff987e34ddf263e8f30f9300f5e704f6106f050e
 #
 # Final testing stage using fastchess
 #
@@ -351,12 +351,12 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 75edbee01e6f8cb53a2555499192ccaddb883577
+      sha: 69a01b88f35db2a5003d42116f573207ca5c275b
       target: profile-build
   testing:
     code:
-      owner: xu-shawn
-      sha: d5fad05e412e3118f94ab79aa5e03067ac86d204
+      owner: sscg13
+      sha: 19568c7e288fc4fc3829692cbc9754cc81230ef8
       target: profile-build
   fastchess:
     code:
