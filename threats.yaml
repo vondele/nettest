@@ -351,12 +351,12 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 75edbee01e6f8cb53a2555499192ccaddb883577
+      sha: 69a01b88f35db2a5003d42116f573207ca5c275b
       target: profile-build
   testing:
     code:
-      owner: xu-shawn
-      sha: d5fad05e412e3118f94ab79aa5e03067ac86d204
+      owner: sscg13
+      sha: 19568c7e288fc4fc3829692cbc9754cc81230ef8
       target: profile-build
   fastchess:
     code:
