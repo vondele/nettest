@@ -42,7 +42,7 @@ training:
         resume: none
       trainer:
         owner: sscg13
-        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
+        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
     #
     # S2
     #
@@ -117,7 +117,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
+        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
     #
     # S3
     #
@@ -192,7 +192,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
+        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
     #
     # S4
     #
@@ -267,7 +267,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
+        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
     #
     # S5
     #
@@ -342,7 +342,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 5bcb0036825206ad6a23df6ed1b07211e3a73f58
+        sha: 7d17d4e3ccb7fd00f6ab816429b9631bcf8b8798
 #
 # Final testing stage using fastchess
 #
@@ -350,13 +350,13 @@ testing:
   steps: all
   reference:
     code:
-      owner: official-stockfish
-      sha: 75edbee01e6f8cb53a2555499192ccaddb883577
+      owner: sscg13
+      sha: 4c902c7c443b6b71d06895097ecd8d85aa3a2e99
       target: profile-build
   testing:
     code:
-      owner: xu-shawn
-      sha: d5fad05e412e3118f94ab79aa5e03067ac86d204
+      owner: sscg13
+      sha: 4c902c7c443b6b71d06895097ecd8d85aa3a2e99
       target: profile-build
   fastchess:
     code:
@@ -365,7 +365,7 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       max_rounds: 20000
-#    sprt:
-#       nElo_interval_midpoint: -100
-#       nElo_interval_width: 2
+       max_rounds: 60000
+    sprt:
+       nElo_interval_midpoint: 0
+       nElo_interval_width: 2
