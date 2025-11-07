@@ -350,8 +350,8 @@ testing:
   steps: all
   reference:
     code:
-      owner: official-stockfish
-      sha: 69a01b88f35db2a5003d42116f573207ca5c275b
+      owner: sscg13
+      sha: 4c902c7c443b6b71d06895097ecd8d85aa3a2e99
       target: profile-build
   testing:
     code:
