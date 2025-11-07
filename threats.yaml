@@ -356,7 +356,7 @@ testing:
   testing:
     code:
       owner: sscg13
-      sha: 19568c7e288fc4fc3829692cbc9754cc81230ef8
+      sha: 4c902c7c443b6b71d06895097ecd8d85aa3a2e99
       target: profile-build
   fastchess:
     code:
@@ -365,7 +365,7 @@ testing:
     options:
        tc: 10+0.1
        hash: 16
-       max_rounds: 20000
-#    sprt:
-#       nElo_interval_midpoint: -100
-#       nElo_interval_width: 2
+       max_rounds: 60000
+    sprt:
+       nElo_interval_midpoint: 0
+       nElo_interval_width: 2
