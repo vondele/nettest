@@ -406,7 +406,7 @@ training:
 # Final testing stage using fastchess
 #
 testing:
-  steps: all
+  steps: last
   reference:
     code:
       owner: sscg13
