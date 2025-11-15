@@ -6,4 +6,3 @@ train:
   devices: 0,
   workers: 96
   cpunodebind: 0
-  membind: 0
