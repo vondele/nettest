@@ -1,9 +1,28 @@
-#
+testing:
+  fastchess:
+    code:
+      owner: Disservin
+      sha: e06cb1a55d80d768fdce29771b1749b40daeeab3
+    options:
+      hash: 16
+      max_rounds: 60000
+      tc: 10+0.1
+    sprt:
+      nElo_interval_midpoint: 1.0
+      nElo_interval_width: 2
+  reference:
+    code:
+      owner: official-stockfish
+      sha: 8e5392d79a36aba5b997cf6fb590937e3e624e80
+      target: profile-build
+  steps: last
+  testing:
+    code:
+      owner: official-stockfish
+      sha: 8e5392d79a36aba5b997cf6fb590937e3e624e80
+      target: profile-build
 training:
   steps:
-    #
-    # S1
-    #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -28,7 +47,6 @@ training:
           - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
-        repetitions: 3
         other_options:
           - --batch-size=16384
           - --features=Full_Threats^
@@ -39,13 +57,11 @@ training:
           - --end-lambda=0.75
           - --random-fen-skipping=10
           - --early-fen-skipping=12
+        repetitions: 3
         resume: none
       trainer:
         owner: sscg13
         sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
-    #
-    # S2
-    #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -83,21 +99,20 @@ training:
           - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
           - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
+          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
           - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
+          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
-        repetitions: 3
         other_options:
           - --batch-size=16384
           - --features=Full_Threats^
@@ -114,13 +129,11 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+        repetitions: 3
         resume: previous_model
       trainer:
         owner: sscg13
         sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
-    #
-    # S3
-    #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -158,21 +171,20 @@ training:
           - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
           - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
+          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
           - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
+          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
-        repetitions: 3
         other_options:
           - --batch-size=16384
           - --features=Full_Threats^
@@ -189,13 +201,11 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+        repetitions: 3
         resume: previous_model
       trainer:
         owner: sscg13
         sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
-    #
-    # S4
-    #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -233,21 +243,20 @@ training:
           - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
           - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
+          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
           - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
+          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
-        repetitions: 3
         other_options:
           - --batch-size=16384
           - --features=Full_Threats^
@@ -264,13 +273,11 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+        repetitions: 3
         resume: previous_model
       trainer:
         owner: sscg13
         sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
-    #
-    # S5
-    #
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -292,11 +299,7 @@ training:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
@@ -308,64 +311,38 @@ training:
           - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
           - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack #sk20?
+          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack
           - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
           - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
           - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack 
+          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
-        repetitions: 3
         other_options:
           - --batch-size=16384
           - --features=Full_Threats^
           - --l1=1024
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
+          - --lr=0.00042301976890599417
+          - --gamma=0.9935974858411222
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
-          - --end-lambda=0.7490913625693039
+          - --end-lambda=0.7404368679861961
           - --in-scaling=294.7193839807687
-          - --out-scaling=364.552099066772
+          - --out-scaling=352.8750799744594
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+        repetitions: 3
         resume: previous_model
       trainer:
         owner: sscg13
         sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
-#
-# Final testing stage using fastchess
-#
-testing:
-  steps: all
-  reference:
-    code:
-      owner: sscg13
-      sha: 4c902c7c443b6b71d06895097ecd8d85aa3a2e99
-      target: profile-build
-  testing:
-    code:
-      owner: sscg13
-      sha: 4c902c7c443b6b71d06895097ecd8d85aa3a2e99
-      target: profile-build
-  fastchess:
-    code:
-      owner: Disservin
-      sha: e06cb1a55d80d768fdce29771b1749b40daeeab3
-    options:
-       tc: 10+0.1
-       hash: 16
-       max_rounds: 60000
-    sprt:
-       nElo_interval_midpoint: 0
-       nElo_interval_width: 2
