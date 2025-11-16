@@ -30,7 +30,7 @@ training:
         max_epochs: 800
         repetitions: 3
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=4.375e-4
@@ -99,7 +99,7 @@ training:
         max_epochs: 800
         repetitions: 3
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -174,7 +174,7 @@ training:
         max_epochs: 800
         repetitions: 3
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -249,7 +249,7 @@ training:
         max_epochs: 800
         repetitions: 3
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
