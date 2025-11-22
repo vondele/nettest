@@ -420,7 +420,7 @@ training:
         ) as f:
             yaml.dump(recipe, f, Dumper=MyDumper, default_flow_style=False, width=300)
 
-        nElo = execute(
+        bestNet, nElo = execute(
             recipe=recipe,
             executor=self.executor,
             environment=self.environment,
@@ -440,6 +440,7 @@ training:
             pc_y2,
             pc_y3,
             nElo,
+            bestNet,
             flush=True,
         )
 

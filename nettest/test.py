@@ -302,7 +302,7 @@ def run_fastchess(
     )
 
     pattern = re.compile(r"nElo\s*:\s*(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)")
-    winning_net = None
+    winning_net = short_nnue
     nElo = None
 
     # currently there could be multiple lines with H0/H1 accepted, so repeated output is to be expected
@@ -312,7 +312,6 @@ def run_fastchess(
 
         if "H1 was accepted" in line:
             print(f"🎉 Success: {short_nnue} passed SPRT")
-            winning_net = short_nnue
 
         match = pattern.search(line)
         if match:

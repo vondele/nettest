@@ -42,14 +42,16 @@ def execute(executor, recipe, environment):
 
     # if there are multiple tests, we only return the highest Elo
     nElo = None
+    bestNet = None
     for future in done:
-        _, result = future.result()
+        net, result = future.result()
         if nElo is None or result > nElo:
             nElo = result
+            bestNet = net
 
-    print("all done", flush=True)
+    print(f"all done, best net: {bestNet} with Elo {nElo}", flush=True)
 
-    return nElo
+    return bestNet, nElo
 
 
 if __name__ == "__main__":
@@ -95,7 +97,7 @@ if __name__ == "__main__":
             max_workers=64,
         )
 
-    nElo = execute(executor, recipe, environment)
-    print(f"Execution of the recipe led to a net of {nElo} nElo.")
+    bestNet, nElo = execute(executor, recipe, environment)
+    print(f"Execution of the recipe led to a net {bestNet} of {nElo} nElo.")
 
     executor.shutdown(wait=True, cancel_futures=False)
