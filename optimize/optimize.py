@@ -39,7 +39,6 @@ class RemoteNet:
     # the recipe to optimize
     def train_and_test_net(
         self,
-        early_fen_skipping,
         pc_y1,
         pc_y2,
         pc_y3,
@@ -50,7 +49,6 @@ class RemoteNet:
 
         print(
             f"Starting {local_exec_id}:",
-            early_fen_skipping,
             pc_y1,
             pc_y2,
             pc_y3,
@@ -65,7 +63,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 54cfa83972ba64032ef634198eef498508d115c6
+      sha: e06cb1a55d80d768fdce29771b1749b40daeeab3
     options:
       hash: 16
       max_rounds: 80000
@@ -76,13 +74,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 8e5392d79a36aba5b997cf6fb590937e3e624e80
+      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
       target: profile-build
   steps: last
   testing:
     code:
       owner: official-stockfish
-      sha: 8e5392d79a36aba5b997cf6fb590937e3e624e80
+      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
       target: profile-build
 training:
   steps:
@@ -111,7 +109,7 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=4.375e-4
@@ -177,7 +175,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -249,7 +247,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -321,7 +319,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -389,7 +387,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.00042301976890599417
@@ -403,7 +401,7 @@ training:
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
-          - --early-fen-skipping={early_fen_skipping}
+          - --early-fen-skipping=28
           - --pc-y1={pc_y1}
           - --pc-y2={pc_y2}
           - --pc-y3={pc_y3}
@@ -435,7 +433,6 @@ training:
 
         print(
             f"Done {local_exec_id}:",
-            early_fen_skipping,
             pc_y1,
             pc_y2,
             pc_y3,
@@ -445,7 +442,7 @@ training:
         )
 
         if nElo > self.nElo_target:
-            self.nElo_target = nElo
+            self.nElo_target = self.nElo_target + 1  # could also be nElo
 
         return -nElo
 
@@ -465,10 +462,10 @@ if __name__ == "__main__":
         environment = dict()
 
     instrumentation = ng.p.Instrumentation(
-        ng.p.Scalar(init=28)
-        .set_bounds(lower=10, upper=32)
-        .set_mutation(sigma=3.0)
-        .set_integer_casting(),  # early_fen_skipping
+        # ng.p.Scalar(init=28)
+        # .set_bounds(lower=10, upper=32)
+        # .set_mutation(sigma=3.0)
+        # .set_integer_casting(),  # early_fen_skipping
         ng.p.Scalar(init=1.0)
         .set_bounds(lower=0.5, upper=2.0)
         .set_mutation(sigma=0.2),  # pc_y1
@@ -511,7 +508,7 @@ if __name__ == "__main__":
     )
 
     budget = 64  # Total number of evaluations to perform
-    num_workers = 16  # Number of parallel workers to use
+    num_workers = 32  # Number of parallel workers to use
 
     # The remotely trainable net
     remoteNet = RemoteNet(
