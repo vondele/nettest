@@ -2,6 +2,7 @@ import yaml
 import subprocess
 import re
 import hashlib
+import time
 
 
 def find_most_recent(root, file):
@@ -42,7 +43,9 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
     if filter_re and isinstance(filter_re, str):
         filter_re = re.compile(filter_re)
 
-    print(f"\n➡️  [{name}] {' '.join(cmd)} (cwd={cwd or '$(current)'})")
+    gmtime = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+
+    print(f"\n➡️  [{gmtime}][{name}] {' '.join(cmd)} (cwd={cwd or '$(current)'})")
     print("-------------------------------------------------------------")
 
     cwd.mkdir(parents=True, exist_ok=True)
@@ -69,11 +72,14 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
         if not stdout_line and process.poll() is not None:
             break
 
+    gmtime = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
     if process.returncode:
         fail_symbol = "⚠️" if fail_is_ok else "❌"
-        print(f"{fail_symbol} Step '{name}' failed with exit code {process.returncode}")
+        print(
+            f"{fail_symbol} [{gmtime}][{name}] failed with exit code {process.returncode}"
+        )
         assert fail_is_ok
     else:
-        print(f"✅ Step '{name}' completed successfully.")
+        print(f"✅ [{gmtime}][{name}] completed successfully.")
 
     return output
