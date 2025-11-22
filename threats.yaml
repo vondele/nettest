@@ -5,21 +5,21 @@ testing:
       sha: e06cb1a55d80d768fdce29771b1749b40daeeab3
     options:
       hash: 16
-      max_rounds: 60000
+      max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 1.0
+      nElo_interval_midpoint: 0.0
       nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
-      sha: 8e5392d79a36aba5b997cf6fb590937e3e624e80
+      sha: 035cb146d430b601e94c13e3f2fefcc7688ec1d6
       target: profile-build
   steps: last
   testing:
     code:
       owner: official-stockfish
-      sha: 8e5392d79a36aba5b997cf6fb590937e3e624e80
+      sha: 035cb146d430b601e94c13e3f2fefcc7688ec1d6
       target: profile-build
 training:
   steps:
@@ -48,7 +48,7 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=4.375e-4
@@ -114,7 +114,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -186,7 +186,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -258,7 +258,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.0010783148702050778
@@ -326,7 +326,7 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
           - --lr=0.00042301976890599417
