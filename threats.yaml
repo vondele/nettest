@@ -8,18 +8,18 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 0.0
+      nElo_interval_midpoint: 1
       nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
-      sha: 035cb146d430b601e94c13e3f2fefcc7688ec1d6
+      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
       target: profile-build
   steps: last
   testing:
     code:
       owner: official-stockfish
-      sha: 035cb146d430b601e94c13e3f2fefcc7688ec1d6
+      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
       target: profile-build
 training:
   steps:
@@ -341,8 +341,11 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: vondele
+        sha: 3c935381a4c2437e5a7c0f2811f767c016fa9bf6
