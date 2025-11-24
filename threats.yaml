@@ -341,9 +341,9 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
-          - --pc-y1=0.9915815035710587
-          - --pc-y2=2.011211989273085
-          - --pc-y3=1.1915979915185313
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
         repetitions: 3
         resume: previous_model
       trainer:
