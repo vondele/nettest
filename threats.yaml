@@ -12,14 +12,14 @@ testing:
       nElo_interval_width: 2
   reference:
     code:
-      owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      owner: vondele
+      sha: 928557ead60b0a34d32c965d1ee5ca2178239b79
       target: profile-build
-  steps: last
+  steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      owner: vondele
+      sha: 928557ead60b0a34d32c965d1ee5ca2178239b79
       target: profile-build
 training:
   steps:
@@ -83,11 +83,7 @@ training:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
@@ -129,6 +125,9 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
         repetitions: 3
         resume: previous_model
       trainer:
@@ -155,11 +154,7 @@ training:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
@@ -201,6 +196,9 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
         repetitions: 3
         resume: previous_model
       trainer:
@@ -227,11 +225,7 @@ training:
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
           - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
           - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
           - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
           - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
@@ -273,6 +267,9 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
         repetitions: 3
         resume: previous_model
       trainer:
