@@ -39,9 +39,8 @@ class RemoteNet:
     # the recipe to optimize
     def train_and_test_net(
         self,
-        pc_y1,
-        pc_y2,
-        pc_y3,
+        w1,
+        w2,
     ):
         with self.lock:
             self.exec_id += 1
@@ -49,9 +48,8 @@ class RemoteNet:
 
         print(
             f"Starting {local_exec_id}:",
-            pc_y1,
-            pc_y2,
-            pc_y3,
+            w1,
+            w2,
             flush=True,
         )
 
@@ -73,14 +71,14 @@ testing:
       nElo_interval_width: 2
   reference:
     code:
-      owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      owner: vondele
+      sha: 928557ead60b0a34d32c965d1ee5ca2178239b79
       target: profile-build
   steps: last
   testing:
     code:
-      owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      owner: vondele
+      sha: 928557ead60b0a34d32c965d1ee5ca2178239b79
       target: profile-build
 training:
   steps:
@@ -402,14 +400,16 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
-          - --pc-y1={pc_y1}
-          - --pc-y2={pc_y2}
-          - --pc-y3={pc_y3}
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1={w1}
+          - --w2={w2}
         repetitions: 3
         resume: previous_model
       trainer:
         owner: vondele
-        sha: 3c935381a4c2437e5a7c0f2811f767c016fa9bf6
+        sha: 81b8c11c2f673a88fc4dff516ec655d3daf7124c
         """
         recipe = yaml.safe_load(recipe_str)
 
@@ -433,16 +433,15 @@ training:
 
         print(
             f"Done {local_exec_id}:",
-            pc_y1,
-            pc_y2,
-            pc_y3,
+            w1,
+            w2,
             nElo,
             bestNet,
             flush=True,
         )
 
         if nElo > self.nElo_target:
-            self.nElo_target = self.nElo_target + 1  # could also be nElo
+            self.nElo_target = min(nElo, self.nElo_target + 1)  # could also be nElo
 
         return -nElo
 
@@ -466,15 +465,21 @@ if __name__ == "__main__":
         # .set_bounds(lower=10, upper=32)
         # .set_mutation(sigma=3.0)
         # .set_integer_casting(),  # early_fen_skipping
-        ng.p.Scalar(init=1.0)
-        .set_bounds(lower=0.5, upper=2.0)
-        .set_mutation(sigma=0.2),  # pc_y1
-        ng.p.Scalar(init=2.0)
-        .set_bounds(lower=1.0, upper=4.0)
-        .set_mutation(sigma=0.5),  # pc_y2
-        ng.p.Scalar(init=1.0)
-        .set_bounds(lower=0.5, upper=2.0)
-        .set_mutation(sigma=0.2),  # pc_y3
+        ng.p.Scalar(init=0.0)
+        .set_bounds(lower=-10, upper=10)
+        .set_mutation(sigma=1.0),  # w1
+        ng.p.Scalar(init=0.5)
+        .set_bounds(lower=0.1, upper=1.0)
+        .set_mutation(sigma=0.1),  # w2
+        # ng.p.Scalar(init=1.0)
+        # .set_bounds(lower=0.5, upper=2.0)
+        # .set_mutation(sigma=0.2),  # pc_y1
+        # ng.p.Scalar(init=2.0)
+        # .set_bounds(lower=1.0, upper=4.0)
+        # .set_mutation(sigma=0.5),  # pc_y2
+        # ng.p.Scalar(init=1.0)
+        # .set_bounds(lower=0.5, upper=2.0)
+        # .set_mutation(sigma=0.2),  # pc_y3
         # ng.p.Scalar(init=0.0)
         # .set_bounds(lower=-4.0, upper=4.0)
         # .set_mutation(sigma=1.0),  # lr_scaling_power
@@ -508,7 +513,7 @@ if __name__ == "__main__":
     )
 
     budget = 64  # Total number of evaluations to perform
-    num_workers = 32  # Number of parallel workers to use
+    num_workers = 16  # Number of parallel workers to use
 
     # The remotely trainable net
     remoteNet = RemoteNet(
