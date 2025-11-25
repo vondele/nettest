@@ -131,8 +131,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: vondele
+        sha: 3c935381a4c2437e5a7c0f2811f767c016fa9bf6
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -202,8 +202,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: vondele
+        sha: 3c935381a4c2437e5a7c0f2811f767c016fa9bf6
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -273,8 +273,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: vondele
+        sha: 3c935381a4c2437e5a7c0f2811f767c016fa9bf6
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
