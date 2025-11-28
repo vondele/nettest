@@ -12,14 +12,14 @@ testing:
       nElo_interval_width: 2
   reference:
     code:
-      owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      owner: vondele
+      sha: 928557ead60b0a34d32c965d1ee5ca2178239b79
       target: profile-build
   steps: last
   testing:
     code:
-      owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      owner: vondele
+      sha: 928557ead60b0a34d32c965d1ee5ca2178239b79
       target: profile-build
 training:
   steps:
@@ -344,8 +344,10 @@ training:
           - --pc-y1=0.6893201149773951
           - --pc-y2=2.9285769485515805
           - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
         repetitions: 3
         resume: previous_model
       trainer:
         owner: vondele
-        sha: 3c935381a4c2437e5a7c0f2811f767c016fa9bf6
+        sha: 81b8c11c2f673a88fc4dff516ec655d3daf7124c
