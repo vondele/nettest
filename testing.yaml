@@ -8,7 +8,7 @@ training:
 #
     - trainer:
         owner: vondele
-        sha: a663735988bbba588abc4b896435116989525b40
+        sha: a1e061384917a089520cc16b6ead6dde4047afdd
       run:
         resume: none
         max_epochs: 18
@@ -34,7 +34,7 @@ training:
 #
     - trainer:
         owner: vondele
-        sha: a663735988bbba588abc4b896435116989525b40
+        sha: a1e061384917a089520cc16b6ead6dde4047afdd
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -61,7 +61,7 @@ training:
 #
     - trainer:
         owner: vondele
-        sha: a663735988bbba588abc4b896435116989525b40
+        sha: a1e061384917a089520cc16b6ead6dde4047afdd
       run:
         resume: previous_model
         max_epochs: 12
@@ -77,9 +77,11 @@ training:
           - --early-fen-skipping=2
           - --epoch-size=100000
           - --validation-size=0
-          - --pc-x2=13.0
+          - --pc-y1=1.0
           - --pc-y2=3.0
           - --pc-y3=1.5
+          - --w1=3.0
+          - --w2=0.7
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         optimize:
@@ -99,16 +101,14 @@ testing:
   steps: all
   reference:
     code:
-      owner: vondele
-      sha: bfc7000597b8b5b0899e99bc911f6120a75c6297
+      owner: official-stockfish
+      sha: 5297ba0a1a1aa0a15332e0d64ce6b32952342cac
       target: build
   testing:
     code:
-      owner: vondele
-      sha: 2e243e308a86072e6b3d8181f53068ff15e4b614
+      owner: official-stockfish
+      sha: 5297ba0a1a1aa0a15332e0d64ce6b32952342cac
       target: profile-build
-    options:
-      - smallNetThreshold=962
   fastchess:
     code:
       owner: Disservin
