@@ -77,9 +77,11 @@ training:
           - --early-fen-skipping=2
           - --epoch-size=100000
           - --validation-size=0
-          - --pc-x2=13.0
+          - --pc-y1=1.0
           - --pc-y2=3.0
           - --pc-y3=1.5
+          - --w1=3.0
+          - --w2=0.7
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         optimize:
