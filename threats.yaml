@@ -65,8 +65,8 @@ training:
         repetitions: 3
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: cc44eeabc8e071b0df01668c0db6e7398b79d49b
+        owner: vondele
+        sha: f99866c3a989c3d9854ed0400ce9032768a3a7a4
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -142,8 +142,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: cc44eeabc8e071b0df01668c0db6e7398b79d49b
+        owner: vondele
+        sha: f99866c3a989c3d9854ed0400ce9032768a3a7a4
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -219,8 +219,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: cc44eeabc8e071b0df01668c0db6e7398b79d49b
+        owner: vondele
+        sha: f99866c3a989c3d9854ed0400ce9032768a3a7a4
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -296,8 +296,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: cc44eeabc8e071b0df01668c0db6e7398b79d49b
+        owner: vondele
+        sha: f99866c3a989c3d9854ed0400ce9032768a3a7a4
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -369,5 +369,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: cc44eeabc8e071b0df01668c0db6e7398b79d49b
+        owner: vondele
+        sha: f99866c3a989c3d9854ed0400ce9032768a3a7a4
