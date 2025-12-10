@@ -14,13 +14,13 @@ testing:
     code:
       owner: official-stockfish
       sha: 5297ba0a1a1aa0a15332e0d64ce6b32952342cac
-      target: profile-build
+      target: build
   steps: all
   testing:
     code:
       owner: Disservin
-      sha: bcbd27f8626bce4f74785219e24b3785108d564c
-      target: profile-build
+      sha: 3f4b5e2dcd5933b34ede9b5e09c7a6e45cb07cd4
+      target: build
 training:
   steps:
     - convert:
