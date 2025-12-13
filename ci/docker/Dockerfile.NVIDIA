@@ -25,6 +25,9 @@ RUN pip install --no-cache-dir "firecrest-executor>=0.3.1"
 # enabler for hf downloads
 RUN pip install huggingface_hub zstandard
 
+# adabelief ranger.
+RUN pip install ranger-adabelief==0.1.0
+
 # copy the current nettest sources to have them around
 COPY . /workspace/nettest/
 
