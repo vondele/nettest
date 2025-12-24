@@ -13,14 +13,14 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: c109a88ebe93ab7652c7cb4694cfc405568e5e50
-      target: profile-build
+      sha: c475024be75c1d239b6410aa8ec3122fb5b4260c
+      target: build
   steps: all
   testing:
     code:
-      owner: sscg13
-      sha: 962cceafc0d477a31ce685dc0d8d48925a2c81a6
-      target: profile-build
+      owner: anematode
+      sha: c06f5eaab4956516bc8d83ca2728af933c6f54ae
+      target: build
 training:
   steps:
     - convert:
@@ -65,8 +65,8 @@ training:
         repetitions: 3
         resume: none
       trainer:
-        owner: sscg13
-        sha: db280198211d0cd94038afbd7d72440a6ed8e9b4
+        owner: anematode
+        sha: c06f5eaab4956516bc8d83ca2728af933c6f54ae
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -142,8 +142,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: db280198211d0cd94038afbd7d72440a6ed8e9b4
+        owner: anematode
+        sha: c06f5eaab4956516bc8d83ca2728af933c6f54ae
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -219,8 +219,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: db280198211d0cd94038afbd7d72440a6ed8e9b4
+        owner: anematode
+        sha: c06f5eaab4956516bc8d83ca2728af933c6f54ae
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -296,8 +296,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: db280198211d0cd94038afbd7d72440a6ed8e9b4
+        owner: anematode
+        sha: c06f5eaab4956516bc8d83ca2728af933c6f54ae
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -369,5 +369,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: db280198211d0cd94038afbd7d72440a6ed8e9b4
+        owner: anematode
+        sha: c06f5eaab4956516bc8d83ca2728af933c6f54ae
