@@ -19,7 +19,7 @@ testing:
   testing:
     code:
       owner: anematode
-      sha: c06f5eaab4956516bc8d83ca2728af933c6f54ae
+      sha: bf9ced78a2cc88b65f7457f8e368783df9c0a970
       target: build
 training:
   steps:
