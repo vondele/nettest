@@ -88,11 +88,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=128
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -111,7 +111,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --lr=4.375e-4
           - --gamma=0.995
           - --start-lambda=1.0
@@ -127,11 +127,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=128
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -177,7 +177,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
@@ -199,11 +199,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=128
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -249,7 +249,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
@@ -271,11 +271,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=128
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -321,7 +321,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
@@ -343,11 +343,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=128
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -389,7 +389,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=128
           - --lr=0.00042301976890599417
           - --gamma=0.9935974858411222
           - --pow-exp=2.442037790427722
