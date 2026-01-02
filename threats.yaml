@@ -6,32 +6,32 @@ testing:
     options:
       hash: 16
       max_rounds: 80000
-      tc: 10+0.1
+      nodes: 50000
     sprt:
       nElo_interval_midpoint: 0
       nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
-      sha: c467fe5ba42545827d769c360aa404767308ac18
-      target: profile-build
+      sha: c475024be75c1d239b6410aa8ec3122fb5b4260c
+      target: build
   steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: c467fe5ba42545827d769c360aa404767308ac18
-      target: profile-build
+      owner: vondele
+      sha: e3383df0572b727526534737a249c4633d07a88e
+      target: build
 training:
   steps:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=8192
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -50,7 +50,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --lr=4.375e-4
           - --gamma=0.995
           - --start-lambda=1.0
@@ -62,7 +62,7 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
+        repetitions: 10
         resume: none
       trainer:
         owner: official-stockfish
@@ -71,11 +71,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=8192
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -121,7 +121,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
@@ -139,7 +139,7 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
+        repetitions: 10
         resume: previous_model
       trainer:
         owner: official-stockfish
@@ -148,11 +148,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=8192
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -198,7 +198,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
@@ -216,7 +216,7 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
+        repetitions: 10
         resume: previous_model
       trainer:
         owner: official-stockfish
@@ -225,11 +225,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=8192
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -275,7 +275,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --lr=0.0010783148702050778
           - --gamma=0.994446435229841
           - --pow-exp=2.442037790427722
@@ -293,7 +293,7 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
+        repetitions: 10
         resume: previous_model
       trainer:
         owner: official-stockfish
@@ -302,11 +302,11 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats
-          - --l1=1024
+          - --l1=8192
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -348,7 +348,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
-          - --l1=1024
+          - --l1=8192
           - --lr=0.00042301976890599417
           - --gamma=0.9935974858411222
           - --pow-exp=2.442037790427722
@@ -366,7 +366,7 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
+        repetitions: 10
         resume: previous_model
       trainer:
         owner: official-stockfish
