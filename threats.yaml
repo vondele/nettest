@@ -5,17 +5,17 @@ testing:
       sha: fb9176da7538d14198823b29d165061ba80b1cf1
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 40000
       nodes: 50000
-    sprt:
-      nElo_interval_midpoint: 0
-      nElo_interval_width: 2
+#    sprt:
+#      nElo_interval_midpoint: 0
+#      nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
       sha: c475024be75c1d239b6410aa8ec3122fb5b4260c
       target: build
-  steps: all
+  steps: last
   testing:
     code:
       owner: vondele
@@ -61,77 +61,77 @@ training:
       trainer:
         owner: official-stockfish
         sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
-#    - convert:
-#        binpack: official-stockfish/master-binpacks/fishpack32.binpack
-#        checkpoint2nnue:
-#          - --features=Full_Threats^
-#          - --l1=8192
-#          - --ft_compression=leb128
-#      run:
-#        binpacks:
-#          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
-#          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
-#          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
-#          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
-#          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
-#          - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
-#          - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-#          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-#          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-#          - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-#          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-#          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-#          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-#          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-#          - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
-#          - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
-#          - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
-#          - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
-#          - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-#          - linrock/test80-2022/test80-2022-09-sep-16tb7p.v6-dd.min.binpack
-#          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
-#          - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
-#          - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-#          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack
-#          - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
-#          - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
-#          - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
-#          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
-#          - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
-#          - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-#          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack
-#          - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
-#          - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
-#          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
-#          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-#          - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-#        max_epochs: 800
-#        other_options:
-#          - --batch-size=65536
-#          - --features=Full_Threats^
-#          - --l1=8192
-#          - --lr=0.0010783148702050778
-#          - --gamma=0.994446435229841
-#          - --pow-exp=2.442037790427722
-#          - --qp-asymmetry=0.15795949371005746
-#          - --start-lambda=0.8460635942002347
-#          - --end-lambda=0.7490913625693039
-#          - --in-scaling=294.7193839807687
-#          - --out-scaling=364.552099066772
-#          - --in-offset=281.4186220835457
-#          - --out-offset=279.93991915496105
-#          - --random-fen-skipping=10
-#          - --early-fen-skipping=28
-#          - --pc-y1=0.6893201149773951
-#          - --pc-y2=2.9285769485515805
-#          - --pc-y3=1.4386005301749225
-#          - --w1=3.3553547771220007
-#          - --w2=0.7006821612968052
-#        repetitions: 10
-#        resume: previous_model
-#      trainer:
-#        owner: official-stockfish
-#        sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
+    - convert:
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
+        checkpoint2nnue:
+          - --features=Full_Threats^
+          - --l1=8192
+          - --ft_compression=leb128
+      run:
+        binpacks:
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
+          - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
+          - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
+          - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
+          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
+          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
+          - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
+          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
+          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
+          - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
+          - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
+          - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
+          - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2022/test80-2022-09-sep-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
+          - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
+          - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack
+          - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
+          - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
+          - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
+          - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
+          - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+        max_epochs: 800
+        other_options:
+          - --batch-size=65536
+          - --features=Full_Threats^
+          - --l1=8192
+          - --lr=0.0010783148702050778
+          - --gamma=0.994446435229841
+          - --pow-exp=2.442037790427722
+          - --qp-asymmetry=0.15795949371005746
+          - --start-lambda=0.8460635942002347
+          - --end-lambda=0.7490913625693039
+          - --in-scaling=294.7193839807687
+          - --out-scaling=364.552099066772
+          - --in-offset=281.4186220835457
+          - --out-offset=279.93991915496105
+          - --random-fen-skipping=10
+          - --early-fen-skipping=28
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
+        repetitions: 10
+        resume: previous_model
+      trainer:
+        owner: official-stockfish
+        sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
 #    - convert:
 #        binpack: official-stockfish/master-binpacks/fishpack32.binpack
 #        checkpoint2nnue:
