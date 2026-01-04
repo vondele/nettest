@@ -8,7 +8,7 @@ training:
 #
     - trainer:
         owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        sha: a2a143c6ed0284138516006211e062a236b5b9f7
       run:
         resume: none
         max_epochs: 18
@@ -34,7 +34,7 @@ training:
 #
     - trainer:
         owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        sha: a2a143c6ed0284138516006211e062a236b5b9f7
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -61,7 +61,7 @@ training:
 #
     - trainer:
         owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        sha: a2a143c6ed0284138516006211e062a236b5b9f7
       run:
         resume: previous_model
         max_epochs: 12
