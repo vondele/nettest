@@ -13,14 +13,14 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: c467fe5ba42545827d769c360aa404767308ac18
-      target: profile-build
+      sha: cb3d4ee9b47d0c5aae855b12379378ea1439675c
+      target: build
   steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: c467fe5ba42545827d769c360aa404767308ac18
-      target: profile-build
+      owner: sscg13
+      sha: 22c38e07fc4c5f5cae01ceeba552d132e9a4c7d5
+      target: build
 training:
   steps:
     - convert:
@@ -65,8 +65,8 @@ training:
         repetitions: 3
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
+        owner: sscg13
+        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -142,8 +142,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
+        owner: sscg13
+        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -219,8 +219,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
+        owner: sscg13
+        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -296,8 +296,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
+        owner: sscg13
+        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -369,5 +369,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 202a50c13dfc160a7cbbfb001dbf8ce859eb28d9
+        owner: sscg13
+        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
