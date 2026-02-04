@@ -12,14 +12,14 @@ testing:
       nElo_interval_width: 2
   reference:
     code:
-      owner: official-stockfish
-      sha: cb3d4ee9b47d0c5aae855b12379378ea1439675c
+      owner: sscg13
+      sha: f512b7fa8b14b89333690121f4a90c2151d0229d
       target: build
   steps: all
   testing:
     code:
       owner: sscg13
-      sha: 22c38e07fc4c5f5cae01ceeba552d132e9a4c7d5
+      sha: dffec74b1844ba53e4ce6d4ba3f29fa92c0fe2cb
       target: build
 training:
   steps:
@@ -66,7 +66,7 @@ training:
         resume: none
       trainer:
         owner: sscg13
-        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
+        sha: 8c2b52c320db037153b28e9b14b725bc06519b60
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -143,7 +143,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
+        sha: 8c2b52c320db037153b28e9b14b725bc06519b60
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -220,7 +220,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
+        sha: 8c2b52c320db037153b28e9b14b725bc06519b60
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -297,7 +297,7 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
+        sha: 8c2b52c320db037153b28e9b14b725bc06519b60
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -370,4 +370,4 @@ training:
         resume: previous_model
       trainer:
         owner: sscg13
-        sha: 7d86beaf47034cd293b4cece566e820bf0d873ff
+        sha: 8c2b52c320db037153b28e9b14b725bc06519b60
