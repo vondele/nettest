@@ -1,0 +1,206 @@
+name: Comment YAML Diff Links
+
+on:
+  pull_request:
+    paths:
+      - "*.yaml"
+      - "*.yml"
+    types: [opened, synchronize]
+
+jobs:
+  comment-diff-links:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Get changed YAML files and extract trainer/stockfish info
+        id: changed-files
+        run: |
+          import yaml
+          import json
+          import subprocess
+          import sys
+          import os
+
+          # Get changed files
+          result = subprocess.run(
+              ['git', 'diff', '--name-only', '${{ github.event.pull_request.base.sha }}', '${{ github.event.pull_request.head.sha }}'],
+              capture_output=True, text=True
+          )
+          changed_files = [f for f in result.stdout.strip().split('\n') if f and not f.startswith('/') and f.endswith(('.yaml', '.yml'))]
+
+          trainer_changes = []
+          stockfish_changes = []
+
+          for file in changed_files:
+              try:
+                  # Get old content
+                  old_result = subprocess.run(
+                      ['git', 'show', '${{ github.event.pull_request.base.sha }}:' + file],
+                      capture_output=True, text=True
+                  )
+                  old_content = yaml.safe_load(old_result.stdout) if old_result.returncode == 0 else {}
+              except:
+                  old_content = {}
+              
+              # Get new content
+              try:
+                  with open(file, 'r') as f:
+                      new_content = yaml.safe_load(f)
+              except:
+                  new_content = {}
+              
+              # Extract trainers from training steps
+              old_steps = old_content.get('training', {}).get('steps', []) if old_content else []
+              new_steps = new_content.get('training', {}).get('steps', []) if new_content else []
+              
+              # Compare trainers for each step
+              max_steps = max(len(old_steps), len(new_steps))
+              for i in range(max_steps):
+                  old_step = old_steps[i] if i < len(old_steps) else {}
+                  new_step = new_steps[i] if i < len(new_steps) else {}
+                  
+                  old_trainer = old_step.get('trainer', {})
+                  new_trainer = new_step.get('trainer', {})
+                  
+                  old_sha = old_trainer.get('sha', '')
+                  new_sha = new_trainer.get('sha', '')
+                  old_owner = old_trainer.get('owner', 'official-stockfish')
+                  new_owner = new_trainer.get('owner', 'official-stockfish')
+                  
+                  if new_sha and old_sha != new_sha:
+                      trainer_changes.append({
+                          'file': file,
+                          'step': i + 1,
+                          'old_sha': old_sha,
+                          'new_sha': new_sha,
+                          'owner': new_owner
+                      })
+                  elif new_sha and not old_sha:
+                      trainer_changes.append({
+                          'file': file,
+                          'step': i + 1,
+                          'old_sha': '',
+                          'new_sha': new_sha,
+                          'owner': new_owner,
+                          'is_new': True
+                      })
+              
+              # Extract Stockfish reference/testing
+              old_testing = old_content.get('testing', {}) if old_content else {}
+              new_testing = new_content.get('testing', {}) if new_content else {}
+              
+              # Reference
+              old_ref = old_testing.get('reference', {}).get('code', {}) if old_testing else {}
+              new_ref = new_testing.get('reference', {}).get('code', {}) if new_testing else {}
+              
+              if new_ref.get('sha') and old_ref.get('sha') != new_ref.get('sha'):
+                  stockfish_changes.append({
+                      'file': file,
+                      'type': 'reference',
+                      'old_sha': old_ref.get('sha', ''),
+                      'new_sha': new_ref.get('sha', ''),
+                      'owner': new_ref.get('owner', 'official-stockfish')
+                  })
+              
+              # Testing
+              old_test = old_testing.get('testing', {}).get('code', {}) if old_testing else {}
+              new_test = new_testing.get('testing', {}).get('code', {}) if new_testing else {}
+              
+              if new_test.get('sha') and old_test.get('sha') != new_test.get('sha'):
+                  stockfish_changes.append({
+                      'file': file,
+                      'type': 'testing',
+                      'old_sha': old_test.get('sha', ''),
+                      'new_sha': new_test.get('sha', ''),
+                      'owner': new_test.get('owner', 'official-stockfish')
+                  })
+
+          # Output results
+          with open(os.environ.get('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
+              f.write(f"changed_files<<EOF\n{' '.join(changed_files)}\nEOF\n")
+              f.write(f"trainer_changes<<EOF\n{json.dumps(trainer_changes)}\nEOF\n")
+              f.write(f"stockfish_changes<<EOF\n{json.dumps(stockfish_changes)}\nEOF\n")
+        shell: python
+        env:
+          GITHUB_OUTPUT: ${{ github.output_path || '/dev/null' }}
+
+      - name: Comment PR with diff links
+        if: steps.changed-files.outputs.changed_files != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const trainerChanges = JSON.parse(`${{ steps.changed-files.outputs.trainer_changes }}` || '[]');
+            const stockfishChanges = JSON.parse(`${{ steps.changed-files.outputs.stockfish_changes }}` || '[]');
+
+            if (trainerChanges.length === 0 && stockfishChanges.length === 0) return;
+
+            let body = '';
+
+            if (trainerChanges.length > 0) {
+              body += '### 🧠 Trainer Changes (nnue-pytorch)\n';
+              for (const change of trainerChanges) {
+                const stepLabel = change.step ? `Step ${change.step}` : 'Trainer';
+                if (change.old_sha) {
+                  body += `- **${change.file}** (${stepLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/nnue-pytorch/compare/${change.old_sha}...${change.new_sha})\n`;
+                } else {
+                  body += `- **${change.file}** (${stepLabel}): New trainer [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/nnue-pytorch/commit/${change.new_sha})\n`;
+                }
+              }
+              body += '\n';
+            }
+
+            if (stockfishChanges.length > 0) {
+              body += '### ♟️ Stockfish Changes\n';
+              for (const change of stockfishChanges) {
+                const typeLabel = change.type.charAt(0).toUpperCase() + change.type.slice(1);
+                if (change.old_sha) {
+                  body += `- **${change.file}** (${typeLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/Stockfish/compare/${change.old_sha}...${change.new_sha})\n`;
+                } else {
+                  body += `- **${change.file}** (${typeLabel}): New [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/Stockfish/commit/${change.new_sha})\n`;
+                }
+              }
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: context.issue.number
+            });
+
+            const existingComment = comments.find(c =>
+              c.user.login === 'github-actions[bot]' &&
+              (c.body.includes('🧠 Trainer Changes') || c.body.includes('♟️ Stockfish Changes'))
+            );
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existingComment.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }
