@@ -374,7 +374,7 @@ training:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --ft_compression=leb128
         optimize:
@@ -417,10 +417,10 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 120
+        max_epochs: 300
         other_options:
           - --batch-size=65536
-          - --features=Full_Threats
+          - --features=Full_Threats^
           - --l1=1024
           - --lr=0.00022301976890599417
           - --gamma=0.9935974858411222
