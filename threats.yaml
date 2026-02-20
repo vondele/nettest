@@ -66,7 +66,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: eca95cbd3410b0983c47b1a1d6215159c0a101c3
+        sha: 6be8c5be9a284bcd66d5240310940c4e7eefbbd0
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -110,7 +110,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: eca95cbd3410b0983c47b1a1d6215159c0a101c3
+        sha: 6be8c5be9a284bcd66d5240310940c4e7eefbbd0
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -187,7 +187,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: eca95cbd3410b0983c47b1a1d6215159c0a101c3
+        sha: 6be8c5be9a284bcd66d5240310940c4e7eefbbd0
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -264,7 +264,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: eca95cbd3410b0983c47b1a1d6215159c0a101c3
+        sha: 6be8c5be9a284bcd66d5240310940c4e7eefbbd0
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -341,7 +341,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: eca95cbd3410b0983c47b1a1d6215159c0a101c3
+        sha: 6be8c5be9a284bcd66d5240310940c4e7eefbbd0
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -414,4 +414,4 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: eca95cbd3410b0983c47b1a1d6215159c0a101c3
+        sha: 6be8c5be9a284bcd66d5240310940c4e7eefbbd0
