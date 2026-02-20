@@ -16,6 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: Setup Python
@@ -28,6 +29,7 @@ jobs:
 
       - name: Get changed YAML files and extract trainer/stockfish info
         id: changed-files
+        shell: python
         run: |
           import yaml
           import json
@@ -134,9 +136,6 @@ jobs:
               f.write(f"changed_files<<EOF\n{' '.join(changed_files)}\nEOF\n")
               f.write(f"trainer_changes<<EOF\n{json.dumps(trainer_changes)}\nEOF\n")
               f.write(f"stockfish_changes<<EOF\n{json.dumps(stockfish_changes)}\nEOF\n")
-        shell: python
-        env:
-          GITHUB_OUTPUT: ${{ github.output_path || '/dev/null' }}
 
       - name: Comment PR with diff links
         if: steps.changed-files.outputs.changed_files != ''
