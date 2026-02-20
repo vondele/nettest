@@ -23,7 +23,7 @@ testing:
       target: build
 training:
   steps:
-      - convert:
+    - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats^
