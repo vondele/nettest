@@ -13,13 +13,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 77d46ff61c3e33f7e9c1ef1f1b48315f23b04e80
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
   steps: all
   testing:
     code:
-      owner: sscg13
-      sha: 6f0ad5e9a475d81a1dd039af15decdc2b45f3b57
+      owner: official-stockfish
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
 training:
   steps:
