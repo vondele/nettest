@@ -80,9 +80,10 @@ intermediate data, checkpoints and nets.
 
 #### local execution
 
-Assuming a working docker setup (exposing the GPU of the host), the following
-is thus all what is needed to build the docker container and run a recipe
-locally:
+Assuming a working docker setup (exposing the GPU of the host, allowing for the
+sys_nice capability), and local directories `/mnt/ssd/XYZ/` that can be mounted
+into the container, the following is thus all what is needed to build the
+docker container and run a recipe locally:
 
 ```bash
 # clone the repo
