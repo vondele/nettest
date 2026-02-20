@@ -46,7 +46,7 @@ training:
           - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
           - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
-        max_epochs: 100
+        max_epochs: 20
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
@@ -66,7 +66,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: d6794334b9ae97a4fad04b60d5c39a2a085b141a
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -110,7 +110,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: d6794334b9ae97a4fad04b60d5c39a2a085b141a
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -187,7 +187,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: d6794334b9ae97a4fad04b60d5c39a2a085b141a
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -264,7 +264,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: d6794334b9ae97a4fad04b60d5c39a2a085b141a
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -341,7 +341,7 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: d6794334b9ae97a4fad04b60d5c39a2a085b141a
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -414,4 +414,4 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: d6794334b9ae97a4fad04b60d5c39a2a085b141a
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
