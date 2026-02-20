@@ -13,16 +13,60 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 77d46ff61c3e33f7e9c1ef1f1b48315f23b04e80
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
   steps: all
   testing:
     code:
       owner: sscg13
-      sha: 6f0ad5e9a475d81a1dd039af15decdc2b45f3b57
+      sha: c2624fccfa8e67f4797b2eb3e65709190f7485a8
       target: build
 training:
   steps:
+    - convert:
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
+        checkpoint2nnue:
+          - --features=Full_Threats^
+          - --l1=1024
+          - --ft_compression=leb128
+        optimize:
+          - --features=Full_Threats
+          - --l1=1024
+          - --ft_optimize_count=100000
+          - --ft_optimize
+          - --ft_compression=leb128
+      run:
+        binpacks:
+          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
+          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
+          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
+          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
+          - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
+          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
+          - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
+          - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
+          - official-stockfish/master-binpacks/dfrc_n5000.binpack
+        max_epochs: 20
+        other_options:
+          - --batch-size=65536
+          - --features=Full_Threats^
+          - --l1=1024
+          - --lr=4.375e-4
+          - --gamma=0.995
+          - --start-lambda=1.0
+          - --end-lambda=0.75
+          - --random-fen-skipping=10
+          - --early-fen-skipping=12
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
+        repetitions: 1
+        resume: none
+      trainer:
+        owner: TonyCongqianWang
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -63,10 +107,10 @@ training:
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
         repetitions: 3
-        resume: none
+        resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 2edfc9ea3e7323bef8874bfabc7876ec1c299d1d
+        owner: TonyCongqianWang
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -142,8 +186,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 2edfc9ea3e7323bef8874bfabc7876ec1c299d1d
+        owner: TonyCongqianWang
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -219,8 +263,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 2edfc9ea3e7323bef8874bfabc7876ec1c299d1d
+        owner: TonyCongqianWang
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -296,8 +340,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 2edfc9ea3e7323bef8874bfabc7876ec1c299d1d
+        owner: TonyCongqianWang
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -369,5 +413,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 2edfc9ea3e7323bef8874bfabc7876ec1c299d1d
+        owner: TonyCongqianWang
+        sha: e4a8c88af51611081196b9e7dc75f2eb5d955c86
