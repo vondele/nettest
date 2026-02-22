@@ -15,7 +15,7 @@ testing:
       owner: official-stockfish
       sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
@@ -346,11 +346,11 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
+          - --resume-strategy=pickled_pt_weights_only
           - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
-          - --lr=0.004
-          - --gamma=0.9935974858411222
+          - --lr=0.0005
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -370,4 +370,4 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: 8876d9cd416c6fe1adbcf9ff28916f725dff9c27
+        sha: cf961757eb40ed9ea98d9961dfec9d9f7dd526d1
