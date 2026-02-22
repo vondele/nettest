@@ -370,4 +370,4 @@ training:
         resume: previous_model
       trainer:
         owner: buddit1
-        sha: de39dadef6319678db4f5e246f3305d49b6ad49e
+        sha: 89b37055625ffbf33874eecf5cae3469e08ac1a7
