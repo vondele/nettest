@@ -159,7 +159,7 @@ jobs:
                 if (change.old_sha) {
                   body += `- **${change.file}** (${stepLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/nnue-pytorch/compare/${change.old_sha}...${change.new_sha})\n`;
                 } else {
-                  body += `- **${change.file}** (${stepLabel}): New trainer [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/nnue-pytorch/commit/${change.new_sha})\n`;
+                   body += `- **${change.file}** (${stepLabel}): New trainer [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/nnue-pytorch/compare/master...${change.new_sha})\n`;
                 }
               }
               body += '\n';
@@ -172,7 +172,7 @@ jobs:
                 if (change.old_sha) {
                   body += `- **${change.file}** (${typeLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/Stockfish/compare/${change.old_sha}...${change.new_sha})\n`;
                 } else {
-                  body += `- **${change.file}** (${typeLabel}): New [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/Stockfish/commit/${change.new_sha})\n`;
+                  body += `- **${change.file}** (${typeLabel}): New [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/Stockfish/compare/master...${change.new_sha})\n`;
                 }
               }
             }
