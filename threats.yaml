@@ -13,13 +13,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 77d46ff61c3e33f7e9c1ef1f1b48315f23b04e80
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
-  steps: all
+  steps: last
   testing:
     code:
-      owner: sscg13
-      sha: 6f0ad5e9a475d81a1dd039af15decdc2b45f3b57
+      owner: official-stockfish
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
 training:
   steps:
@@ -346,10 +346,11 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
+          - --resume-strategy=pickled_pt_weights_only
           - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
-          - --lr=0.00042301976890599417
+          - --lr=0.00045
           - --gamma=0.9935974858411222
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
@@ -366,8 +367,10 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
+          - --sparsity_loss_weight=0.01
+          - --activation_loss_weight=0.0001
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 2edfc9ea3e7323bef8874bfabc7876ec1c299d1d
+        owner: TonyCongqianWang
+        sha: fc8c0f49323660ef216d639fbc3df221e877cc7c
