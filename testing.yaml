@@ -7,7 +7,7 @@ training:
 # S1
 #
     - trainer:
-        owner: vondele
+        owner: xu-shawn
         sha: a1e061384917a089520cc16b6ead6dde4047afdd
       run:
         resume: none
@@ -33,7 +33,7 @@ training:
 # S2
 #
     - trainer:
-        owner: vondele
+        owner: xu-shawn
         sha: a1e061384917a089520cc16b6ead6dde4047afdd
       run:
         resume: previous_checkpoint
@@ -60,7 +60,7 @@ training:
 # S3
 #
     - trainer:
-        owner: vondele
+        owner: xu-shawn
         sha: a1e061384917a089520cc16b6ead6dde4047afdd
       run:
         resume: previous_model
