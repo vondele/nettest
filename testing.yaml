@@ -102,12 +102,12 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 5297ba0a1a1aa0a15332e0d64ce6b32952342cac
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
   testing:
     code:
       owner: official-stockfish
-      sha: 5297ba0a1a1aa0a15332e0d64ce6b32952342cac
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: profile-build
   fastchess:
     code:
