@@ -7,8 +7,8 @@ training:
 # S1
 #
     - trainer:
-        owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        owner: official-stockfish
+        sha: 831d20fd386ecafbe3206aaebebb077079948bbb
       run:
         resume: none
         max_epochs: 18
@@ -33,8 +33,8 @@ training:
 # S2
 #
     - trainer:
-        owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        owner: official-stockfish
+        sha: 831d20fd386ecafbe3206aaebebb077079948bbb
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -60,8 +60,8 @@ training:
 # S3
 #
     - trainer:
-        owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        owner: official-stockfish
+        sha: 831d20fd386ecafbe3206aaebebb077079948bbb
       run:
         resume: previous_model
         max_epochs: 12
@@ -112,7 +112,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 54cfa83972ba64032ef634198eef498508d115c6
+      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
 #       tc: 10+0.1
        nodes: 10000
