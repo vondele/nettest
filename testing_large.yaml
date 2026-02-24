@@ -67,8 +67,8 @@ training:
         repetitions: 1
         resume: none
       trainer:
-        owner: xu-shawn
-        sha: 1258ba8a6bbd11fa71d4a48368da1644bc0f90b8
+        owner: official-stockfish
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -143,5 +143,5 @@ training:
         repetitions: 1
         resume: previous_model
       trainer:
-        owner: xu-shawn
-        sha: 1258ba8a6bbd11fa71d4a48368da1644bc0f90b8
+        owner: official-stockfish
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
