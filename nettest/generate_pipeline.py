@@ -141,7 +141,7 @@ def generate_job_base():
     variables = {
         "SLURM_JOB_NUM_NODES": 1,
         "SLURM_NTASKS": 1,
-        "SLURM_TIMELIMIT": "12:00:00",
+        "SLURM_TIMELIMIT": "6:00:00",
         "SLURM_CPU_BIND": "none",
     }
     job = {
