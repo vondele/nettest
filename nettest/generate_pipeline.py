@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from collections import defaultdict
 from .utils import MyDumper
+from .meta_recipe import expand_meta_recipe
 
 
 def needs_quotes(value):
@@ -317,6 +318,9 @@ def parse_recipe(recipe, environment):
     # ci yaml header
     ci_yaml_out = start_ci_yaml()
     schedule = {"data": [], "train": [], "test": []}
+
+    # expand the meta recipe, i.e. handle the <repeat_last> directives and apply the overrides in the training steps sequentially.
+    recipe = expand_meta_recipe(recipe)
 
     # insert shas that uniquely identify each step based on the full history of the training recipe
     insert_shas(recipe)
