@@ -7,8 +7,8 @@ training:
 # S1
 #
     - trainer:
-        owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        owner: official-stockfish
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
       run:
         resume: none
         max_epochs: 18
@@ -18,9 +18,10 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --random-fen-skipping=3
           - --lr=4.375e-4
-          - --gamma=0.995
+          - --gamma=0.9950
           - --early-fen-skipping=3
           - --epoch-size=100000
           - --validation-size=0
@@ -28,13 +29,14 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
 #
 # S2
 #
     - trainer:
-        owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        owner: official-stockfish
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -45,6 +47,7 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -55,13 +58,14 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
 #
 # S3
 #
     - trainer:
-        owner: vondele
-        sha: a1e061384917a089520cc16b6ead6dde4047afdd
+        owner: official-stockfish
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
       run:
         resume: previous_model
         max_epochs: 12
@@ -71,6 +75,7 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -87,12 +92,14 @@ training:
         optimize:
           - --features=HalfKAv2_hm
           - --l1=128
+          - --l2=15
           - --ft_optimize_count=10000
           - --ft_optimize
           - --ft_compression=leb128
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
 #
 # Final testing stage using fastchess
@@ -102,17 +109,17 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 5297ba0a1a1aa0a15332e0d64ce6b32952342cac
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: build
   testing:
     code:
       owner: official-stockfish
-      sha: 5297ba0a1a1aa0a15332e0d64ce6b32952342cac
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
       target: profile-build
   fastchess:
     code:
       owner: Disservin
-      sha: 54cfa83972ba64032ef634198eef498508d115c6
+      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
 #       tc: 10+0.1
        nodes: 10000
