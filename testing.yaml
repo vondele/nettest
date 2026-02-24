@@ -8,7 +8,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: ecf6ab88d3f7c3825e0180fe18ac2898ea61975d
+        sha: d36d4bd988a2cf1ef4955af26c3301784a5e5abc
       run:
         resume: none
         max_epochs: 18
@@ -18,6 +18,7 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.9950
@@ -28,13 +29,14 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
 #
 # S2
 #
     - trainer:
         owner: official-stockfish
-        sha: ecf6ab88d3f7c3825e0180fe18ac2898ea61975d
+        sha: d36d4bd988a2cf1ef4955af26c3301784a5e5abc
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -45,6 +47,7 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -55,13 +58,14 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
 #
 # S3
 #
     - trainer:
         owner: official-stockfish
-        sha: ecf6ab88d3f7c3825e0180fe18ac2898ea61975d
+        sha: d36d4bd988a2cf1ef4955af26c3301784a5e5abc
       run:
         resume: previous_model
         max_epochs: 12
@@ -71,6 +75,7 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -87,12 +92,14 @@ training:
         optimize:
           - --features=HalfKAv2_hm
           - --l1=128
+          - --l2=15
           - --ft_optimize_count=10000
           - --ft_optimize
           - --ft_compression=leb128
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
 #
 # Final testing stage using fastchess
