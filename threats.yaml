@@ -301,7 +301,7 @@ training:
         resume: previous_checkpoint
       trainer:
         owner: TonyCongqianWang
-        sha: 894c74078dad09813465f6cc8de19a528b82bff5
+         sha: 13eae0d687eedc7d26ea2915afd430a29447c8f0
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -375,4 +375,4 @@ training:
         resume: previous_checkpoint
       trainer:
         owner: TonyCongqianWang
-        sha: 894c74078dad09813465f6cc8de19a528b82bff5
+         sha: 13eae0d687eedc7d26ea2915afd430a29447c8f0
