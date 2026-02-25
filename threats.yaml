@@ -2,7 +2,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: fb9176da7538d14198823b29d165061ba80b1cf1
+      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
       hash: 16
       max_rounds: 80000
@@ -14,13 +14,13 @@ testing:
     code:
       owner: official-stockfish
       sha: a6d055d7e27ab3e29a42e8b94215102824760057
-      target: build
+      target: profile-build
   steps: all
   testing:
     code:
       owner: official-stockfish
       sha: a6d055d7e27ab3e29a42e8b94215102824760057
-      target: build
+      target: profile-build
 training:
   steps:
     - convert:
