@@ -56,7 +56,7 @@ training:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
-          - --no-wld-fen-skipping
+          - --no-wld-filtered
           - --start-lambda=1.0
           - --end-lambda=0.6992605384421289
           - --gamma=0.9942746303116422
