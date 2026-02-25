@@ -106,4 +106,4 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 6fb4bf22e31323a9ae355f76c729ad72d6742274
+        sha: 13eae0d687eedc7d26ea2915afd430a29447c8f0
