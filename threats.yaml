@@ -370,5 +370,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 5ca547e4018320256107cef1aa2b4cf6b579a0d1
+        owner: disservin
+        sha: 0f809ee2cad6672e85e9d92a3b862e453989ccce
