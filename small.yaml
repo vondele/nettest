@@ -8,10 +8,12 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
         optimize:
           - --features=HalfKAv2_hm
           - --l1=128
+          - --l2=15
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -51,11 +53,12 @@ training:
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-        max_epochs: 400
+        max_epochs: 50
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --no-wld-fen-skipping
           - --start-lambda=1.0
           - --end-lambda=0.6992605384421289
@@ -69,10 +72,11 @@ training:
           - --random-fen-skipping=3
           - --simple-eval-skipping=931
           - --compile-backend=cudagraphs
+          - --mode=reduce-overhead
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: 9a6cfde1de88db602a553812b7ddd9d2abbafeaa
+        owner: disservin
+        sha: 0f809ee2cad6672e85e9d92a3b862e453989ccce
 #
 # Final testing stage using fastchess
 #
