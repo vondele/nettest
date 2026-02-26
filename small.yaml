@@ -8,6 +8,7 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
         optimize:
           - --features=HalfKAv2_hm
