@@ -344,7 +344,7 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 50
+        max_epochs: 800
         other_options:
           - --batch-size=65536
           - --features=Full_Threats^
@@ -370,5 +370,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: disservin
-        sha: 0f809ee2cad6672e85e9d92a3b862e453989ccce
+        owner: official-stockfish
+        sha: 5ca547e4018320256107cef1aa2b4cf6b579a0d1
