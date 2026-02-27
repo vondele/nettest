@@ -59,7 +59,7 @@ training:
           - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
-          - --no-wld-filtered
+          - --no-wld-fen-skipping
           - --start-lambda=1.0
           - --end-lambda=0.6992605384421289
           - --gamma=0.9942746303116422
@@ -74,8 +74,8 @@ training:
           - --compile-backend=cudagraphs
         resume: none
       trainer:
-        owner: disservin
-        sha: 83993484c7dbdadf36dff227034ec92070c3a0f9
+        owner: official-stockfish
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
 #
 # Final testing stage using fastchess
 #
