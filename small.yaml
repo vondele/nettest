@@ -59,19 +59,12 @@ training:
           - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
-          - --no-wld-fen-skipping
-          - --start-lambda=1.0
-          - --end-lambda=0.6992605384421289
-          - --gamma=0.9942746303116422
-          - --lr=0.0012181558724738395
-          - --in-scaling=317.54982869522763
-          - --out-scaling=379.8040378799748
-          - --in-offset=269.50654301142134
-          - --out-offset=253.51483568025657
-          - --pow-exp=2.4829519732155125
           - --random-fen-skipping=3
-          - --simple-eval-skipping=931
-          - --compile-backend=cudagraphs
+          - --lr=4.375e-4
+          - --gamma=0.9950
+          - --early-fen-skipping=3
+          - --epoch-size=100000
+          - --validation-size=0
         resume: none
       trainer:
         owner: official-stockfish
