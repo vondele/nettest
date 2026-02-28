@@ -3,44 +3,12 @@
 #
 training:
   steps:
-#
-# S1
-#
     - trainer:
         owner: official-stockfish
         sha: d283650c3ee7d701367da1fa5720b7aeaac51011
       run:
         resume: none
-        max_epochs: 18
-        binpacks:
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --l1=128
-          - --l2=15
-          - --random-fen-skipping=3
-          - --lr=4.375e-4
-          - --gamma=0.9950
-          - --early-fen-skipping=3
-          - --epoch-size=100000
-          - --validation-size=0
-      convert:
-        checkpoint2nnue:
-          - --features=HalfKAv2_hm^
-          - --l1=128
-          - --l2=15
-          - --ft_compression=leb128
-#
-# S2
-#
-    - trainer:
-        owner: official-stockfish
-        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
-      run:
-        resume: previous_checkpoint
-        repetitions: 2
-        max_epochs: 20
+        max_epochs: 50
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
@@ -52,35 +20,6 @@ training:
           - --lr=4.375e-4
           - --gamma=0.995
           - --early-fen-skipping=2
-          - --epoch-size=100000
-          - --validation-size=0
-      convert:
-        checkpoint2nnue:
-          - --features=HalfKAv2_hm^
-          - --l1=128
-          - --l2=15
-          - --ft_compression=leb128
-#
-# S3
-#
-    - trainer:
-        owner: official-stockfish
-        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
-      run:
-        resume: previous_model
-        max_epochs: 12
-        binpacks:
-          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-        other_options:
-          - --batch-size=16384
-          - --features=HalfKAv2_hm^
-          - --l1=128
-          - --l2=15
-          - --random-fen-skipping=3
-          - --lr=4.375e-4
-          - --gamma=0.995
-          - --early-fen-skipping=2
-          - --epoch-size=100000
           - --validation-size=0
           - --pc-y1=1.0
           - --pc-y2=3.0
@@ -125,7 +64,7 @@ testing:
        nodes: 10000
        hash: 16
        evalfile: small
-       max_rounds: 100
+       max_rounds: 1000
 #    sprt:
 #       # midpoint will be the target to reach, relative to reference, to have a passing CI
 #       nElo_interval_midpoint: 0
