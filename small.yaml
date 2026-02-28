@@ -8,10 +8,12 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
+          - --l2=15
           - --ft_compression=leb128
         optimize:
           - --features=HalfKAv2_hm
           - --l1=128
+          - --l2=15
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -51,28 +53,22 @@ training:
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-        max_epochs: 400
+        max_epochs: 50
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
           - --l1=128
-          - --no-wld-fen-skipping
-          - --start-lambda=1.0
-          - --end-lambda=0.6992605384421289
-          - --gamma=0.9942746303116422
-          - --lr=0.0012181558724738395
-          - --in-scaling=317.54982869522763
-          - --out-scaling=379.8040378799748
-          - --in-offset=269.50654301142134
-          - --out-offset=253.51483568025657
-          - --pow-exp=2.4829519732155125
+          - --l2=15
           - --random-fen-skipping=3
-          - --simple-eval-skipping=931
-          - --compile-backend=cudagraphs
+          - --lr=4.375e-4
+          - --gamma=0.9950
+          - --early-fen-skipping=3
+          - --epoch-size=100000
+          - --validation-size=0
         resume: none
       trainer:
         owner: official-stockfish
-        sha: 9a6cfde1de88db602a553812b7ddd9d2abbafeaa
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
 #
 # Final testing stage using fastchess
 #
@@ -80,21 +76,21 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
   testing:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
   fastchess:
     code:
       owner: Disservin
-      sha: a4e98a290b64e2786975961a3381afd387c7565d
+      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
-       tc: 10+0.1
-       hash: 16
-       evalfile: small
+      tc: 10+0.1
+      hash: 16
+      evalfile: small
     sprt:
-       # midpoint will be the target to reach, relative to reference, to have a passing CI
-       nElo_interval_midpoint: -0.75
-       nElo_interval_width: 2
-       max_rounds: 160000
+      # midpoint will be the target to reach, relative to reference, to have a passing CI
+      nElo_interval_midpoint: -0.75
+      nElo_interval_width: 2
+      max_rounds: 160000
