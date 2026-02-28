@@ -59,7 +59,7 @@ training:
           - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
-          - --no-wld-fen-skipping
+          - --no-wld-filtered
           - --start-lambda=1.0
           - --end-lambda=0.6992605384421289
           - --gamma=0.9942746303116422
@@ -83,21 +83,21 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
   testing:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
   fastchess:
     code:
       owner: Disservin
       sha: a4e98a290b64e2786975961a3381afd387c7565d
     options:
-       tc: 10+0.1
-       hash: 16
-       evalfile: small
+      tc: 10+0.1
+      hash: 16
+      evalfile: small
     sprt:
-       # midpoint will be the target to reach, relative to reference, to have a passing CI
-       nElo_interval_midpoint: -0.75
-       nElo_interval_width: 2
-       max_rounds: 160000
+      # midpoint will be the target to reach, relative to reference, to have a passing CI
+      nElo_interval_midpoint: -0.75
+      nElo_interval_width: 2
+      max_rounds: 160000
