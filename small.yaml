@@ -53,7 +53,7 @@ training:
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-        max_epochs: 400
+        max_epochs: 50
         other_options:
           - --batch-size=16384
           - --features=HalfKAv2_hm^
@@ -75,7 +75,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: 305ef7039a2ee7f6f88a62d67436b4fd89524643
+        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
 #
 # Final testing stage using fastchess
 #
@@ -83,15 +83,15 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
   testing:
     code:
       owner: official-stockfish
-      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
+      sha: a6d055d7e27ab3e29a42e8b94215102824760057
   fastchess:
     code:
       owner: Disservin
-      sha: a4e98a290b64e2786975961a3381afd387c7565d
+      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
       tc: 10+0.1
       hash: 16
