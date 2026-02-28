@@ -71,7 +71,6 @@ training:
           - --pow-exp=2.4829519732155125
           - --random-fen-skipping=3
           - --simple-eval-skipping=931
-          - --compile-backend=cudagraphs
         resume: none
       trainer:
         owner: official-stockfish
