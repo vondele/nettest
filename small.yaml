@@ -73,7 +73,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha:  3e21b519598b456c1077d0fb85e47eff38356a0f
+        sha:  e2e519303554e1c7dcdc95a6d09c4edd6763d0be
 #
 # Final testing stage using fastchess
 #
