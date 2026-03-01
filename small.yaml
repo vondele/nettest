@@ -51,9 +51,10 @@ training:
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-        max_epochs: 400
+        # just 50 epochs, 400 needed
+        max_epochs: 50
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536 # instead pf 16384
           - --features=HalfKAv2_hm^
           - --l1=128
           - --no-wld-fen-skipping
@@ -72,7 +73,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: 9a6cfde1de88db602a553812b7ddd9d2abbafeaa
+        sha: 00bdf75dd52762eff8c1a46b34e5f52fc0fb1e1b
 #
 # Final testing stage using fastchess
 #
@@ -80,15 +81,15 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
   testing:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
   fastchess:
     code:
       owner: Disservin
-      sha: a4e98a290b64e2786975961a3381afd387c7565d
+      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
        tc: 10+0.1
        hash: 16
@@ -97,4 +98,4 @@ testing:
        # midpoint will be the target to reach, relative to reference, to have a passing CI
        nElo_interval_midpoint: -0.75
        nElo_interval_width: 2
-       max_rounds: 160000
+       max_rounds: 10000
