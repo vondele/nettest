@@ -72,8 +72,8 @@ training:
           - --compile-backend=cudagraphs
         resume: none
       trainer:
-        owner: official-stockfish
-        sha:  36352173d908fb7ed6c329eac18c6e05a90dc886
+        owner: xu-shawn
+        sha:  4132b7701a02c2c544fd30674ef9cf8b09e3540a
 #
 # Final testing stage using fastchess
 #
