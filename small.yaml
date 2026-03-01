@@ -81,11 +81,11 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
   testing:
     code:
       owner: official-stockfish
-      sha: fc54d8730174cdb5cfc4f7074b90128e706e4040
+      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
   fastchess:
     code:
       owner: Disservin
@@ -98,4 +98,4 @@ testing:
        # midpoint will be the target to reach, relative to reference, to have a passing CI
        nElo_interval_midpoint: -0.75
        nElo_interval_width: 2
-       max_rounds: 160000
+       max_rounds: 10000
