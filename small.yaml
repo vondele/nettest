@@ -85,7 +85,7 @@ testing:
   testing:
     code:
       owner: official-stockfish
-      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
+      sha: 45d6db65d4dbba12caf35f4f9907bf78c7689910
   fastchess:
     code:
       owner: Disservin
