@@ -87,12 +87,12 @@ training:
           - --features=Full_Threats^
           - --l1=1024
           - --lr=3.0e-4
-          - --ft-weight-decay=1.0e-4
-          - --dense-weight-decay=3.0e-3
+          - --ft-weight-decay=3.0e-4
+          - --dense-weight-decay=6.0e-3
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.82
-          - --end-lambda=0.80
+          - --start-lambda=0.76
+          - --end-lambda=0.76
           - --in-scaling=294.7193839807687
           - --out-scaling=352.8750799744594
           - --in-offset=281.4186220835457
