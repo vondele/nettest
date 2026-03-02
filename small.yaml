@@ -53,8 +53,7 @@ training:
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-        # just 50 epochs, 400 needed
-        max_epochs: 50
+        max_epochs: 400
         other_options:
           - --batch-size=65536 # instead pf 16384
           - --features=HalfKAv2_hm^
@@ -101,4 +100,4 @@ testing:
        # midpoint will be the target to reach, relative to reference, to have a passing CI
        nElo_interval_midpoint: -0.75
        nElo_interval_width: 2
-       max_rounds: 10000
+       max_rounds: 160000
