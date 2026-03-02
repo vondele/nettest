@@ -11,7 +11,7 @@ training:
           - --l2=15
           - --ft_compression=leb128
         optimize:
-          - --features=HalfKAv2_hm
+          - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
           - --ft_optimize_count=100000
@@ -76,7 +76,7 @@ training:
         resume: none
       trainer:
         owner: xu-shawn
-        sha:  4132b7701a02c2c544fd30674ef9cf8b09e3540a
+        sha:  3e54aa4033b0ce7b56f4179b520687ec85291492
 #
 # Final testing stage using fastchess
 #
