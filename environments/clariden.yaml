@@ -3,6 +3,6 @@ test:
   concurrency: 280
   affinity: 2-71,74-143,146-215,218-287
 train:
-  devices: 0,
+  devices: 0,1,2,3,
   workers: 96
   cpunodebind: 0

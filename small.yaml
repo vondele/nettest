@@ -55,7 +55,7 @@ training:
           - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
         max_epochs: 400
         other_options:
-          - --batch-size=65536 # instead pf 16384
+          - --batch-size=65536
           - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
@@ -74,8 +74,8 @@ training:
           - --compile-backend=cudagraphs
         resume: none
       trainer:
-        owner: xu-shawn
-        sha:  3e54aa4033b0ce7b56f4179b520687ec85291492
+        owner: official-stockfish
+        sha:  e7c50d5cdabc046ed7f197412e2fda6c5e502f05
 #
 # Final testing stage using fastchess
 #
