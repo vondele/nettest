@@ -22,9 +22,9 @@ def ensure_trainer(trainer):
 
     trainer_dir = Path.cwd() / f"scratch/packages/trainer/{sha}"
     nnue_pytorch_dir = trainer_dir / "nnue-pytorch"
-    artifact = nnue_pytorch_dir / "libtraining_data_loader.so"
+    artifact = next(nnue_pytorch_dir.rglob("*data_loader*.so"), None)
 
-    if artifact.exists():
+    if artifact and artifact.exists():
         return nnue_pytorch_dir
 
     for attempt in range(1, max_retries + 1):
@@ -51,7 +51,7 @@ def ensure_trainer(trainer):
             )
             execute(
                 f"[attempt {attempt}] build data loader",
-                ["bash", "compile_data_loader.bat"],
+                ["bash", "setup_script.sh"],
                 temp_nnue_pytorch_dir,
                 False,
             )
