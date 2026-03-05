@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 # current set of nnue-pytorch dependencies, some already in the image
-RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib tensorboard numba "numpy<2.0" requests lightning
+RUN pip install --no-cache-dir psutil asciimatics GPUtil "python-chess==0.31.4" matplotlib tensorboard numba "numpy<2.0" requests lightning tyro
 
 RUN ROCM_HOME=/opt/rocm CUPY_INSTALL_USE_HIP=1 pip install --no-cache-dir cupy
 
