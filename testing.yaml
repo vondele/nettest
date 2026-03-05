@@ -8,14 +8,14 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
+        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
       run:
         resume: none
         max_epochs: 18
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
@@ -36,7 +36,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
+        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -44,7 +44,7 @@ training:
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
@@ -65,14 +65,14 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: d283650c3ee7d701367da1fa5720b7aeaac51011
+        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
       run:
         resume: previous_model
         max_epochs: 12
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
         other_options:
-          - --batch-size=16384
+          - --batch-size=65536
           - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
@@ -90,7 +90,7 @@ training:
       convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         optimize:
-          - --features=HalfKAv2_hm
+          - --features=HalfKAv2_hm^
           - --l1=128
           - --l2=15
           - --ft_optimize_count=10000
