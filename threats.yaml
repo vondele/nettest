@@ -48,7 +48,7 @@ training:
           - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
           - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
-        max_epochs: 800
+        max_epochs: 4
         other_options:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
@@ -122,7 +122,7 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
+        max_epochs: 4
         other_options:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
@@ -202,7 +202,7 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
+        max_epochs: 4
         other_options:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
@@ -282,7 +282,7 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
+        max_epochs: 4
         other_options:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
@@ -358,7 +358,7 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
+        max_epochs: 4
         other_options:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
