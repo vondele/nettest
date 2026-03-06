@@ -61,8 +61,10 @@ def ensure_trainer(trainer):
             except Exception:
                 shutil.rmtree(temp_trainer_dir, ignore_errors=True)
 
-            assert artifact.exists(), "Trainer build failed, artifact not found"
-            return nnue_pytorch_dir
+            artifact = next(nnue_pytorch_dir.rglob("*data_loader*.so"), None)
+            if artifact and artifact.exists():
+                return nnue_pytorch_dir
+            raise Exception("Trainer build failed, artifact not found")
 
         except Exception as e:
             print(f"⚠️ Attempt {attempt} failed: {e}")
