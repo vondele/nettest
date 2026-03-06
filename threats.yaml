@@ -81,7 +81,7 @@ training:
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
-        max_epochs: 1000
+        max_epochs: 125
         other_options:
           - --resume-strategy=lightning_trainer
           - --warmup-steps=100000
@@ -111,3 +111,12 @@ training:
       trainer:
         owner: TonyCongqianWang
         sha: 1c592c71a2def0353e6c87a716f9d6018d0aedc9
+    - <repeat_last>:
+        run:
+          max_epochs: 250
+    - <repeat_last>:
+        run:
+          max_epochs: 500
+    - <repeat_last>:
+        run:
+          max_epochs: 1000
