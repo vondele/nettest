@@ -120,19 +120,21 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     else:
         cmd = []
 
-    cmd += ["python", "-u", "train.py"]
+    # some architecture specific options
+    if "train" in environment and "devices" in environment["train"]:
+        devices = environment["train"]["devices"]
+    else:
+        devices = "0,"
+
+    num_gpus = len([d for d in devices.split(",") if d.strip()])
+    nproc = max(1, num_gpus)
+    cmd += ["torchrun", f"--nproc-per-node={nproc}", "-u", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
 
     # seems always a reasonable default
     cmd.append("--threads=4")
-
-    # some architecture specific options
-    if "train" in environment and "devices" in environment["train"]:
-        devices = environment["train"]["devices"]
-    else:
-        devices = "0,"
     cmd.append(f"--gpus={devices}")
 
     # large net needs at least 16 threads, small net >64, number of active threads is seems also roughly half specified
