@@ -83,8 +83,6 @@ training:
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
         max_epochs: 125
         other_options:
-          - --resume-strategy=lightning_trainer
-          - --warmup-steps=100000
           - --batch-size=65536
           - --features=Full_Threats^
           - --l1=1024
