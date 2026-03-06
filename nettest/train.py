@@ -108,20 +108,6 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
             else:
                 assert False, f"The following binpack could not be found: {binpack}"
 
-    # binding all threads to the same socket is important for performance on some systems
-    if "train" in environment and (
-        "cpunodebind" in environment["train"] or "membind" in environment["train"]
-    ):
-        cmd = ["numactl"]
-        if "cpunodebind" in environment["train"]:
-            cpunodebind = environment["train"]["cpunodebind"]
-            cmd += [f"--cpunodebind={cpunodebind}"]
-        if "membind" in environment["train"]:
-            membind = environment["train"]["membind"]
-            cmd += [f"--membind={membind}"]
-    else:
-        cmd = []
-
     # some architecture specific options
     if "train" in environment and "devices" in environment["train"]:
         devices = environment["train"]["devices"]
@@ -130,7 +116,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     num_gpus = len([d for d in devices.split(",") if d.strip()])
     nproc = max(1, num_gpus)
-    cmd += ["PYTHONUNBUFFERED=1", "torchrun", f"--nproc-per-node={nproc}", "train.py"]
+    cmd = ["PYTHONUNBUFFERED=1", "torchrun", f"--nproc-per-node={nproc}", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
