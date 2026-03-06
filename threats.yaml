@@ -84,7 +84,7 @@ training:
         max_epochs: 125
         other_options:
           - --batch-size=65536
-          - --features=Full_Threats^
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --lr=3.0e-4
           - --ft-weight-decay=1.0e-5
