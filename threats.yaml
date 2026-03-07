@@ -1,4 +1,4 @@
-testing:
+notesting:
   fastchess:
     code:
       owner: Disservin
@@ -110,7 +110,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 4fa606e7548cc066c347732ce948a63b0dfc6950
+        sha: e47dde7f9746c7522b58bb5c09016653888f4f05
     - <repeat_last>:
         run:
           max_epochs: 250
