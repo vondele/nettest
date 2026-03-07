@@ -18,9 +18,9 @@ testing:
   steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
-      target: profile-build
+      owner: xu-shawn
+      sha: 39913b0d0c5768ecd5fdcccf997111ba212a3820
+      target: build
 training:
   steps:
     - convert:
@@ -69,7 +69,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 8c2bf97546ea937ed173e4685b36d3d444804316
+        sha: 1395fc7fa5c5800758a3dd563dbdf8705f5407a4
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -149,7 +149,7 @@ training:
         resume: previous_checkpoint
       trainer:
         owner: TonyCongqianWang
-        sha: 8c2bf97546ea937ed173e4685b36d3d444804316
+        sha: 1395fc7fa5c5800758a3dd563dbdf8705f5407a4
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -229,5 +229,5 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: 8c2bf97546ea937ed173e4685b36d3d444804316
+        sha: 1395fc7fa5c5800758a3dd563dbdf8705f5407a4
 
