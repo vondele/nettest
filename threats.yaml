@@ -18,9 +18,9 @@ testing:
   steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
-      target: profile-build
+      owner: xu-shawn
+      sha: 39913b0d0c5768ecd5fdcccf997111ba212a3820
+      target: build
 training:
   steps:
     - convert:
