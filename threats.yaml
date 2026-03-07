@@ -86,10 +86,11 @@ training:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --warmup-steps=100000
+          - --optimizer-name=schedulefree
           - --lr=3.0e-4
-          - --ft-weight-decay=1.0e-5
-          - --dense-weight-decay=6.0e-3
+          - --warmup-steps=100000
+          - --ft-weight-decay=1.0e-4
+          - --dense-weight-decay=1.0e-2
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.76
@@ -109,7 +110,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: ee6bf5c8f9bc6a327babe74e2afa752f7e68ca54s
+        sha: b5391b5248dbe43fd78318ef6a06b908868ae18f
     - <repeat_last>:
         run:
           max_epochs: 250
