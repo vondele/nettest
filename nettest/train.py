@@ -116,7 +116,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     num_gpus = len([d for d in devices.split(",") if d.strip()])
     nproc = max(1, num_gpus)
-    cmd = ["env", "PYTHONUNBUFFERED=1", "torchrun", f"--nproc-per-node={nproc}", "train.py"]
+    cmd = ["torchrun", f"--nproc-per-node={nproc}", "ddp_launcher.py", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
