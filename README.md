@@ -11,7 +11,7 @@ reproduce the workflows needed to create (near?) master-strength networks for
 Currently, the repo contains two main recipes:
 
 * [small.yaml](small.yaml): generating the small net in stockfish
-* [large.yaml](large.yaml): generating the large/big net in stockfish
+* [threats.yaml](threats.yaml): generating the threats/big net in stockfish
 
 and two auxiliary ones for testing and experimentation.
 
@@ -38,11 +38,11 @@ network in various stages, with restarts, exporting and optimizing the networks
 for inference, and testing the resulting network. All these steps are encoded
 in the yaml, and executed automatically.
 
-The storage and compute needs are significant. For training the large net,
-approximately 700GB of storage is needed, training both small and large nets
-requires 900GB. On a high-end GPU, training a large net takes approximately 4-5
+The storage and compute needs are significant. For training the big net,
+approximately 700GB of storage is needed, training both small and big nets
+requires 900GB. On a high-end GPU, training a big net takes approximately 4-5
 days, whereas a small net takes less than one day. 8GB GPU RAM is needed to
-train small nets more than that for the large nets. Testing the resulting nets
+train small nets more than that for the big nets. Testing the resulting nets
 will take multiple hours, even at high CPU concurrency.
 
 The workflows have built-in caching mechanisms, for both data and compute. In
@@ -112,7 +112,7 @@ file).
 #### remote execution
 
 ```bash
-python -m nettest.execute_recipe --executor remote --recipe nettest/large.yaml
+python -m nettest.execute_recipe --executor remote --recipe nettest/small.yaml
 ```
 
 Remote execution requires a proper setup, including a
