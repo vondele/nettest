@@ -8,30 +8,30 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 0
+      nElo_interval_midpoint: -1
       nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
       sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
-      target: profile-build
+      target: build
   steps: all
   testing:
     code:
-      owner: xu-shawn
-      sha: 39913b0d0c5768ecd5fdcccf997111ba212a3820
+      owner: sscg13
+      sha: 0dd39d66de7bf1d7fbabae287728cd4d0db40fb3
       target: build
 training:
   steps:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_optimize_count=100000
@@ -51,7 +51,7 @@ training:
         max_epochs: 800
         other_options:
           - --batch-size=65536
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --lr=4.375e-4
@@ -68,17 +68,17 @@ training:
         repetitions: 3
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
+        owner: sscg13
+        sha: c4a63b501b564570af7eee2c936c9dff9dee9dfb
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_optimize_count=100000
@@ -125,7 +125,7 @@ training:
         max_epochs: 800
         other_options:
           - --batch-size=65536
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --lr=0.0010783148702050778
@@ -148,17 +148,17 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
+        owner: sscg13
+        sha: c4a63b501b564570af7eee2c936c9dff9dee9dfb
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_optimize_count=100000
@@ -205,7 +205,7 @@ training:
         max_epochs: 800
         other_options:
           - --batch-size=65536
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --lr=0.0010783148702050778
@@ -228,17 +228,17 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
+        owner: sscg13
+        sha: c4a63b501b564570af7eee2c936c9dff9dee9dfb
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_optimize_count=100000
@@ -285,7 +285,7 @@ training:
         max_epochs: 800
         other_options:
           - --batch-size=65536
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --lr=0.0010783148702050778
@@ -308,17 +308,17 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
+        owner: sscg13
+        sha: c4a63b501b564570af7eee2c936c9dff9dee9dfb
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --ft_optimize_count=100000
@@ -361,7 +361,7 @@ training:
         max_epochs: 800
         other_options:
           - --batch-size=65536
-          - --features=Full_Threats+HalfKAv2_hm^
+          - --features=Full_Threatsv2+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --lr=0.00042301976890599417
@@ -384,5 +384,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 1ceb4a5d98b1962db24db0ede4df9fea32753292
+        owner: sscg13
+        sha: c4a63b501b564570af7eee2c936c9dff9dee9dfb
