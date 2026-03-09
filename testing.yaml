@@ -7,8 +7,8 @@ training:
 # S1
 #
     - trainer:
-        owner: official-stockfish
-        sha: 2b9703834e2ab571c738b8e5bf457a20152dd5d5
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
       run:
         resume: none
         max_epochs: 18
@@ -35,8 +35,8 @@ training:
 # S2
 #
     - trainer:
-        owner: official-stockfish
-        sha: 2b9703834e2ab571c738b8e5bf457a20152dd5d5
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -64,8 +64,8 @@ training:
 # S3
 #
     - trainer:
-        owner: official-stockfish
-        sha: 2b9703834e2ab571c738b8e5bf457a20152dd5d5
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
       run:
         resume: previous_model
         max_epochs: 12
