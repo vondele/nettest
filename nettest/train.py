@@ -108,33 +108,25 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
             else:
                 assert False, f"The following binpack could not be found: {binpack}"
 
-    # binding all threads to the same socket is important for performance on some systems
-    if "train" in environment and (
-        "cpunodebind" in environment["train"] or "membind" in environment["train"]
-    ):
-        cmd = ["numactl"]
-        if "cpunodebind" in environment["train"]:
-            cpunodebind = environment["train"]["cpunodebind"]
-            cmd += [f"--cpunodebind={cpunodebind}"]
-        if "membind" in environment["train"]:
-            membind = environment["train"]["membind"]
-            cmd += [f"--membind={membind}"]
-    else:
-        cmd = []
-
-    cmd += ["python", "-u", "train.py"]
-
-    for binpack in run["binpacks"]:
-        cmd.append(str(data_dir / binpack))
-
-    # seems always a reasonable default
-    cmd.append("--threads=4")
-
     # some architecture specific options
     if "train" in environment and "devices" in environment["train"]:
         devices = environment["train"]["devices"]
     else:
         devices = "0,"
+
+    num_gpus = len([d for d in devices.split(",") if d.strip()])
+    nproc = max(1, num_gpus)
+    cmd = ["torchrun", f"--nproc-per-node={nproc}", "ddp_launcher.py", "train.py"]
+
+    for binpack in run["binpacks"]:
+        cmd.append(str(data_dir / binpack))
+
+    if "train" in environment and "num_threads" in environment["train"]:
+        num_threads = environment["train"]["num_threads"]
+    else:
+        # seems always a reasonable default
+        num_threads = 4
+    cmd.append(f"--threads={num_threads}")
     cmd.append(f"--gpus={devices}")
 
     # large net needs at least 16 threads, small net >64, number of active threads is seems also roughly half specified
