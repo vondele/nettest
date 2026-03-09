@@ -89,12 +89,12 @@ training:
           - --optimizer-name=schedulefree
           - --lr=3.0e-4
           - --warmup-steps=100000
-          - --ft-weight-decay=1.0e-4
+          - --ft-weight-decay=0.0
           - --dense-weight-decay=1.0e-2
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.76
-          - --end-lambda=0.76
+          - --start-lambda=0.785
+          - --end-lambda=0.785
           - --in-scaling=294.7193839807687
           - --out-scaling=352.8750799744594
           - --in-offset=281.4186220835457
