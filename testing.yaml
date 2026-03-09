@@ -109,13 +109,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: a6d055d7e27ab3e29a42e8b94215102824760057
-      target: build
+      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      target: profile-build
   testing:
     code:
-      owner: xu-shawn
-      sha: 39913b0d0c5768ecd5fdcccf997111ba212a3820
-      target: build
+      owner: official-stockfish
+      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      target: profile-build
   fastchess:
     code:
       owner: Disservin
