@@ -65,7 +65,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: none
       trainer:
         owner: TonyCongqianWang
@@ -145,7 +144,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
@@ -225,7 +223,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
@@ -305,7 +302,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
@@ -381,7 +377,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
