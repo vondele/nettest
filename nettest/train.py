@@ -121,8 +121,8 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
 
-    if "train" in environment and "num_threads" in environment["train"]:
-        num_threads = environment["train"]["num_threads"]
+    if "train" in environment and "threads" in environment["train"]:
+        num_threads = environment["train"]["threads"]
     else:
         # seems always a reasonable default
         num_threads = 4

@@ -5,4 +5,4 @@ test:
 train:
   devices: 0,1,2,3,
   workers: 64
-  threads: 16
+  threads: 8
