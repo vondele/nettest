@@ -9,7 +9,7 @@ testing:
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -120
-      nElo_interval_width: 40
+      nElo_interval_width: 20
   reference:
     code:
       owner: official-stockfish
@@ -88,7 +88,7 @@ training:
           - --l1=1024
           - --optimizer-name=schedulefree
           - --lr=9.0e-4
-          - --warmup-steps=100000
+          - --warmup-steps=20000
           - --ft-weight-decay=0.0
           - --dense-weight-decay=1.0e-2
           - --pow-exp=2.442037790427722
