@@ -100,7 +100,7 @@ training:
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
-          - --early-fen-skipping=20
+          - --early-fen-skipping=22
           - --pc-y1=0.6893201149773951
           - --pc-y2=2.9285769485515805
           - --pc-y3=1.4386005301749225
