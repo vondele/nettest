@@ -8,8 +8,8 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 0
-      nElo_interval_width: 2
+      nElo_interval_midpoint: -120
+      nElo_interval_width: 20
   reference:
     code:
       owner: official-stockfish
