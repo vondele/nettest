@@ -100,7 +100,7 @@ training:
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
-          - --early-fen-skipping=20
+          - --early-fen-skipping=23
           - --pc-y1=0.6893201149773951
           - --pc-y2=2.9285769485515805
           - --pc-y3=1.4386005301749225
@@ -110,7 +110,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 87dcc1a755fb204d17f777d521e936b91b20326d
+        sha: 417c895e9290d2d4e7817133bc68a5fc93c2a710
     - <repeat_last>:
         run:
           max_epochs: 250
