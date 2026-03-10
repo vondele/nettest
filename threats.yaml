@@ -96,7 +96,7 @@ training:
           - --start-lambda=0.785
           - --end-lambda=0.785
           - --in-scaling=294.7193839807687
-          - --out-scaling=352.8750799744594
+          - --out-scaling=357.000
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
@@ -110,7 +110,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: e47dde7f9746c7522b58bb5c09016653888f4f05
+        sha: 87dcc1a755fb204d17f777d521e936b91b20326d
     - <repeat_last>:
         run:
           max_epochs: 250
