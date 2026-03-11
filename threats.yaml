@@ -106,10 +106,10 @@ training:
         sha: 417c895e9290d2d4e7817133bc68a5fc93c2a710
     - <repeat_last>:
         run:
-          max_epochs: 250
-    - <repeat_last>:
-        run:
           max_epochs: 500
     - <repeat_last>:
         run:
           max_epochs: 1000
+    - <repeat_last>:
+        run:
+          max_epochs: 1500
