@@ -5,11 +5,8 @@ testing:
       sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 8000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: -120
-      nElo_interval_width: 20
   reference:
     code:
       owner: official-stockfish
@@ -66,10 +63,6 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-          - official-stockfish/master-binpacks/dfrc_n5000.binpack
-          - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
-          - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-          - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
           - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
@@ -120,6 +113,3 @@ training:
     - <repeat_last>:
         run:
           max_epochs: 1000
-    - <repeat_last>:
-        run:
-          max_epochs: 2000
