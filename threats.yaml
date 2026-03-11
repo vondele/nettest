@@ -86,14 +86,14 @@ training:
           - --dense-weight-decay=1.0e-2
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.785
-          - --end-lambda=0.785
+          - --start-lambda=0.79
+          - --end-lambda=0.79
           - --in-scaling=294.7193839807687
           - --out-scaling=352.800
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
-          - --early-fen-skipping=23
+          - --early-fen-skipping=26
           - --pc-y1=0.6893201149773951
           - --pc-y2=2.9285769485515805
           - --pc-y3=1.4386005301749225
