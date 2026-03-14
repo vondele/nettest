@@ -8,7 +8,7 @@ training:
 #
     - trainer:
         owner: TonyCongqianWang
-        sha: 1db419da7638653a2613422ba7f80c63afa25224
+        sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
         resume: none
         max_epochs: 18
@@ -36,7 +36,7 @@ training:
 #
     - trainer:
         owner: TonyCongqianWang
-        sha: 1db419da7638653a2613422ba7f80c63afa25224
+        sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
         resume: previous_checkpoint
         repetitions: 1
@@ -65,7 +65,7 @@ training:
 #
     - trainer:
         owner: TonyCongqianWang
-        sha: 1db419da7638653a2613422ba7f80c63afa25224
+        sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
         resume: previous_model
         max_epochs: 12
@@ -106,7 +106,7 @@ training:
 #
     - trainer:
         owner: TonyCongqianWang
-        sha: 1db419da7638653a2613422ba7f80c63afa25224
+        sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
         resume: previous_model
         max_epochs: 18
@@ -135,7 +135,7 @@ training:
 #
     - trainer:
         owner: TonyCongqianWang
-        sha: 1db419da7638653a2613422ba7f80c63afa25224
+        sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
         resume: previous_checkpoint
         repetitions: 1
@@ -165,7 +165,7 @@ training:
 #
     - trainer:
         owner: TonyCongqianWang
-        sha: 1db419da7638653a2613422ba7f80c63afa25224
+        sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
         resume: previous_model
         max_epochs: 12
@@ -207,7 +207,7 @@ training:
 #
     - trainer:
         owner: TonyCongqianWang
-        sha: 1db419da7638653a2613422ba7f80c63afa25224
+        sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
         resume: none
         max_epochs: 18
