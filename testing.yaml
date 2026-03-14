@@ -209,7 +209,7 @@ training:
         owner: TonyCongqianWang
         sha: c015a1acff5c87d5969ac9ccc7a1d5b3e8179d27
       run:
-        resume: none
+        resume: previous_model
         max_epochs: 18
         binpacks:
           - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
