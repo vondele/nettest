@@ -74,7 +74,7 @@ training:
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
-        max_epochs: 125
+        max_epochs: 750
         other_options:
           - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
@@ -93,7 +93,7 @@ training:
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
-          - --early-fen-skipping=23
+          - --early-fen-skipping=28
           - --pc-y1=0.6893201149773951
           - --pc-y2=2.9285769485515805
           - --pc-y3=1.4386005301749225
@@ -106,10 +106,10 @@ training:
         sha: 417c895e9290d2d4e7817133bc68a5fc93c2a710
     - <repeat_last>:
         run:
-          max_epochs: 500
+          max_epochs: 1000
     - <repeat_last>:
         run:
-          max_epochs: 1000
+          max_epochs: 1250
     - <repeat_last>:
         run:
           max_epochs: 1500
