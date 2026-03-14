@@ -54,8 +54,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=4.375e-4
-          - --gamma=0.9607
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
@@ -127,8 +127,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.95637
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -206,8 +206,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.95637
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -285,8 +285,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.95637
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -360,8 +360,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.00119648058867757887
-          - --gamma=0.95637
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
