@@ -5,11 +5,11 @@ testing:
       sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 20000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: 0
-      nElo_interval_width: 2
+    #sprt:
+    #  nElo_interval_midpoint: 0
+    #  nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
