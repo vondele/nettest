@@ -53,8 +53,8 @@ class RemoteNet:
             flush=True,
         )
 
-        lr = 0.0010783148702050778 * math.pow(2.0, lr_scaling_power)
-        gamma = 1.0 - gamma_adjust / 100.0
+        lr = 0.0017414663950691956 * math.pow(2.0, lr_scaling_power)
+        gamma = 1.0 - gamma_adjust / 1000.0
 
         recipe_str = f"""
 testing:
@@ -64,8 +64,11 @@ testing:
       sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
       hash: 16
-      max_rounds: 10000
+      max_rounds: 20000
       tc: 10+0.1
+    #sprt:
+    #  nElo_interval_midpoint: 0
+    #  nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
@@ -110,8 +113,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=4.375e-4
-          - --gamma=0.9607
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
@@ -183,8 +186,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.95637
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -262,8 +265,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.95637
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -341,8 +344,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.95637
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -505,7 +508,7 @@ if __name__ == "__main__":
         .set_bounds(lower=-4.0, upper=4.0)
         .set_mutation(sigma=1.0),  # lr_scaling_power
         ng.p.Scalar(init=5.0)
-        .set_bounds(lower=0.0, upper=10.0)
+        .set_bounds(lower=0.0, upper=50.0)
         .set_mutation(sigma=1.0),  # gamma_adjust
         #        ng.p.Scalar(init=2.5)  # pow_exp
         #        .set_bounds(lower=2.0, upper=3.0)
