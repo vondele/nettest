@@ -92,7 +92,7 @@ training:
           - --out-scaling=352.800
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
-          - --random-fen-skipping=10
+          - --random-fen-skipping=19
           - --early-fen-skipping=28
           - --pc-y1=0.6893201149773951
           - --pc-y2=2.9285769485515805
@@ -102,8 +102,8 @@ training:
         repetitions: 1
         resume: none
       trainer:
-        owner: TonyCongqianWang
-        sha: 417c895e9290d2d4e7817133bc68a5fc93c2a710
+        owner: official-stockfish
+        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
     - <repeat_last>:
         run:
           max_epochs: 1000
