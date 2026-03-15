@@ -15,7 +15,7 @@ testing:
       owner: official-stockfish
       sha: b3a810a1c4201059bb97f6917df3276c03167a50
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
