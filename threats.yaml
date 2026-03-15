@@ -19,7 +19,7 @@ testing:
   testing:
     code:
       owner: sscg13
-      sha: 0dd39d66de7bf1d7fbabae287728cd4d0db40fb3
+      sha: 69ad189bd51f20fdb7f9f05e12d2a66a433edba1
       target: build
 training:
   steps:
