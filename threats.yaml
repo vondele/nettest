@@ -113,3 +113,12 @@ training:
     - <repeat_last>:
         run:
           max_epochs: 1500
+    - <repeat_last>:
+        run:
+          max_epochs: 1750
+    - <repeat_last>:
+        run:
+          max_epochs: 2000
+    - <repeat_last>:
+        run:
+          max_epochs: 2250
