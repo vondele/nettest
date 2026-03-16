@@ -6,7 +6,7 @@ testing:
     options:
       hash: 16
       max_rounds: 80000
-      nodes: 50000
+      tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -1
       nElo_interval_width: 2
@@ -15,7 +15,7 @@ testing:
       owner: official-stockfish
       sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: sscg13
