@@ -92,7 +92,7 @@ training:
           - --out-scaling=352.800
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
-          - --random-fen-skipping=19
+          - --random-fen-skipping=4
           - --early-fen-skipping=28
           - --pc-y1=0.6893201149773951
           - --pc-y2=2.9285769485515805
