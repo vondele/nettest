@@ -217,6 +217,16 @@ def expand_meta_recipe(recipe):
         # Handle modified copy
         elif isinstance(step, dict) and "<repeat_last>" in step:
             overrides = step["<repeat_last>"]
+            # PyYAML deserializes a bare key `- <repeat_last>:` as None.
+            # Treat this as an exact copy (no overrides), and enforce that any
+            # provided value is a mapping of overrides.
+            if overrides is None:
+                overrides = {}
+            elif not isinstance(overrides, dict):
+                raise ValueError(
+                    f"Step {step_index} '<repeat_last>' overrides must be a mapping (dict), "
+                    f"got {type(overrides).__name__!r}."
+                )
             new_step = intelligent_merge(previous_step, overrides)
             enforce_resume_constraint(new_step, is_first_step=False, step_index=step_index)
             expanded_steps.append(new_step)
