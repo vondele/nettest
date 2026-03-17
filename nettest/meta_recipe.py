@@ -10,42 +10,47 @@ Supported Meta-Tokens:
    - As a string: `- <repeat_last>`
      Creates an exact duplicate of the immediately preceding step.
    - As a dictionary key: `- <repeat_last>: { overrides... }`
-     Copies the preceding step and applies the specified overrides.
+     Copies the preceding step and applies the specified overrides via intelligent_merge.
 
    Merge Behavior:
-   - Dictionaries are deep-merged recursively.
-   - Lists consisting exclusively of CLI arguments (e.g., strings starting with `--`) are
-     merged intelligently via prefix matching (e.g., `--lr=0.01` replaces `--lr=0.001`).
-   - All other lists are completely overwritten by the override list, unless a meta-token is used.
+   - Dictionaries: Deep-merged recursively.
+   - CLI Argument Lists: Lists where every string starts with `--` are merged via
+     prefix matching (e.g., `--lr=0.01` replaces `--lr=0.001`).
+     NOTE: Because these merge by default, you MUST use <replace> to clear inherited flags.
+   - Standard Lists: All other lists are completely overwritten by the override list
+     by default. Use <extend> if you wish to preserve base elements.
 
 2. <replace>
-   - Aborts the recursive merge for a specific node.
-   - Overwrites the inherited base object entirely with the contents provided.
-   - Usage: `key: { <replace>: [new, list] }` or `key: { <replace>: {new: dict} }`
+   - Used to force-overwrite keys, bypassing the recursive "intelligent" merge logic.
+   - Mandated Use Case: Completely replacing a CLI argument list. Without <replace>,
+     new flags are simply merged into the inherited list.
+   - suffix is ignored for logic and only intended for uniqueness of keys.
+   - Usage:
+     <replace_suffix>:
+       args: ["--new-starting-point"]  # This wipes all previous --flags
+       nested_cfg: { key: value }      # Overwrites dict instead of merging
 
 3. <extend>
-   - Explicitly adds items to an inherited list instead of overwriting it.
-   - Will automatically convert a single item into a list if necessary.
-   - <extend> can also take optional slice arguments to specify which portion of the old list to add.
-   - Suffixes can be added to overcome .yaml's restriction on duplicate keys.
-   - Usage: `binpacks: { <extend>: [new_data.binpack] }`
-            `binpacks: { <extend(1,3)_foo>: [data1.binpack, data2.binpack] }`
-            `binpacks: { <extend(1,3)(4,)_foo>: }`
-   - The first example would extend the inherited `binpacks` list with `new_data.binpack`
-     The second example takes the slice `[1 : 3]` of the previous list and adds `data1.binpack`, `data2.binpack`.
-     The third example takes the slices `[1 : 3]` and `[4 :]` of the previous list -- i.e. removes elements 3 and 4.
+   - Used to modify inherited lists. Supports slicing the base list and appending new items.
+   - suffix is ignored for logic and only intended for uniqueness of keys.
+   - Usage:
+     <extend_suffix>:
+       list_key: [item_to_append]
+   - Slicing Usage: `<extend(start,end)_suffix>`
+     Example: `<extend(1,3)(4,)_foo>: { binpacks: [new.binpack] }`
+     Takes index 1 up to 3, and index 4 to the end of the base list, then appends 'new.binpack'.
 
 4. <remove>
-   - Assigning `"<remove>"` to a key deletes that key entirely from the inherited dictionary.
-   - Cannot be used to remove specific string elements from inside a list; use `<replace>` instead.
+   - Assigning the string "<remove>" to a key deletes it from the resulting dictionary.
+   - Usage: `key_to_delete: "<remove>"`
 
 Constraints & Edge Cases:
 -------------------------
 - The first step in a sequence cannot use `<repeat_last>`.
-- The script enforces that the first step has `resume: none`. Subsequent steps default to `previous_checkpoint`.
-- A dictionary containing `<append>` or `<replace>` evaluates immediately. Do not mix other keys into
-  the same dictionary level alongside these tokens, as they will be ignored.
-- Attempting to `<append>` to an existing non-list primitive will raise a ValueError.
+- The script enforces that the first step has `run.resume: none`. Subsequent steps
+  default to `previous_checkpoint` if not explicitly set.
+- Directives like <extend> and <replace> must contain a dictionary of fields to operate on.
+- Attempting to <extend> a non-list field in the base object will raise a ValueError.
 """
 
 import copy
@@ -54,9 +59,6 @@ import re
 def intelligent_merge(base, override):
     """
     Recursively deep-merges two dictionaries.
-    Applies intelligent argument matching for lists of CLI flags.
-    Handles grouped <replace...>, <extend...>, and <remove> meta-tokens with optional suffixes.
-    Supports multiple slices for <extend>, e.g., <extend(0,2)(4,-1)_suffix>.
     """
     if isinstance(override, dict):
         merged = copy.deepcopy(base) if isinstance(base, dict) else {}
