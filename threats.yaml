@@ -2,7 +2,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
+      sha: adc3d025006f2efe7e014cde7dc46970f3bb7252
     options:
       hash: 16
       max_rounds: 80000
@@ -68,8 +68,8 @@ training:
         repetitions: 3
         resume: none
       trainer:
-        owner: TonyCongqianWang
-        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
+        owner: official-stockfish
+        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -148,8 +148,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: TonyCongqianWang
-        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
+        owner: official-stockfish
+        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -228,8 +228,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: TonyCongqianWang
-        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
+        owner: official-stockfish
+        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -308,8 +308,8 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: TonyCongqianWang
-        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
+        owner: official-stockfish
+        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
@@ -384,5 +384,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: TonyCongqianWang
-        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
+        owner: official-stockfish
+        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
