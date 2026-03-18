@@ -17,6 +17,8 @@ build:
   extends: .container-builder-cscs-gh200
   variables:
     DOCKERFILE: ci/docker/Dockerfile.NVIDIA
+    KUBERNETES_MEMORY_REQUEST: '64Gi'
+    KUBERNETES_MEMORY_LIMIT: '64Gi'
 
 # generate the schedule to be executed in a child pipeline
 generateSchedule:
