@@ -104,7 +104,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: ab35ac4f1f02273ca5935fc3017a9b64b4668fad
+        sha: 67ce133990a722d97193c95872218129a6687bc3
     - <repeat_last>:
         run:
           max_epochs: 20
