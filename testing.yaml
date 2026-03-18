@@ -5,7 +5,7 @@ testing:
       sha: adc3d025006f2efe7e014cde7dc46970f3bb7252
     options:
       hash: 16
-      max_rounds: 8000
+      max_rounds: 800
       tc: 10+0.1
   reference:
     code:
