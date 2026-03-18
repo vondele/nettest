@@ -77,7 +77,7 @@ training:
         max_epochs: 1500
         other_options:
           - --param-freeze-mode=psqt-only
-          - --batch-size=2097152
+          - --batch-size=1048576
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --optimizer-name=schedulefree
