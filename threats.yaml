@@ -77,11 +77,11 @@ training:
         max_epochs: 1500
         other_options:
           - --param-freeze-mode=psqt-only
+          - --lr=5.0e-3
           - --batch-size=1048576
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --optimizer-name=schedulefree
-          - --lr=1.0e-2
           - --warmup-steps=2000
           - --ft-weight-decay=0.0
           - --dense-weight-decay=1.0e-2
@@ -93,11 +93,11 @@ training:
           - --out-scaling=352.800
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
-          - --random-fen-skipping=6
+          - --random-fen-skipping=3
           - --early-fen-skipping=28
-          - --pc-y1=0.6893201149773951
-          - --pc-y2=2.9285769485515805
-          - --pc-y3=1.4386005301749225
+          - --pc-y1=0.6
+          - --pc-y2=1.0
+          - --pc-y3=0.8
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
         repetitions: 1
@@ -107,7 +107,7 @@ training:
         sha: 7e9a19ac2456d1494dd750fee567a565f4cfea20
     - <repeat_last>:
         run:
-          max_epochs: 1000
+          max_epochs: 500
           resume: previous_model
           other_options:
             - --param-freeze-mode=frozen-psqt
