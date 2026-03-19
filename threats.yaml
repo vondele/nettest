@@ -104,10 +104,10 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 65cff37ffbb25dd68b540d53f7d89437bda1290a
+        sha: 3900f2c61e41e11a811ba091dc45c1df9db4c7d1
     - <repeat_last>:
         run:
-          max_epochs: 1000
+          max_epochs: 750
           resume: previous_model
           other_options:
             - --param-freeze-mode=frozen-psqt
@@ -121,10 +121,10 @@ training:
     - <repeat_last>:
         run:
           resume: previous_checkpoint
+          max_epochs: 1000
+    - <repeat_last>:
+        run:
           max_epochs: 1250
     - <repeat_last>:
         run:
           max_epochs: 1500
-    - <repeat_last>:
-        run:
-          max_epochs: 1250
