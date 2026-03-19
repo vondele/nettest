@@ -74,15 +74,15 @@ training:
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
           - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
-        max_epochs: 500
+        max_epochs: 400
         other_options:
           - --param-freeze-mode=psqt-only
-          - --lr=5.0e-3
-          - --batch-size=1048576
+          - --lr=5.0e-4
+          - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --optimizer-name=schedulefree
-          - --warmup-steps=2000
+          - --warmup-steps=20000
           - --ft-weight-decay=0.0
           - --dense-weight-decay=1.0e-2
           - --pow-exp=2.442037790427722
@@ -93,7 +93,7 @@ training:
           - --out-scaling=352.800
           - --in-offset=281.4186220835457
           - --out-offset=279.93991915496105
-          - --random-fen-skipping=3
+          - --random-fen-skipping=12
           - --early-fen-skipping=28
           - --pc-y1=0.6
           - --pc-y2=1.0
@@ -104,7 +104,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 7e9a19ac2456d1494dd750fee567a565f4cfea20
+        sha: ea4cc2dea0ea04b9706f4fdccc04b558a199ef9e
     - <repeat_last>:
         run:
           max_epochs: 1000
