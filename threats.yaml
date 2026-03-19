@@ -5,17 +5,17 @@ testing:
       sha: adc3d025006f2efe7e014cde7dc46970f3bb7252
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 20000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: 0
-      nElo_interval_width: 2
+    #sprt:
+    #  nElo_interval_midpoint: 0
+    #  nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
       sha: b3a810a1c4201059bb97f6917df3276c03167a50
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
@@ -50,12 +50,12 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
+          - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=4.375e-4
-          - --gamma=0.995
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
@@ -65,7 +65,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: none
       trainer:
         owner: official-stockfish
@@ -124,12 +123,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
+          - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -145,7 +144,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: official-stockfish
@@ -204,12 +202,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
+          - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -225,7 +223,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: official-stockfish
@@ -284,12 +281,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
+          - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -305,7 +302,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: official-stockfish
@@ -360,12 +356,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
+          - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.00042301976890599417
-          - --gamma=0.9935974858411222
+          - --lr=0.0010941889086515065
+          - --gamma=0.995781399956444
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -381,7 +377,6 @@ training:
           - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
-        repetitions: 3
         resume: previous_model
       trainer:
         owner: official-stockfish

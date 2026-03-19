@@ -39,9 +39,8 @@ class RemoteNet:
     # the recipe to optimize
     def train_and_test_net(
         self,
-        pc_y1,
-        pc_y2,
-        pc_y3,
+        lr_scaling_power,
+        gamma_adjust,
     ):
         with self.lock:
             self.exec_id += 1
@@ -49,50 +48,51 @@ class RemoteNet:
 
         print(
             f"Starting {local_exec_id}:",
-            pc_y1,
-            pc_y2,
-            pc_y3,
+            lr_scaling_power,
+            gamma_adjust,
             flush=True,
         )
 
-        # lr = 0.0010783148702050778 * math.pow(2.0, lr_scaling_power)
-        # gamma = 1.0 - gamma_adjust / 1000.0
+        lr = 0.0017414663950691956 * math.pow(2.0, lr_scaling_power)
+        gamma = 1.0 - gamma_adjust / 1000.0
 
         recipe_str = f"""
 testing:
   fastchess:
     code:
       owner: Disservin
-      sha: e06cb1a55d80d768fdce29771b1749b40daeeab3
+      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 20000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: {self.nElo_target}
-      nElo_interval_width: 2
+    #sprt:
+    #  nElo_interval_midpoint: 0
+    #  nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      sha: b3a810a1c4201059bb97f6917df3276c03167a50
       target: profile-build
   steps: last
   testing:
     code:
       owner: official-stockfish
-      sha: d9fd516547849bd5ca2a05c491aadc66fc750a39
+      sha: b3a810a1c4201059bb97f6917df3276c03167a50
       target: profile-build
 training:
   steps:
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats^
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -109,29 +109,36 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
-          - --features=Full_Threats^
+          - --batch-size=524288
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --lr=4.375e-4
-          - --gamma=0.995
+          - --l2=31
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
           - --early-fen-skipping=12
-        repetitions: 3
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
         resume: none
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats^
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -175,11 +182,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
-          - --features=Full_Threats^
+          - --batch-size=524288
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
+          - --l2=31
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -190,20 +198,26 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
-        repetitions: 3
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats^
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -247,11 +261,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
-          - --features=Full_Threats^
+          - --batch-size=524288
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
+          - --l2=31
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -262,20 +277,26 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
-        repetitions: 3
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats^
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -319,11 +340,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
-          - --features=Full_Threats^
+          - --batch-size=524288
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --lr=0.0010783148702050778
-          - --gamma=0.994446435229841
+          - --l2=31
+          - --lr=0.0017414663950691956
+          - --gamma=0.9965250026240243
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -334,20 +356,26 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
-        repetitions: 3
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
         resume: previous_model
       trainer:
-        owner: sscg13
-        sha: 68b56ad3bfa98a6433b3e37fd4b26ba9155fbf2c
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
     - convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
-          - --features=Full_Threats^
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_compression=leb128
         optimize:
-          - --features=Full_Threats
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
+          - --l2=31
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -387,11 +415,12 @@ training:
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
         max_epochs: 800
         other_options:
-          - --batch-size=65536
-          - --features=Full_Threats^
+          - --batch-size=524288
+          - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --lr=0.00042301976890599417
-          - --gamma=0.9935974858411222
+          - --l2=31
+          - --lr={lr}
+          - --gamma={gamma}
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -402,14 +431,15 @@ training:
           - --out-offset=279.93991915496105
           - --random-fen-skipping=10
           - --early-fen-skipping=28
-          - --pc-y1={pc_y1}
-          - --pc-y2={pc_y2}
-          - --pc-y3={pc_y3}
-        repetitions: 3
+          - --pc-y1=0.6893201149773951
+          - --pc-y2=2.9285769485515805
+          - --pc-y3=1.4386005301749225
+          - --w1=3.3553547771220007
+          - --w2=0.7006821612968052
         resume: previous_model
       trainer:
-        owner: vondele
-        sha: 3c935381a4c2437e5a7c0f2811f767c016fa9bf6
+        owner: TonyCongqianWang
+        sha: 395130dd99da86f52980212dac40c2cbc7d4ad66
         """
         recipe = yaml.safe_load(recipe_str)
 
@@ -433,9 +463,8 @@ training:
 
         print(
             f"Done {local_exec_id}:",
-            pc_y1,
-            pc_y2,
-            pc_y3,
+            lr,
+            gamma,
             nElo,
             bestNet,
             flush=True,
@@ -466,21 +495,21 @@ if __name__ == "__main__":
         # .set_bounds(lower=10, upper=32)
         # .set_mutation(sigma=3.0)
         # .set_integer_casting(),  # early_fen_skipping
-        ng.p.Scalar(init=1.0)
-        .set_bounds(lower=0.5, upper=2.0)
-        .set_mutation(sigma=0.2),  # pc_y1
-        ng.p.Scalar(init=2.0)
-        .set_bounds(lower=1.0, upper=4.0)
-        .set_mutation(sigma=0.5),  # pc_y2
-        ng.p.Scalar(init=1.0)
-        .set_bounds(lower=0.5, upper=2.0)
-        .set_mutation(sigma=0.2),  # pc_y3
-        # ng.p.Scalar(init=0.0)
-        # .set_bounds(lower=-4.0, upper=4.0)
-        # .set_mutation(sigma=1.0),  # lr_scaling_power
-        # ng.p.Scalar(init=5.0)
-        # .set_bounds(lower=0.0, upper=10.0)
-        # .set_mutation(sigma=1.0),  # gamma_adjust
+        # ng.p.Scalar(init=1.0)
+        # .set_bounds(lower=0.5, upper=2.0)
+        # .set_mutation(sigma=0.2),  # pc_y1
+        # ng.p.Scalar(init=2.0)
+        # .set_bounds(lower=1.0, upper=4.0)
+        # .set_mutation(sigma=0.5),  # pc_y2
+        # ng.p.Scalar(init=1.0)
+        # .set_bounds(lower=0.5, upper=2.0)
+        # .set_mutation(sigma=0.2),  # pc_y3
+        ng.p.Scalar(init=0.0)
+        .set_bounds(lower=-4.0, upper=4.0)
+        .set_mutation(sigma=1.0),  # lr_scaling_power
+        ng.p.Scalar(init=5.0)
+        .set_bounds(lower=0.0, upper=50.0)
+        .set_mutation(sigma=1.0),  # gamma_adjust
         #        ng.p.Scalar(init=2.5)  # pow_exp
         #        .set_bounds(lower=2.0, upper=3.0)
         #        .set_mutation(sigma=0.1),
@@ -507,8 +536,8 @@ if __name__ == "__main__":
         #        .set_mutation(sigma=10),
     )
 
-    budget = 64  # Total number of evaluations to perform
-    num_workers = 32  # Number of parallel workers to use
+    budget = 256  # Total number of evaluations to perform
+    num_workers = 16  # Number of parallel workers to use
 
     # The remotely trainable net
     remoteNet = RemoteNet(
