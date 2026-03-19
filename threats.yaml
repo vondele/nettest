@@ -87,8 +87,8 @@ training:
           - --dense-weight-decay=1.0e-2
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
-          - --start-lambda=0.785
-          - --end-lambda=0.785
+          - --start-lambda=0.765
+          - --end-lambda=0.765
           - --in-scaling=294.7193839807687
           - --out-scaling=352.800
           - --in-offset=281.4186220835457
