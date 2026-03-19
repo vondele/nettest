@@ -384,5 +384,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        owner: vondele
+        sha: 5e8be98ecd84ff79738d6d3a03f686c8365b54d6
