@@ -15,7 +15,7 @@ testing:
       owner: official-stockfish
       sha: b3a810a1c4201059bb97f6917df3276c03167a50
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
@@ -361,7 +361,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=rangerlite
-          - --pnm-momentum=0.5
+          - --pnm-momentum=0.25
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
