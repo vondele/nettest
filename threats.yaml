@@ -387,4 +387,4 @@ training:
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
-        sha: aa9a4c5c91c271a0e219a7684cb06a72e167f44b
+        sha: 5064286228f4fe462f68eced827104dfc16d7f8c
