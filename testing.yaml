@@ -104,7 +104,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 65cff37ffbb25dd68b540d53f7d89437bda1290a
+        sha: 544b460156b8e37bf64acd060848d8e78d998e91
     - <repeat_last>:
         run:
           max_epochs: 20
@@ -120,6 +120,8 @@ training:
           max_epochs: 40
     - <repeat_last>:
         run:
+          other_options:
+            - --param-freeze-mode=frozen-psqt-ft
           max_epochs: 60
     - <repeat_last>:
         run:
