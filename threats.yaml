@@ -361,7 +361,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=rangerlite
-          - --pnm-momentum=0.25
+          - --pnm-momentum=1.25
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
