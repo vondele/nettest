@@ -38,7 +38,6 @@ ENV CHESSDB_PATH=/workspace/cdb/chess-20251115/data
 RUN cd /workspace/ &&  git clone https://github.com/noobpwnftw/terarkdb.git && cd terarkdb && ./build.sh
 
 RUN cd /workspace/ &&  git clone https://github.com/vondele/cdbdirect.git && cd cdbdirect && \
-  git checkout pythonBindings && \
   make -j TERARKDBROOT=$TERARKDBROOT CHESSDB_PATH=$CHESSDB_PATH && \
   pip install .
 
