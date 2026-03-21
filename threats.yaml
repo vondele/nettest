@@ -51,6 +51,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=schedulefree
+          - --validation-size=10000000
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -126,6 +127,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=schedulefree
+          - --validation-size=10000000
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -207,6 +209,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=schedulefree
+          - --validation-size=10000000
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -288,6 +291,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=schedulefree
+          - --validation-size=10000000
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -365,6 +369,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=schedulefree
+          - --validation-size=10000000
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
