@@ -120,6 +120,8 @@ training:
             - --pc-y3=1.4386005301749225
     - <repeat_last>:
         run:
+          other_options:
+            - --validation-size=100000000
           resume: previous_checkpoint
           max_epochs: 1000
     - <repeat_last>:
