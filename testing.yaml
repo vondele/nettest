@@ -4,11 +4,11 @@
 training:
   steps:
 #
-# S1
+# S1 use ranger21
 #
     - trainer:
-        owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
       run:
         resume: none
         max_epochs: 18
@@ -35,8 +35,8 @@ training:
 # S2
 #
     - trainer:
-        owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -64,8 +64,8 @@ training:
 # S3
 #
     - trainer:
-        owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
       run:
         resume: previous_model
         max_epochs: 12
@@ -96,6 +96,135 @@ training:
           - --ft_optimize_count=10000
           - --ft_optimize
           - --ft_compression=leb128
+        checkpoint2nnue:
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --ft_compression=leb128
+#
+# S1 repeat with rangerlite
+#
+    - trainer:
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
+      run:
+        resume: previous_model
+        max_epochs: 18
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --optimizer-name=rangerlite
+          - --batch-size=65536
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --random-fen-skipping=3
+          - --lr=4.375e-4
+          - --gamma=0.9950
+          - --early-fen-skipping=3
+          - --epoch-size=100000
+          - --validation-size=0
+      convert:
+        checkpoint2nnue:
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --ft_compression=leb128
+#
+# S2
+#
+    - trainer:
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
+      run:
+        resume: previous_checkpoint
+        repetitions: 2
+        max_epochs: 20
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --optimizer-name=rangerlite
+          - --batch-size=65536
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --random-fen-skipping=3
+          - --lr=4.375e-4
+          - --gamma=0.995
+          - --early-fen-skipping=2
+          - --epoch-size=100000
+          - --validation-size=0
+      convert:
+        checkpoint2nnue:
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --ft_compression=leb128
+#
+# S3
+#
+    - trainer:
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
+      run:
+        resume: previous_model
+        max_epochs: 12
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --optimizer-name=rangerlite
+          - --batch-size=65536
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --random-fen-skipping=3
+          - --lr=4.375e-4
+          - --gamma=0.995
+          - --early-fen-skipping=2
+          - --epoch-size=100000
+          - --validation-size=0
+          - --pc-y1=1.0
+          - --pc-y2=3.0
+          - --pc-y3=1.5
+          - --w1=3.0
+          - --w2=0.7
+      convert:
+        binpack: official-stockfish/master-binpacks/fishpack32.binpack
+        optimize:
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --ft_optimize_count=10000
+          - --ft_optimize
+          - --ft_compression=leb128
+        checkpoint2nnue:
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --ft_compression=leb128
+#
+# S1 repeat again with ranger21
+#
+    - trainer:
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
+      run:
+        resume: previous_model
+        max_epochs: 18
+        binpacks:
+          - official-stockfish/master-binpacks/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
+        other_options:
+          - --batch-size=65536
+          - --features=HalfKAv2_hm^
+          - --l1=128
+          - --l2=15
+          - --random-fen-skipping=3
+          - --lr=4.375e-4
+          - --gamma=0.9950
+          - --early-fen-skipping=3
+          - --epoch-size=100000
+          - --validation-size=0
+      convert:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128

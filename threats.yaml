@@ -8,14 +8,14 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 0
-      nElo_interval_width: 2
+      nElo_interval_midpoint: -0.25
+      nElo_interval_width: 1.0
   reference:
     code:
       owner: official-stockfish
       sha: b3a810a1c4201059bb97f6917df3276c03167a50
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
@@ -384,5 +384,5 @@ training:
         repetitions: 3
         resume: previous_model
       trainer:
-        owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        owner: TonyCongqianWang
+        sha: 226aa40427d62a2a1b4990e95964b88dbfc2b2af
