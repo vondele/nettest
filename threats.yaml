@@ -124,6 +124,9 @@ training:
             - --validation-size=100000000
           resume: previous_checkpoint
           max_epochs: 1000
+        trainer:
+          owner: TonyCongqianWang
+          sha: 77d48b7303fd6d7e4c95009df456332b731fdb44
     - <repeat_last>:
         run:
           max_epochs: 1250
