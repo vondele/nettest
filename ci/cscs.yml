@@ -9,7 +9,7 @@ stages:
 # image and mounts
 variables:
   PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
-  CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/capstor/scratch/cscs/vjoost/nettest/scratch:/workspace/scratch"]'
+  CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/iopsstor/scratch/cscs/vjoost/nettest/cdb/:/workspace/cdb/", "/capstor/scratch/cscs/vjoost/nettest/scratch:/workspace/scratch"]'
 
 # build the container image
 build:
@@ -17,6 +17,8 @@ build:
   extends: .container-builder-cscs-gh200
   variables:
     DOCKERFILE: ci/docker/Dockerfile.NVIDIA
+    KUBERNETES_MEMORY_REQUEST: '64Gi'
+    KUBERNETES_MEMORY_LIMIT: '64Gi'
 
 # generate the schedule to be executed in a child pipeline
 generateSchedule:

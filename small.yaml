@@ -1,6 +1,4 @@
 #
-# basis of https://tests.stockfishchess.org/tests/view/6888fb097b562f5f7b732701
-#
 training:
   steps:
     - convert:
@@ -75,7 +73,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha:  e7c50d5cdabc046ed7f197412e2fda6c5e502f05
+        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
 #
 # Final testing stage using fastchess
 #
@@ -83,11 +81,11 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 702d4b8c9d70fc609b27a2816817ed4dda56dae9
+      sha: b3a810a1c4201059bb97f6917df3276c03167a50
   testing:
     code:
-      owner: xu-shawn
-      sha: 45d6db65d4dbba12caf35f4f9907bf78c7689910
+      owner: official-stockfish
+      sha: b3a810a1c4201059bb97f6917df3276c03167a50
   fastchess:
     code:
       owner: Disservin
