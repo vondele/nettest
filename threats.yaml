@@ -120,16 +120,16 @@ training:
             - --pc-y3=1.4386005301749225
     - <repeat_last>:
         run:
-          other_options:
-            - --validation-size=100000000
           resume: previous_checkpoint
           max_epochs: 1000
-        trainer:
-          owner: TonyCongqianWang
-          sha: ff497d605e6359d57078710e69484035214925b7
     - <repeat_last>:
         run:
           max_epochs: 1250
+          other_options:
+            - --validation-size=100000000
+        trainer:
+          owner: TonyCongqianWang
+          sha: c02da1c1f4a38d820e30f878253bdcac5ac2837f
     - <repeat_last>:
         run:
           max_epochs: 1500
