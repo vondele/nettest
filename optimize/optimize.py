@@ -39,8 +39,16 @@ class RemoteNet:
     # the recipe to optimize
     def train_and_test_net(
         self,
-        lr_scaling_power,
-        gamma_adjust,
+        lr_scaling_power_1,
+        gamma_adjust_1,
+        lr_scaling_power_2,
+        gamma_adjust_2,
+        lr_scaling_power_3,
+        gamma_adjust_3,
+        lr_scaling_power_4,
+        gamma_adjust_4,
+        lr_scaling_power_5,
+        gamma_adjust_5,
     ):
         with self.lock:
             self.exec_id += 1
@@ -48,13 +56,29 @@ class RemoteNet:
 
         print(
             f"Starting {local_exec_id}:",
-            lr_scaling_power,
-            gamma_adjust,
+            lr_scaling_power_1,
+            gamma_adjust_1,
+            lr_scaling_power_2,
+            gamma_adjust_2,
+            lr_scaling_power_3,
+            gamma_adjust_3,
+            lr_scaling_power_4,
+            gamma_adjust_4,
+            lr_scaling_power_5,
+            gamma_adjust_5,
             flush=True,
         )
 
-        lr = 0.0017414663950691956 * math.pow(2.0, lr_scaling_power)
-        gamma = 1.0 - gamma_adjust / 1000.0
+        lr_1 = 0.001094 * math.pow(2.0, lr_scaling_power_1)
+        gamma_1 = 1.0 - gamma_adjust_1 / 1000.0
+        lr_2 = 0.001094 * math.pow(2.0, lr_scaling_power_2)
+        gamma_2 = 1.0 - gamma_adjust_2 / 1000.0
+        lr_3 = 0.001094 * math.pow(2.0, lr_scaling_power_3)
+        gamma_3 = 1.0 - gamma_adjust_3 / 1000.0
+        lr_4 = 0.001094 * math.pow(2.0, lr_scaling_power_4)
+        gamma_4 = 1.0 - gamma_adjust_4 / 1000.0
+        lr_5 = 0.001094 * math.pow(2.0, lr_scaling_power_5)
+        gamma_5 = 1.0 - gamma_adjust_5 / 1000.0
 
         recipe_str = f"""
 testing:
@@ -113,8 +137,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0017414663950691956
-          - --gamma=0.9965250026240243
+          - --lr={lr_1}
+          - --gamma={gamma_1}
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
@@ -186,8 +210,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0017414663950691956
-          - --gamma=0.9965250026240243
+          - --lr={lr_2}
+          - --gamma={gamma_2}
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -265,8 +289,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0017414663950691956
-          - --gamma=0.9965250026240243
+          - --lr={lr_3}
+          - --gamma={gamma_3}
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -344,8 +368,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=0.0017414663950691956
-          - --gamma=0.9965250026240243
+          - --lr={lr_4}
+          - --gamma={gamma_4}
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -419,8 +443,8 @@ training:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr={lr}
-          - --gamma={gamma}
+          - --lr={lr_5}
+          - --gamma={gamma_5}
           - --pow-exp=2.442037790427722
           - --qp-asymmetry=0.15795949371005746
           - --start-lambda=0.8460635942002347
@@ -463,8 +487,16 @@ training:
 
         print(
             f"Done {local_exec_id}:",
-            lr,
-            gamma,
+            lr_1,
+            gamma_1,
+            lr_2,
+            gamma_2,
+            lr_3,
+            gamma_3,
+            lr_4,
+            gamma_4,
+            lr_5,
+            gamma_5,
             nElo,
             bestNet,
             flush=True,
@@ -507,8 +539,32 @@ if __name__ == "__main__":
         ng.p.Scalar(init=0.0)
         .set_bounds(lower=-4.0, upper=4.0)
         .set_mutation(sigma=1.0),  # lr_scaling_power
-        ng.p.Scalar(init=5.0)
-        .set_bounds(lower=0.0, upper=50.0)
+        ng.p.Scalar(init=4.2)
+        .set_bounds(lower=0.0, upper=20.0)
+        .set_mutation(sigma=1.0),  # gamma_adjust
+        ng.p.Scalar(init=0.0)
+        .set_bounds(lower=-4.0, upper=4.0)
+        .set_mutation(sigma=1.0),  # lr_scaling_power
+        ng.p.Scalar(init=4.2)
+        .set_bounds(lower=0.0, upper=20.0)
+        .set_mutation(sigma=1.0),  # gamma_adjust
+        ng.p.Scalar(init=0.0)
+        .set_bounds(lower=-4.0, upper=4.0)
+        .set_mutation(sigma=1.0),  # lr_scaling_power
+        ng.p.Scalar(init=4.2)
+        .set_bounds(lower=0.0, upper=20.0)
+        .set_mutation(sigma=1.0),  # gamma_adjust
+        ng.p.Scalar(init=0.0)
+        .set_bounds(lower=-4.0, upper=4.0)
+        .set_mutation(sigma=1.0),  # lr_scaling_power
+        ng.p.Scalar(init=4.2)
+        .set_bounds(lower=0.0, upper=20.0)
+        .set_mutation(sigma=1.0),  # gamma_adjust
+        ng.p.Scalar(init=0.0)
+        .set_bounds(lower=-4.0, upper=4.0)
+        .set_mutation(sigma=1.0),  # lr_scaling_power
+        ng.p.Scalar(init=4.2)
+        .set_bounds(lower=0.0, upper=20.0)
         .set_mutation(sigma=1.0),  # gamma_adjust
         #        ng.p.Scalar(init=2.5)  # pow_exp
         #        .set_bounds(lower=2.0, upper=3.0)
@@ -536,8 +592,8 @@ if __name__ == "__main__":
         #        .set_mutation(sigma=10),
     )
 
-    budget = 256  # Total number of evaluations to perform
-    num_workers = 16  # Number of parallel workers to use
+    budget = 512  # Total number of evaluations to perform
+    num_workers = 8  # Number of parallel workers to use
 
     # The remotely trainable net
     remoteNet = RemoteNet(
