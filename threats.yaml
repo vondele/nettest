@@ -50,6 +50,7 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         other_options:
+          - --no-pnm-active
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -68,8 +69,8 @@ training:
         repetitions: 3
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        owner: TonyCongqianWang
+        sha: 01fb406a3cd3d749ba1e80e172f800f750aa0039
     - <repeat_last>:
         run:
           resume: previous_model
@@ -84,10 +85,6 @@ training:
             - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
             - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
             - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-            - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-            - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-            - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-            - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
             - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
             - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
             - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
@@ -123,13 +120,6 @@ training:
             - --out-offset=279.93991915496105
             - --early-fen-skipping=28
     - <repeat_last>:
-        run:
-          <extend(0,10)(14,)_remove_duplicates>:
-            binpacks:
-              - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-              - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-              - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-              - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
     - <repeat_last>:
         run:
           other_options:
@@ -137,8 +127,6 @@ training:
             - --end-lambda=0.7490913625693039
     - <repeat_last>:
         run:
-          <extend(0,-4)_remove_last>:
-            binpacks: []
           other_options:
             - --lr=0.00042301976890599417
             - --gamma=0.9935974858411222
