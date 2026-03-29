@@ -351,7 +351,7 @@ training:
           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-        max_epochs: 800
+        max_epochs: 1600
         other_options:
           - --batch-size=524288
           - --features=Full_Threats+HalfKAv2_hm^
