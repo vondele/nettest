@@ -120,7 +120,9 @@ training:
             - --early-fen-skipping=28
     - <repeat_last>:
     - <repeat_last>:
-    - <repeat_last>:
           other_options:
             - --lr=0.00042301976890599417
+    - <repeat_last>:
+          other_options:
+            - --lr=0.00021
             - --gamma=0.9935974858411222
