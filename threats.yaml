@@ -50,13 +50,12 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         other_options:
-          - --no-pnm-active
+          - --one-cycle-steps=800000
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=4.375e-4
-          - --gamma=0.995
+          - --lr=1.0e-3
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
