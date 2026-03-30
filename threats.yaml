@@ -14,13 +14,13 @@ testing:
     code:
       owner: official-stockfish
       sha: d173a0655d04b95497eefb75b400baa3eff56f93
-      target: profile-build
+      target: build
   steps: all
   testing:
     code:
       owner: anematode
       sha: e4680b619e265510becf4447104d10025b59761a
-      target: profile-build
+      target: build
 training:
   steps:
     - convert:
