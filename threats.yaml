@@ -124,3 +124,19 @@ training:
           other_options:
             - --lr=0.00042301976890599417
             - --gamma=0.9935974858411222
+    - <repeat_last>:
+        trainer:
+          owner: TonyCongqianWang
+          sha: 32104de3fd22af8749922c9feb9e0359560ee083
+        run:
+          max_epochs: 25
+          other_options:
+            - --optimizer-name=rangerlite
+            - --no-pnm-active
+            - --lr=0.000005
+            - --one-cycle-steps=30000
+            - --one-cycle-final-div=1
+            - --swa-start-epoch=5
+            - --jitter_lambda=0.015
+            - --start_lambda=0.764
+            - --end_lambda=0.764
