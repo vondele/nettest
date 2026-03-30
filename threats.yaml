@@ -8,14 +8,14 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: -0.75
-      nElo_interval_width: 2
+      nElo_interval_midpoint: 1.75
+      nElo_interval_width: 2.5
   reference:
     code:
       owner: official-stockfish
       sha: d173a0655d04b95497eefb75b400baa3eff56f93
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
@@ -124,3 +124,20 @@ training:
           other_options:
             - --lr=0.00042301976890599417
             - --gamma=0.9935974858411222
+    - <repeat_last>:
+        trainer:
+          owner: vondele
+          sha: bca2e88bb9fe550a1d5d0dfac07f7af1e39bae6a
+        run:
+          max_epochs: 55
+          other_options:
+            - --optimizer-name=rangerlite
+            - --no-pnm-active
+            - --lr=0.00001
+            - --one-cycle-steps=20000
+            - --one-cycle-final-div=1
+            - --swa-start-epoch=15
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.004
+            - --start_lambda=0.751
+            - --end_lambda=0.751

@@ -212,7 +212,9 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
 
     root_dir = Path.cwd() / "scratch" / current_sha / "run"
 
-    checkpoint = find_most_recent(root_dir, "last.ckpt")
+    checkpoint = find_most_recent(root_dir, "last_swa.ckpt")
+    if checkpoint is None:
+        checkpoint = find_most_recent(root_dir, "last.ckpt")
     assert checkpoint is not None, "No checkpoint found in the run directory"
 
     # run the conversion to model
