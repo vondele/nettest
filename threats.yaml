@@ -8,7 +8,7 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 0.5
+      nElo_interval_midpoint: 1.5
       nElo_interval_width: 2
   reference:
     code:
@@ -129,15 +129,15 @@ training:
           owner: TonyCongqianWang
           sha: bca2e88bb9fe550a1d5d0dfac07f7af1e39bae6a
         run:
-          max_epochs: 60
+          max_epochs: 70
           other_options:
             - --optimizer-name=rangerlite
             - --no-pnm-active
             - --lr=0.000005
             - --one-cycle-steps=60000
             - --one-cycle-final-div=1
-            - --swa-start-epoch=10
-            - --jitter_lambda_sample=0.0003
+            - --swa-start-epoch=20
+            - --jitter_lambda_sample=0.002
             - --jitter_lambda_batch=0.001
-            - --start_lambda=0.751
-            - --end_lambda=0.765
+            - --start_lambda=0.753
+            - --end_lambda=0.753
