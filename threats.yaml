@@ -133,7 +133,7 @@ training:
           other_options:
             - --optimizer-name=rangerlite
             - --no-pnm-active
-            - --lr=0.000005
+            - --lr=0.00001
             - --one-cycle-steps=60000
             - --one-cycle-final-div=1
             - --swa-start-epoch=10
