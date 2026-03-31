@@ -137,6 +137,6 @@ training:
             - --one-cycle-steps=30000
             - --one-cycle-final-div=1
             - --swa-start-epoch=5
-            - --jitter_lambda=0.003
+            - --jitter_lambda=0.005
             - --start_lambda=0.758
             - --end_lambda=0.758
