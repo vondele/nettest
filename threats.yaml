@@ -129,14 +129,14 @@ training:
           owner: TonyCongqianWang
           sha: bca2e88bb9fe550a1d5d0dfac07f7af1e39bae6a
         run:
-          max_epochs: 60
+          max_epochs: 120
           other_options:
             - --optimizer-name=rangerlite
             - --no-pnm-active
             - --lr=0.00001
             - --one-cycle-steps=60000
             - --one-cycle-final-div=1
-            - --swa-start-epoch=10
+            - --swa-start-epoch=20
             - --jitter_lambda_sample=0.001
             - --jitter_lambda_batch=0.015
             - --start_lambda=0.760
