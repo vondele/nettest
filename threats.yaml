@@ -8,7 +8,7 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 0.5
+      nElo_interval_midpoint: 1.5
       nElo_interval_width: 2
   reference:
     code:
@@ -137,7 +137,7 @@ training:
             - --one-cycle-steps=60000
             - --one-cycle-final-div=1
             - --swa-start-epoch=10
-            - --jitter_lambda_sample=0.0003
-            - --jitter_lambda_batch=0.001
-            - --start_lambda=0.751
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.003
+            - --start_lambda=0.755
             - --end_lambda=0.765
