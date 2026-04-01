@@ -19,8 +19,8 @@ testing:
   testing:
     code:
       owner: TonyCongqianWang
-      sha: 5337eec7110c819b8849c8a6c58e6d99f2f958e0s
-      target: build
+      sha: 3a4f2e249d8d84406751ae071b638c844a228e27
+      target: builds
 training:
   steps:
     - convert:
@@ -69,7 +69,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 157fed423fb3da254808262ae223bd3a59f9c923s
+        sha: 157fed423fb3da254808262ae223bd3a59f9c923
     - <repeat_last>:
         run:
           resume: previous_model
