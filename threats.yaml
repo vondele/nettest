@@ -9,7 +9,7 @@ testing:
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: 1.75
-      nElo_interval_width: 1.25
+      nElo_interval_width: 2.5
   reference:
     code:
       owner: official-stockfish
@@ -129,15 +129,15 @@ training:
           owner: TonyCongqianWang
           sha: bca2e88bb9fe550a1d5d0dfac07f7af1e39bae6a
         run:
-          max_epochs: 25
+          max_epochs: 55
           other_options:
             - --optimizer-name=rangerlite
             - --no-pnm-active
             - --lr=0.00001
             - --one-cycle-steps=20000
             - --one-cycle-final-div=1
-            - --swa-start-epoch=5
-            - --jitter_lambda_sample=0.002
-            - --jitter_lambda_batch=0.006
-            - --start_lambda=0.760
-            - --end_lambda=0.760
+            - --swa-start-epoch=15
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.004
+            - --start_lambda=0.751
+            - --end_lambda=0.751
