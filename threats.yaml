@@ -139,5 +139,5 @@ training:
             - --swa-start-epoch=20
             - --jitter_lambda_sample=0.002
             - --jitter_lambda_batch=0.006
-            - --start_lambda=0.756
-            - --end_lambda=0.756
+            - --start_lambda=0.760
+            - --end_lambda=0.760
