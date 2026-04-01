@@ -18,8 +18,8 @@ testing:
   steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: 384175653285f68b67bd6a8d696380c40731e8c8
+      owner: TonyCongqianWang
+      sha: 5337eec7110c819b8849c8a6c58e6d99f2f958e0s
       target: build
 training:
   steps:
