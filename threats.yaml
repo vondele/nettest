@@ -19,7 +19,7 @@ testing:
   testing:
     code:
       owner: TonyCongqianWang
-      sha: b11aa2e0c0b697f1011b5cb3d80052a886d768d6
+      sha: 3a4f2e249d8d84406751ae071b638c844a228e27
       target: build
 training:
   steps:
