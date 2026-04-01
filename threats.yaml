@@ -51,7 +51,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=rangerlite
-          - --no-pnm-active
+          - --pnm-momentum=0.0
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -71,7 +71,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: d3da8cdb6212c5dee509bad0dcbc1b83ebb61008
+        sha: a56b297990707aed07cd481b02cee2956546afee
     - <repeat_last>:
         run:
           resume: previous_model
