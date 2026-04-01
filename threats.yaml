@@ -19,8 +19,8 @@ testing:
   testing:
     code:
       owner: official-stockfish
-      sha: d173a0655d04b95497eefb75b400baa3eff56f93
-      target: profile-build
+      sha: 384175653285f68b67bd6a8d696380c40731e8c8
+      target: build
 training:
   steps:
     - convert:
@@ -69,7 +69,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: 6a448afa7b75809b4e12cf6e2b259fac8230b22d
+        sha: aaccdbbd7ff484e8e078e1f261a13fd5bb133d27
     - <repeat_last>:
         run:
           resume: previous_model
@@ -121,6 +121,3 @@ training:
     - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
-          other_options:
-            - --lr=0.00042301976890599417
-            - --gamma=0.9935974858411222
