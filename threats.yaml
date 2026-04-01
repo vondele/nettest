@@ -134,7 +134,7 @@ training:
             - --optimizer-name=rangerlite
             - --no-pnm-active
             - --lr=0.00001
-            - --one-cycle-steps=60000
+            - --one-cycle-steps=20000
             - --one-cycle-final-div=1
             - --swa-start-epoch=20
             - --jitter_lambda_sample=0.002
