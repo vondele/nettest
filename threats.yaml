@@ -48,14 +48,14 @@ training:
           - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
           - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
-        max_epochs: 50
+        max_epochs: 80
         other_options:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
           - --lr=4.375e-4
-          - --gamma=0.995
+          - --gamma=0.98
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
@@ -69,7 +69,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 157fed423fb3da254808262ae223bd3a59f9c923
+        sha: 3c000cc64e69a78e2b953bd2d8e71f1a0f6e6bf3
     - <repeat_last>:
         run:
           resume: previous_model
@@ -108,7 +108,7 @@ training:
             - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           other_options:
             - --lr=0.0010783148702050778
-            - --gamma=0.994446435229841
+            - --gamma=0.97
             - --pow-exp=2.442037790427722
             - --qp-asymmetry=0.15795949371005746
             - --start-lambda=0.8460635942002347
