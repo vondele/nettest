@@ -6,12 +6,12 @@ training:
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
           - --l1=128
-          - --l2=15
+          - --l2=16
           - --ft_compression=leb128
         optimize:
           - --features=HalfKAv2_hm^
           - --l1=128
-          - --l2=15
+          - --l2=16
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -56,7 +56,7 @@ training:
           - --batch-size=65536
           - --features=HalfKAv2_hm^
           - --l1=128
-          - --l2=15
+          - --l2=16
           - --no-wld-filtered
           - --start-lambda=1.0
           - --end-lambda=0.6992605384421289
@@ -72,8 +72,8 @@ training:
           - --compile-backend=cudagraphs
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        owner: sscg13
+        sha: 6408dd8e786bf90394837a0e45da2b0a45d494f5
 #
 # Final testing stage using fastchess
 #
