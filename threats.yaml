@@ -20,7 +20,7 @@ testing:
     code:
       owner: TonyCongqianWang
       sha: 3a4f2e249d8d84406751ae071b638c844a228e27
-      target: builds
+      target: profile-build
 training:
   steps:
     - convert:
