@@ -13,13 +13,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: d173a0655d04b95497eefb75b400baa3eff56f93
+      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
       target: build
   steps: all
   testing:
     code:
       owner: anematode
-      sha: e4680b619e265510becf4447104d10025b59761a
+      sha: de2327db1d3ccd1318a8fd898dd07027a8f1fed2
       target: build
 training:
   steps:
@@ -27,12 +27,12 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats+HalfKAv2_hm^
-          - --l1=1024
+          - --l1=1280
           - --l2=31
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats+HalfKAv2_hm^
-          - --l1=1024
+          - --l1=1280
           - --l2=31
           - --ft_optimize_count=100000
           - --ft_optimize
@@ -52,7 +52,7 @@ training:
         other_options:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
-          - --l1=1024
+          - --l1=1280
           - --l2=31
           - --lr=4.375e-4
           - --gamma=0.995
