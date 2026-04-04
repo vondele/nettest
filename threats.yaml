@@ -18,8 +18,8 @@ testing:
   steps: all
   testing:
     code:
-      owner: anematode
-      sha: e4680b619e265510becf4447104d10025b59761a
+      owner: DanSamek
+      sha: 647dd8dc70956214b063bc9722f2f8a283a484b6
       target: build
 training:
   steps:
@@ -68,8 +68,8 @@ training:
         repetitions: 1
         resume: none
       trainer:
-        owner: anematode
-        sha: 5e43bc06759c8b15ca8b4244d69634a0b62750ac
+        owner: DanSamek
+        sha: c141389fa2f044c72581ded6df17803c4cc9887f
     - <repeat_last>:
         run:
           resume: previous_model
