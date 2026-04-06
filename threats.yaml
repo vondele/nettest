@@ -2,20 +2,17 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 541aef889206882de4823cf5a676d53ac5171c6f
+      sha: adc3d025006f2efe7e014cde7dc46970f3bb7252
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 40000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: -0.75
-      nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
       sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
@@ -68,11 +65,10 @@ training:
         repetitions: 1
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
+        owner: anematode
+        sha: 5e43bc06759c8b15ca8b4244d69634a0b62750ac
     - <repeat_last>:
         run:
-          resume: previous_model
           binpacks:
             - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
             - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
@@ -118,9 +114,26 @@ training:
             - --in-offset=281.4186220835457
             - --out-offset=279.93991915496105
             - --early-fen-skipping=28
+          resume: previous_model
+    - <repeat_last>: null
+    - <repeat_last>: null
     - <repeat_last>:
+        other_options:
+          - --lr=0.00042301976890599417
+          - --gamma=0.9935974858411222
     - <repeat_last>:
-    - <repeat_last>:
+        run:
+          max_epochs: 55
           other_options:
-            - --lr=0.00042301976890599417
-            - --gamma=0.9935974858411222
+            - --optimizer-name=rangerlite
+            - --lr=1.5096062560119151e-05
+            - --one-cycle-steps=20000
+            - --one-cycle-final-div=1
+            - --swa-start-epoch=15
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.007725100952719161
+            - --start_lambda=0.7710037988696371
+            - --end_lambda=0.7710037988696371
+        trainer:
+          owner: vondele
+          sha: aa2c0a449420594e42a21cbbafc7b44fbbef93c1
