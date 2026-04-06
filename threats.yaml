@@ -14,13 +14,13 @@ testing:
     code:
       owner: official-stockfish
       sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
-      target: build
+      target: profile-build
   steps: all
   testing:
     code:
       owner: DanSamek
       sha: 2c0e23a53111a0f8a1dab9db99d249255e130d71
-      target: build
+      target: profile-build
 training:
   steps:
     - convert:
