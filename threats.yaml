@@ -48,7 +48,7 @@ training:
           - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
           - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
-        max_epochs: 40
+        max_epochs: 25
         other_options:
           - --optimizer-name=rangerlite
           - --pnm-momentum=0.0
@@ -74,22 +74,22 @@ training:
         owner: TonyCongqianWang
         sha: 3bae4740cbf5830915fdb00447d769f2d893d38e
     - <repeat_last>:
-      run:
-        resume: previous_model
-        other_options:
-          - --one-cycle-steps=0
+        run:
+          resume: previous_model
+          other_options:
+            - --one-cycle-steps=0
     - <repeat_last>:
-      run:
-        other_options:
-          - --optimizer_name=ranger21
-          - --one-cycle-steps=60000
+        run:
+          other_options:
+            - --optimizer_name=ranger21
+            - --one-cycle-steps=60000
     - <repeat_last>:
-      run:
-        other_options:
-          - --one-cycle-steps=0
+        run:
+          other_options:
+            - --one-cycle-steps=0
     - <repeat_last>:
-      run:
-        other_options:
-          - --optimizer_name=rangerlite
-          - --no-pnm-active
-          - --one-cycle-steps=60000
+        run:
+          other_options:
+            - --optimizer_name=rangerlite
+            - --no-pnm-active
+            - --one-cycle-steps=60000
