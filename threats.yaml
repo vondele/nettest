@@ -19,7 +19,7 @@ testing:
   testing:
     code:
       owner: DanSamek
-      sha: 2c0e23a53111a0f8a1dab9db99d249255e130d71
+      sha: c6170bf09d411fe459c305f7558b16e76f6e765d
       target: profile-build
 training:
   steps:
