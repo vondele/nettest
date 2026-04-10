@@ -33,7 +33,7 @@ class MyDumper(yaml.Dumper):
         return super(MyDumper, self).increase_indent(flow, False)
 
 
-def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
+def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None):
     """
     wrapper to execute a shell command
     """
@@ -53,6 +53,7 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None):
     process = subprocess.Popen(
         cmd,
         cwd=cwd,
+        env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
