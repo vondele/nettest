@@ -109,14 +109,23 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
                 assert False, f"The following binpack could not be found: {binpack}"
 
     # some architecture specific options
+    run_env = os.environ.copy()
     if "train" in environment and "devices" in environment["train"]:
         devices = environment["train"]["devices"]
+        run_env["CUDA_VISIBLE_DEVICES"] = devices
     else:
         devices = "0,"
 
     num_gpus = len([d for d in devices.split(",") if d.strip()])
+    local_devices = "".join([f"{i}," for i in range(num_gpus)])
     nproc = max(1, num_gpus)
-    cmd = ["torchrun", f"--nproc-per-node={nproc}", "ddp_launcher.py", "train.py"]
+    if nproc > 1:
+        cmd = ["torchrun", f"--nproc-per-node={nproc}", "ddp_launcher.py", "train.py"]
+    else:
+        cpunodebind = environment["train"].get("cpunodebind", "0")
+        membind = environment["train"].get("membind", "0")
+        cmd = ["numactl", f"--cpunodebind={cpunodebind}", f"--membind={membind}"]
+        cmd += ["python", "-u", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
@@ -127,7 +136,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
         # seems always a reasonable default
         num_threads = 4
     cmd.append(f"--threads={num_threads}")
-    cmd.append(f"--gpus={devices}")
+    cmd.append(f"--gpus={local_devices}")
 
     # large net needs at least 16 threads, small net >64, number of active threads is seems also roughly half specified
     if "train" in environment and "workers" in environment["train"]:
@@ -190,7 +199,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
             assert False
 
     if not reached_end:
-        execute("Train network", cmd, nnue_pytorch_dir, False)
+        execute("Train network", cmd, nnue_pytorch_dir, False, env=run_env)
         # now verify if we have reached max_epoch or not
         final_ckpt = find_most_recent(root_dir, "last.ckpt")
         reached_end = ckpt_reached_end(final_ckpt, max_epochs)
