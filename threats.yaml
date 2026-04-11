@@ -121,6 +121,7 @@ training:
     - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
+        run:
           other_options:
             - --lr=0.00042301976890599417
             - --gamma=0.9935974858411222
