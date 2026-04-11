@@ -21,7 +21,7 @@ def decompress_file_zstd(file_path):
         os.remove(file_path)
         print(f"Decompressed and removed: {file_path}")
     except Exception as e:
-        print(f"Error processing {file_path}: {e}")
+        raise RuntimeError(f"Error decompressing {file_path} : {e}") from e
 
 
 def decompress_file_gz(file_path):
@@ -34,7 +34,7 @@ def decompress_file_gz(file_path):
         os.remove(file_path)
         print(f"Decompressed and removed: {file_path}")
     except Exception as e:
-        print(f"Error processing {file_path}: {e}")
+        raise RuntimeError(f"Error decompressing {file_path} : {e}") from e
 
 
 def decompress_files_in_threads(file_list, decompress_file):
