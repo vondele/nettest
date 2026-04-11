@@ -69,7 +69,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: e3594e44e64030dcf8a736be3d04d65dfe50330b
+        sha: 8beaeb438d33d0e1fd033d09869acfc6594f25f5
     - <repeat_last>:
         run:
           resume: previous_model
