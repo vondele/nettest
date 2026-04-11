@@ -50,6 +50,7 @@ training:
           - --optimizer-name=rangerlite
           - --one-cycle-steps=610400
           - --one-cycle-final-div=1e-3
+          - --one-cycle-warmup-pct=0.5
           - --lr=1e-3
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
@@ -106,6 +107,7 @@ training:
             - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
             - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           other_options:
+            - --one-cycle-warmup-pct=0.05
             - --pow-exp=2.442037790427722
             - --qp-asymmetry=0.15795949371005746
             - --start-lambda=0.8460635942002347
