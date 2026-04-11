@@ -5968,4 +5968,3 @@ training:
               - xushawn/t90-binpacks-raw/training-run3-test90-20251106-0717.binpack
               - xushawn/t90-binpacks-raw/training-run3-test90-20251106-0817.binpack
               - xushawn/t90-binpacks-raw/training-run3-test90-20251106-0917.binpack
-              - official-stockfish/master-binpacks/t91-2025-12-2026-04-6-man.binpack
