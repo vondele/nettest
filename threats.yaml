@@ -127,4 +127,6 @@ training:
           sha: 6bfee8e3b25d80f6378075a95eae117cc24e20d2
         run:
           max_epochs: 1
+          other_options:
+            - --lr=1e-7
 
