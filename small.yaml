@@ -84,8 +84,8 @@ testing:
       sha: b3a810a1c4201059bb97f6917df3276c03167a50
   testing:
     code:
-      owner: official-stockfish
-      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      owner: TonyCongqianWang
+      sha: d9900df7ae7332d1d5867278c618034191747e94
   fastchess:
     code:
       owner: Disservin
