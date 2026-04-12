@@ -19,7 +19,6 @@ testing:
   testing:
     code:
       owner: TonyCongqianWang
-
       sha: 0478c4535bd26eb7e10fe8fe7aa3750b4c7a4d70
       target: build
 training:
@@ -121,7 +120,4 @@ training:
             - --early-fen-skipping=28
     - <repeat_last>:
     - <repeat_last>:
-        trainer:
-          owner: TonyCongqianWang
-          sha: 3c000cc64e69a78e2b953bd2d8e71f1a0f6e6bf3
     - <repeat_last>:
