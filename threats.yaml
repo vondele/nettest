@@ -13,14 +13,14 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
-      target: profile-build
+      sha: bb4eb04a50244442f2925f6dad3b1b2fb1f82236
+      target: build
   steps: all
   testing:
     code:
       owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
-      target: profile-build
+      sha: abb43c13988ee737cce3468a2a0e1bd4fc698763
+      target: build
 training:
   steps:
     - convert:
@@ -28,12 +28,12 @@ training:
         checkpoint2nnue:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --l2=31
+          - --l2=47
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --l2=31
+          - --l2=47
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -53,7 +53,7 @@ training:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --l2=31
+          - --l2=47
           - --lr=4.375e-4
           - --gamma=0.995
           - --start-lambda=1.0
