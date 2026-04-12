@@ -8,18 +8,18 @@ testing:
       max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: -0.75
+      nElo_interval_midpoint: +0.75
       nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
       sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
       target: build
-  steps: all
+  steps: last
   testing:
     code:
       owner: TonyCongqianWang
-      sha: 0478c4535bd26eb7e10fe8fe7aa3750b4c7a4d70
+      sha: 1f7463958a832ddc0443035543e64442fdd26eed
       target: build
 training:
   steps:
@@ -121,3 +121,10 @@ training:
     - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
+    - <repeat_last>:
+        trainer:
+          owner: TonyCongqianWang
+          sha: 6bfee8e3b25d80f6378075a95eae117cc24e20d2
+        run:
+          max_epochs: 1
+
