@@ -50,6 +50,8 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 800
         other_options:
+          - --validation-size=10000000
+          - --gumbel-tau=0.8
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -69,7 +71,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 4a683fe524f6fe8fe0ef73f8a987a0a7b15a5335
+        sha: 2647d4bb0ab69ac8af25d39057307ccc0d245391
     - <repeat_last>:
         run:
           resume: previous_model
@@ -107,6 +109,7 @@ training:
             - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
             - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           other_options:
+            - --gumbel-tau=0.4
             - --lr=0.0010783148702050778
             - --gamma=0.994446435229841
             - --pow-exp=2.442037790427722
@@ -119,6 +122,9 @@ training:
             - --out-offset=279.93991915496105
             - --early-fen-skipping=28
     - <repeat_last>:
+        run:
+          other_options:
+            - --gumbel-tau=0.2
     - <repeat_last>:
     - <repeat_last>:
 
