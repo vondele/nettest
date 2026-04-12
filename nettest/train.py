@@ -88,6 +88,16 @@ def ckpt_reached_end(ckpt_path, max_epochs):
 
     return reached_end
 
+def parse_slurm_timelimit(value: str) -> int:
+    hh, mm, ss = value.split(':')
+    return int(hh) * 3600 + int(mm) * 60 + int(ss)
+
+def seconds_to_ddhhmmss(total: int) -> str:
+    dd = total // 86400
+    hh = (total % 86400) // 3600
+    mm = (total % 3600) // 60
+    ss = total % 60
+    return f"{dd:02d}:{hh:02d}:{mm:02d}:{ss:02d}"
 
 def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     """
@@ -151,8 +161,11 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     # TODO probably a bit better handling with the maximum time in the pipeline creation.
     # for now, assume 12h minus 30min safety (eventual net conversion).
-    max_time = "00:11:30:00"
-    cmd.append(f"--max_time={max_time}")
+    slurm_time = os.environ.get("SLURM_TIMELIMIT")
+    if slurm_time is not None:
+        total_seconds = parse_slurm_timelimit(slurm_time) - 30 * 60
+        max_time = seconds_to_ddhhmmss(max(total_seconds, 0))
+        cmd.append(f"--max_time={max_time}")
 
     max_epochs = int(run["max_epochs"])
     cmd.append(f"--max_epochs={max_epochs}")
