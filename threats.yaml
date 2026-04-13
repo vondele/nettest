@@ -14,13 +14,13 @@ testing:
     code:
       owner: official-stockfish
       sha: bb4eb04a50244442f2925f6dad3b1b2fb1f82236
-      target: build
+      target: profile-build
   steps: all
   testing:
     code:
       owner: TonyCongqianWang
       sha: 91a69a8cc001a30dd7041d0af35dc3244bc11a31
-      target: build
+      target: profile-build
 training:
   steps:
     - convert:
@@ -72,7 +72,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 93ed8e13f53f219c80bf655be75c5c2870fa10d9
+        sha: c0610e971cebb5b4a52a192256b5f248ff212134
     - <repeat_last>:
         run:
           resume: previous_model
