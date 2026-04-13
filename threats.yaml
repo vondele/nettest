@@ -13,13 +13,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
+      sha: bb4eb04a50244442f2925f6dad3b1b2fb1f82236
       target: build
   steps: all
   testing:
     code:
       owner: TonyCongqianWang
-      sha: fb96ec3bf9e7fb2ba065f9b9f55c7c712cda79ab
+      sha: cd3f5c4a51130c996a03eb4f86f455854733c766
       target: build
 training:
   steps:
