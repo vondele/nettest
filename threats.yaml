@@ -45,13 +45,13 @@ training:
           - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
           - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
-        max_epochs: 400
+        max_epochs: 800
         other_options:
           - --optimizer-name=rangerlite
           - --one-cycle-steps=610400
           - --one-cycle-final-div=1e-2
-          - --one-cycle-warmup-pct=0.5
-          - --lr=1e-3
+          - --one-cycle-warmup-pct=0.25
+          - --lr=0.8e-3
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -106,8 +106,9 @@ training:
             - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
             - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
             - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+          max_epochs: 400
           other_options:
-            - --one-cycle-final-div=3e-3
+            - --lr=1.1e-3
             - --one-cycle-warmup-pct=0.05
             - --pow-exp=2.442037790427722
             - --qp-asymmetry=0.15795949371005746
@@ -119,21 +120,33 @@ training:
             - --out-offset=279.93991915496105
             - --early-fen-skipping=28
     - <repeat_last>:
-    - <repeat_last>:
+        run:
+          other_options:
+            - --lr=0.9e-3
     - <repeat_last>:
         run:
           other_options:
+            - --lr=0.7e-3
+    - <repeat_last>:
+        run:
+          max_epochs: 200
+          other_options:
             - --one-cycle-final-div=1e-3
-            - --lr=0.8e-3
+            - --lr=0.5e-3
             - --jitter_lambda_sample=0.001
             - --jitter_lambda_batch=0.007725100952719161
             - --start_lambda=0.7710037988696371
             - --end_lambda=0.7710037988696371
     - <repeat_last>:
+        run:
+          max_epochs: 300
+          other_options:
+            - --lr=0.4e-3
     - <repeat_last>:
         run:
+          max_epochs: 400
           other_options:
-            - --lr=0.6e-3
+            - --lr=0.3e-3
     - <repeat_last>:
         run:
           max_epochs: 55
