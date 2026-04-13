@@ -19,7 +19,7 @@ testing:
   testing:
     code:
       owner: TonyCongqianWang
-      sha: cd3f5c4a51130c996a03eb4f86f455854733c766
+      sha: 91a69a8cc001a30dd7041d0af35dc3244bc11a31
       target: build
 training:
   steps:
@@ -51,7 +51,7 @@ training:
         max_epochs: 800
         other_options:
           - --validation-size=10000000
-          - --moe_loss_weight=1e-6
+          - --moe-loss-weight=1e-5
           - --gumbel-tau=0.6
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
@@ -72,7 +72,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: e4e15b31c693f02fa6108234629a1a7b66dd60ed
+        sha: f6e90e86256d0eb1c011fc2006050a7f4b9c775c
     - <repeat_last>:
         run:
           resume: previous_model
@@ -125,7 +125,7 @@ training:
     - <repeat_last>:
         run:
           other_options:
-            - --moe_loss_weight=1e-3
+            - --moe-loss-weight=3e-6
             - --gumbel-tau=0.2
     - <repeat_last>:
     - <repeat_last>:
