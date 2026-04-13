@@ -85,7 +85,7 @@ testing:
   testing:
     code:
       owner: TonyCongqianWang
-      sha: d9900df7ae7332d1d5867278c618034191747e94
+      sha: 27d28e8965168121f938b2e1b8be6fba969e8581
   fastchess:
     code:
       owner: Disservin
