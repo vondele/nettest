@@ -81,7 +81,7 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      sha: bb4eb04a50244442f2925f6dad3b1b2fb1f82236
   testing:
     code:
       owner: TonyCongqianWang
