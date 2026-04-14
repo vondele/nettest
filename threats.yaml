@@ -19,7 +19,7 @@ testing:
   testing:
     code:
       owner: TonyCongqianWang
-      sha: 91a69a8cc001a30dd7041d0af35dc3244bc11a31
+      sha: 60073f5d10e3f3b57c367d5e508731f174a9ac37
       target: profile-build
 training:
   steps:
@@ -130,11 +130,13 @@ training:
     - <repeat_last>:
         run:
           other_options:
+            - --lr=8e-4
             - --moe-loss-weight=3e-6
             - --gumbel-tau=0.3
     - <repeat_last>:
         run:
           other_options:
+            - --lr=4e-4
             - --moe-loss-weight=1e-6
             - --gumbel-tau=0.2
 
