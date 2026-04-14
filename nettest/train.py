@@ -159,8 +159,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     # append all options
     cmd = cmd + run["other_options"]
 
-    # TODO probably a bit better handling with the maximum time in the pipeline creation.
-    # for now, assume 12h minus 30min safety (eventual net conversion).
+    # for now use 30min less than total allowed time to allow for eventual net conversion.
     end = os.environ.get("SLURM_JOB_END_TIME")
     start = os.environ.get("SLURM_JOB_START_TIME")
     if end is not None and start is not None:
