@@ -124,6 +124,9 @@ training:
             - --early-fen-skipping=28
     - <repeat_last>:
         run:
+          trainer:
+            owner: TonyCongqianWang
+            sha: 50472f9ce7ad42cdbd09af3bb29fdb483a1e1626
           other_options:
             - --moe-loss-weight=1e-5
             - --gumbel-tau=0.5
