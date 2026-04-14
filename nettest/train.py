@@ -161,9 +161,10 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     # TODO probably a bit better handling with the maximum time in the pipeline creation.
     # for now, assume 12h minus 30min safety (eventual net conversion).
-    slurm_time = os.environ.get("SLURM_TIMELIMIT")
-    if slurm_time is not None:
-        total_seconds = parse_slurm_timelimit(slurm_time) - 30 * 60
+    end = os.environ.get("SLURM_JOB_END_TIME")
+    start = os.environ.get("SLURM_JOB_START_TIME")
+    if end is not None and start is not None:
+        total_seconds = int(end) - int(start) - 30 * 60
         max_time = seconds_to_ddhhmmss(max(total_seconds, 0))
         cmd.append(f"--max_time={max_time}")
 
