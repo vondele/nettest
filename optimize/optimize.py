@@ -8,6 +8,7 @@ import argparse
 import threading
 from pathlib import Path
 from nettest.utils import MyDumper
+from .default_environment import get_default_environment
 
 
 class RemoteNet:
@@ -459,7 +460,7 @@ if __name__ == "__main__":
         with open(args.environment) as f:
             environment = yaml.safe_load(f)
     else:
-        environment = dict()
+        environment = get_default_environment()
 
     instrumentation = ng.p.Instrumentation(
         # ng.p.Scalar(init=28)
