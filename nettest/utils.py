@@ -3,6 +3,7 @@ import subprocess
 import re
 import hashlib
 import time
+import shutil
 
 
 def find_most_recent(root, file):
@@ -32,6 +33,14 @@ class MyDumper(yaml.Dumper):
         _ = indentless  # intentionally unused, kept for compatibility
         return super(MyDumper, self).increase_indent(flow, False)
 
+def supports_numactl() -> bool:
+    if not shutil.which("numactl"):
+        return False
+    try:
+        result = subprocess.run(["numactl", "--hardware"], capture_output=True, timeout=5)
+        return result.returncode == 0
+    except Exception:
+        return False
 
 def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None):
     """

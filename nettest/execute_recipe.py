@@ -6,6 +6,7 @@ from .generate_pipeline import parse_recipe
 from .ensure_data import run_data_update
 from .train import run_step
 from .test import run_test
+from .default_environment import get_default_environment
 
 
 # useful to batch a number of calls,
@@ -79,7 +80,7 @@ if __name__ == "__main__":
         with open(args.environment) as f:
             environment = yaml.safe_load(f)
     else:
-        environment = dict()
+        environment = get_default_environment()
 
     if args.executor == "local":
         executor = ProcessPoolExecutor(max_workers=1)

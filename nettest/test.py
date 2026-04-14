@@ -2,6 +2,7 @@ import yaml
 import re
 from pathlib import Path
 from .utils import execute
+from .default_environment import get_default_environment
 import shutil
 import uuid
 import time
@@ -360,7 +361,7 @@ if __name__ == "__main__":
         with open(args.environment) as f:
             environment = yaml.safe_load(f)
     else:
-        environment = dict()
+        environment = get_default_environment()
 
     test_config_sha = args.test_config_sha
     testing_sha = args.testing_sha

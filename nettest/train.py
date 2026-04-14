@@ -3,7 +3,8 @@ from pathlib import Path
 import shutil
 import torch
 import time
-from .utils import execute, MyDumper, sha256sum, find_most_recent
+from .utils import execute, MyDumper, sha256sum, find_most_recent, supports_numactl
+from .default_environment import get_default_environment
 import uuid
 import yaml
 
@@ -121,11 +122,13 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     nproc = max(1, num_gpus)
     if nproc > 1:
         cmd = ["torchrun", f"--nproc-per-node={nproc}", "ddp_launcher.py", "train.py"]
-    else:
+    elif supports_numactl():
         cpunodebind = environment["train"].get("cpunodebind", "0")
         membind = environment["train"].get("membind", "0")
         cmd = ["numactl", f"--cpunodebind={cpunodebind}", f"--membind={membind}"]
         cmd += ["python", "-u", "train.py"]
+    else:
+        cmd = ["python", "-u", "train.py"]
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
@@ -357,6 +360,6 @@ if __name__ == "__main__":
         with open(args.environment) as f:
             environment = yaml.safe_load(f)
     else:
-        environment = dict()
+        environment = get_default_environment()
 
     run_step(environment, args.current_sha, args.previous_sha)
