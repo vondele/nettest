@@ -121,7 +121,7 @@ training:
     - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
-        Trainer:
+        trainer:
           owner: TonyCongqianWang
           sha: 572be8cf82d9cbb775514f0f2746ec6358212078
         run:
