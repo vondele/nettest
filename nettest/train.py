@@ -44,6 +44,13 @@ def ensure_trainer(trainer):
             )
 
             execute(
+                f"[attempt {attempt}] clone trainer",
+                ["git", "config", "--global", "safe.directory", str(temp_nnue_pytorch_dir)],
+                temp_nnue_pytorch_dir,
+                False,
+            )
+
+            execute(
                 f"[attempt {attempt}] checkout sha",
                 ["git", "checkout", "--detach", sha],
                 temp_nnue_pytorch_dir,
