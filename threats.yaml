@@ -125,8 +125,16 @@ training:
     - <repeat_last>:
         run:
           other_options:
+            - --moe-loss-weight=1e-5
+            - --gumbel-tau=0.5
+    - <repeat_last>:
+        run:
+          other_options:
             - --moe-loss-weight=3e-6
+            - --gumbel-tau=0.3
+    - <repeat_last>:
+        run:
+          other_options:
+            - --moe-loss-weight=1e-6
             - --gumbel-tau=0.2
-    - <repeat_last>:
-    - <repeat_last>:
 
