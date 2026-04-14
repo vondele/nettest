@@ -92,7 +92,7 @@ git clone https://github.com/vondele/nettest.git
 cd nettest
 docker build -t nettest.docker -f ci/docker/Dockerfile.NVIDIA .
 # local execution, adjust data, scratch and cidir mounts as needed
-docker run -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 \
+docker run -u $(id -u):$(id -g) -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 \
        --gpus all --cap-add=sys_nice \
        -v /mnt/ssd/data/:/workspace/data \
        -v /mnt/ssd/scratch/:/workspace/scratch \
