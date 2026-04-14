@@ -7,8 +7,8 @@ training:
 # S1
 #
     - trainer:
-        owner: vondele
-        sha: a758c338befdbe0cf0e098c703130d979917ec19
+        owner: official-stockfish
+        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
       run:
         resume: none
         max_epochs: 18
@@ -35,8 +35,8 @@ training:
 # S2
 #
     - trainer:
-        owner: vondele
-        sha: a758c338befdbe0cf0e098c703130d979917ec19
+        owner: official-stockfish
+        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -64,8 +64,8 @@ training:
 # S3
 #
     - trainer:
-        owner: vondele
-        sha: a758c338befdbe0cf0e098c703130d979917ec19
+        owner: official-stockfish
+        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
       run:
         resume: previous_model
         max_epochs: 12
