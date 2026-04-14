@@ -120,8 +120,47 @@ training:
             - --early-fen-skipping=28
     - <repeat_last>:
     - <repeat_last>:
-    - <repeat_last>:
+        trainer:
+          owner: TonyCongqianWang
+          sha: 8beaeb438d33d0e1fd033d09869acfc6594f25f5
         run:
           other_options:
-            - --lr=0.00042301976890599417
+            - --optimizer-name=rangerlite
+            - --lr=0.00075
             - --gamma=0.9935974858411222
+    - <repeat_last>:
+        run:
+          max_epochs: 55
+          other_options:
+            - --lr=1.5096062560119151e-05
+            - --one-cycle-steps=20000
+            - --one-cycle-final-div=1
+            - --swa-start-epoch=15
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.007725100952719161
+            - --start_lambda=0.7710037988696371
+            - --end_lambda=0.7710037988696371
+    - <repeat_last>:
+        run:
+          max_epochs: 800
+          other_options:
+            - --swa-start-epoch=-1
+            - --one-cycle-steps=0
+            - --jitter_lambda_sample=0.0
+            - --jitter_lambda_batch=0.0
+            - --start-lambda=0.8460635942002347
+            - --end-lambda=0.7490913625693039
+            - --lr=0.00038
+            - --gamma=0.9935974858411222
+    - <repeat_last>:
+        run:
+          max_epochs: 55
+          other_options:
+            - --lr=1.5096062560119151e-05
+            - --one-cycle-steps=20000
+            - --one-cycle-final-div=1
+            - --swa-start-epoch=15
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.007725100952719161
+            - --start_lambda=0.7710037988696371
+            - --end_lambda=0.7710037988696371
