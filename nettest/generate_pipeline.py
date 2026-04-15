@@ -196,8 +196,10 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
     Generate training stages, essentially just pointing out the current step sha and the one of the previous run.
     With this info (and the information saved on disk), the job should be able to execute.
     """
+    training_jobs_by_sha = defaultdict(list)
+
     if "training" not in recipe:
-        return
+        return training_jobs_by_sha
 
     previous_sha = "None"
 
@@ -250,14 +252,16 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
                 "paths": [f"step_{current_sha}"],
             }
 
-            ci_yaml_out[stage_name + "_train"] = job
+            job_name = stage_name + "_train"
+            ci_yaml_out[job_name] = job
+            training_jobs_by_sha[current_sha].append(job_name)
 
         previous_sha = current_sha
 
-    return
+    return training_jobs_by_sha
 
 
-def generate_testing_stage(recipe, environment, ci_yaml_out, schedule):
+def generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha):
     """
     Generate the testing stage
     """
@@ -290,12 +294,22 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule):
             testing_sha = step["sha"]
             task = f"python -u -m nettest.test {envarg} {test_config_sha} {testing_sha}"
 
-            # should lead to independent jobs for each stage.
-            # TODO: in principle we could launch the testing job as soon as the training stage is done.
             job = generate_job_base()
             job["stage"] = "testing"
             job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
             job["script"].append(task)
+
+            # Establish explicit DAG dependencies to bypass stage wait times
+            needs = []
+            if "ensureDataJob" in ci_yaml_out:
+                needs.append("ensureDataJob")
+
+            if testing_sha in training_jobs_by_sha:
+                needs.extend(training_jobs_by_sha[testing_sha])
+
+            if needs:
+                job["needs"] = needs
+
             ci_yaml_out[f"step_{step_number}_{testing_sha}_test"] = job
 
             schedule["test"].append(
@@ -337,11 +351,12 @@ def parse_recipe(recipe, environment):
     # generate the ensureData stages
     generate_ensure_data(recipe, ci_yaml_out, schedule)
 
-    # tricky bit ... generate the training stages
-    generate_training_stages(recipe, environment, ci_yaml_out, schedule)
+    # generate the training stages and capture job dependencies
+    training_jobs_by_sha = generate_training_stages(recipe, environment, ci_yaml_out, schedule)
 
-    # generate the match stage
-    generate_testing_stage(recipe, environment, ci_yaml_out, schedule)
+    # generate the match stage utilizing the extracted job dependencies
+    generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha)
+
     print("schedule information:")
     print(yaml.dump(schedule, Dumper=MyDumper, default_flow_style=False, width=300))
 
