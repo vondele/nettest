@@ -285,8 +285,6 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_
             raise ValueError(f"Invalid format for last_N: {test_steps_raw}")
     elif "," in test_steps_raw or test_steps_raw.isdigit():
         try:
-            # Note: int() in Python is lenient with internal spaces, 
-            # but per instructions, no extra handling for trailing commas is added.
             target_indices = {int(x) for x in test_steps_raw.split(",")}
             is_explicit_list = True
         except ValueError:
