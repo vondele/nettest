@@ -12,14 +12,14 @@ testing:
       nElo_interval_width: 2
   reference:
     code:
-      owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
+      owner: vondele
+      sha: d351ff371d5a15b67bb51db19c7cdb5add50d715
       target: profile-build
   steps: last
   testing:
     code:
-      owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
+      owner: vondele
+      sha: d351ff371d5a15b67bb51db19c7cdb5add50d715
       target: profile-build
 training:
   steps:
