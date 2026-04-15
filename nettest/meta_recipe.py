@@ -135,7 +135,7 @@ def _get_element_by_path(root, path_str):
     """
     keys = re.findall(r'[^.\[\]]+', path_str)
     current = root
-    
+
     for key in keys:
         if isinstance(current, dict):
             if key not in current:
@@ -149,7 +149,7 @@ def _get_element_by_path(root, path_str):
                 raise IndexError(f"Invalid or out-of-bounds index '{key}' traversing path '{path_str}'.")
         else:
             raise ValueError(f"Cannot navigate into primitive value at '{key}' in path '{path_str}'.")
-            
+
     return copy.deepcopy(current)
 
 def resolve_element_inserts(node, root_doc):
@@ -169,15 +169,15 @@ def resolve_element_inserts(node, root_doc):
         if match:
             path_str = match.group(1).strip()
             slice_str = match.group(2)
-            
+
             # Extract the base element
             extracted = _get_element_by_path(root_doc, path_str)
-            
+
             # Apply slicing if provided
             if slice_str:
                 if not isinstance(extracted, list):
                     raise ValueError(f"Cannot apply slice '[{slice_str}]' to non-list element at '{path_str}'.")
-                
+
                 parts = re.split(r'[,:]', slice_str)
                 slice_args = [int(p.strip()) if p.strip() else None for p in parts]
                 extracted = extracted[slice(*slice_args)]
@@ -185,7 +185,7 @@ def resolve_element_inserts(node, root_doc):
             # Recursively resolve in case the extracted target also contains self-references
             return resolve_element_inserts(extracted, root_doc)
         return node
-    
+
     return node
 
 
