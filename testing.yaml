@@ -50,7 +50,7 @@ training:
           - --l2=15
           - --random-fen-skipping=3
           - --lr=4.375e-4
-          - --gamma=0.995
+          - --gamma=0.995000067
           - --early-fen-skipping=2
           - --epoch-size=100000
           - --validation-size=0
