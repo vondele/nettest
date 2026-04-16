@@ -34,10 +34,25 @@ def ensure_fastchess(fastchess):
 
         try:
             temp_build_dir.mkdir(parents=True, exist_ok=True)
+
             execute(
-                f"[attempt {attempt}] clone fastchess",
-                ["git", "clone", "--no-checkout", repo],
-                temp_build_dir,
+                f"[attempt {attempt}] init repo",
+                ["git", "init"],
+                temp_fastchess_dir,
+                False,
+            )
+
+            execute(
+                f"[attempt {attempt}] add remote",
+                ["git", "remote", "add", "origin", repo],
+                temp_fastchess_dir,
+                False,
+            )
+
+            execute(
+                f"[attempt {attempt}] fetch sha {sha}",
+                ["git", "fetch", "--depth", "1", "origin", sha],
+                temp_fastchess_dir,
                 False,
             )
 
@@ -102,10 +117,25 @@ def ensure_stockfish(target, test):
 
         try:
             temp_build_dir.mkdir(parents=True, exist_ok=True)
+
             execute(
-                f"[attempt {attempt}] clone Stockfish {target}",
-                ["git", "clone", "--no-checkout", repo],
-                temp_build_dir,
+                f"[attempt {attempt}] init Stockfish {target}",
+                ["git", "init"],
+                temp_stockfish_src_dir,
+                False,
+            )
+
+            execute(
+                f"[attempt {attempt}] add remote",
+                ["git", "remote", "add", "origin", repo],
+                temp_stockfish_src_dir,
+                False,
+            )
+
+            execute(
+                f"[attempt {attempt}] fetch sha {sha}",
+                ["git", "fetch", "--depth", "1", "origin", sha],
+                temp_stockfish_src_dir,
                 False,
             )
 
