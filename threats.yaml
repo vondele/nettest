@@ -43,6 +43,7 @@ training:
         max_epochs: 800
         other_options:
           - --optimizer-name=rangerlite
+          - --swa-start-epoch=780
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -100,10 +101,23 @@ training:
     - <repeat_last>:
     - <repeat_last>:
         run:
+          max_epochs: 55
+          other_options:
+            - --lr=1.5096062560119151e-05
+            - --one-cycle-steps=20000
+            - --one-cycle-final-div=1
+            - --swa-start-epoch=15
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.007725100952719161
+            - --start_lambda=0.7710037988696371
+            - --end_lambda=0.7710037988696371
+    - <repeat_last~1>:
+        run:
           other_options:
             - --lr=0.00075
             - --gamma=0.9935974858411222
-    - <repeat_last>:
+    - <repeat_last~1>:
+    - <repeat_last~1>:
         run:
           other_options:
             - --lr=0.00040
