@@ -39,7 +39,7 @@ training:
           - --ft_compression=leb128
       run:
         binpacks:
-          - <insert_from_element(stage_one_binpacks)>
+          <insert_from_element(stage_one_binpacks)>
         max_epochs: 800
         other_options:
           - --optimizer-name=rangerlite
@@ -76,7 +76,7 @@ training:
         run:
           resume: previous_model
           binpacks:
-            - <stage_two_plus_binpacks(binpacks)>
+            <insert_from_element(stage_two_plus_binpacks)>
           other_options:
             - --lr=0.0010783148702050778
             - --gamma=0.994446435229841
