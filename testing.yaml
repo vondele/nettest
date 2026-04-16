@@ -46,8 +46,8 @@ training:
         other_options:
           - --batch-size=65536
           - --features=HalfKAv2_hm^
-          - --l1=128
-          - --l2=15
+          - --l1=1024
+          - --l2=31
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995000067
@@ -74,8 +74,8 @@ training:
         other_options:
           - --batch-size=65536
           - --features=HalfKAv2_hm^
-          - --l1=128
-          - --l2=15
+          - --l1=1024
+          - --l2=31
           - --random-fen-skipping=3
           - --lr=4.375e-4
           - --gamma=0.995
@@ -91,10 +91,8 @@ training:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         optimize:
           - --features=HalfKAv2_hm^
-          - --l1=128
-          - --l2=15
-          - --ft_optimize_count=10000
-          - --ft_optimize
+          - --l1=1024
+          - --l2=31
           - --ft_compression=leb128
         checkpoint2nnue:
           - --features=HalfKAv2_hm^
