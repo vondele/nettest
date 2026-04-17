@@ -123,7 +123,7 @@ training:
     - <repeat_last>:
         trainer:
           owner: Disservin
-          sha: 07eee4b0821226420a691254b29bb94c16a2a263
+          sha: 888c5750960ca38985ecc0e1632d90c9f148b589
         run:
           other_options:
             - --lr=0.00042301976890599417
