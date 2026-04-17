@@ -18,8 +18,8 @@ testing:
   steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
+      owner: DanSamek
+      sha: f0cfd6b276e162950fa1abe7daac94fe8e5cf218
       target: profile-build
 training:
   steps:
@@ -68,8 +68,8 @@ training:
         repetitions: 1
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
+        owner: DanSamek
+        sha: f26944f95989bf310a6ba26423ea25ad84c58813
     - <repeat_last>:
         run:
           resume: previous_model
