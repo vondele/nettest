@@ -1,4 +1,14 @@
 testing:
+  crosscheck:
+    trainer:
+      owner: official-stockfish
+      sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
+    binpack: official-stockfish/master-binpacks/fishpack32.binpack
+    options:
+      - --features=Full_Threats+HalfKAv2_hm^
+      - --l1=1024
+      - --l2=31
+      - --count=1000
   fastchess:
     code:
       owner: Disservin
