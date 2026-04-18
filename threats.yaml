@@ -50,7 +50,7 @@ training:
           - official-stockfish/master-binpacks/dfrc_n5000.binpack
         max_epochs: 30
         other_options:
-          - --use-fused-dual-ft
+          - --use-fused-double-ft
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
