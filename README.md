@@ -116,7 +116,6 @@ section under `train:` in the environment file, for example:
 train:
   devices: 0,
   workers: 24
-  threads: 8
   cpunodebind: 0
   membind: 0
   nsys:
