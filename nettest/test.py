@@ -391,6 +391,7 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     nnue_pytorch_dir = ensure_trainer(test["crosscheck"]["trainer"])
 
     # configure and run cross_check_eval
+    # TODO: make device respect 'device'
     cmd = [
         "python",
         "-u",
@@ -401,7 +402,7 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
         f"{std_nnue}",
         "--data",
         f"{binpack}",
-        f"--device={device}",
+        "--device=cuda",
     ]
 
     # add options to specify count and features
