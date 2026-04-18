@@ -396,11 +396,11 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
         "-u",
         "cross_check_eval.py",
         "--engine",
-        stockfish_testing,
+        f"{stockfish_testing}",
         "--net",
-        std_nnue,
+        f"{std_nnue}",
         "--data",
-        binpack,
+        f"{binpack}",
         f"--device={device}",
     ]
 
