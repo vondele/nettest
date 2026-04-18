@@ -150,14 +150,22 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     local_devices = "".join([f"{i}," for i in range(num_gpus)])
     nproc = max(1, num_gpus)
     if nproc > 1:
-        cmd = ["torchrun", f"--nproc-per-node={nproc}", "ddp_launcher.py", "train.py"]
-    elif supports_numactl():
+        base_cmd = [
+            "torchrun",
+            f"--nproc-per-node={nproc}",
+            "ddp_launcher.py",
+            "train.py",
+        ]
+    else:
+        base_cmd = ["python", "-u", "train.py"]
+
+    cmd_prefix = []
+    if nproc == 1 and supports_numactl():
         cpunodebind = environment["train"].get("cpunodebind", "0")
         membind = environment["train"].get("membind", "0")
-        cmd = ["numactl", f"--cpunodebind={cpunodebind}", f"--membind={membind}"]
-        cmd += ["python", "-u", "train.py"]
-    else:
-        cmd = ["python", "-u", "train.py"]
+        cmd_prefix = ["numactl", f"--cpunodebind={cpunodebind}", f"--membind={membind}"]
+
+    cmd = cmd_prefix + base_cmd
 
     for binpack in run["binpacks"]:
         cmd.append(str(data_dir / binpack))
@@ -195,7 +203,18 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     # Where to store logs and eventually checkpoints
     root_dir = Path.cwd() / "scratch" / current_sha / "run"
+    # root_dir.mkdir(parents=True, exist_ok=True)
     cmd.append(f"--default_root_dir={root_dir}")
+
+    nsys = environment.get("train", {}).get("nsys")
+    if nsys:
+        assert shutil.which("nsys"), (
+            "nsys requested in environment, but it is not available"
+        )
+        output = root_dir / nsys.get("output", "nsys-profile")
+        nsys_cmd = ["nsys", "profile", "--force-overwrite=true", "-o", str(output)]
+        nsys_cmd += nsys.get("args", [])
+        cmd = cmd_prefix + nsys_cmd + base_cmd + cmd[len(cmd_prefix) + len(base_cmd) :]
 
     # if the root_dir exists, assume we try to restart from the latest found checkpoint
     resume_this_ckpt = None

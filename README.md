@@ -109,6 +109,26 @@ possible to influence the resource allocation by adding the argument
 `--environment nettest/environments/local.yaml` (or a suitably modified yaml
 file).
 
+To collect an Nsight Systems profile for the training step, add an `nsys`
+section under `train:` in the environment file, for example:
+
+```yaml
+train:
+  devices: 0,
+  workers: 24
+  threads: 8
+  cpunodebind: 0
+  membind: 0
+  nsys:
+    output: nsys-profile
+    args:
+      - --trace=cuda,nvtx,osrt
+      - --sample=none
+```
+
+This wraps the trainer command with `nsys profile` and writes the report under
+`scratch/<step-sha>/run/`.
+
 #### remote execution
 
 ```bash
