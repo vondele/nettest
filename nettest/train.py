@@ -203,7 +203,6 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     # Where to store logs and eventually checkpoints
     root_dir = Path.cwd() / "scratch" / current_sha / "run"
-    # root_dir.mkdir(parents=True, exist_ok=True)
     cmd.append(f"--default_root_dir={root_dir}")
 
     nsys = environment.get("train", {}).get("nsys")
