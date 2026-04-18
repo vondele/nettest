@@ -13,13 +13,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
+      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
       target: profile-build
   steps: all
   testing:
     code:
-      owner: official-stockfish
-      sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
+      owner: sscg13
+      sha: 8667ec2a5098328b080f837a98bf03d2f3dcd6e7
       target: profile-build
 training:
   steps:
@@ -28,12 +28,12 @@ training:
         checkpoint2nnue:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --l2=31
+          - --l2=32
           - --ft_compression=leb128
         optimize:
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --l2=31
+          - --l2=32
           - --ft_optimize_count=100000
           - --ft_optimize
           - --ft_compression=leb128
@@ -53,7 +53,7 @@ training:
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
-          - --l2=31
+          - --l2=32
           - --lr=4.375e-4
           - --gamma=0.995
           - --start-lambda=1.0
@@ -68,8 +68,8 @@ training:
         repetitions: 1
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
+        owner: sscg13
+        sha: f03e82e53baadbeae8b96528e113ba04ff94a3f8
     - <repeat_last>:
         run:
           resume: previous_model
