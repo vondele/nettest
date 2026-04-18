@@ -8,7 +8,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
+        sha: b66db105d631fe0c99647ee369fb971d2998f8ec
       run:
         resume: none
         max_epochs: 18
@@ -36,7 +36,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
+        sha: b66db105d631fe0c99647ee369fb971d2998f8ec
       run:
         resume: previous_checkpoint
         repetitions: 2
@@ -65,7 +65,7 @@ training:
 #
     - trainer:
         owner: official-stockfish
-        sha: a4385220412aa66bff1b9fb6b76cebf38c4ff035
+        sha: b66db105d631fe0c99647ee369fb971d2998f8ec
       run:
         resume: previous_model
         max_epochs: 12
@@ -109,17 +109,17 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
       target: build
   testing:
     code:
       owner: official-stockfish
-      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
       target: profile-build
   fastchess:
     code:
       owner: Disservin
-      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
+      sha: 541aef889206882de4823cf5a676d53ac5171c6f
     options:
 #       tc: 10+0.1
        nodes: 10000

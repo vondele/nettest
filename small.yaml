@@ -73,7 +73,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: 926f27d1188bab89356476a0af244d7c5cf86e88
+        sha: b66db105d631fe0c99647ee369fb971d2998f8ec
 #
 # Final testing stage using fastchess
 #
@@ -81,15 +81,15 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
   testing:
     code:
       owner: official-stockfish
-      sha: b3a810a1c4201059bb97f6917df3276c03167a50
+      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
   fastchess:
     code:
       owner: Disservin
-      sha: a9153b1761c63ecdc75c5cad070b255a1afdf610
+      sha: 541aef889206882de4823cf5a676d53ac5171c6f
     options:
        tc: 10+0.1
        hash: 16
