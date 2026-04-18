@@ -113,6 +113,7 @@ def ensure_stockfish(target, test):
     for attempt in range(1, max_retries + 1):
         unique_suffix = str(uuid.uuid4())
         temp_build_dir = target_dir.parent / f"{target_dir.name}_build_{unique_suffix}"
+        temp_stockfish_dir = temp_build_dir / "Stockfish"
         temp_stockfish_src_dir = temp_build_dir / "Stockfish" / "src"
 
         try:
@@ -121,28 +122,28 @@ def ensure_stockfish(target, test):
             execute(
                 f"[attempt {attempt}] init Stockfish {target}",
                 ["git", "init"],
-                temp_stockfish_src_dir,
+                temp_stockfish_dir,
                 False,
             )
 
             execute(
                 f"[attempt {attempt}] add remote",
                 ["git", "remote", "add", "origin", repo],
-                temp_stockfish_src_dir,
+                temp_stockfish_dir,
                 False,
             )
 
             execute(
                 f"[attempt {attempt}] fetch sha {sha}",
                 ["git", "fetch", "--depth", "1", "origin", sha],
-                temp_stockfish_src_dir,
+                temp_stockfish_dir,
                 False,
             )
 
             execute(
                 f"[attempt {attempt}] checkout sha {sha}",
                 ["git", "checkout", "--detach", sha],
-                temp_stockfish_src_dir,
+                temp_stockfish_dir,
                 False,
             )
 
