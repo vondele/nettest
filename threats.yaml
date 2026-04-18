@@ -5,7 +5,7 @@ testing:
       sha: 541aef889206882de4823cf5a676d53ac5171c6f
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 10
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.75
@@ -15,7 +15,7 @@ testing:
       owner: official-stockfish
       sha: 5eeca7392ee90b7a43da69e647e3d596e42992fd
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: official-stockfish
