@@ -270,24 +270,50 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_
         return
 
     test_config_sha = recipe["testing"]["sha"]
-    test_steps = recipe["testing"].get("steps", "new")
-    assert test_steps in ["new", "all", "last"], (
-        "testing steps must be 'new', 'all' or 'last'"
-    )
+    # Strip the input string as requested
+    test_steps_raw = str(recipe["testing"].get("steps", "new")).strip()
+
+    # Pre-parse selection criteria
+    target_indices = set()
+    last_n = None
+    is_explicit_list = False
+
+    if test_steps_raw.startswith("last_"):
+        try:
+            last_n = int(test_steps_raw.split("_")[1])
+        except (IndexError, ValueError):
+            raise ValueError(f"Invalid format for last_N: {test_steps_raw}")
+    elif "," in test_steps_raw or test_steps_raw.isdigit():
+        try:
+            target_indices = {int(x) for x in test_steps_raw.split(",")}
+            is_explicit_list = True
+        except ValueError:
+            raise ValueError(f"Invalid format for stage list: {test_steps_raw}")
+    else:
+        # Fallback for standard named modes
+        assert test_steps_raw in ["new", "all", "last"], \
+            f"testing steps must be 'new', 'all', 'last', 'last_N', or '1,2,4,5'. Got: {test_steps_raw}"
 
     envarg = f"--environment {environment}" if environment else ""
 
-    # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
     step_number = len(recipe["training"]["steps"])
+
     for step in reversed(recipe["training"]["steps"]):
         use_step = False
-        if test_steps == "all":
+
+        if test_steps_raw == "all":
             use_step = True
-        elif test_steps == "new" and (step["status"] != "Final" or steps == 0):
+        elif test_steps_raw == "last" and steps == 0:
             use_step = True
-        elif test_steps == "last" and steps == 0:
+        elif test_steps_raw == "new" and (step["status"] != "Final" or steps == 0):
             use_step = True
+        elif last_n is not None:
+            if steps < last_n:
+                use_step = True
+        elif is_explicit_list:
+            if step_number in target_indices:
+                use_step = True
 
         if use_step:
             steps += 1
@@ -299,7 +325,7 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_
             job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
             job["script"].append(task)
 
-            # Establish explicit DAG dependencies to bypass stage wait times
+            # Establish explicit DAG dependencies
             needs = []
             if "ensureDataJob" in ci_yaml_out:
                 needs.append("ensureDataJob")
@@ -312,12 +338,10 @@ def generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_
 
             ci_yaml_out[f"step_{step_number}_{testing_sha}_test"] = job
 
-            schedule["test"].append(
-                {
-                    "test_config_sha": test_config_sha,
-                    "testing_sha": testing_sha,
-                }
-            )
+            schedule["test"].append({
+                "test_config_sha": test_config_sha,
+                "testing_sha": testing_sha,
+            })
 
         step_number -= 1
 
