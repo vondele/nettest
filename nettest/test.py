@@ -3,6 +3,7 @@ import re
 from pathlib import Path
 from .utils import execute
 from .default_environment import get_default_environment
+from .train import ensure_trainer
 import shutil
 import uuid
 import time
@@ -352,6 +353,65 @@ def run_fastchess(
     return winning_net, nElo
 
 
+def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
+    """
+    Run cross_check_eval to verify that SF inference matches the trainer inference
+    """
+
+    if "crosscheck" not in test:
+        return
+
+    # use environment to pick GPU, ignore thread affinity for now
+    assert environment is not None, "Environment is required for crosscheck"
+    if "train" in environment and "devices" in environment["train"]:
+        device = [
+            int(x) for x in environment["train"]["devices"].rstrip(",").split(",")
+        ][0]
+    else:
+        device = 0  # default to GPU 0 if not specified
+
+    # needed testing engine, able to load the net.
+    assert stockfish_testing.exists()
+
+    # add net to be tested
+    final_yaml_file = Path.cwd() / "scratch" / testing_sha / "final.yaml"
+    assert final_yaml_file.exists(), f"{final_yaml_file} does not exist"
+    with open(final_yaml_file) as f:
+        final_config = yaml.safe_load(f)
+    std_nnue = final_config["std_nnue"]
+    assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
+
+    # test positions
+    assert "binpack" in test["crosscheck"], "crosscheck config must include binpack"
+    binpack = Path.cwd() / "data" / test["crosscheck"]["binpack"]
+    assert binpack.exists(), f"Binpack {binpack} does not exist"
+
+    # TODO the trainer could be inserted automatically based on the step being tested.
+    assert "trainer" in test["crosscheck"], "crosscheck config must include trainer"
+    nnue_pytorch_dir = ensure_trainer(test["crosscheck"]["trainer"])
+
+    # configure and run cross_check_eval
+    # TODO: make device respect 'device'
+    cmd = [
+        "python",
+        "-u",
+        "cross_check_eval.py",
+        "--engine",
+        f"{stockfish_testing}",
+        "--net",
+        f"{std_nnue}",
+        "--data",
+        f"{binpack}",
+        "--device=cuda",
+    ]
+
+    # add options to specify count and features
+    if "options" in test["crosscheck"]:
+        cmd += test["crosscheck"]["options"]
+
+    execute("Run cross check eval", cmd, nnue_pytorch_dir, False)
+
+
 def run_test(environment, test_config_sha, testing_sha):
     """
     Driver to run the test
@@ -365,6 +425,9 @@ def run_test(environment, test_config_sha, testing_sha):
     fastchess = ensure_fastchess(test["fastchess"])
     stockfish_reference = ensure_stockfish("reference", test)
     stockfish_testing = ensure_stockfish("testing", test)
+
+    run_cross_check_eval(environment, test, testing_sha, stockfish_testing)
+
     return run_fastchess(
         environment,
         test_config_sha,
