@@ -69,7 +69,7 @@ training:
         resume: none
       trainer:
         owner: Disservin
-        sha: 888c5750960ca38985ecc0e1632d90c9f148b589
+        sha: 8c297272321a3aacfcab2c2b18d91bbb89888089
     - <repeat_last>:
         run:
           resume: previous_model
@@ -123,7 +123,7 @@ training:
     - <repeat_last>:
         trainer:
           owner: Disservin
-          sha: 888c5750960ca38985ecc0e1632d90c9f148b589
+          sha: 8c297272321a3aacfcab2c2b18d91bbb89888089
         run:
           other_options:
             - --lr=0.00042301976890599417
