@@ -15,7 +15,7 @@ testing:
       owner: official-stockfish
       sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
       target: profile-build
-  steps: all
+  steps: last
   testing:
     code:
       owner: TonyCongqianWang
@@ -118,6 +118,7 @@ training:
             - --in-offset=281.4186220835457
             - --out-offset=279.93991915496105
             - --early-fen-skipping=28
+    - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
