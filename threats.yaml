@@ -117,14 +117,11 @@ training:
             - --lr=0.00090
     - <repeat_last~1>:
     - <repeat_last~1>:
-        run:
-          other_options:
-            - --lr=0.00075
     - <repeat_last~1>:
     - <repeat_last~1>:
         run:
           other_options:
-            - --lr=0.00042301976890599417
+            - --lr=0.0006
             - --gamma=0.9935974858411222
 
 stage_one_binpacks:
