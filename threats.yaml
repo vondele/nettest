@@ -15,7 +15,7 @@ testing:
       owner: official-stockfish
       sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
       target: profile-build
-  steps: 1,2,4,6,8
+  steps: 8,10,12
   testing:
     code:
       owner: official-stockfish
@@ -119,10 +119,11 @@ training:
     - <repeat_last~1>:
     - <repeat_last~1>:
     - <repeat_last~1>:
-        run:
-          other_options:
-            - --lr=0.0006
-            - --gamma=0.9935974858411222
+    - <repeat_last~1>:
+    - <repeat_last~1>:
+    - <repeat_last~1>:
+    - <repeat_last~1>:
+ 
 
 stage_one_binpacks:
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
