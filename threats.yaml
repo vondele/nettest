@@ -13,13 +13,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
+      sha: 1e333b341ca0aa0fe4809527d7cd7859d540e06b
       target: profile-build
   steps: all
   testing:
     code:
       owner: DanSamek
-      sha: fb9258c38877f99e20f1b99e4041a049deb840ad
+      sha: b5619f670e4e115e80172cb9a8b7f75551e96247
       target: profile-build
 training:
   steps:
@@ -69,7 +69,7 @@ training:
         resume: none
       trainer:
         owner: DanSamek
-        sha: 3f87176fdd3ab5ecf87b3bcbc98ead6dec69d040
+        sha: 7c70f9186c874e26a6a7beb3ec464235ebf03544
     - <repeat_last>:
         run:
           resume: previous_model
