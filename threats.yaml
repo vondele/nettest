@@ -20,7 +20,7 @@ testing:
     code:
       owner: DanSamek
       sha: b5619f670e4e115e80172cb9a8b7f75551e96247
-      target: profile-build
+      target: build
 training:
   steps:
     - convert:
