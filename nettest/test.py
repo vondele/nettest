@@ -380,6 +380,8 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
         final_config = yaml.safe_load(f)
     std_nnue = final_config["std_nnue"]
     assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
+    checkpoint = final_config["checkpoint"]
+    assert Path(checkpoint).exists(), f"{checkpoint} does not exist"
 
     # test positions
     assert "binpack" in test["crosscheck"], "crosscheck config must include binpack"
@@ -390,6 +392,13 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     assert "trainer" in test["crosscheck"], "crosscheck config must include trainer"
     nnue_pytorch_dir = ensure_trainer(test["crosscheck"]["trainer"])
 
+    # TODO maybe this coudl be inserted automatically as well?
+    evalfile = (
+        "big"
+        if "evalfile" not in test["crosscheck"]
+        else test["crosscheck"]["evalfile"]
+    )
+
     # configure and run cross_check_eval
     # TODO: make device respect 'device'
     cmd = [
@@ -398,18 +407,21 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
         "cross_check_eval.py",
         "--engine",
         f"{stockfish_testing}",
-        "--net",
-        f"{std_nnue}",
         "--data",
         f"{binpack}",
         "--device=cuda",
+        f"--net-type={evalfile}",
     ]
 
     # add options to specify count and features
     if "options" in test["crosscheck"]:
         cmd += test["crosscheck"]["options"]
 
-    execute("Run cross check eval", cmd, nnue_pytorch_dir, False)
+    cmd_ckpt = cmd + ["--net", f"{checkpoint}"]
+    execute("Run cross check eval from .ckpt ", cmd_ckpt, nnue_pytorch_dir, False)
+
+    cmd_nnue = cmd + ["--net", f"{binpack}"]
+    execute("Run cross check eval from .nnue ", cmd_nnue, nnue_pytorch_dir, False)
 
 
 def run_test(environment, test_config_sha, testing_sha):
