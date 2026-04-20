@@ -108,7 +108,7 @@ testing:
   crosscheck:
     trainer:
       owner: official-stockfish
-      sha: 5205a2f378d8c76f1e92139db7f70e288b816193
+      sha: 78a57c567c985120456a9fe22ac2fc50f1e0fb2b
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     evalfile: small
     options:
