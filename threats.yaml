@@ -116,9 +116,11 @@ training:
             - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
             - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
             - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+          max_epochs: 1400
           other_options:
-            - --lr=0.0010783148702050778
-            - --gamma=0.994446435229841
+            - --batch_size=131072
+            - --lr=1.45e-3
+            - --gamma=0.9963
             - --pow-exp=2.442037790427722
             - --qp-asymmetry=0.15795949371005746
             - --start-lambda=0.8460635942002347
@@ -131,7 +133,4 @@ training:
     - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
-        run:
-          other_options:
-            - --lr=0.00042301976890599417
-            - --gamma=0.9935974858411222
+
