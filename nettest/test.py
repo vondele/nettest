@@ -421,7 +421,7 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     # TODO: fails with checking hash in
     # execute("Run cross check eval from .ckpt ", cmd_ckpt, nnue_pytorch_dir, False)
 
-    cmd_nnue = cmd + ["--net", f"{binpack}"]
+    cmd_nnue = cmd + ["--net", f"{std_nnue}"]
     execute("Run cross check eval from .nnue ", cmd_nnue, nnue_pytorch_dir, False)
 
 
