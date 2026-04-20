@@ -78,14 +78,25 @@ training:
 # Final testing stage using fastchess
 #
 testing:
+  crosscheck:
+    trainer:
+      owner: official-stockfish
+      sha: 5205a2f378d8c76f1e92139db7f70e288b816193
+    binpack: official-stockfish/master-binpacks/fishpack32.binpack
+    evalfile: small
+    options:
+      - --features=HalfKAv2_hm^
+      - --l1=128
+      - --l2=15
+      - --count=5000
   reference:
     code:
       owner: official-stockfish
-      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
+      sha: 4a6c7e77a5a8eb1d5eec1ce1ff199773fb885f86
   testing:
     code:
       owner: official-stockfish
-      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
+      sha: 4a6c7e77a5a8eb1d5eec1ce1ff199773fb885f86
   fastchess:
     code:
       owner: Disservin
