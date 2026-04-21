@@ -1,8 +1,8 @@
 testing:
   crosscheck:
     trainer:
-      owner: TonyCongqianWang
-      sha: 36bb4ca9e1c1fa0842efd35c31629ac064c41459
+      owner: official-stockfish
+      sha: 78a57c567c985120456a9fe22ac2fc50f1e0fb2b
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
       - --features=Full_Threats+HalfKAv2_hm^
@@ -25,7 +25,7 @@ testing:
       owner: official-stockfish
       sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
       target: profile-build
-  steps: 8,10,12
+  steps: 2,4,6,8,10,12
   testing:
     code:
       owner: official-stockfish
