@@ -1,4 +1,14 @@
 testing:
+  crosscheck:
+    trainer:
+      owner: official-stockfish
+      sha: 78a57c567c985120456a9fe22ac2fc50f1e0fb2b
+    binpack: official-stockfish/master-binpacks/fishpack32.binpack
+    options:
+      - --features=Full_Threats+HalfKAv2_hm^
+      - --l1=1024
+      - --l2=31
+      - --count=5000
   fastchess:
     code:
       owner: Disservin
@@ -13,13 +23,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
+      sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
       target: profile-build
   steps: 8,10,12
   testing:
     code:
       owner: official-stockfish
-      sha: b1fb50ae697265369d51c002603a621ffe8f9bfa
+      sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
       target: profile-build
 training:
   steps:
