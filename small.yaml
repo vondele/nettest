@@ -73,7 +73,7 @@ training:
         resume: none
       trainer:
         owner: official-stockfish
-        sha: b66db105d631fe0c99647ee369fb971d2998f8ec
+        sha: 0920370fe997c1c740b84a5054452b6f6d8c455f
 #
 # Final testing stage using fastchess
 #
@@ -81,7 +81,7 @@ testing:
   crosscheck:
     trainer:
       owner: official-stockfish
-      sha: 78a57c567c985120456a9fe22ac2fc50f1e0fb2b
+      sha: 0920370fe997c1c740b84a5054452b6f6d8c455f
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     evalfile: small
     options:
@@ -92,11 +92,11 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: 4a6c7e77a5a8eb1d5eec1ce1ff199773fb885f86
+      sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
   testing:
     code:
       owner: official-stockfish
-      sha: 4a6c7e77a5a8eb1d5eec1ce1ff199773fb885f86
+      sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
   fastchess:
     code:
       owner: Disservin
