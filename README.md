@@ -94,6 +94,8 @@ docker build -t nettest.docker -f ci/docker/Dockerfile.NVIDIA .
 # local execution, adjust data, scratch and cidir mounts as needed
 docker run -u $(id -u):$(id -g) -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 \
        --gpus all --cap-add=sys_nice \
+       -e HF_TOKEN \
+       -e HF_HOME=/workspace/scratch/hf_cache \
        -v /mnt/ssd/data/:/workspace/data \
        -v /mnt/ssd/scratch/:/workspace/scratch \
        -v /mnt/ssd/cidir/:/workspace/cidir \
