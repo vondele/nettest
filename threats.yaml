@@ -1,8 +1,8 @@
 testing:
   crosscheck:
     trainer:
-      owner: official-stockfish
-      sha: 78a57c567c985120456a9fe22ac2fc50f1e0fb2b
+      owner: TonyCongqianWang
+      sha: 53e4698ca84ec1d57471bab04b968ef22e9b779a
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
       - --features=Full_Threats+HalfKAv2_hm^
@@ -25,7 +25,7 @@ testing:
       owner: official-stockfish
       sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
       target: profile-build
-  steps: 3,5,7,9,11
+  steps: all
   testing:
     code:
       owner: official-stockfish
@@ -50,16 +50,15 @@ training:
       run:
         binpacks:
           <insert_from_element(stage_one_binpacks)>
-        max_epochs: 800
+        max_epochs: 400
         other_options:
           - --optimizer-name=rangerlite
-          - --swa-start-epoch=780
+          - --one-cycle-steps=610400
+          - --lr=8e-4
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
           - --l2=31
-          - --lr=4.375e-4
-          - --gamma=0.995
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
@@ -82,20 +81,17 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 36bb4ca9e1c1fa0842efd35c31629ac064c41459
+        sha: 53e4698ca84ec1d57471bab04b968ef22e9b779a
     - <repeat_last>:
         run:
+          max_epochs: 2000
+          repetitions: 2
           resume: previous_model
           binpacks:
             <insert_from_element(stage_two_plus_binpacks)>
           other_options:
-            - --lr=0.0010783148702050778
-            - --gamma=0.994446435229841
             - --pow-exp=2.442037790427722
             - --qp-asymmetry=0.15795949371005746
-            - --start-lambda=0.845
-            - --end-lambda=0.748
-            - --jitter_lambda_batch=0.0007
             - --in-scaling=294.7193839807687
             - --out-scaling=352.8750799744594
             - --in-offset=281.4186220835457
@@ -109,31 +105,31 @@ training:
             - --ply_y3=0.20
             - --ply_x4=29.5
             - --ply_y4=0.80
-    - <repeat_last>:
-        run:
-          max_epochs: 55
-          other_options:
-            - --lr=1.5096062560119151e-05
-            - --one-cycle-steps=20000
-            - --one-cycle-final-div=1
-            - --swa-start-epoch=15
+            - --lr=0.0008
+            - --one-cycle-steps=3052000
+            - --one-cycle-warmup-pct=0.05
+            - --one-cycle-final-div=1e-2
             - --jitter_lambda_sample=0.001
-            - --jitter_lambda_batch=0.007725100952719161
+            - --swa-start-epoch=15
+            - --jitter_lambda_batch=0.002
+            - --jitter_decay_lambda_batch=0.990
             - --start_lambda=0.7710037988696371
             - --end_lambda=0.7710037988696371
-    - <repeat_last~1>:
+    - <repeat_last>:
         run:
+          repetitions: 1
+          max_epochs: 220
           other_options:
-            - --lr=0.00090
-    - <repeat_last~1>:
-    - <repeat_last~1>:
-    - <repeat_last~1>:
-    - <repeat_last~1>:
-    - <repeat_last~1>:
-    - <repeat_last~1>:
-    - <repeat_last~1>:
-    - <repeat_last~1>:
- 
+            - --lr=3e-04
+            - --one-cycle-steps=305200
+            - --one-cycle-final-div=20
+            - --swa-start-epoch=200
+            - --jitter_lambda_sample=0.001
+            - --jitter_lambda_batch=0.0075
+            - --jitter_decay_lambda_batch=0.1
+            - --start_lambda=0.7710037988696371
+            - --end_lambda=0.7710037988696371
+
 
 stage_one_binpacks:
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
