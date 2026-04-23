@@ -25,7 +25,7 @@ testing:
       owner: official-stockfish
       sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
       target: profile-build
-  steps: 2,4,6,8,10,12
+  steps: 3,5,7,9,11
   testing:
     code:
       owner: official-stockfish
