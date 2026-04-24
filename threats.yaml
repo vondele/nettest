@@ -54,7 +54,7 @@ training:
         other_options:
           - --optimizer-name=rangerlite
           - --one-cycle-steps=610400
-          - --lr=8e-4
+          - --lr=1.2e-3
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -84,7 +84,7 @@ training:
         sha: 53e4698ca84ec1d57471bab04b968ef22e9b779a
     - <repeat_last>:
         run:
-          max_epochs: 2020
+          max_epochs: 620
           repetitions: 2
           resume: previous_model
           binpacks:
@@ -105,12 +105,12 @@ training:
             - --ply_y3=0.20
             - --ply_x4=29.5
             - --ply_y4=0.80
-            - --lr=0.0008
+            - --lr=1.2e-3
             - --one-cycle-steps=3052000
             - --one-cycle-warmup-pct=0.05
             - --one-cycle-final-div=1e-2
             - --jitter_lambda_sample=0.001
-            - --swa-start-epoch=2000
+            - --swa-start-epoch=600
             - --jitter_lambda_batch=0.002
             - --jitter_decay_lambda_batch=0.990
             - --start_lambda=0.7710037988696371
