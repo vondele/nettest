@@ -83,8 +83,11 @@ training:
         owner: TonyCongqianWang
         sha: 53e4698ca84ec1d57471bab04b968ef22e9b779a
     - <repeat_last>:
+        trainer:
+          owner: TonyCongqianWang
+          sha: ac65a40c80a294cf149d897742b1b285328ee372
         run:
-          max_epochs: 2020
+          max_epochs: 1020
           repetitions: 2
           resume: previous_model
           binpacks:
@@ -105,20 +108,17 @@ training:
             - --ply_y3=0.20
             - --ply_x4=29.5
             - --ply_y4=0.80
-            - --lr=0.0008
+            - --lr=1.2e-3
             - --one-cycle-steps=3052000
             - --one-cycle-warmup-pct=0.05
             - --one-cycle-final-div=1e-2
             - --jitter_lambda_sample=0.001
-            - --swa-start-epoch=2000
+            - --swa-start-epoch=1000
             - --jitter_lambda_batch=0.002
             - --jitter_decay_lambda_batch=0.990
             - --start_lambda=0.7710037988696371
             - --end_lambda=0.7710037988696371
     - <repeat_last>:
-        trainer:
-          owner: TonyCongqianWang
-          sha: ac65a40c80a294cf149d897742b1b285328ee372
         run:
           repetitions: 1
           max_epochs: 220
