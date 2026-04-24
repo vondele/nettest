@@ -87,8 +87,7 @@ training:
           owner: TonyCongqianWang
           sha: ac65a40c80a294cf149d897742b1b285328ee372
         run:
-          max_epochs: 1020
-          repetitions: 2
+          max_epochs: 500
           resume: previous_model
           binpacks:
             <insert_from_element(stage_two_plus_binpacks)>
@@ -113,14 +112,26 @@ training:
             - --one-cycle-warmup-pct=0.05
             - --one-cycle-final-div=1e-2
             - --jitter_lambda_sample=0.001
-            - --swa-start-epoch=1000
+            - --swa-start-epoch=2000
             - --jitter_lambda_batch=0.002
             - --jitter_decay_lambda_batch=0.990
             - --start_lambda=0.7710037988696371
             - --end_lambda=0.7710037988696371
     - <repeat_last>:
         run:
-          repetitions: 1
+          resume: previous_checkpoint
+          max_epochs: 1000
+    - <repeat_last>:
+        run:
+          resume: previous_checkpoint
+          max_epochs: 1500
+    - <repeat_last>:
+        run:
+          resume: previous_checkpoint
+          max_epochs: 2020
+    - <repeat_last>:
+        run:
+          resume: previous_model
           max_epochs: 220
           other_options:
             - --lr=3e-04
