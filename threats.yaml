@@ -85,7 +85,7 @@ training:
     - <repeat_last>:
         trainer:
           owner: TonyCongqianWang
-          sha: 8d06c341cfea2df4e4d760fd3db5ab9e6a968dae
+          sha: 05ad4cc6d0b37a8733945f8f9e2411bf1e93a11c
         run:
           max_epochs: 620
           repetitions: 2
