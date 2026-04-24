@@ -2,7 +2,7 @@ testing:
   crosscheck:
     trainer:
       owner: TonyCongqianWang
-      sha: 53e4698ca84ec1d57471bab04b968ef22e9b779a
+      sha: 5a6d6c135376423afb4e2590c2b3462a2284528d
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
       - --features=Full_Threats+HalfKAv2_hm^
@@ -54,7 +54,7 @@ training:
         other_options:
           - --optimizer-name=rangerlite
           - --one-cycle-steps=610400
-          - --lr=1.2e-3
+          - --lr=2e-3
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -81,7 +81,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 05ad4cc6d0b37a8733945f8f9e2411bf1e93a11c
+        sha: 5a6d6c135376423afb4e2590c2b3462a2284528d
     - <repeat_last>:
         run:
           max_epochs: 500
@@ -104,10 +104,10 @@ training:
             - --ply_y3=0.20
             - --ply_x4=29.5
             - --ply_y4=0.80
-            - --lr=1.2e-3
+            - --lr=3e-3
             - --one-cycle-steps=3052000
             - --one-cycle-warmup-pct=0.05
-            - --one-cycle-final-div=1e-2
+            - --one-cycle-final-div=1e2
             - --jitter_lambda_sample=0.001
             - --swa-start-epoch=2000
             - --jitter_lambda_batch=0.002
