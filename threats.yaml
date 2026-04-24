@@ -54,7 +54,7 @@ training:
         other_options:
           - --optimizer-name=rangerlite
           - --one-cycle-steps=610400
-          - --lr=8e-4
+          - --lr=1.2e-3
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -81,11 +81,11 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 53e4698ca84ec1d57471bab04b968ef22e9b779a
+        sha: ac65a40c80a294cf149d897742b1b285328ee372
     - <repeat_last>:
         trainer:
           owner: TonyCongqianWang
-          sha: ac65a40c80a294cf149d897742b1b285328ee372
+          sha: f96f4d38389655306af05436f3364f093c6d344a
         run:
           max_epochs: 500
           resume: previous_model
