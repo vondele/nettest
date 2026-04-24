@@ -116,6 +116,9 @@ training:
             - --start_lambda=0.7710037988696371
             - --end_lambda=0.7710037988696371
     - <repeat_last>:
+        trainer:
+          owner: TonyCongqianWang
+          sha: ac65a40c80a294cf149d897742b1b285328ee372
         run:
           repetitions: 1
           max_epochs: 220
