@@ -2,7 +2,7 @@ testing:
   crosscheck:
     trainer:
       owner: TonyCongqianWang
-      sha: 8d06c341cfea2df4e4d760fd3db5ab9e6a968dae
+      sha: 05ad4cc6d0b37a8733945f8f9e2411bf1e93a11c
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
       - --features=Full_Threats+HalfKAv2_hm^
@@ -81,7 +81,7 @@ training:
         resume: none
       trainer:
         owner: TonyCongqianWang
-        sha: 8d06c341cfea2df4e4d760fd3db5ab9e6a968dae
+        sha: 05ad4cc6d0b37a8733945f8f9e2411bf1e93a11c
     - <repeat_last>:
         run:
           max_epochs: 210
