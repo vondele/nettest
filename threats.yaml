@@ -54,7 +54,7 @@ training:
         other_options:
           - --optimizer-name=rangerlite
           - --one-cycle-steps=305200
-          - --lr=3e-3
+          - --lr=4e-3
           - --batch-size=65536
           - --features=Full_Threats+HalfKAv2_hm^
           - --l1=1024
@@ -84,8 +84,8 @@ training:
         sha: 90e9351a9e22c04e42d814091e5e8237e062d106
     - <repeat_last>:
         run:
-          max_epochs: 620
-          repetitions: 2
+          max_epochs: 820
+          repetitions: 1
           resume: previous_model
           binpacks:
             <insert_from_element(stage_two_plus_binpacks)>
@@ -105,7 +105,7 @@ training:
             - --ply_y3=0.20
             - --ply_x4=29.5
             - --ply_y4=0.80
-            - --lr=3e-3
+            - --lr=1.5e-3
             - --one-cycle-steps=915600
             - --one-cycle-warmup-pct=0.05
             - --one-cycle-final-div=1e2
@@ -113,22 +113,22 @@ training:
             - --swa-start-epoch=600
             - --jitter_lambda_batch=0.002
             - --jitter_decay_lambda_batch=0.990
-            - --start_lambda=0.7710037988696371
-            - --end_lambda=0.7710037988696371
+            - --start_lambda=0.79
+            - --end_lambda=0.79
     - <repeat_last>:
         run:
           repetitions: 1
-          max_epochs: 120
+          max_epochs: 220
           other_options:
             - --lr=3e-04
-            - --one-cycle-steps=152600
+            - --one-cycle-steps=305200
             - --one-cycle-final-div=20
-            - --swa-start-epoch=100
+            - --swa-start-epoch=200
             - --jitter_lambda_sample=0.001
             - --jitter_lambda_batch=0.0075
             - --jitter_decay_lambda_batch=0.1
-            - --start_lambda=0.7710037988696371
-            - --end_lambda=0.7710037988696371
+            - --start_lambda=0.76
+            - --end_lambda=0.76
 
 
 stage_one_binpacks:
