@@ -68,13 +68,24 @@ training:
           - --gamma=0.995
           - --start-lambda=1.0
           - --end-lambda=0.75
-          - --random-fen-skipping=10
-          - --early-fen-skipping=12
-          - --pc-y1=0.6893201149773951
-          - --pc-y2=2.9285769485515805
-          - --pc-y3=1.4386005301749225
           - --w1=3.3553547771220007
           - --w2=0.7006821612968052
+          - --random-fen-skipping=10
+          - --early_fen_skipping=10
+          - --soft_early_fen_skipping=32
+          - --pc_y0=-0.20
+          - --pc_y1=0.45
+          - --pc_y2=1.0
+          - --pc_y3=0.95
+          - --pc_y4=0.75
+          - --ply_x1=0.0
+          - --ply_y1=0.01
+          - --ply_x2=14.0
+          - --ply_y2=0.20
+          - --ply_x3=18.5
+          - --ply_y3=0.50
+          - --ply_x4=29.5
+          - --ply_y4=0.80
         repetitions: 1
         resume: none
       trainer:
@@ -127,7 +138,15 @@ training:
             - --out-scaling=352.8750799744594
             - --in-offset=281.4186220835457
             - --out-offset=279.93991915496105
-            - --early-fen-skipping=28
+            - --early-fen-skipping=18
+            - --ply_x1=0.00
+            - --ply_y1=0.025
+            - --ply_x2=22.0
+            - --ply_y2=0.05
+            - --ply_x3=25.5
+            - --ply_y3=0.20
+            - --ply_x4=29.5
+            - --ply_y4=0.80
     - <repeat_last>:
     - <repeat_last>:
     - <repeat_last>:
