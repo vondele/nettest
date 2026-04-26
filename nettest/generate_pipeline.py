@@ -379,29 +379,29 @@ if __name__ == "__main__":
     parser.add_argument(
         "--environment", required=False, help="Definition of the environment file"
     )
-    # Accepts comma-separated recipe names (no .yaml suffix required)
-    # Supports paths like: path/to/test1:test2:test3
+    # Now accepts a colon-separated list of names, e.g., /path/to/test1:test2
     parser.add_argument("input_files", help="Input recipe names (colon-separated)")
     parser.add_argument("output_file", help="Output pipeline YAML file")
     args = parser.parse_args()
 
-    # 1. Parse input files and common path logic
-    parts = [p.strip() for p in args.input_files.split(":")]
-    first_path = Path(parts[0])
-    directory = first_path.parent
+    # 1. Resolve input paths and shared directory
+    input_parts = [p.strip() for p in args.input_files.split(":")]
+    first_input = Path(input_parts[0])
+    base_dir = first_input.parent
 
     recipe_paths = []
-    for i, name in enumerate(parts):
-        # Use the directory from the first entry for all subsequent entries
-        base_p = first_path if i == 0 else directory / name
-        recipe_paths.append(base_p.with_suffix(".yaml"))
+    for i, name in enumerate(input_parts):
+        # Apply the directory from the first entry to all subsequent names
+        p = first_input if i == 0 else base_dir / name
+        recipe_paths.append(p.with_suffix(".yaml"))
 
-    # 2. Initialize global structures for merging
+    # 2. Global structures to hold the merged pipeline
     final_ci_out = {"include": [], "stages": []}
     final_schedule = {"data": [], "train": [], "test": []}
 
     merged_ensure_job = None
     merged_python_lines = set()
+    global_stages = []
 
     for recipe_path in recipe_paths:
         recipe_stem = recipe_path.stem
@@ -413,59 +413,67 @@ if __name__ == "__main__":
         with open(recipe_path) as f:
             recipe = yaml.safe_load(f)
 
-        # Generate individual CI and schedule data for this recipe
+        # Generate the specific CI dict for this recipe
         ci_out, schedule = parse_recipe(recipe, args.environment)
 
-        # Merge unique includes and stages across all recipes
+        # Merge Includes (unique)
         for inc in ci_out.get("include", []):
             if inc not in final_ci_out["include"]:
                 final_ci_out["include"].append(inc)
 
+        # Merge Stages (tracking unique names)
         for stage in ci_out.get("stages", []):
-            if stage not in final_ci_out["stages"]:
-                final_ci_out["stages"].append(stage)
+            if stage not in global_stages:
+                global_stages.append(stage)
 
-        # Aggregate the overall schedule
+        # Merge Schedule (sequential for shell case)
         for key in ["data", "train", "test"]:
             final_schedule[key].extend(schedule.get(key, []))
 
-        # Extract ensureDataJob configuration from the first valid recipe found
+        # Handle the ensureDataJob
         if "ensureDataJob" in ci_out:
             if merged_ensure_job is None:
-                # Use this job's metadata (image, variables, etc.) as the template
+                # Extract template from the first recipe's data job
                 merged_ensure_job = ci_out["ensureDataJob"].copy()
-                # Filter for boilerplate lines (non-python) to keep them once
+                # Keep only non-python setup lines (cd, ln, etc.)
                 merged_ensure_job["script"] = [
                     line
                     for line in ci_out["ensureDataJob"]["script"]
                     if not line.strip().startswith("python")
                 ]
 
-            # Accumulate all unique python data-fetching commands
+            # Collect all unique python data commands
             for line in ci_out["ensureDataJob"]["script"]:
                 if line.strip().startswith("python"):
                     merged_python_lines.add(line)
 
-        # Prefix all other jobs and update their 'needs' dependencies for concurrency
+        # Merge and prefix all other jobs for concurrency
         for job_name, job_body in ci_out.items():
             if job_name in ["include", "stages", "ensureDataJob"]:
                 continue
 
-            prefixed_job_name = f"{recipe_stem}_{job_name}"
+            prefixed_name = f"{recipe_stem}_{job_name}"
 
+            # Update dependencies: ensureDataJob stays global, others get prefixed
             if "needs" in job_body:
-                new_needs = []
-                for need in job_body["needs"]:
-                    # The ensureDataJob is global and shared, so it remains un-prefixed
-                    if need == "ensureDataJob":
-                        new_needs.append("ensureDataJob")
-                    else:
-                        new_needs.append(f"{recipe_stem}_{need}")
-                job_body["needs"] = new_needs
+                job_body["needs"] = [
+                    need if need == "ensureDataJob" else f"{recipe_stem}_{need}"
+                    for need in job_body["needs"]
+                ]
 
-            final_ci_out[prefixed_job_name] = job_body
+            final_ci_out[prefixed_name] = job_body
 
-    # 3. Finalize the merged global data job with all unique commands
+    # 3. Fix Stage Ordering to avoid GitLab "need is not defined" errors
+    # ensureData must be first, testing must be last.
+    if "ensureData" in global_stages:
+        global_stages.remove("ensureData")
+        global_stages.insert(0, "ensureData")
+    if "testing" in global_stages:
+        global_stages.remove("testing")
+        global_stages.append("testing")
+    final_ci_out["stages"] = global_stages
+
+    # 4. Finalize the merged data job
     if merged_ensure_job:
         merged_ensure_job["script"].extend(sorted(list(merged_python_lines)))
         final_ci_out["ensureDataJob"] = merged_ensure_job
