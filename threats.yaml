@@ -131,15 +131,15 @@ training:
           resume: previous_model
           max_epochs: 220
           other_options:
-            - --lr=3e-04
+            - --lr=7.5e-04
             - --one-cycle-steps=305200
-            - --one-cycle-final-div=20
+            - --one-cycle-final-div=50
             - --swa-start-epoch=200
             - --jitter_lambda_sample=0.001
             - --jitter_lambda_batch=0.0075
             - --jitter_decay_lambda_batch=0.1
-            - --start_lambda=0.7710037988696371
-            - --end_lambda=0.7710037988696371
+            - --start_lambda=0.755
+            - --end_lambda=0.755
 
 
 stage_one_binpacks:
