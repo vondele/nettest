@@ -2,6 +2,7 @@ import re
 import yaml
 import hashlib
 import json
+import argparse
 from pathlib import Path
 from collections import defaultdict
 from .utils import MyDumper
@@ -261,7 +262,9 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
     return training_jobs_by_sha
 
 
-def generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha):
+def generate_testing_stage(
+    recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha
+):
     """
     Generate the testing stage
     """
@@ -352,10 +355,14 @@ def parse_recipe(recipe, environment):
     generate_ensure_data(recipe, ci_yaml_out, schedule)
 
     # generate the training stages and capture job dependencies
-    training_jobs_by_sha = generate_training_stages(recipe, environment, ci_yaml_out, schedule)
+    training_jobs_by_sha = generate_training_stages(
+        recipe, environment, ci_yaml_out, schedule
+    )
 
     # generate the match stage utilizing the extracted job dependencies
-    generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha)
+    generate_testing_stage(
+        recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha
+    )
 
     print("schedule information:")
     print(yaml.dump(schedule, Dumper=MyDumper, default_flow_style=False, width=300))
@@ -364,28 +371,103 @@ def parse_recipe(recipe, environment):
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Translate recipe to pipeline and schedule"
-    )
+    parser = argparse.ArgumentParser(description="Translate recipe to pipeline")
+    parser.add_argument("--environment", required=False, help="Environment file")
     parser.add_argument(
-        "--environment", required=False, help="Definition of the environment file"
+        "input_files",
+        help="Input recipes (e.g., path/to/test1:test2) without .yaml suffix",
     )
-    parser.add_argument("input_file", help="Input recipe file")
     parser.add_argument("output_file", help="Output pipeline YAML file")
     args = parser.parse_args()
 
-    input_file = args.input_file
-    output_file = args.output_file
+    # 1. Resolve input paths and shared directory
+    input_parts = [p.strip() for p in args.input_files.split(":")]
+    first_input = Path(input_parts[0])
+    base_dir = first_input.parent
 
-    print("Translating recipe: ", input_file)
+    recipe_paths = []
+    for i, name in enumerate(input_parts):
+        p = first_input if i == 0 else base_dir / name
+        recipe_paths.append(p.with_suffix(".yaml"))
 
-    with open(input_file) as f:
-        recipe = yaml.safe_load(f)
+    # 2. Global structures for the merged pipeline
+    final_ci_out = {"include": [], "stages": ["ensureData", "train", "testing"]}
+    final_schedule = {"data": [], "train": [], "test": []}
+    merged_ensure_job = None
+    merged_python_lines = set()
 
-    ci_yaml_out, schedule = parse_recipe(recipe, args.environment)
+    for recipe_path in recipe_paths:
+        stem = recipe_path.stem
+        if not recipe_path.exists():
+            continue
 
-    print("Resulting pipeline: ", Path(output_file))
-    with Path(output_file).open(mode="w", encoding="utf-8") as f:
-        yaml.dump(ci_yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
+        with open(recipe_path) as f:
+            recipe = yaml.safe_load(f)
+
+        ci_out, schedule = parse_recipe(recipe, args.environment)
+
+        # Merge unique includes
+        for inc in ci_out.get("include", []):
+            if inc not in final_ci_out["include"]:
+                final_ci_out["include"].append(inc)
+
+        # Track training jobs per step to build the dependency chain
+        jobs_by_step = defaultdict(list)
+
+        for job_name, job_body in ci_out.items():
+            if job_name in ["include", "stages"]:
+                continue
+
+            # A. Merge ensureDataJob
+            if job_name == "ensureDataJob":
+                if merged_ensure_job is None:
+                    merged_ensure_job = job_body.copy()
+                    merged_ensure_job["script"] = [
+                        l for l in job_body["script"] if "python" not in l
+                    ]
+                for line in job_body.get("script", []):
+                    if "python" in line:
+                        merged_python_lines.add(line)
+                continue
+
+            prefixed_name = f"{stem}_{job_name}"
+
+            # B. Move training jobs to a generic 'train' stage
+            # Use regex to identify step number from original stage names
+            match = re.match(r"step_(\d+)_", job_body.get("stage", ""))
+            if match:
+                step_num = int(match.group(1))
+                job_body["stage"] = "train"
+                jobs_by_step[step_num].append(prefixed_name)
+
+                # Injects DAG dependencies (needs) since stages no longer synchronize them
+                if step_num == 1:
+                    job_body["needs"] = ["ensureDataJob"]
+                else:
+                    # Depends on all repetitions of the previous step
+                    job_body["needs"] = [
+                        f"{stem}_{prev}"
+                        for prev in ci_out
+                        if f"step_{step_num - 1}_" in prev and "_train" in prev
+                    ]
+
+            # C. Update dependencies for testing jobs
+            elif job_body.get("stage") == "testing":
+                if "needs" in job_body:
+                    job_body["needs"] = [
+                        n if n == "ensureDataJob" else f"{stem}_{n}"
+                        for n in job_body["needs"]
+                    ]
+
+            final_ci_out[prefixed_name] = job_body
+
+        for key in ["data", "train", "test"]:
+            final_schedule[key].extend(schedule.get(key, []))
+
+    # 3. Finalize
+    if merged_ensure_job:
+        merged_ensure_job["script"].extend(sorted(list(merged_python_lines)))
+        final_ci_out["ensureDataJob"] = merged_ensure_job
+
+    with Path(args.output_file).open(mode="w", encoding="utf-8") as f:
+        yaml.dump(final_ci_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
