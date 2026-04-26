@@ -2,6 +2,7 @@ import re
 import yaml
 import hashlib
 import json
+import argparse
 from pathlib import Path
 from collections import defaultdict
 from .utils import MyDumper
@@ -261,7 +262,9 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
     return training_jobs_by_sha
 
 
-def generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha):
+def generate_testing_stage(
+    recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha
+):
     """
     Generate the testing stage
     """
@@ -352,10 +355,14 @@ def parse_recipe(recipe, environment):
     generate_ensure_data(recipe, ci_yaml_out, schedule)
 
     # generate the training stages and capture job dependencies
-    training_jobs_by_sha = generate_training_stages(recipe, environment, ci_yaml_out, schedule)
+    training_jobs_by_sha = generate_training_stages(
+        recipe, environment, ci_yaml_out, schedule
+    )
 
     # generate the match stage utilizing the extracted job dependencies
-    generate_testing_stage(recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha)
+    generate_testing_stage(
+        recipe, environment, ci_yaml_out, schedule, training_jobs_by_sha
+    )
 
     print("schedule information:")
     print(yaml.dump(schedule, Dumper=MyDumper, default_flow_style=False, width=300))
@@ -364,28 +371,73 @@ def parse_recipe(recipe, environment):
 
 
 if __name__ == "__main__":
-    import argparse
-
     parser = argparse.ArgumentParser(
         description="Translate recipe to pipeline and schedule"
     )
     parser.add_argument(
         "--environment", required=False, help="Definition of the environment file"
     )
-    parser.add_argument("input_file", help="Input recipe file")
-    parser.add_argument("output_file", help="Output pipeline YAML file")
+    # Changed to accept a comma-separated string of base names
+    parser.add_argument(
+        "input_files", help="Input recipe names (comma-separated, no .yaml)"
+    )
+    parser.add_argument("output_file", help="Output pipeline YAML file (needs .yaml)")
     args = parser.parse_args()
 
-    input_file = args.input_file
-    output_file = args.output_file
+    # Split the input names (e.g., "test1,test2")
+    recipe_names = [name.strip() for name in args.input_files.split(",")]
 
-    print("Translating recipe: ", input_file)
+    final_ci_out = {"include": [], "stages": []}
+    final_schedule = {"data": [], "train": [], "test": []}
 
-    with open(input_file) as f:
-        recipe = yaml.safe_load(f)
+    for name in recipe_names:
+        input_path = f"{name}.yaml"
+        print(f"Translating recipe: {input_path}")
 
-    ci_yaml_out, schedule = parse_recipe(recipe, args.environment)
+        if not Path(input_path).exists():
+            print(f"Warning: {input_path} not found. Skipping.")
+            continue
 
-    print("Resulting pipeline: ", Path(output_file))
-    with Path(output_file).open(mode="w", encoding="utf-8") as f:
-        yaml.dump(ci_yaml_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
+        with open(input_path) as f:
+            recipe = yaml.safe_load(f)
+
+        # Generate the specific CI dictionary for this recipe
+        ci_out, schedule = parse_recipe(recipe, args.environment)
+
+        # 1. Merge Includes (ensure uniqueness)
+        for inc in ci_out.get("include", []):
+            if inc not in final_ci_out["include"]:
+                final_ci_out["include"].append(inc)
+
+        # 2. Merge Stages (ensure uniqueness)
+        for stage in ci_out.get("stages", []):
+            if stage not in final_ci_out["stages"]:
+                final_ci_out["stages"].append(stage)
+
+        # 3. Merge Schedule
+        for key in ["data", "train", "test"]:
+            final_schedule[key].extend(schedule.get(key, []))
+
+        # 4. Merge and Prefix Jobs
+        # We prefix job names and their 'needs' to prevent collisions between recipes.
+        for key, value in ci_out.items():
+            if key in ["include", "stages"]:
+                continue
+
+            job_name = f"{name}_{key}"
+            job_body = value
+
+            # Update DAG dependencies (needs) to point to the prefixed names
+            if "needs" in job_body:
+                job_body["needs"] = [f"{name}_{need}" for need in job_body["needs"]]
+
+            final_ci_out[job_name] = job_body
+
+    print(f"Resulting pipeline: {Path(args.output_file)}")
+    with Path(args.output_file).open(mode="w", encoding="utf-8") as f:
+        yaml.dump(final_ci_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
+
+    print("Final schedule information:")
+    print(
+        yaml.dump(final_schedule, Dumper=MyDumper, default_flow_style=False, width=300)
+    )
