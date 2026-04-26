@@ -371,37 +371,50 @@ def parse_recipe(recipe, environment):
 
 
 if __name__ == "__main__":
+    import argparse
+
     parser = argparse.ArgumentParser(
         description="Translate recipe to pipeline and schedule"
     )
     parser.add_argument(
         "--environment", required=False, help="Definition of the environment file"
     )
-    # Changed to accept a comma-separated string of base names
+    # Changed to accept comma-separated names with potential path
     parser.add_argument(
-        "input_files", help="Input recipe names (colon-separated, no .yaml)"
+        "input_files",
+        help="Input recipe names (comma-separated, e.g., path/to/test1:test2)",
     )
-    parser.add_argument("output_file", help="Output pipeline YAML file (needs .yaml)")
+    parser.add_argument("output_file", help="Output pipeline YAML file")
     args = parser.parse_args()
 
-    # Split the input names (e.g., "test1,test2")
-    recipe_names = [name.strip() for name in args.input_files.split(":")]
+    # Split the input by comma and determine the base directory from the first path
+    parts = args.input_files.split(":")
+    first_path = Path(parts[0])
+    directory = first_path.parent
+
+    # Construct the full list of .yaml paths using the shared directory
+    recipe_paths = []
+    for i, name in enumerate(parts):
+        if i == 0:
+            recipe_paths.append(first_path.with_suffix(".yaml"))
+        else:
+            recipe_paths.append((directory / name).with_suffix(".yaml"))
 
     final_ci_out = {"include": [], "stages": []}
     final_schedule = {"data": [], "train": [], "test": []}
 
-    for name in recipe_names:
-        input_path = f"{name}.yaml"
-        print(f"Translating recipe: {input_path}")
+    for recipe_path in recipe_paths:
+        recipe_stem = recipe_path.stem
+        print(f"Translating recipe: {recipe_path}")
 
-        if not Path(input_path).exists():
-            print(f"Warning: {input_path} not found. Skipping.")
+        if not recipe_path.exists():
+            print(f"Warning: {recipe_path} not found. Skipping.")
             continue
 
-        with open(input_path) as f:
+        with open(recipe_path) as f:
             recipe = yaml.safe_load(f)
 
-        # Generate the specific CI dictionary for this recipe
+        # Generate the specific CI dictionary for this individual recipe
         ci_out, schedule = parse_recipe(recipe, args.environment)
 
         # 1. Merge Includes (ensure uniqueness)
@@ -410,28 +423,31 @@ if __name__ == "__main__":
                 final_ci_out["include"].append(inc)
 
         # 2. Merge Stages (ensure uniqueness)
+        # Jobs from different recipes in the same stage will run concurrently in GitLab
         for stage in ci_out.get("stages", []):
             if stage not in final_ci_out["stages"]:
                 final_ci_out["stages"].append(stage)
 
-        # 3. Merge Schedule
+        # 3. Merge Schedule info
         for key in ["data", "train", "test"]:
             final_schedule[key].extend(schedule.get(key, []))
 
-        # 4. Merge and Prefix Jobs
-        # We prefix job names and their 'needs' to prevent collisions between recipes.
+        # 4. Merge and Prefix Jobs to ensure concurrency and avoid name collisions
         for key, value in ci_out.items():
             if key in ["include", "stages"]:
                 continue
 
-            job_name = f"{name}_{key}"
+            # Prefix job names (e.g., test1_ensureDataJob)
+            prefixed_job_name = f"{recipe_stem}_{key}"
             job_body = value
 
-            # Update DAG dependencies (needs) to point to the prefixed names
+            # Update DAG 'needs' to point to the prefixed names within the same recipe
             if "needs" in job_body:
-                job_body["needs"] = [f"{name}_{need}" for need in job_body["needs"]]
+                job_body["needs"] = [
+                    f"{recipe_stem}_{need}" for need in job_body["needs"]
+                ]
 
-            final_ci_out[job_name] = job_body
+            final_ci_out[prefixed_job_name] = job_body
 
     print(f"Resulting pipeline: {Path(args.output_file)}")
     with Path(args.output_file).open(mode="w", encoding="utf-8") as f:
