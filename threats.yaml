@@ -17,9 +17,6 @@ testing:
       hash: 16
       max_rounds: 80000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: 1.0
-      nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
