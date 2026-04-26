@@ -379,13 +379,13 @@ if __name__ == "__main__":
     )
     # Changed to accept a comma-separated string of base names
     parser.add_argument(
-        "input_files", help="Input recipe names (comma-separated, no .yaml)"
+        "input_files", help="Input recipe names (colon-separated, no .yaml)"
     )
     parser.add_argument("output_file", help="Output pipeline YAML file (needs .yaml)")
     args = parser.parse_args()
 
     # Split the input names (e.g., "test1,test2")
-    recipe_names = [name.strip() for name in args.input_files.split(",")]
+    recipe_names = [name.strip() for name in args.input_files.split(":")]
 
     final_ci_out = {"include": [], "stages": []}
     final_schedule = {"data": [], "train": [], "test": []}
