@@ -51,7 +51,7 @@ training:
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
           - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-        max_epochs: 400
+        max_epochs: 200
         other_options:
           - --batch-size=65536
           - --features=HalfKAv2_hm^
@@ -60,20 +60,49 @@ training:
           - --no-wld-filtered
           - --start-lambda=1.0
           - --end-lambda=0.6992605384421289
-          - --gamma=0.9942746303116422
-          - --lr=0.0012181558724738395
           - --in-scaling=317.54982869522763
           - --out-scaling=379.8040378799748
           - --in-offset=269.50654301142134
           - --out-offset=253.51483568025657
           - --pow-exp=2.4829519732155125
-          - --random-fen-skipping=3
+          - --random-fen-skipping=5
           - --simple-eval-skipping=931
           - --compile-backend=cudagraphs
+          - --soft_early_fen_skipping=32
+          - --optimizer-name=rangerlite
+          - --one-cycle-steps=305200
+          - --lr=4e-3
+          - --pc_y0=0.2
+          - --pc_y1=0.5
+          - --pc_y2=1.0
+          - --pc_y3=0.8
+          - --pc_y4=0.4
+          - --ply_x1=0.0
+          - --ply_y1=0.01
+          - --ply_x2=14.0
+          - --ply_y2=0.20
+          - --ply_x3=18.5
+          - --ply_y3=0.50
+          - --ply_x4=29.5
+          - --ply_y4=0.80
         resume: none
       trainer:
-        owner: official-stockfish
-        sha: a3c404a9ba14acc3f38163260617f8abeaaf709a
+        owner: TonyCongqianWang
+        sha: 90e9351a9e22c04e42d814091e5e8237e062d106
+    - <repeat_last>:
+        run:
+          max_epochs: 620
+          other_options:
+            - --lr=1.5e-3
+            - --one-cycle-steps=915600
+            - --one-cycle-warmup-pct=0.05
+            - --one-cycle-final-div=1e2
+            - --jitter_lambda_sample=0.001
+            - --swa-start-epoch=600
+            - --jitter_lambda_batch=0.0022
+            - --jitter_decay_lambda_batch=0.990
+            - --start_lambda=0.73
+            - --end_lambda=0.73
 #
 # Final testing stage using fastchess
 #
@@ -107,6 +136,6 @@ testing:
        evalfile: small
     sprt:
        # midpoint will be the target to reach, relative to reference, to have a passing CI
-       nElo_interval_midpoint: -0.75
+       nElo_interval_midpoint: 1.5
        nElo_interval_width: 2
        max_rounds: 160000
