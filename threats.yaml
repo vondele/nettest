@@ -15,11 +15,8 @@ testing:
       sha: 541aef889206882de4823cf5a676d53ac5171c6f
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 30000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: 1.0
-      nElo_interval_width: 2
   reference:
     code:
       owner: official-stockfish
@@ -84,7 +81,7 @@ training:
         sha: 90e9351a9e22c04e42d814091e5e8237e062d106
     - <repeat_last>:
         run:
-          max_epochs: 820
+          max_epochs: 1020
           repetitions: 1
           resume: previous_model
           binpacks:
@@ -106,29 +103,29 @@ training:
             - --ply_x4=29.5
             - --ply_y4=0.80
             - --lr=1.5e-3
-            - --one-cycle-steps=915600
+            - --one-cycle-steps=1526000
             - --one-cycle-warmup-pct=0.05
-            - --one-cycle-final-div=1e2
+            - --one-cycle-final-div=1e3
             - --jitter_lambda_sample=0.001
-            - --swa-start-epoch=600
+            - --swa-start-epoch=1000
             - --jitter_lambda_batch=0.002
             - --jitter_decay_lambda_batch=0.990
-            - --start_lambda=0.79
-            - --end_lambda=0.79
+            - --start_lambda=0.76
+            - --end_lambda=0.76
     - <repeat_last>:
         run:
           repetitions: 1
           max_epochs: 220
           other_options:
-            - --lr=3e-04
+            - --lr=7.5e-04
             - --one-cycle-steps=305200
-            - --one-cycle-final-div=20
+            - --one-cycle-final-div=50
             - --swa-start-epoch=200
             - --jitter_lambda_sample=0.001
             - --jitter_lambda_batch=0.0075
             - --jitter_decay_lambda_batch=0.1
-            - --start_lambda=0.76
-            - --end_lambda=0.76
+            - --start_lambda=0.79
+            - --end_lambda=0.79
 
 
 stage_one_binpacks:
