@@ -59,8 +59,8 @@ training:
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
-          - --early_fen_skipping=10
-          - --soft_early_fen_skipping=32
+          - --early-fen-skipping=10
+          - --soft-early-fen-skipping=32
           - --pc_y0=-0.20
           - --pc_y1=0.45
           - --pc_y2=1.0
@@ -81,7 +81,7 @@ training:
         sha: 90e9351a9e22c04e42d814091e5e8237e062d106
     - <repeat_last>:
         run:
-          max_epochs: 1020
+          max_epochs: 500
           repetitions: 1
           resume: previous_model
           binpacks:
@@ -103,29 +103,30 @@ training:
             - --ply_x4=29.5
             - --ply_y4=0.80
             - --lr=1.5e-3
-            - --one-cycle-steps=1526000
+            - --one-cycle-steps=3052000
             - --one-cycle-warmup-pct=0.05
-            - --one-cycle-final-div=1e3
-            - --jitter_lambda_sample=0.001
-            - --swa-start-epoch=1000
-            - --jitter_lambda_batch=0.002
-            - --jitter_decay_lambda_batch=0.990
-            - --start_lambda=0.76
-            - --end_lambda=0.76
+            - --one-cycle-final-div=4e2
+            - --jitter-lambda-sample=0.001
+            - --swa-start-epoch=2500
+            - --jitter-lambda-batch=0.002
+            - --jitter-decay-lambda_batch=0.990
+            - --start-lambda=0.76
+            - --end-lambda=0.76
     - <repeat_last>:
         run:
-          repetitions: 1
-          max_epochs: 220
+          max_epochs: 1250
+          resume: previous_checkpoint
+    - <repeat_last>:
+        run:
+          max_epochs: 2000
+    - <repeat_last>:
+        run:
+          max_epochs: 2750
           other_options:
-            - --lr=7.5e-04
-            - --one-cycle-steps=305200
-            - --one-cycle-final-div=50
-            - --swa-start-epoch=200
-            - --jitter_lambda_sample=0.001
-            - --jitter_lambda_batch=0.0075
-            - --jitter_decay_lambda_batch=0.1
-            - --start_lambda=0.79
-            - --end_lambda=0.79
+            - --jitter_lambda_batch=0.006
+            - --jitter_decay_lambda_batch=0.9
+            - --start_lambda=0.76
+            - --end_lambda=0.76
 
 
 stage_one_binpacks:
