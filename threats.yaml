@@ -15,14 +15,14 @@ testing:
       sha: 541aef889206882de4823cf5a676d53ac5171c6f
     options:
       hash: 16
-      max_rounds: 20000
+      max_rounds: 50000
       tc: 10+0.1
   reference:
     code:
       owner: official-stockfish
       sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
       target: profile-build
-  steps: last
+  steps: all
   testing:
     code:
       owner: official-stockfish
