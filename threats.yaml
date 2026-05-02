@@ -122,11 +122,7 @@ training:
     - <repeat_last>:
         run:
           max_epochs: 2750
-          other_options:
-            - --jitter_lambda_batch=0.006
-            - --jitter_decay_lambda_batch=0.9
-            - --start_lambda=0.76
-            - --end_lambda=0.76
+ 
 
 
 stage_one_binpacks:
