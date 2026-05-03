@@ -39,6 +39,7 @@ generateSchedule:
     expire_in: 1 month
     paths:
       - training_schedule.yaml
+      - training_schedule.yaml.recipe.yaml
 
 # run the training according to the previously generated schedule
 runTraining:

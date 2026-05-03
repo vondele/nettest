@@ -372,7 +372,7 @@ def parse_recipe(recipe, environment):
     print("schedule information:")
     print(yaml.dump(schedule, Dumper=MyDumper, default_flow_style=False, width=300))
 
-    return ci_yaml_out, schedule
+    return ci_yaml_out, schedule, recipe
 
 
 if __name__ == "__main__":
@@ -409,7 +409,7 @@ if __name__ == "__main__":
         with open(recipe_path) as f:
             recipe = yaml.safe_load(f)
 
-        ci_out, schedule = parse_recipe(recipe, args.environment)
+        ci_out, schedule, final_recipe = parse_recipe(recipe, args.environment)
 
         # Merge unique includes
         for inc in ci_out.get("include", []):
@@ -476,3 +476,7 @@ if __name__ == "__main__":
 
     with Path(args.output_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(final_ci_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
+
+    with Path(f"{args.output_file}.recipe.yaml").open(mode="w", encoding="utf-8") as f:
+        yaml.dump(final_recipe, f, Dumper=MyDumper, default_flow_style=False, width=300)
+
