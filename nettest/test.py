@@ -8,6 +8,7 @@ import shutil
 import uuid
 import time
 import os
+import random
 
 
 def ensure_fastchess(fastchess):
@@ -274,7 +275,7 @@ def run_fastchess(
             f"{affinity}",
         ]
 
-    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "$RANDOM"]
+    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", f"{random.randint(0, 10000)}"]
     cmd += sprt_options
     cmd += ["-ratinginterval", "100"]
 
