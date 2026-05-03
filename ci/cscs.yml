@@ -29,7 +29,7 @@ generateSchedule:
   script:
     - cd /workspace/
     - ln -s $CI_PROJECT_DIR ./cidir
-    - python -u -m nettest.generate_pipeline --environment /workspace/nettest/environments/clariden.yaml nettest/${RECIPE:-testing} ./cidir/training_schedule.yaml
+    - python -u -m nettest.generate_pipeline --environment /workspace/nettest/environments/clariden.yaml nettest/${RECIPE:-testing} --output-file ./cidir/training_schedule.yaml --output-recipe-file ./cidir/training_recipe.yaml
     - cat ./cidir/training_schedule.yaml
   variables:
     SLURM_JOB_NUM_NODES: 1
@@ -39,7 +39,7 @@ generateSchedule:
     expire_in: 1 month
     paths:
       - training_schedule.yaml
-      - training_schedule.yaml.recipe.yaml
+      - training_recipe.yaml
 
 # run the training according to the previously generated schedule
 runTraining:

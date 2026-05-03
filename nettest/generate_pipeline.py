@@ -383,6 +383,7 @@ if __name__ == "__main__":
         help="Input recipes (e.g., path/to/test1:test2) without .yaml suffix",
     )
     parser.add_argument("output_file", help="Output pipeline YAML file")
+    parser.add_argument("output_recipe_file", help="Output final recipe YAML file", required=False, default=None)
     args = parser.parse_args()
 
     # 1. Resolve input paths and shared directory
@@ -477,6 +478,7 @@ if __name__ == "__main__":
     with Path(args.output_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(final_ci_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
 
-    with Path(f"{args.output_file}.recipe.yaml").open(mode="w", encoding="utf-8") as f:
-        yaml.dump(final_recipe, f, Dumper=MyDumper, default_flow_style=False, width=300)
+    if args.output_recipe_file is not None:
+        with Path(args.output_recipe_file).open(mode="w", encoding="utf-8") as f:
+            yaml.dump(final_recipe, f, Dumper=MyDumper, default_flow_style=False, width=300)
 
