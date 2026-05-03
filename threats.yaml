@@ -148,16 +148,16 @@ training:
             - --ply_x4=29.5
             - --ply_y4=0.80
     - <repeat_last>:
-      run:
-        max_epochs: 50
-        other_options:
-          - --lr=1.5096062560119151e-05
-          - --one-cycle-steps=20000
-          - --one-cycle-final-div=1
-          - --jitter-lambda-sample=0.001
-          - --jitter-lambda-batch=0.010
-          - --start-lambda=0.7710037988696371
-          - --end-lambda=0.7710037988696371
+        run:
+          max_epochs: 50
+          other_options:
+            - --lr=1.5096062560119151e-05
+            - --one-cycle-steps=20000
+            - --one-cycle-final-div=1
+            - --jitter-lambda-sample=0.001
+            - --jitter-lambda-batch=0.010
+            - --start-lambda=0.7710037988696371
+            - --end-lambda=0.7710037988696371
     - <repeat_last~1>:
     - <repeat_last~1>:
     - <repeat_last~1>:
