@@ -384,6 +384,8 @@ if __name__ == "__main__":
     )
     parser.add_argument("output_file", help="Output path for pipeline [and recipe] YAML file[s]", nargs='+')
 
+    args = parser.parse_args()
+
     # 1. Resolve input paths and shared directory
     input_parts = [p.strip() for p in args.input_files.split(":")]
     first_input = Path(input_parts[0])
