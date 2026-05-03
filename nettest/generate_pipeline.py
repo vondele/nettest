@@ -382,9 +382,7 @@ if __name__ == "__main__":
         "input_files",
         help="Input recipes (e.g., path/to/test1:test2) without .yaml suffix",
     )
-    parser.add_argument("output_file", help="Output pipeline YAML file")
-    parser.add_argument("output_recipe_file", help="Output final recipe YAML file", required=False, default=None)
-    args = parser.parse_args()
+    parser.add_argument("output_file", help="Output path for pipeline [and recipe] YAML file[s]", nargs='+')
 
     # 1. Resolve input paths and shared directory
     input_parts = [p.strip() for p in args.input_files.split(":")]
@@ -475,10 +473,10 @@ if __name__ == "__main__":
         merged_ensure_job["script"].extend(sorted(list(merged_python_lines)))
         final_ci_out["ensureDataJob"] = merged_ensure_job
 
-    with Path(args.output_file).open(mode="w", encoding="utf-8") as f:
+    with Path(args.output_file[0]).open(mode="w", encoding="utf-8") as f:
         yaml.dump(final_ci_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
 
-    if args.output_recipe_file is not None:
-        with Path(args.output_recipe_file).open(mode="w", encoding="utf-8") as f:
+    if len(args.output_file) > 1:
+        with Path(args.output_file[1]).open(mode="w", encoding="utf-8") as f:
             yaml.dump(final_recipe, f, Dumper=MyDumper, default_flow_style=False, width=300)
 
