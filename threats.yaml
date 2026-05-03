@@ -25,7 +25,7 @@ testing:
       owner: official-stockfish
       sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
       target: profile-build
-  steps: all
+  steps: 1,2,4,6,8
   testing:
     code:
       owner: official-stockfish
@@ -148,5 +148,18 @@ training:
             - --ply_x4=29.5
             - --ply_y4=0.80
     - <repeat_last>:
-    - <repeat_last>:
-    - <repeat_last>:
+      run:
+        max_epochs: 50
+        other_options:
+          - --lr=1.5096062560119151e-05
+          - --one-cycle-steps=20000
+          - --one-cycle-final-div=1
+          - --jitter-lambda-sample=0.001
+          - --jitter-lambda-batch=0.010
+          - --start-lambda=0.7710037988696371
+          - --end-lambda=0.7710037988696371
+    - <repeat_last~1>:
+    - <repeat_last~1>:
+    - <repeat_last~1>:
+    - <repeat_last~1>:
+    - <repeat_last~1>:
