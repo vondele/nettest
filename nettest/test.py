@@ -274,7 +274,7 @@ def run_fastchess(
             f"{affinity}",
         ]
 
-    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "42"]
+    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", "$RANDOM"]
     cmd += sprt_options
     cmd += ["-ratinginterval", "100"]
 
@@ -440,7 +440,7 @@ def run_test(environment, test_config_sha, testing_sha):
 
     run_cross_check_eval(environment, test, testing_sha, stockfish_testing)
 
-    return run_fastchess(
+    winning_net, nElo = run_fastchess(
         environment,
         test_config_sha,
         test,
@@ -449,6 +449,16 @@ def run_test(environment, test_config_sha, testing_sha):
         stockfish_reference,
         stockfish_testing,
     )
+
+    # store as an artifact for this run
+    artifact_dir = Path.cwd() / "cidir" / f"test_{test_config_sha}_result"
+    artifact_dir.mkdir(parents=True, exist_ok=True)
+    artifact_txt = artifact_dir / f"{testing_sha}_result.txt"
+    with open(artifact_txt, "w") as f:
+        f.write(f"Winning net: {winning_net}\n")
+        f.write(f"Elo: {nElo}\n")
+
+    return winning_net, nElo
 
 
 if __name__ == "__main__":

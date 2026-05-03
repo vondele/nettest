@@ -302,6 +302,11 @@ def generate_testing_stage(
             job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
             job["script"].append(task)
 
+            job["artifacts"] = {
+                "expire_in": "1 month",
+                "paths": [f"test_{test_config_sha}_result"],
+            }
+
             # Establish explicit DAG dependencies to bypass stage wait times
             needs = []
             if "ensureDataJob" in ci_yaml_out:
