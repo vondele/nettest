@@ -302,6 +302,11 @@ def generate_testing_stage(
             job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
             job["script"].append(task)
 
+            job["artifacts"] = {
+                "expire_in": "1 month",
+                "paths": [f"test_{test_config_sha}_result"],
+            }
+
             # Establish explicit DAG dependencies to bypass stage wait times
             needs = []
             if "ensureDataJob" in ci_yaml_out:
@@ -367,7 +372,7 @@ def parse_recipe(recipe, environment):
     print("schedule information:")
     print(yaml.dump(schedule, Dumper=MyDumper, default_flow_style=False, width=300))
 
-    return ci_yaml_out, schedule
+    return ci_yaml_out, schedule, recipe
 
 
 if __name__ == "__main__":
@@ -377,7 +382,8 @@ if __name__ == "__main__":
         "input_files",
         help="Input recipes (e.g., path/to/test1:test2) without .yaml suffix",
     )
-    parser.add_argument("output_file", help="Output pipeline YAML file")
+    parser.add_argument("output_file", help="Output path for pipeline [and recipe] YAML file[s]", nargs='+')
+
     args = parser.parse_args()
 
     # 1. Resolve input paths and shared directory
@@ -404,7 +410,7 @@ if __name__ == "__main__":
         with open(recipe_path) as f:
             recipe = yaml.safe_load(f)
 
-        ci_out, schedule = parse_recipe(recipe, args.environment)
+        ci_out, schedule, final_recipe = parse_recipe(recipe, args.environment)
 
         # Merge unique includes
         for inc in ci_out.get("include", []):
@@ -469,5 +475,10 @@ if __name__ == "__main__":
         merged_ensure_job["script"].extend(sorted(list(merged_python_lines)))
         final_ci_out["ensureDataJob"] = merged_ensure_job
 
-    with Path(args.output_file).open(mode="w", encoding="utf-8") as f:
+    with Path(args.output_file[0]).open(mode="w", encoding="utf-8") as f:
         yaml.dump(final_ci_out, f, Dumper=MyDumper, default_flow_style=False, width=300)
+
+    if len(args.output_file) > 1:
+        with Path(args.output_file[1]).open(mode="w", encoding="utf-8") as f:
+            yaml.dump(final_recipe, f, Dumper=MyDumper, default_flow_style=False, width=300)
+
