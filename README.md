@@ -8,12 +8,11 @@ reproduce the workflows needed to create (near?) master-strength networks for
 
 ## Overview
 
-Currently, the repo contains two main recipes:
+Currently, the repo contains the main recipe:
 
-* [small.yaml](small.yaml): generating the small net in stockfish
-* [threats.yaml](threats.yaml): generating the threats/big net in stockfish
+* [threats.yaml](threats.yaml): generating the threats net in stockfish
 
-and two auxiliary ones for testing and experimentation.
+and an auxiliary one for testing and experimentation.
 
 There are currently three ways to execute such a pipeline:
 
@@ -39,10 +38,9 @@ for inference, and testing the resulting network. All these steps are encoded
 in the yaml, and executed automatically.
 
 The storage and compute needs are significant. For training the big net,
-approximately 700GB of storage is needed, training both small and big nets
-requires 900GB. On a high-end GPU, training a big net takes approximately 4-5
-days, whereas a small net takes less than one day. 8GB GPU RAM is needed to
-train small nets more than that for the big nets. Testing the resulting nets
+approximately 700GB of storage is needed. On a high-end GPU, training
+a big net takes approximately 4-5 days. >8GB GPU RAM is needed to
+train nets. Testing the resulting nets
 will take multiple hours, even at high CPU concurrency.
 
 The workflows have built-in caching mechanisms, for both data and compute. In
@@ -54,10 +52,10 @@ later steps in the workflow.
 ### Execution in the CI environment
 
 An authorized person can trigger a CI pipeline for the corresponding recipe
-(e.g. `small.yaml`) by simply commenting on the PR:
+(e.g. `testing.yaml`) by simply commenting on the PR:
 
 ```txt
- cscs-ci run RECIPE=small
+ cscs-ci run RECIPE=testing
 ```
 
 The CI pipeline will then execute the workflow, and report success or failure,
@@ -112,7 +110,7 @@ file).
 #### remote execution
 
 ```bash
-python -m nettest.execute_recipe --executor remote --recipe nettest/small.yaml
+python -m nettest.execute_recipe --executor remote --recipe nettest/threats.yaml
 ```
 
 Remote execution requires a proper setup, including a

@@ -170,7 +170,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     cmd.append(f"--threads={num_threads}")
     cmd.append(f"--gpus={local_devices}")
 
-    # large net needs at least 16 threads, small net >64, number of active threads is seems also roughly half specified
+    # large net needs at least 16 threads, smaller nets might need more
     if "train" in environment and "workers" in environment["train"]:
         workers = environment["train"]["workers"]
     else:
