@@ -241,16 +241,6 @@ def run_fastchess(
             "model=normalized",
         ]
 
-    # take care of small vs big net
-    target_net = "EvalFile"
-    if "evalfile" in test["fastchess"]["options"]:
-        if test["fastchess"]["options"]["evalfile"].lower() == "small":
-            target_net = "EvalFileSmall"
-        elif test["fastchess"]["options"]["evalfile"].lower() == "big":
-            target_net = "EvalFile"
-        else:
-            assert False, "EvalFile needs to be either small or big"
-
     sha = testing_sha
     match_dir = Path.cwd() / "scratch" / test_config_sha / "match" / sha
     match_dir.mkdir(parents=True, exist_ok=True)
@@ -275,7 +265,15 @@ def run_fastchess(
             f"{affinity}",
         ]
 
-    cmd += ["-rounds", f"{rounds}", "-games", "2", "-repeat", "-srand", f"{random.randint(0, 10000)}"]
+    cmd += [
+        "-rounds",
+        f"{rounds}",
+        "-games",
+        "2",
+        "-repeat",
+        "-srand",
+        f"{random.randint(0, 10000)}",
+    ]
     cmd += sprt_options
     cmd += ["-ratinginterval", "100"]
 
@@ -298,7 +296,7 @@ def run_fastchess(
         "-engine",
         f"name={name}",
         f"cmd={stockfish_testing}",
-        f"option.{target_net}={std_nnue}",
+        f"option.EvalFile={std_nnue}",
     ]
 
     if "options" in test["testing"]:
@@ -393,13 +391,6 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     assert "trainer" in test["crosscheck"], "crosscheck config must include trainer"
     nnue_pytorch_dir = ensure_trainer(test["crosscheck"]["trainer"])
 
-    # TODO maybe this coudl be inserted automatically as well?
-    evalfile = (
-        "big"
-        if "evalfile" not in test["crosscheck"]
-        else test["crosscheck"]["evalfile"]
-    )
-
     # configure and run cross_check_eval
     # TODO: make device respect 'device'
     cmd = [
@@ -411,7 +402,6 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
         "--data",
         f"{binpack}",
         "--device=cuda",
-        f"--net-type={evalfile}",
     ]
 
     # add options to specify count and features

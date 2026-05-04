@@ -1,8 +1,8 @@
 testing:
   crosscheck:
     trainer:
-      owner: TonyCongqianWang
-      sha: c4316b9582b7d690767260ef2d4aa67136b4df22
+      owner: vondele
+      sha: f4dfde4964326198b1c6bd5a9971a5b426f8894b
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
       - --features=Full_Threats+HalfKAv2_hm^
@@ -23,13 +23,13 @@ testing:
   reference:
     code:
       owner: official-stockfish
-      sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
+      sha: 5095cd16c97e7596f2d2a02eb05ed8e030af991f
       target: profile-build
   steps: all
   testing:
     code:
       owner: official-stockfish
-      sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
+      sha: 5095cd16c97e7596f2d2a02eb05ed8e030af991f
       target: profile-build
 training:
   steps:
@@ -89,8 +89,8 @@ training:
         repetitions: 1
         resume: none
       trainer:
-        owner: TonyCongqianWang
-        sha: c4316b9582b7d690767260ef2d4aa67136b4df22
+        owner: vondele
+        sha: f4dfde4964326198b1c6bd5a9971a5b426f8894b
     - <repeat_last>:
         run:
           resume: previous_model
