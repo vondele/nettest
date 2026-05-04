@@ -30,7 +30,10 @@ testing:
       target: profile-build
 training:
   steps:
-    - convert:
+    - trainer:
+        owner: TonyCongqianWang
+        sha: 2d42a723e6cff821f99f69dcdda8b0b6219fc9b5
+      convert:
         binpack: official-stockfish/master-binpacks/fishpack32.binpack
         checkpoint2nnue:
           - --features=Full_Threats+HalfKAv2_hm^
@@ -49,7 +52,7 @@ training:
         resume: none
         binpacks:
           <insert_from_element(stage_two_plus_binpacks)>
-        max_epochs: 300
+        max_epochs: 550
         other_options:
           - --optimizer-name=rangerlite
           - --validation-size=250000000
@@ -76,10 +79,10 @@ training:
           - --ply_y4=0.80
           - --lr=1.5e-3
           - --one-cycle-warmup-pct=0.4
-          - --one-cycle-steps=381500
+          - --one-cycle-steps=763000
+          - --swa-start-epoch=500
           - --one-cycle-final-div=1e3
           - --jitter-lambda-sample=0.001
-          - --swa-start-epoch=250
           - --jitter-lambda-batch=0.0120
           - --jitter-decay-lambda-batch=0.999
           - --start-lambda=0.76
@@ -90,9 +93,6 @@ training:
           - --pc_y2=1.0
           - --pc_y3=0.95
           - --pc_y4=0.75
-      trainer:
-        owner: TonyCongqianWang
-        sha: 2d42a723e6cff821f99f69dcdda8b0b6219fc9b5
     - <repeat_last>:
         run:
           resume: previous_model
@@ -128,17 +128,6 @@ training:
           other_options:
             - --jitter-decay-lambda-batch=0.90
 
-
-stage_one_binpacks:
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
-  - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-  - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
-  - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
-  - official-stockfish/master-binpacks/dfrc_n5000.binpack
 
 stage_two_plus_binpacks:
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
