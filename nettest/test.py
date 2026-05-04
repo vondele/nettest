@@ -391,13 +391,6 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     assert "trainer" in test["crosscheck"], "crosscheck config must include trainer"
     nnue_pytorch_dir = ensure_trainer(test["crosscheck"]["trainer"])
 
-    # TODO maybe this coudl be inserted automatically as well?
-    evalfile = (
-        "big"
-        if "evalfile" not in test["crosscheck"]
-        else test["crosscheck"]["evalfile"]
-    )
-
     # configure and run cross_check_eval
     # TODO: make device respect 'device'
     cmd = [
@@ -409,7 +402,6 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
         "--data",
         f"{binpack}",
         "--device=cuda",
-        f"--net-type={evalfile}",
     ]
 
     # add options to specify count and features
