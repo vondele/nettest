@@ -33,16 +33,20 @@ class MyDumper(yaml.Dumper):
         _ = indentless  # intentionally unused, kept for compatibility
         return super(MyDumper, self).increase_indent(flow, False)
 
+
 def supports_numactl() -> bool:
     if not shutil.which("numactl"):
         return False
     try:
-        result = subprocess.run(["numactl", "--hardware"], capture_output=True, timeout=5)
+        result = subprocess.run(
+            ["numactl", "--hardware"], capture_output=True, timeout=5
+        )
         return result.returncode == 0
     except Exception:
         return False
 
-def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None):
+
+def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None, stdin_lines=None):
     """
     wrapper to execute a shell command
     """
@@ -63,12 +67,21 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None):
         cmd,
         cwd=cwd,
         env=env,
+        stdin=subprocess.PIPE if stdin_lines else None,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
         bufsize=1,
     )
     assert process is not None, f"Failed to start process for command: {cmd}"
+
+    assert process.stdin is not None, f"Process {cmd} has no stdin"
+    if stdin_lines:
+        for line in stdin_lines:
+            process.stdin.write(line + "\n")
+        process.stdin.flush()
+        process.stdin.close()
+
     assert process.stdout is not None, f"Process {cmd} has no stdout"
 
     while True:
