@@ -195,6 +195,36 @@ def run_fastchess(
     assert stockfish_testing.exists()
     assert fastchess.exists()
 
+    match_dir = Path.cwd() / "scratch" / test_config_sha / "match" / testing_sha
+    match_dir.mkdir(parents=True, exist_ok=True)
+
+    # net to be tested
+    final_yaml_file = Path.cwd() / "scratch" / testing_sha / "final.yaml"
+    assert final_yaml_file.exists(), f"{final_yaml_file} does not exist"
+    with open(final_yaml_file) as f:
+        final_config = yaml.safe_load(f)
+    short_nnue = final_config["short_nnue"]
+    std_nnue = final_config["std_nnue"]
+    assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
+
+    # generate bench output
+    execute(
+        f"Run bench for Stockfish reference {stockfish_reference}",
+        [f"{stockfish_reference}"],
+        match_dir,
+        False,
+        filter_re=r"^(?!.*Nodes).*$",
+        stdin_lines=["bench", "quit"],
+    )
+    execute(
+        f"Run bench for Stockfish testing {stockfish_testing} with net {short_nnue}",
+        [f"{stockfish_testing}"],
+        match_dir,
+        False,
+        filter_re=r"^(?!.*Nodes).*$",
+        stdin_lines=[f"setoption name EvalFile value {std_nnue}", "bench", "quit"],
+    )
+
     # download book for testing as needed
     book_dir = Path.cwd() / "data"
     book = book_dir / "UHO_Lichess_4852_v1.epd"
@@ -241,10 +271,6 @@ def run_fastchess(
             "model=normalized",
         ]
 
-    sha = testing_sha
-    match_dir = Path.cwd() / "scratch" / test_config_sha / "match" / sha
-    match_dir.mkdir(parents=True, exist_ok=True)
-
     # fastchess config
     cmd = [f"{fastchess}"]
 
@@ -281,17 +307,8 @@ def run_fastchess(
     cmd += ["-report", "penta=true"]
     cmd += ["-pgnout", "file=match.pgn"]
 
-    # add net to be tested
-    final_yaml_file = Path.cwd() / "scratch" / sha / "final.yaml"
-    assert final_yaml_file.exists(), f"{final_yaml_file} does not exist"
-    with open(final_yaml_file) as f:
-        final_config = yaml.safe_load(f)
-    short_nnue = final_config["short_nnue"]
-    std_nnue = final_config["std_nnue"]
-    assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
-
     # configure engines
-    name = f"step_{sha}_{short_nnue}"
+    name = f"step_{testing_sha}_{short_nnue}"
     cmd += [
         "-engine",
         f"name={name}",
@@ -326,7 +343,7 @@ def run_fastchess(
 
     # Done setup, run fastchess
     output = execute(
-        f"Run fastchess match for {sha}: {short_nnue}",
+        f"Run fastchess match for {testing_sha}: {short_nnue}",
         cmd,
         match_dir,
         False,
