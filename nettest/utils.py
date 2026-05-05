@@ -75,8 +75,8 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None, stdin_lines=No
     )
     assert process is not None, f"Failed to start process for command: {cmd}"
 
-    assert process.stdin is not None, f"Process {cmd} has no stdin"
     if stdin_lines:
+        assert process.stdin is not None, f"Process {cmd} has no stdin"
         for line in stdin_lines:
             process.stdin.write(line + "\n")
         process.stdin.flush()
