@@ -120,7 +120,7 @@ training:
           - --swa-start-epoch=2000
           - --jitter-lambda-batch=0.0100
           - --jitter-decay-lambda-batch=0.999
-        repetitions: 3
+        repetitions: 1
         resume: previous_model
       trainer:
         owner: TonyCongqianWang
