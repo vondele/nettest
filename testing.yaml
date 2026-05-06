@@ -80,6 +80,7 @@ training:
           - --ply_x4=29.5
           - --ply_y4=0.80
         resume: none
+        repetitions: 2
       trainer:
         owner: vondele
         sha: f4dfde4964326198b1c6bd5a9971a5b426f8894b
