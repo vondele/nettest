@@ -59,30 +59,30 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 
 common_run_options: &common_run_options
   optimizer-name: rangerlite
-  validation-size: 200000000
-  check_val_every_n_epoch: 10
+  validation-size: 250000000
+  check-val-every-n-epoch: 25
   batch-size: 65536
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
   l2: 31
   random-fen-skipping: 10
-  early_fen_skipping: 10
-  soft_early_fen_skipping: 32
-  pc_y0: -0.20
-  pc_y1: 0.45
-  pc_y2: 1.0
-  pc_y3: 0.95
-  pc_y4: 0.75
+  early-fen-skipping: 10
+  soft-early-fen_skipping: 32
+  pc-y0: -0.20
+  pc-y1: 0.45
+  pc-y2: 1.0
+  pc-y3: 0.95
+  pc-y4: 0.75
 
 advanced_stage_options: &advanced_stage_options
-  ply_x1: 0.00
-  ply_y1: 0.025
-  ply_x2: 22.0
-  ply_y2: 0.05
-  ply_x3: 25.5
-  ply_y3: 0.20
-  ply_x4: 29.5
-  ply_y4: 0.80
+  ply-x1: 0.00
+  ply-y1: 0.025
+  ply-x2: 22.0
+  ply-y2: 0.05
+  ply-x3: 25.5
+  ply-y3: 0.20
+  ply-x4: 29.5
+  ply-y4: 0.80
   pow-exp: 2.442037790427722
   qp-asymmetry: 0.15795949371005746
   in-scaling: 294.7193839807687
@@ -163,14 +163,14 @@ training:
           lr: "2e-3"
           start-lambda: 1.0
           end-lambda: 0.75
-          ply_x1: 0.0
-          ply_y1: 0.01
-          ply_x2: 14.0
-          ply_y2: 0.20
-          ply_x3: 18.5
-          ply_y3: 0.50
-          ply_x4: 29.5
-          ply_y4: 0.80
+          ply-x1: 0.0
+          ply-y1: 0.01
+          ply-x2: 14.0
+          ply-y2: 0.20
+          ply-x3: 18.5
+          ply-y3: 0.50
+          ply-x4: 29.5
+          ply-y4: 0.80
         repetitions: 1
         resume: none
 
