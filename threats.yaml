@@ -1,6 +1,3 @@
-
-# --- Binpack anchors ---
-
 stage_one_binpacks: &stage_one_binpacks
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
@@ -46,70 +43,66 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
 
-# --- Convert option anchors ---
-
 optimize_flags: &optimize_flags
-  - --features=Full_Threats+HalfKAv2_hm^
-  - --l1=1024
-  - --l2=31
-  - --ft_optimize_count=100000
-  - --ft_optimize
-  - --ft_compression=leb128
+  features: Full_Threats+HalfKAv2_hm^
+  l1: 1024
+  l2: 31
+  ft_optimize_count: 100000
+  ft_optimize: true
+  ft_compression: leb128
 
 checkpoint2nnue_options: &checkpoint2nnue_options
-  - --features=Full_Threats+HalfKAv2_hm^
-  - --l1=1024
-  - --l2=31
-  - --ft_compression=leb128
-
-# --- Run option anchors ---
+  features: Full_Threats+HalfKAv2_hm^
+  l1: 1024
+  l2: 31
+  ft_compression: leb128
 
 common_run_options: &common_run_options
-  - --optimizer-name=rangerlite
-  - --validation-size=200000000
-  - --check_val_every_n_epoch=10
-  - --batch-size=65536
-  - --features=Full_Threats+HalfKAv2_hm^
-  - --l1=1024
-  - --l2=31
-  - --random-fen-skipping=10
-  - --early_fen_skipping=10
-  - --soft_early_fen_skipping=32
-  - --pc_y0=-0.20
-  - --pc_y1=0.45
-  - --pc_y2=1.0
-  - --pc_y3=0.95
-  - --pc_y4=0.75
+  optimizer-name: rangerlite
+  validation-size: 200000000
+  check_val_every_n_epoch: 10
+  batch-size: 65536
+  features: Full_Threats+HalfKAv2_hm^
+  l1: 1024
+  l2: 31
+  random-fen-skipping: 10
+  early_fen_skipping: 10
+  soft_early_fen_skipping: 32
+  pc_y0: -0.20
+  pc_y1: 0.45
+  pc_y2: 1.0
+  pc_y3: 0.95
+  pc_y4: 0.75
 
 advanced_stage_options: &advanced_stage_options
-  - --ply_x1=0.00
-  - --ply_y1=0.025
-  - --ply_x2=22.0
-  - --ply_y2=0.05
-  - --ply_x3=25.5
-  - --ply_y3=0.20
-  - --ply_x4=29.5
-  - --ply_y4=0.80
-  - --pow-exp=2.442037790427722
-  - --qp-asymmetry=0.15795949371005746
-  - --in-scaling=294.7193839807687
-  - --out-scaling=352.8750799744594
-  - --in-offset=281.4186220835457
-  - --out-offset=279.93991915496105
-  - --early-fen-skipping=18
-  - --one-cycle-warmup-pct=0.05
-  - --one-cycle-final-div=1e3
-  - --jitter-lambda-sample=0.0030
-  - --jitter-lambda-batch=0.0100
-  - --jitter-decay-lambda-batch=0.999
-  - --start-lambda=0.76
-  - --end-lambda=0.76
+  ply_x1: 0.00
+  ply_y1: 0.025
+  ply_x2: 22.0
+  ply_y2: 0.05
+  ply_x3: 25.5
+  ply_y3: 0.20
+  ply_x4: 29.5
+  ply_y4: 0.80
+  pow-exp: 2.442037790427722
+  qp-asymmetry: 0.15795949371005746
+  in-scaling: 294.7193839807687
+  out-scaling: 352.8750799744594
+  in-offset: 281.4186220835457
+  out-offset: 279.93991915496105
+  early-fen-skipping: 18
+  one-cycle-warmup-pct: 0.05
+  one-cycle-final-div: "1e3"
+  jitter-lambda-sample: 0.0030
+  jitter-lambda-batch: 0.0100
+  jitter-decay-lambda-batch: 0.999
+  start-lambda: 0.76
+  end-lambda: 0.76
 
-common_trainer: &common_trainer
+trainer: &trainer
   owner: TonyCongqianWang
-  sha: 4e3e44478442bf9d37535c7ad50859364e373563
+  sha: 2d42a723e6cff821f99f69dcdda8b0b6219fc9b5
 
-# --- Grouped structure anchors ---
+# --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
@@ -117,7 +110,7 @@ common_convert: &common_convert
 
 common_step: &common_step
   convert: *common_convert
-  trainer: *common_trainer
+  trainer: *trainer
 
 common_run_stage_two_plus: &common_run_stage_two_plus
   binpacks: *stage_two_plus_binpacks
@@ -132,19 +125,17 @@ official_code: &official_code
   owner: official-stockfish
   sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
   target: profile-build
-
-# --- Anchors end ---
 # ----------------------------------------------------------
 
 testing:
   crosscheck:
-    trainer: *common_trainer
+    trainer: *trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
-      - --features=Full_Threats+HalfKAv2_hm^
-      - --l1=1024
-      - --l2=31
-      - --count=5000
+      features: Full_Threats+HalfKAv2_hm^
+      l1: 1024
+      l2: 31
+      count: 5000
   fastchess:
     code:
       owner: Disservin
@@ -167,19 +158,19 @@ training:
         binpacks: *stage_one_binpacks
         max_epochs: 250
         other_options:
-          - *common_run_options
-          - --one-cycle-steps=381500
-          - --lr=2e-3
-          - --start-lambda=1.0
-          - --end-lambda=0.75
-          - --ply_x1=0.0
-          - --ply_y1=0.01
-          - --ply_x2=14.0
-          - --ply_y2=0.20
-          - --ply_x3=18.5
-          - --ply_y3=0.50
-          - --ply_x4=29.5
-          - --ply_y4=0.80
+          <<: *common_run_options
+          one-cycle-steps: 381500
+          lr: "2e-3"
+          start-lambda: 1.0
+          end-lambda: 0.75
+          ply_x1: 0.0
+          ply_y1: 0.01
+          ply_x2: 14.0
+          ply_y2: 0.20
+          ply_x3: 18.5
+          ply_y3: 0.50
+          ply_x4: 29.5
+          ply_y4: 0.80
         repetitions: 1
         resume: none
 
@@ -189,11 +180,10 @@ training:
         <<: *common_run_stage_two_plus
         max_epochs: 300
         other_options:
-          - *common_run_options
-          - --one-cycle-steps=381500
-          - --lr=1.5e-3
-          - *advanced_stage_options
-          - --swa-start-epoch=250
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 381500
+          lr: "1.5e-3"
+          swa-start-epoch: 250
 
     # Stage 3
     - <<: *common_step
@@ -201,11 +191,10 @@ training:
         <<: *common_run_stage_two_plus
         max_epochs: 550
         other_options:
-          - *common_run_options
-          - --one-cycle-steps=763000
-          - --lr=1e-3
-          - *advanced_stage_options
-          - --swa-start-epoch=500
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 763000
+          lr: "1e-3"
+          swa-start-epoch: 500
 
     # Stage 4
     - <<: *common_step
@@ -213,11 +202,10 @@ training:
         <<: *common_run_stage_two_plus
         max_epochs: 1050
         other_options:
-          - *common_run_options
-          - --one-cycle-steps=1526000
-          - --lr=0.67e-3
-          - *advanced_stage_options
-          - --swa-start-epoch=1000
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 1526000
+          lr: "0.67e-3"
+          swa-start-epoch: 1000
 
     # Stage 5
     - <<: *common_step
@@ -225,11 +213,10 @@ training:
         <<: *common_run_stage_two_plus
         max_epochs: 1000
         other_options:
-          - *common_run_options
-          - --one-cycle-steps=3052000
-          - --lr=0.5e-3
-          - *advanced_stage_options
-          - --swa-start-epoch=2000
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 3052000
+          lr: "0.5e-3"
+          swa-start-epoch: 2000
 
     # Stage 6
     - <<: *common_step
@@ -237,11 +224,10 @@ training:
         <<: *common_run_checkpoint
         max_epochs: 1500
         other_options:
-          - *common_run_options
-          - --one-cycle-steps=3052000
-          - --lr=0.5e-3
-          - *advanced_stage_options
-          - --swa-start-epoch=2000
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 3052000
+          lr: "0.5e-3"
+          swa-start-epoch: 2000
 
     # Stage 7
     - <<: *common_step
@@ -249,8 +235,7 @@ training:
         <<: *common_run_checkpoint
         max_epochs: 2050
         other_options:
-          - *common_run_options
-          - --one-cycle-steps=3052000
-          - --lr=0.5e-3
-          - *advanced_stage_options
-          - --swa-start-epoch=2000
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 3052000
+          lr: "0.5e-3"
+          swa-start-epoch: 2000
