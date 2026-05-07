@@ -1,3 +1,6 @@
+
+# --- Binpack anchors ---
+
 stage_one_binpacks: &stage_one_binpacks
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
@@ -43,6 +46,8 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
 
+# --- Convert option anchors ---
+
 optimize_flags: &optimize_flags
   - --features=Full_Threats+HalfKAv2_hm^
   - --l1=1024
@@ -56,6 +61,8 @@ checkpoint2nnue_options: &checkpoint2nnue_options
   - --l1=1024
   - --l2=31
   - --ft_compression=leb128
+
+# --- Run option anchors ---
 
 common_run_options: &common_run_options
   - --optimizer-name=rangerlite
@@ -98,11 +105,11 @@ advanced_stage_options: &advanced_stage_options
   - --start-lambda=0.76
   - --end-lambda=0.76
 
-trainer: &trainer
+common_trainer: &trainer
   owner: TonyCongqianWang
   sha: 2d42a723e6cff821f99f69dcdda8b0b6219fc9b5
 
-# --- Grouped Structure Anchors for Redundancy Reduction ---
+# --- Grouped structure anchors ---
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
@@ -110,7 +117,7 @@ common_convert: &common_convert
 
 common_step: &common_step
   convert: *common_convert
-  trainer: *trainer
+  trainer: *common_trainer
 
 common_run_stage_two_plus: &common_run_stage_two_plus
   binpacks: *stage_two_plus_binpacks
@@ -125,11 +132,13 @@ official_code: &official_code
   owner: official-stockfish
   sha: ed651aab544a330a9c8ae0dc2d8d51d5d48a8112
   target: profile-build
+
+# --- Anchors end ---
 # ----------------------------------------------------------
 
 testing:
   crosscheck:
-    trainer: *trainer
+    trainer: *common_trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
       - --features=Full_Threats+HalfKAv2_hm^
