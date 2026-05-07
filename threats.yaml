@@ -69,8 +69,6 @@ training:
           - --start-lambda=1.0
           - --end-lambda=0.75
           - --random-fen-skipping=10
-          - --w1=3.3553547771220007
-          - --w2=0.7006821612968052
           - --pc_y0=-0.20
           - --pc_y1=0.45
           - --pc_y2=1.0
