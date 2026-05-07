@@ -107,7 +107,7 @@ advanced_stage_options: &advanced_stage_options
 
 common_trainer: &trainer
   owner: TonyCongqianWang
-  sha: 2d42a723e6cff821f99f69dcdda8b0b6219fc9b5
+  sha: 4e3e44478442bf9d37535c7ad50859364e373563
 
 # --- Grouped structure anchors ---
 common_convert: &common_convert
