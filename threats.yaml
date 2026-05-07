@@ -105,7 +105,7 @@ advanced_stage_options: &advanced_stage_options
   - --start-lambda=0.76
   - --end-lambda=0.76
 
-common_trainer: &trainer
+common_trainer: &common_trainer
   owner: TonyCongqianWang
   sha: 4e3e44478442bf9d37535c7ad50859364e373563
 
