@@ -45,27 +45,27 @@ def supports_numactl() -> bool:
     except Exception:
         return False
 
-def parse_cmd(cmd):
-    parsed_cmd = []
+def flatten_cmd(cmd):
+    flattened_cmd = []
     if isinstance(cmd, str):
         # preserving quoted substrings as single arguments
         # only difference is preservation of whitespace
-        parsed_cmd = [cmd]
+        flattened_cmd = [cmd]
     elif isinstance(cmd, dict):
         for k, v in cmd.items():
             if isinstance(v, bool):
                 if v:
-                    parsed_cmd += [f"--{k}"]
+                    flattened_cmd += [f"--{k}"]
                 else:
-                    parsed_cmd += [f"--no-{k}"]
+                    flattened_cmd += [f"--no-{k}"]
             else:
-                parsed_cmd += [f"--{k}={v}"]
+                flattened_cmd += [f"--{k}={v}"]
     elif isinstance(cmd, list):
         for item in cmd:
-            parsed_cmd += parse_cmd(item)
+            flattened_cmd += flatten_cmd(item)
     else:
         raise ValueError(f"Unsupported command format: {cmd}")
-    return parsed_cmd
+    return flattened_cmd
 
 def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None, stdin_lines=None):
     """
@@ -78,9 +78,6 @@ def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None, stdin_lines=No
         filter_re = re.compile(filter_re)
 
     gmtime = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-
-    # cmd can be a string, a (nested) list of strings, or a dictionary.
-    cmd = parse_cmd(cmd)
 
     print(f"\n➡️  [{gmtime}][{name}] {' '.join(cmd)} (cwd={cwd or '$(current)'})")
     print("-------------------------------------------------------------")

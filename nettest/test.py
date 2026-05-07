@@ -1,7 +1,7 @@
 import yaml
 import re
 from pathlib import Path
-from .utils import execute
+from .utils import execute, flatten_cmd
 from .default_environment import get_default_environment
 from .train import ensure_trainer
 import shutil
@@ -423,7 +423,7 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
 
     # add options to specify count and features
     if "options" in test["crosscheck"]:
-        cmd += test["crosscheck"]["options"]
+        cmd += flatten_cmd(test["crosscheck"]["options"])
 
     cmd_nnue = cmd + ["--net", f"{std_nnue}"]
     execute("Run cross check eval from .nnue ", cmd_nnue, nnue_pytorch_dir, False)
