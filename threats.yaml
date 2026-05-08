@@ -100,7 +100,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 2d42a723e6cff821f99f69dcdda8b0b6219fc9b5
+  sha: 4e3e44478442bf9d37535c7ad50859364e373563
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -131,7 +131,7 @@ testing:
   crosscheck:
     trainer: *trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
-    options:
+    other_options:
       features: Full_Threats+HalfKAv2_hm^
       l1: 1024
       l2: 31

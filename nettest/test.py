@@ -422,8 +422,8 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     ]
 
     # add options to specify count and features
-    if "options" in test["crosscheck"]:
-        cmd += flatten_cmd(test["crosscheck"]["options"])
+    if "other_options" in test["crosscheck"]:
+        cmd += flatten_cmd(test["crosscheck"]["other_options"])
 
     cmd_nnue = cmd + ["--net", f"{std_nnue}"]
     execute("Run cross check eval from .nnue ", cmd_nnue, nnue_pytorch_dir, False)

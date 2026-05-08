@@ -4,7 +4,7 @@ testing:
       owner: official-stockfish
       sha: 0a2521fd1a13cd5bebc3d79fec31f89a0925880f
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
-    options:
+    other_options:
       - --features=Full_Threats+HalfKAv2_hm^
       - --l1=1024
       - --l2=31
