@@ -100,7 +100,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 89eb3ec84c90b23517f924a57f6f475b13d12b10
+  sha: b3d333d84f6a7f1a931c79386d5d5d02e195e5a1
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
