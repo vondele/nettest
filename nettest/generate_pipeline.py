@@ -299,6 +299,7 @@ def generate_testing_stage(
 
     envarg = f"--environment {environment}" if environment else ""
 
+    # pass the last training step sha as input, and all other steps that were computed in this run
     steps = 0
     step_number = len(recipe["training"]["steps"])
 
@@ -346,10 +347,12 @@ def generate_testing_stage(
 
             ci_yaml_out[f"step_{step_number}_{testing_sha}_test"] = job
 
-            schedule["test"].append({
-                "test_config_sha": test_config_sha,
-                "testing_sha": testing_sha,
-            })
+            schedule["test"].append(
+                {
+                    "test_config_sha": test_config_sha,
+                    "testing_sha": testing_sha,
+                }
+            )
 
         step_number -= 1
 
