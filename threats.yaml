@@ -89,7 +89,6 @@ advanced_stage_options: &advanced_stage_options
   out-scaling: 352.8750799744594
   in-offset: 281.4186220835457
   out-offset: 279.93991915496105
-  early-fen-skipping: 18
   one-cycle-warmup-pct: 0.05
   one-cycle-final-div: "1e3"
   jitter-lambda-sample: 0.0030
