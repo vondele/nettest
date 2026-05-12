@@ -123,7 +123,7 @@ common_run_checkpoint: &common_run_checkpoint
 
 official_code: &official_code
   owner: official-stockfish
-  sha: 5095cd16c97e7596f2d2a02eb05ed8e030af991f
+  sha: dd321af5dfc0789de07c4e5c64915073995eb818
   target: profile-build
 # ----------------------------------------------------------
 
@@ -146,7 +146,7 @@ testing:
       tc: 10+0.1
   reference:
     code: *official_code
-  steps: new
+  steps: last
   testing:
     code: *official_code
 
