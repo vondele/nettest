@@ -135,7 +135,7 @@ training:
       run:
         binpacks:
           - official-stockfish/master-binpacks/fishpack32.binpack
-        max_epochs: 3
+        max_epochs: 7
         repetitions: 2
         resume: previous_checkpoint
         other_options:
