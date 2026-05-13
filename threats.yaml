@@ -145,7 +145,7 @@ testing:
       tc: 10+0.1
   reference:
     code: *official_code
-  steps: last
+  steps: all
   testing:
     code: *official_code
 
