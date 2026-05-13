@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 import torch
 import time
-from .utils import execute, MyDumper, sha256sum, find_most_recent, supports_numactl
+from .utils import execute, MyDumper, sha256sum, find_most_recent, supports_numactl, flatten_cmd
 from .default_environment import get_default_environment
 import uuid
 import yaml
@@ -179,7 +179,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     cmd.append(f"--num-workers={workers}")
 
     # append all options
-    cmd = cmd + run["other_options"]
+    cmd = cmd + flatten_cmd(run["other_options"])
 
     # for now use 30min less than total allowed time to allow for eventual net conversion.
     end = os.environ.get("SLURM_JOB_END_TIME")
@@ -270,7 +270,7 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
         f"{checkpoint}",
         f"{model}",
     ]
-    cmd = cmd + convert["checkpoint2nnue"]
+    cmd = cmd + flatten_cmd(convert["checkpoint2nnue"])
     execute("Convert to pt", cmd, nnue_pytorch_dir, False)
 
     # run the conversion to nnue, no optimization here
@@ -286,7 +286,7 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
         f"{checkpoint}",
         f"{destination}",
     ]
-    cmd = cmd + convert["checkpoint2nnue"]
+    cmd = cmd + flatten_cmd(convert["checkpoint2nnue"])
     execute("Convert to nnue", cmd, nnue_pytorch_dir, False)
 
     # optimize as a second step (see https://github.com/official-stockfish/nnue-pytorch/issues/322)
@@ -310,7 +310,7 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
             f"--ft_optimize_data={binpack}",
             f"--device={device}",
         ]
-        cmd = cmd + convert["optimize"]
+        cmd = cmd + flatten_cmd(convert["optimize"])
         execute("Optimize nnue", cmd, nnue_pytorch_dir, False)
     else:
         nnue = destination

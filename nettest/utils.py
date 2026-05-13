@@ -45,6 +45,27 @@ def supports_numactl() -> bool:
     except Exception:
         return False
 
+def flatten_cmd(cmd):
+    flattened_cmd = []
+    if isinstance(cmd, str):
+        # preserving quoted substrings as single arguments
+        # only difference is preservation of whitespace
+        flattened_cmd = [cmd]
+    elif isinstance(cmd, dict):
+        for k, v in cmd.items():
+            if isinstance(v, bool):
+                if v:
+                    flattened_cmd += [f"--{k}"]
+                else:
+                    flattened_cmd += [f"--no-{k}"]
+            else:
+                flattened_cmd += [f"--{k}={v}"]
+    elif isinstance(cmd, list):
+        for item in cmd:
+            flattened_cmd += flatten_cmd(item)
+    else:
+        raise ValueError(f"Unsupported command format: {cmd}")
+    return flattened_cmd
 
 def execute(name, cmd, cwd, fail_is_ok, filter_re=None, env=None, stdin_lines=None):
     """
