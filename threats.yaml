@@ -98,8 +98,8 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.76
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: b3d333d84f6a7f1a931c79386d5d5d02e195e5a1
+  owner: AliceRoselia
+  sha: 6ebed35ed4feba03316c4d700dc1f0c748855f36
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
