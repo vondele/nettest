@@ -66,7 +66,7 @@ common_run_options: &common_run_options
   l1: 1024
   l2: 31
   random-fen-skipping: 10
-  early-fen-skipping: 10
+  early-fen-skipping: 14
   soft-early-fen_skipping: 32
   pc-y0: -0.20
   pc-y1: 0.45
@@ -76,8 +76,8 @@ common_run_options: &common_run_options
 
 advanced_stage_options: &advanced_stage_options
   ply-x1: 0.00
-  ply-y1: 0.025
-  ply-x2: 22.0
+  ply-y1: 0.02
+  ply-x2: 23.5
   ply-y2: 0.05
   ply-x3: 25.5
   ply-y3: 0.20
