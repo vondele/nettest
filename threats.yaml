@@ -1,8 +1,8 @@
 testing:
   crosscheck:
     trainer:
-      owner: official-stockfish
-      sha: 0920370fe997c1c740b84a5054452b6f6d8c455f
+      owner: sscg13
+      sha: 322aeb5e8d08e35c0a90a6e6dfb64bb0c8f4e93a
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     options:
       - --features=Full_Threats+HalfKAv2_hm^
