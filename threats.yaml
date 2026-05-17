@@ -99,7 +99,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: official-stockfish
-  sha: 77038253250ee9d672e29cc9fb75ab4971e09ce0
+  sha: e215624395d03ee3aeb9e7640c4d4570518b37ac
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
