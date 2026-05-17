@@ -98,8 +98,13 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.76
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: b3d333d84f6a7f1a931c79386d5d5d02e195e5a1
+  owner: sscg13
+  sha: 322aeb5e8d08e35c0a90a6e6dfb64bb0c8f4e93a
+
+test_code: &test_code
+  owner: sscg13
+  sha: b3341191f5e5dcf15d676aaa30941c9c57e58dbb
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -147,7 +152,7 @@ testing:
     code: *official_code
   steps: last
   testing:
-    code: *official_code
+    code: *test_code
 
 training:
   steps:
