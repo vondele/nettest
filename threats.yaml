@@ -57,11 +57,11 @@ checkpoint2nnue_options: &checkpoint2nnue_options
   l2: 31
   ft-compression: leb128
 
-disable_fake_quant_options: &disable_fake_quant_options:
+disable_fake_quant_options: &disable_fake_quant_options
   use-fake-act-quantization: false
   use-fake-weight-quantization: false
 
-enable_fake_quant_options: &enable_fake_quant_options:
+enable_fake_quant_options: &enable_fake_quant_options
   use-fake-act-quantization: true
   use-fake-weight-quantization: true
 
