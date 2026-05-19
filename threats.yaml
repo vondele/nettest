@@ -57,7 +57,16 @@ checkpoint2nnue_options: &checkpoint2nnue_options
   l2: 31
   ft-compression: leb128
 
+disable_fake_quant_options: &disable_fake_quant_options:
+  use-fake-act-quantization: false
+  use-fake-weight-quantization: false
+
+enable_fake_quant_options: &enable_fake_quant_options:
+  use-fake-act-quantization: true
+  use-fake-weight-quantization: true
+
 common_run_options: &common_run_options
+  <<: *disable_fake_quant_options
   optimizer-name: rangerlite
   validation-size: 250000000
   check-val-every-n-epoch: 25
@@ -224,7 +233,7 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_checkpoint
-        max_epochs: 1500
+        max_epochs: 2000
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
@@ -241,3 +250,15 @@ training:
           one-cycle-steps: 3052000
           lr: "0.5e-3"
           swa-start-epoch: 2000
+
+    # Stage 8
+    - <<: *common_step
+      run:
+        <<: *common_run_stage_two_plus
+        max_epochs: 1050
+        other_options:
+          <<: [*enable_fake_quant_options, *common_run_options, *advanced_stage_options]
+          one-cycle-steps: 1526000
+          lr: "2.0e-5"
+          one-cycle-final-div: "5e1"
+          swa-start-epoch: 1000
