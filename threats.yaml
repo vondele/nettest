@@ -255,10 +255,10 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 1050
+        max_epochs: 550
         other_options:
           <<: [*enable_fake_quant_options, *common_run_options, *advanced_stage_options]
-          one-cycle-steps: 1526000
+          one-cycle-steps: 763000
           lr: "2.0e-5"
           one-cycle-final-div: "5e1"
-          swa-start-epoch: 1000
+          swa-start-epoch: 500
