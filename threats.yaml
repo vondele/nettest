@@ -65,6 +65,7 @@ common_run_options: &common_run_options
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
   l2: 31
+  factorized-weight-decay: 0.001
   random-fen-skipping: 10
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -99,7 +100,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: deb0b984a76e033544df53b85416b20ca3c01c3e
+  sha: 02314a3270fb9052383b29fefdfac8a096acf7dc
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
