@@ -30,7 +30,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: official-stockfish
-  sha: 0a2521fd1a13cd5bebc3d79fec31f89a0925880f
+  sha: e215624395d03ee3aeb9e7640c4d4570518b37ac
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -44,7 +44,7 @@ common_step: &common_step
 
 official_code: &official_code
   owner: official-stockfish
-  sha: 5095cd16c97e7596f2d2a02eb05ed8e030af991f
+  sha: dd321af5dfc0789de07c4e5c64915073995eb818
   target: profile-build
 # ----------------------------------------------------------
 
@@ -135,7 +135,7 @@ training:
       run:
         binpacks:
           - official-stockfish/master-binpacks/fishpack32.binpack
-        max_epochs: 3
+        max_epochs: 7
         repetitions: 2
         resume: previous_checkpoint
         other_options:

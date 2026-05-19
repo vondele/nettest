@@ -66,7 +66,7 @@ common_run_options: &common_run_options
   l1: 1024
   l2: 31
   random-fen-skipping: 10
-  early-fen-skipping: 10
+  early-fen-skipping: 18
   soft-early-fen_skipping: 32
   pc-y0: -0.20
   pc-y1: 0.45
@@ -98,8 +98,8 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.76
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: b3d333d84f6a7f1a931c79386d5d5d02e195e5a1
+  owner: official-stockfish
+  sha: e215624395d03ee3aeb9e7640c4d4570518b37ac
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -145,7 +145,7 @@ testing:
       tc: 10+0.1
   reference:
     code: *official_code
-  steps: last
+  steps: all
   testing:
     code: *official_code
 
