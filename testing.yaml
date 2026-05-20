@@ -45,7 +45,7 @@ common_step: &common_step
 official_code: &official_code
   owner: official-stockfish
   sha: 133731f33166afcde7fb7a76c41e47c3cddcee8b
-  target: profile-build
+  target: build
 # ----------------------------------------------------------
 
 testing:
@@ -75,7 +75,7 @@ testing:
     code:
       owner: ces42
       sha: 0e2ba507e5e5515516bc5829a60c1ef2ae534749
-      target: profile-build
+      target: build
 
 training:
   steps:
