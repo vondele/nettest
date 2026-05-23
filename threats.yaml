@@ -138,7 +138,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 541aef889206882de4823cf5a676d53ac5171c6f
+      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
       max_rounds: 50000
