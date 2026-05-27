@@ -65,6 +65,7 @@ common_run_options: &common_run_options
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
   l2: 31
+  factorized-weight-decay: 0.001
   random-fen-skipping: 10
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -98,8 +99,8 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.76
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: e215624395d03ee3aeb9e7640c4d4570518b37ac
+  owner: TonyCongqianWang
+  sha: b4fd490092544a8cc6583fcd0d404383ba570891
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -122,7 +123,7 @@ common_run_checkpoint: &common_run_checkpoint
 
 official_code: &official_code
   owner: official-stockfish
-  sha: dd321af5dfc0789de07c4e5c64915073995eb818
+  sha: 313ea4ab0410872e99f0668c74edc7e49e9a0b6a
   target: profile-build
 # ----------------------------------------------------------
 
