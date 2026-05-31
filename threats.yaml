@@ -59,8 +59,8 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 
 common_run_options: &common_run_options
   optimizer-name: rangerlite
-  validation-size: 250000000
-  check-val-every-n-epoch: 25
+#  validation-size: 250000000
+#  check-val-every-n-epoch: 25
   batch-size: 65536
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
@@ -123,7 +123,7 @@ common_run_checkpoint: &common_run_checkpoint
 
 official_code: &official_code
   owner: official-stockfish
-  sha: 313ea4ab0410872e99f0668c74edc7e49e9a0b6a
+  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
   target: profile-build
 # ----------------------------------------------------------
 
@@ -135,14 +135,14 @@ testing:
       features: Full_Threats+HalfKAv2_hm^
       l1: 1024
       l2: 31
-      count: 5000
+      count: 20000
   fastchess:
     code:
       owner: Disservin
-      sha: 541aef889206882de4823cf5a676d53ac5171c6f
+      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 50000
+      max_rounds: 30000
       tc: 10+0.1
   reference:
     code: *official_code
