@@ -122,12 +122,13 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 
 common_run_options: &common_run_options
   optimizer-name: rangerlite
-  validation-size: 250000000
-  check-val-every-n-epoch: 25
+#  validation-size: 250000000
+#  check-val-every-n-epoch: 25
   batch-size: 65536
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
   l2: 31
+  factorized-weight-decay: 0.001
   random-fen-skipping: 10
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -138,6 +139,29 @@ common_run_options: &common_run_options
   pc-y4: 0.75
 
 advanced_stage_options: &advanced_stage_options
+  ply-x1: 0.00
+  ply-y1: 0.025
+  ply-x2: 22.0
+  ply-y2: 0.05
+  ply-x3: 25.5
+  ply-y3: 0.20
+  ply-x4: 29.5
+  ply-y4: 0.80
+  pow-exp: 2.442037790427722
+  qp-asymmetry: 0.15795949371005746
+  in-scaling: 294.7193839807687
+  out-scaling: 352.8750799744594
+  in-offset: 281.4186220835457
+  out-offset: 279.93991915496105
+  one-cycle-warmup-pct: 0.05
+  one-cycle-final-div: "1e3"
+  jitter-lambda-sample: 0.0030
+  jitter-lambda-batch: 0.0100
+  jitter-decay-lambda-batch: 0.999
+  start-lambda: 0.76
+  end-lambda: 0.76
+
+tune_stage_options: &tune_stage_options
   ply-x1: 0.00
   ply-y1: 0.025
   ply-x2: 22.0
@@ -161,8 +185,8 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: {both_lambda}
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 77038253250ee9d672e29cc9fb75ab4971e09ce0
+  owner: TonyCongqianWang
+  sha: b4fd490092544a8cc6583fcd0d404383ba570891
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -185,7 +209,7 @@ common_run_checkpoint: &common_run_checkpoint
 
 official_code: &official_code
   owner: official-stockfish
-  sha: dd321af5dfc0789de07c4e5c64915073995eb818
+  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
   target: profile-build
 # ----------------------------------------------------------
 
@@ -197,14 +221,14 @@ testing:
       features: Full_Threats+HalfKAv2_hm^
       l1: 1024
       l2: 31
-      count: 5000
+      count: 20000
   fastchess:
     code:
       owner: Disservin
-      sha: 541aef889206882de4823cf5a676d53ac5171c6f
+      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 60000
+      max_rounds: 40000
       tc: 10+0.1
   reference:
     code: *official_code
@@ -275,7 +299,7 @@ training:
         <<: *common_run_stage_two_plus
         max_epochs: 1000
         other_options:
-          <<: [*common_run_options, *advanced_stage_options]
+          <<: [*common_run_options, *tune_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
           swa-start-epoch: 2000
@@ -286,7 +310,7 @@ training:
         <<: *common_run_checkpoint
         max_epochs: 1500
         other_options:
-          <<: [*common_run_options, *advanced_stage_options]
+          <<: [*common_run_options, *tune_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
           swa-start-epoch: 2000
@@ -297,7 +321,7 @@ training:
         <<: *common_run_checkpoint
         max_epochs: 2050
         other_options:
-          <<: [*common_run_options, *advanced_stage_options]
+          <<: [*common_run_options, *tune_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
           swa-start-epoch: 2000
@@ -387,10 +411,10 @@ if __name__ == "__main__":
         .set_mutation(sigma=0.03),
         ng.p.Scalar(init=0.0030)  # lambda_sample
         .set_bounds(lower=0.0000, upper=0.0090)
-        .set_mutation(sigma=0.001),
+        .set_mutation(sigma=0.002),
         ng.p.Scalar(init=0.0100)  # lambda_batch
         .set_bounds(lower=0.0000, upper=0.0300)
-        .set_mutation(sigma=0.003),
+        .set_mutation(sigma=0.006),
         ng.p.Scalar(init=0.76)  # both_lambda
         .set_bounds(lower=0.6, upper=0.9)
         .set_mutation(sigma=0.02),
@@ -411,7 +435,7 @@ if __name__ == "__main__":
         #        .set_mutation(sigma=10),
     )
 
-    budget = 128  # Total number of evaluations to perform
+    budget = 512  # Total number of evaluations to perform
     num_workers = 16  # Number of parallel workers to use
 
     # The remotely trainable net
