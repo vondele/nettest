@@ -1,3 +1,16 @@
+trainer: &trainer
+  owner: official-stockfish
+  sha: 89d572575441c927947fdc8b98c41719c530d120
+
+sf_base: &sf_base
+  owner: official-stockfish
+  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
+  target: profile-build
+
+games: &games
+  owner: Disservin
+  sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
+
 stage_one_binpacks: &stage_one_binpacks
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
@@ -98,10 +111,6 @@ advanced_stage_options: &advanced_stage_options
   start-lambda: 0.76
   end-lambda: 0.76
 
-trainer: &trainer
-  owner: official-stockfish
-  sha: 89d572575441c927947fdc8b98c41719c530d120
-
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -114,17 +123,8 @@ common_step: &common_step
 
 common_run_stage_two_plus: &common_run_stage_two_plus
   binpacks: *stage_two_plus_binpacks
-  repetitions: 1
   resume: previous_model
 
-common_run_checkpoint: &common_run_checkpoint
-  <<: *common_run_stage_two_plus
-  resume: previous_checkpoint
-
-official_code: &official_code
-  owner: official-stockfish
-  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
-  target: profile-build
 # ----------------------------------------------------------
 
 testing:
@@ -137,18 +137,16 @@ testing:
       l2: 31
       count: 20000
   fastchess:
-    code:
-      owner: Disservin
-      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
+    code: *games
     options:
       hash: 16
       max_rounds: 30000
       tc: 10+0.1
   reference:
-    code: *official_code
+    code: *sf_base
   steps: all
   testing:
-    code: *official_code
+    code: *sf_base
 
 training:
   steps:
@@ -178,6 +176,7 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
+        repetitions: 1
         max_epochs: 300
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
@@ -189,6 +188,7 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
+        repetitions: 1
         max_epochs: 550
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
@@ -200,6 +200,7 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
+        repetitions: 1
         max_epochs: 1050
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
@@ -211,31 +212,10 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 1000
+        repetitions: 2
+        max_epochs: 1850
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
-          swa-start-epoch: 2000
-
-    # Stage 6
-    - <<: *common_step
-      run:
-        <<: *common_run_checkpoint
-        max_epochs: 1500
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3052000
-          lr: "0.5e-3"
-          swa-start-epoch: 2000
-
-    # Stage 7
-    - <<: *common_step
-      run:
-        <<: *common_run_checkpoint
-        max_epochs: 2050
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3052000
-          lr: "0.5e-3"
-          swa-start-epoch: 2000
+          swa-start-epoch: 1800
