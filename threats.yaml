@@ -100,7 +100,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: b4fd490092544a8cc6583fcd0d404383ba570891
+  sha: bc4f98671d18dc8ee4bafcb11a89c6cf6af968ad
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -124,7 +124,12 @@ common_run_checkpoint: &common_run_checkpoint
 official_code: &official_code
   owner: official-stockfish
   sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
-  target: profile-build
+  target: build
+
+testing_code: &testing_code
+  owner: TonyCongqianWang
+  sha: a8e83014be71390e5b4231fe2d896853e7fba266
+  target: build
 # ----------------------------------------------------------
 
 testing:
@@ -222,7 +227,7 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_checkpoint
-        max_epochs: 1500
+        max_epochs: 2000
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
