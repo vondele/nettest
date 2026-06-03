@@ -43,18 +43,19 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
 
-optimize_flags: &optimize_flags
+model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
+
+optimize_flags: &optimize_flags
+  <<: *model_config
   ft-optimize-count: 100000
   ft-optimize: true
   ft-compression: leb128
 
 checkpoint2nnue_options: &checkpoint2nnue_options
-  features: Full_Threats+HalfKAv2_hm^
-  l1: 1024
-  l2: 31
+  <<: *model_config
   ft-compression: leb128
 
 common_run_options: &common_run_options
@@ -62,9 +63,7 @@ common_run_options: &common_run_options
   validation-size: 250000000
   check-val-every-n-epoch: 25
   batch-size: 65536
-  features: Full_Threats+HalfKAv2_hm^
-  l1: 1024
-  l2: 32
+  <<: *model_config
   factorized-weight-decay: 0.001
   random-fen-skipping: 10
   early-fen-skipping: 18
@@ -137,9 +136,7 @@ testing:
     trainer: *trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     other_options:
-      features: Full_Threats+HalfKAv2_hm^
-      l1: 1024
-      l2: 31
+      <<: *model_config
       count: 20000
   fastchess:
     code:
