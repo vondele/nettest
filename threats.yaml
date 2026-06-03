@@ -213,9 +213,9 @@ training:
       run:
         <<: *common_run_stage_two_plus
         repetitions: 2
-        max_epochs: 1850
+        max_epochs: 2050
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
-          swa-start-epoch: 1800
+          swa-start-epoch: 2000
