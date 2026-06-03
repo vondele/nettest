@@ -59,8 +59,8 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 
 common_run_options: &common_run_options
   optimizer-name: rangerlite
-#  validation-size: 250000000
-#  check-val-every-n-epoch: 25
+  validation-size: 250000000
+  check-val-every-n-epoch: 25
   batch-size: 65536
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
@@ -153,7 +153,7 @@ testing:
     code: *official_code
   steps: all
   testing:
-    code: *official_code
+    code: *testing_code
 
 training:
   steps:
@@ -165,7 +165,8 @@ training:
         other_options:
           <<: *common_run_options
           one-cycle-steps: 381500
-          lr: "2e-3"
+          one-cycle-warmup-pct: 0.25
+          lr: "1.5e-3"
           start-lambda: 1.0
           end-lambda: 0.75
           ply-x1: 0.0
@@ -187,7 +188,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 381500
-          lr: "1.5e-3"
+          lr: "1.2e-3"
           swa-start-epoch: 250
 
     # Stage 3
