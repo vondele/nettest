@@ -64,7 +64,7 @@ common_run_options: &common_run_options
   batch-size: 65536
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
   factorized-weight-decay: 0.001
   random-fen-skipping: 10
   early-fen-skipping: 18
