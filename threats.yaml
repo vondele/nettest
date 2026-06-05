@@ -123,12 +123,12 @@ common_run_checkpoint: &common_run_checkpoint
 official_code: &official_code
   owner: official-stockfish
   sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
-  target: build
+  target: profile-build
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: a8e83014be71390e5b4231fe2d896853e7fba266
-  target: build
+  sha: 38d0a62445daa0dbe9b813d5af4926f870a1ba1d
+  target: profile-build
 # ----------------------------------------------------------
 
 testing:
@@ -144,11 +144,11 @@ testing:
       sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 30000
+      max_rounds: 40000
       tc: 10+0.1
   reference:
     code: *official_code
-  steps: all
+  steps: 3,4,6,7
   testing:
     code: *testing_code
 
