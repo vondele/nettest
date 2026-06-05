@@ -196,7 +196,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 763000
-          lr: "1e-3"
+          lr: "0.8e-3"
           swa-start-epoch: 500
 
     # Stage 4
@@ -207,7 +207,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 1526000
-          lr: "0.67e-3"
+          lr: "0.54e-3"
           swa-start-epoch: 1000
 
     # Stage 5
@@ -218,7 +218,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
-          lr: "0.5e-3"
+          lr: "0.4e-3"
           swa-start-epoch: 2000
 
     # Stage 6
@@ -229,7 +229,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
-          lr: "0.5e-3"
+          lr: "0.4e-3"
           swa-start-epoch: 2000
 
     # Stage 7
@@ -240,5 +240,5 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
-          lr: "0.5e-3"
+          lr: "0.4e-3"
           swa-start-epoch: 2000
