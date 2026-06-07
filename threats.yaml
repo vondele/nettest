@@ -100,7 +100,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: b4fd490092544a8cc6583fcd0d404383ba570891
+  sha: 4d391fdbef8e791d7abbaa0aab5fbc8b676dbbbb
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -142,7 +142,7 @@ testing:
       sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 30000
+      max_rounds: 300
       tc: 10+0.1
   reference:
     code: *official_code
@@ -156,7 +156,7 @@ training:
     - <<: *common_step
       run:
         binpacks: *stage_one_binpacks
-        max_epochs: 250
+        max_epochs: 10
         other_options:
           <<: *common_run_options
           one-cycle-steps: 381500
@@ -178,64 +178,64 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 300
+        max_epochs: 10
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 381500
           lr: "1.5e-3"
-          swa-start-epoch: 250
+          swa-start-epoch: 8
 
     # Stage 3
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 550
+        max_epochs: 10
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 763000
           lr: "1e-3"
-          swa-start-epoch: 500
+          swa-start-epoch: 8
 
     # Stage 4
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 1050
+        max_epochs: 10
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 1526000
           lr: "0.67e-3"
-          swa-start-epoch: 1000
+          swa-start-epoch: 8
 
     # Stage 5
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 1000
+        max_epochs: 5
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
-          swa-start-epoch: 2000
+          swa-start-epoch: 10
 
     # Stage 6
     - <<: *common_step
       run:
         <<: *common_run_checkpoint
-        max_epochs: 1500
+        max_epochs: 10
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
-          swa-start-epoch: 2000
+          swa-start-epoch: 10
 
     # Stage 7
     - <<: *common_step
       run:
         <<: *common_run_checkpoint
-        max_epochs: 2050
+        max_epochs: 25
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3052000
           lr: "0.5e-3"
-          swa-start-epoch: 2000
+          swa-start-epoch: 10
