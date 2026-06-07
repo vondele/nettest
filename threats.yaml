@@ -99,8 +99,8 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.76
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 89d572575441c927947fdc8b98c41719c530d120
+  owner: ces42
+  sha: 051bbe74a49e33e167f90d3955e1b7dcfccd5584
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -124,7 +124,7 @@ common_run_checkpoint: &common_run_checkpoint
 official_code: &official_code
   owner: official-stockfish
   sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
-  target: profile-build
+  target: build
 # ----------------------------------------------------------
 
 testing:
@@ -148,7 +148,10 @@ testing:
     code: *official_code
   steps: all
   testing:
-    code: *official_code
+    code:
+      owner: ces42
+      sha: 82cf860ac40981e2aa61e3ae4d3fc76e3647e268
+      target: build
 
 training:
   steps:
