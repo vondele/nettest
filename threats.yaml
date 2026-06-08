@@ -156,7 +156,7 @@ training:
     - <<: *common_step
       run:
         binpacks: *stage_one_binpacks
-        max_epochs: 10
+        max_epochs: 15
         other_options:
           <<: *common_run_options
           one-cycle-steps: 381500
