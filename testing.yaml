@@ -29,8 +29,8 @@ common_run_options: &common_run_options
   pc-y4: 0.75
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: e215624395d03ee3aeb9e7640c4d4570518b37ac
+  owner: sscg13
+  sha: 8a026c6236f95d85fed3a69fdaf0f10896a4eda8
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -44,7 +44,12 @@ common_step: &common_step
 
 official_code: &official_code
   owner: official-stockfish
-  sha: dd321af5dfc0789de07c4e5c64915073995eb818
+  sha: 86f1df7134fa54fe93e90dc086d978e917256c2f
+  target: profile-build
+
+engine: &engine
+  owner: sscg13
+  sha: 25afa12d66cb5ce238ad0b027d3075251e74ad4a
   target: profile-build
 # ----------------------------------------------------------
 
