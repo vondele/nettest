@@ -41,7 +41,7 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
   - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
 
 optimize_flags: &optimize_flags
   features: Full_Threats+HalfKAv2_hm^
