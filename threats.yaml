@@ -113,17 +113,17 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: a1c30f8e491718dd9ad88b74dae0bcb07659dd48
+  sha: 19f42f234739b722f6ef75d2df97d061a903bbf8
 
 reference_code: &reference_code
   owner: official-stockfish
   sha: 86f1df7134fa54fe93e90dc086d978e917256c2f
-  target: profile-build
+  target: build
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: 1351e2ab7afe1a19cf9646cfb98ba4d8bdeab38e
-  target: profile-build
+  sha: 7f7f89c66df42d269592a7582b10981923d46a71
+  target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
