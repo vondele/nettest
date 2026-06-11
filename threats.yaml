@@ -43,7 +43,7 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
 
 model_config: &model_config
-  features: Full_Threats+HalfKAv2_hm^
+  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
   l2: 32
 
@@ -113,16 +113,18 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.7401424425915776
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: 6cd6ed4e6de7a6bb260e60f1cde02464b3049212
+  owner: sscg13
+  sha: 8e85dbaf5bc695c1e9cf42863b5a2f7777acb064
 
 reference_code: &reference_code
-  owner: TonyCongqianWang
-  sha: 82d79197e1abd7994571a16dc1f4e41031645529
+  owner: official-stockfish
+  sha: d5bbc6b67d3184fc39fa87a18596e77e92af990c
   target: profile-build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: sscg13
+  sha: 77399c0314ac7af6ad65f174557cac685926fb30
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert

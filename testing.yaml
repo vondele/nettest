@@ -1,23 +1,23 @@
 optimize_flags: &optimize_flags
-  features: Full_Threats+HalfKAv2_hm^
+  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
   ft-optimize-count: 100000
   ft-optimize: true
   ft-compression: leb128
 
 checkpoint2nnue_options: &checkpoint2nnue_options
-  features: Full_Threats+HalfKAv2_hm^
+  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
   ft-compression: leb128
 
 common_run_options: &common_run_options
   batch-size: 8192
   epoch-size: 100000
-  features: Full_Threats+HalfKAv2_hm^
+  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
   random-fen-skipping: 10
   soft-early-fen_skipping: 32
   w1: 3.3553547771220007
@@ -29,8 +29,8 @@ common_run_options: &common_run_options
   pc-y4: 0.75
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: ae6e2876a336267a74d9ad85c05eac719bdefd66
+  owner: sscg13
+  sha: 8e85dbaf5bc695c1e9cf42863b5a2f7777acb064
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -44,7 +44,12 @@ common_step: &common_step
 
 official_code: &official_code
   owner: official-stockfish
-  sha: 6088838797d6333711c17fe2c0962fa0858517ec
+  sha: d5bbc6b67d3184fc39fa87a18596e77e92af990c
+  target: profile-build
+
+engine: &engine
+  owner: sscg13
+  sha: 77399c0314ac7af6ad65f174557cac685926fb30
   target: profile-build
 # ----------------------------------------------------------
 
@@ -53,9 +58,9 @@ testing:
     trainer: *trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     other_options:
-      features: Full_Threats+HalfKAv2_hm^
+      features: Full_Threats+PP_3Wide+HalfKAv2_hm^
       l1: 1024
-      l2: 31
+      l2: 32
       count: 5000
   fastchess:
     code:
@@ -72,7 +77,7 @@ testing:
     code: *official_code
   steps: all
   testing:
-    code: *official_code
+    code: *engine
 
 training:
   steps:
