@@ -43,28 +43,27 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
 
-optimize_flags: &optimize_flags
+model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
   l2: 31
+
+optimize_flags: &optimize_flags
+  <<: *model_config
   ft-optimize-count: 100000
   ft-optimize: true
   ft-compression: leb128
 
 checkpoint2nnue_options: &checkpoint2nnue_options
-  features: Full_Threats+HalfKAv2_hm^
-  l1: 1024
-  l2: 31
+  <<: *model_config
   ft-compression: leb128
 
 common_run_options: &common_run_options
   optimizer-name: rangerlite
-#  validation-size: 250000000
-#  check-val-every-n-epoch: 25
+  validation-size: 250000000
+  check-val-every-n-epoch: 25
   batch-size: 65536
-  features: Full_Threats+HalfKAv2_hm^
-  l1: 1024
-  l2: 31
+  <<: *model_config
   factorized-weight-decay: 0.001
   random-fen-skipping: 10
   early-fen-skipping: 18
@@ -75,6 +74,20 @@ common_run_options: &common_run_options
   pc-y3: 0.95
   pc-y4: 0.75
 
+warmups_stage_options: &warmups_stage_options
+  ply-x1: 0.0
+  ply-y1: 0.01
+  ply-x2: 14.0
+  ply-y2: 0.20
+  ply-x3: 18.5
+  ply-y3: 0.50
+  ply-x4: 29.5
+  ply-y4: 0.80
+  one-cycle-warmup-pct: 0.25
+  one-cycle-final-div: "3e1"
+  start-lambda: 1.0
+  end-lambda: 0.75
+
 advanced_stage_options: &advanced_stage_options
   ply-x1: 0.00
   ply-y1: 0.025
@@ -84,23 +97,31 @@ advanced_stage_options: &advanced_stage_options
   ply-y3: 0.20
   ply-x4: 29.5
   ply-y4: 0.80
-  pow-exp: 2.442037790427722
-  qp-asymmetry: 0.15795949371005746
-  in-scaling: 294.7193839807687
-  out-scaling: 352.8750799744594
-  in-offset: 281.4186220835457
-  out-offset: 279.93991915496105
-  one-cycle-warmup-pct: 0.05
-  one-cycle-final-div: "1e3"
-  jitter-lambda-sample: 0.0030
-  jitter-lambda-batch: 0.0100
+  pow-exp: 2.435
+  qp-asymmetry: 0.23
+  in-scaling: 300.0
+  out-scaling: 350.0
+  in-offset: 300.0
+  out-offset: 300.0
+  one-cycle-warmup-pct: 0.033
+  one-cycle-final-div: "2e3"
+  jitter-lambda-sample: 0.0034
+  jitter-lambda-batch: 0.0062
   jitter-decay-lambda-batch: 0.999
-  start-lambda: 0.76
-  end-lambda: 0.76
+  start-lambda: 0.74
+  end-lambda: 0.74
 
 trainer: &trainer
   owner: official-stockfish
   sha: 89d572575441c927947fdc8b98c41719c530d120
+
+reference_code: &reference_code
+  owner: official-stockfish
+  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
+  target: profile-build
+
+testing_code: &testing_code
+  <<: *reference_code
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -121,10 +142,6 @@ common_run_checkpoint: &common_run_checkpoint
   <<: *common_run_stage_two_plus
   resume: previous_checkpoint
 
-official_code: &official_code
-  owner: official-stockfish
-  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
-  target: profile-build
 # ----------------------------------------------------------
 
 testing:
@@ -132,9 +149,7 @@ testing:
     trainer: *trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     other_options:
-      features: Full_Threats+HalfKAv2_hm^
-      l1: 1024
-      l2: 31
+      <<: *model_config
       count: 20000
   fastchess:
     code:
@@ -142,13 +157,16 @@ testing:
       sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 30000
+      max_rounds: 40000
       tc: 10+0.1
+    sprt:
+      nElo_interval_midpoint: 0
+      nElo_interval_width: 2
   reference:
-    code: *official_code
-  steps: all
+    code: *reference_code
+  steps: last
   testing:
-    code: *official_code
+    code: *testing_code
 
 training:
   steps:
@@ -158,19 +176,10 @@ training:
         binpacks: *stage_one_binpacks
         max_epochs: 250
         other_options:
-          <<: *common_run_options
+          <<: [*common_run_options, *warmups_stage_options]
           one-cycle-steps: 381500
-          lr: "2e-3"
-          start-lambda: 1.0
-          end-lambda: 0.75
-          ply-x1: 0.0
-          ply-y1: 0.01
-          ply-x2: 14.0
-          ply-y2: 0.20
-          ply-x3: 18.5
-          ply-y3: 0.50
-          ply-x4: 29.5
-          ply-y4: 0.80
+          swa-start-epoch: 240
+          lr: "1.5e-3"
         repetitions: 1
         resume: none
 
@@ -178,64 +187,20 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 300
+        max_epochs: 950
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 381500
-          lr: "1.5e-3"
-          swa-start-epoch: 250
+          one-cycle-steps: 1373400
+          lr: "1.3e-3"
+          swa-start-epoch: 900
 
     # Stage 3
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 550
+        max_epochs: 3000
+        repetitions: 3
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 763000
-          lr: "1e-3"
-          swa-start-epoch: 500
-
-    # Stage 4
-    - <<: *common_step
-      run:
-        <<: *common_run_stage_two_plus
-        max_epochs: 1050
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 1526000
-          lr: "0.67e-3"
-          swa-start-epoch: 1000
-
-    # Stage 5
-    - <<: *common_step
-      run:
-        <<: *common_run_stage_two_plus
-        max_epochs: 1000
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3052000
-          lr: "0.5e-3"
-          swa-start-epoch: 2000
-
-    # Stage 6
-    - <<: *common_step
-      run:
-        <<: *common_run_checkpoint
-        max_epochs: 1500
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3052000
-          lr: "0.5e-3"
-          swa-start-epoch: 2000
-
-    # Stage 7
-    - <<: *common_step
-      run:
-        <<: *common_run_checkpoint
-        max_epochs: 2050
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3052000
-          lr: "0.5e-3"
-          swa-start-epoch: 2000
+          one-cycle-steps: 4578000
+          lr: "0.65e-3"
