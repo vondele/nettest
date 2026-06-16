@@ -8,6 +8,7 @@ stage_one_binpacks: &stage_one_binpacks
   - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
   - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
   - official-stockfish/master-binpacks/dfrc_n5000.binpack
+  - vondele/rescored/tb5dtm.binpack
 
 stage_two_plus_binpacks: &stage_two_plus_binpacks
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
@@ -42,6 +43,7 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+  - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
@@ -86,7 +88,7 @@ warmups_stage_options: &warmups_stage_options
   one-cycle-warmup-pct: 0.25
   one-cycle-final-div: "3e1"
   start-lambda: 1.0
-  end-lambda: 0.75
+  end-lambda: 0.74
 
 advanced_stage_options: &advanced_stage_options
   ply-x1: 0.00
@@ -97,19 +99,19 @@ advanced_stage_options: &advanced_stage_options
   ply-y3: 0.20
   ply-x4: 29.5
   ply-y4: 0.80
-  pow-exp: 2.435
-  qp-asymmetry: 0.23
-  in-scaling: 300.0
-  out-scaling: 350.0
-  in-offset: 300.0
-  out-offset: 300.0
-  one-cycle-warmup-pct: 0.033
-  one-cycle-final-div: "2e3"
-  jitter-lambda-sample: 0.0034
-  jitter-lambda-batch: 0.0062
+  pow-exp: 2.4340402395048404
+  qp-asymmetry: 0.22866886710086187
+  in-scaling: 295.6539508488627
+  out-scaling: 379.98724077106635
+  in-offset: 285.2706341467852
+  out-offset: 289.1258344152218
+  one-cycle-warmup-pct: 0.05
+  one-cycle-final-div: "1e3"
+  jitter-lambda-sample: 0.0034284671121657256
+  jitter-lambda-batch: 0.0061980291754002
   jitter-decay-lambda-batch: 0.999
-  start-lambda: 0.74
-  end-lambda: 0.74
+  start-lambda: 0.7401424425915776
+  end-lambda: 0.7401424425915776
 
 trainer: &trainer
   owner: official-stockfish
@@ -117,7 +119,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
+  sha: 74a0a73715322608332038f7c0151ddf0609a59a
   target: profile-build
 
 testing_code: &testing_code
@@ -203,4 +205,4 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
-          lr: "0.65e-3"
+          lr: "0.57e-3"
