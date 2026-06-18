@@ -104,7 +104,7 @@ advanced_stage_options: &advanced_stage_options
   in-offset: 300.0
   out-offset: 300.0
   one-cycle-warmup-pct: 0.033
-  one-cycle-final-div: "2e3"
+  one-cycle-final-div: "1e3"
   jitter-lambda-sample: 0.0034
   jitter-lambda-batch: 0.0062
   jitter-decay-lambda-batch: 0.999
@@ -181,7 +181,7 @@ training:
           <<: [*common_run_options, *warmups_stage_options]
           one-cycle-steps: 381500
           swa-start-epoch: 240
-          lr: "1.5e-3"
+          lr: "1.2e-3"
         repetitions: 1
         resume: none
 
@@ -193,7 +193,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 1373400
-          lr: "1.3e-3"
+          lr: "1.0e-3"
           swa-start-epoch: 900
 
     # Stage 3
@@ -205,7 +205,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
-          lr: "0.65e-3"
+          lr: "0.5e-3"
 
    # Stage 4 (swa)
     - <<: *common_step
@@ -216,6 +216,6 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           swa-start-epoch: 50
           one-cycle-steps: 76300
-          one-cycle-final-div: "1e1"
-          lr: "0.03e-3"
+          one-cycle-final-div: "3e0"
+          lr: "1e-5"
 
