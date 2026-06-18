@@ -123,12 +123,12 @@ common_run_checkpoint: &common_run_checkpoint
 
 official_code: &official_code
   owner: official-stockfish
-  sha: 86f1df7134fa54fe93e90dc086d978e917256c2f
+  sha: 74a0a73715322608332038f7c0151ddf0609a59a
   target: profile-build
 
 engine: &engine
   owner: sscg13
-  sha: 25afa12d66cb5ce238ad0b027d3075251e74ad4a
+  sha: 9190b8240e4ead3f6ce0b194295c879208bbb96b
   target: profile-build
 # ----------------------------------------------------------
 
