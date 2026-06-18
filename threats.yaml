@@ -206,3 +206,16 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
           lr: "0.65e-3"
+
+   # Stage 4 (swa)
+    - <<: *common_step
+      run:
+        <<: *common_run_stage_two_plus
+        max_epochs: 100
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          swa-start-epoch: 50
+          one-cycle-steps: 76300
+          one-cycle-final-div: "1e1"
+          lr: "0.03e-3"
+
