@@ -166,7 +166,7 @@ testing:
       nElo_interval_width: 2
   reference:
     code: *reference_code
-  steps: last
+  steps: all
   testing:
     code: *testing_code
 
