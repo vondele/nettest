@@ -35,10 +35,12 @@ ENV EXTRA_CXXFLAGS="-fPIC"
 ENV TERARKDBROOT=/workspace/terarkdb/
 ENV CHESSDB_PATH=/workspace/cdb/chess-20251115/data
 
-RUN cd /workspace/ &&  git clone https://github.com/noobpwnftw/terarkdb.git && cd terarkdb && ./build.sh
+ARG NUM_PROCS
+
+RUN cd /workspace/ &&  git clone https://github.com/noobpwnftw/terarkdb.git && cd terarkdb && ./build.sh -j $NUM_PROCS
 
 RUN cd /workspace/ &&  git clone https://github.com/vondele/cdbdirect.git && cd cdbdirect && \
-  make -j TERARKDBROOT=$TERARKDBROOT CHESSDB_PATH=$CHESSDB_PATH && \
+  make -j $NUM_PROCS TERARKDBROOT=$TERARKDBROOT CHESSDB_PATH=$CHESSDB_PATH && \
   pip install .
 
 # copy the current nettest sources to have them around
