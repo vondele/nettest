@@ -170,6 +170,7 @@ testing:
   testing:
     code: *testing_code
 
+
 training:
   steps:
     # Stage 1
@@ -193,7 +194,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 1373400
-          lr: "1.3e-3"
+          lr: "1.0e-3"
           swa-start-epoch: 900
 
     # Stage 3
@@ -205,4 +206,16 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
-          lr: "0.65e-3"
+          lr: "0.5e-3"
+
+   # Stage 4 (swa)
+    - <<: *common_step
+      run:
+        <<: *common_run_stage_two_plus
+        max_epochs: 100
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          swa-start-epoch: 50
+          one-cycle-steps: 76300
+          one-cycle-final-div: "3e0"
+          lr: "1e-5"
