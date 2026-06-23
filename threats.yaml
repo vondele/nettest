@@ -208,7 +208,10 @@ training:
     # Stage 4
     - <<: *common_step
       run:
-        <<: *common_run_stage_two_plus
+        binpacks:
+          - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+        repetitions: 1
+        resume: previous_model
         max_epochs: 50
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
