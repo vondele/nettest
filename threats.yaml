@@ -216,7 +216,7 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_finetuning
-        max_epochs: 50
+        max_epochs: 20
         repetitions: 1
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
