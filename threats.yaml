@@ -221,4 +221,4 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 763000
-          lr: "1e-4"
+          lr: "3e-5"
