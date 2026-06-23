@@ -221,4 +221,4 @@ training:
           end-lambda: 1
           jitter-lambda-sample: 0.0
           jitter-lambda-batch: 0.0
-          jitter-decay-lambda-batch: 1.0
+          jitter-decay-lambda-batch: 0.0
