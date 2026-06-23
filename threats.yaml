@@ -204,3 +204,18 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
           lr: "0.65e-3"
+
+    # Stage 4
+    - <<: *common_step
+      run:
+        <<: *common_run_stage_two_plus
+        max_epochs: 50
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 76300
+          lr: "3e-5"
+          start-lambda: 1
+          end-lambda: 1
+          jitter-lambda-sample: 0.0
+          jitter-lambda-batch: 0.0
+          jitter-decay-lambda-batch: 1.0
