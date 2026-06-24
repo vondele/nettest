@@ -210,7 +210,11 @@ training:
        run: 
          binpacks: 
            - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
-           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
+           - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+           - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+           - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+           - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+           - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
            - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
          repetitions: 1 
          resume: previous_model 
