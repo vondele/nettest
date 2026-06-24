@@ -42,6 +42,10 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-05-may-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-06-jun-2tb7p.min-v2.v6.binpack
 
 fine_tune_binpacks: &fine_tune_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
