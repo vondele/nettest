@@ -206,19 +206,19 @@ training:
           lr: "0.65e-3"
 
     # Stage 4 
-     - <<: *common_step 
-       run: 
-         binpacks: 
-           - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
-           - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
-           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-         repetitions: 1 
-         resume: previous_model 
-         max_epochs: 50 
-         other_options: 
-           <<: [*common_run_options, *advanced_stage_options] 
-           one-cycle-steps: 76300
-           one-cycle-warmup-pct: 0.01
-           one-cycle-final-div: "1e1"
-           lr: "6e-6" 
+    - <<: *common_step 
+      run: 
+        binpacks: 
+          - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+          - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
+          - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
+        repetitions: 1 
+        resume: previous_model 
+        max_epochs: 50 
+        other_options: 
+          <<: [*common_run_options, *advanced_stage_options] 
+          one-cycle-steps: 76300
+          one-cycle-warmup-pct: 0.01
+          one-cycle-final-div: "1e1"
+          lr: "6e-6" 
   
