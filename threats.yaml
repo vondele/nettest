@@ -83,10 +83,10 @@ warmups_stage_options: &warmups_stage_options
   ply-y3: 0.50
   ply-x4: 29.5
   ply-y4: 0.80
-  one-cycle-warmup-pct: 0.35
-  one-cycle-final-div: "2e1"
+  one-cycle-warmup-pct: 0.25
+  one-cycle-final-div: "4e0"
   start-lambda: 1.0
-  end-lambda: 0.75
+  end-lambda: 0.72
 
 advanced_stage_options: &advanced_stage_options
   ply-x1: 0.00
@@ -113,7 +113,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: c3c3d1227879af872e81e6dab4d4171e08114ab5
+  sha: e1d94e7c990ea2e3b5cf40e0485327c5e73a6801
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -177,12 +177,12 @@ training:
     - <<: *common_step
       run:
         binpacks: *stage_one_binpacks
-        max_epochs: 300
+        max_epochs: 500
         other_options:
           <<: [*common_run_options, *warmups_stage_options]
-          one-cycle-steps: 228900
-          swa-start-epoch: 290
-          lr: "1.4e-3"
+          one-cycle-steps: 381500
+          swa-start-epoch: 400
+          lr: "0.8e-3"
         repetitions: 1
         resume: none
 
@@ -190,32 +190,10 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_stage_two_plus
-        max_epochs: 1050
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 763000
-          lr: "1.0e-3"
-          swa-start-epoch: 1000
-
-    # Stage 3
-    - <<: *common_step
-      run:
-        <<: *common_run_stage_two_plus
-        max_epochs: 3300
+        max_epochs: 5000
         repetitions: 3
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 2428800
-          lr: "0.7e-3"
-
-   # Stage 4 (swa)
-    - <<: *common_step
-      run:
-        <<: *common_run_stage_two_plus
-        max_epochs: 100
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          swa-start-epoch: 50
-          one-cycle-steps: 38150
-          one-cycle-final-div: "3e0"
-          lr: "1e-5"
+          one-cycle-steps: 3815000
+          lr: "0.75e-3"
+      
