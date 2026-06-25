@@ -218,7 +218,7 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_fine_tune
-        max_epochs: 50
+        max_epochs: 100
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 152600
