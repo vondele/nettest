@@ -2,10 +2,10 @@
 # instead of the huggingface-hosted stockfish binpacks. Absolute paths are used
 # as-is by the trainer and are skipped by the huggingface download step.
 stage_one_binpacks: &stage_one_binpacks
-  - /mnt/Array55T_remote/viren/interleaved-new-policy.binpack
+  - /mnt/Array55T_remote/viren/interleaved-new-policy-compact.binpack
 
 stage_two_plus_binpacks: &stage_two_plus_binpacks
-  - /mnt/Array55T_remote/viren/interleaved-new-policy.binpack
+  - /mnt/Array55T_remote/viren/interleaved-new-policy-compact.binpack
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
@@ -29,7 +29,11 @@ common_run_options: &common_run_options
   batch-size: 65536
   <<: *model_config
   factorized-weight-decay: 0.001
-  random-fen-skipping: 10
+  # Decorrelation is now done by the in-loader block shuffle (shuffle-buffer-gib)
+  # instead of random-fen-skipping, so every position is used (no data dropped).
+  random-fen-skipping: 0
+  shuffle-buffer-gib: 120.0   # total host RAM for the montyformat shuffle buffer (train stream only)
+  grad-clip-percentile: 99.0   # adaptive grad-norm clip: clips the ~1% largest-norm steps (NaN safety net)
   early-fen-skipping: -18   # no hard opening cutoff
   soft-early-fen_skipping: 14   # soft early-ply ramp shifted 18 plies earlier (orig 32 - 18; ply-x* below also -18)
   pc-y0: -0.20
@@ -82,7 +86,7 @@ advanced_stage_options: &advanced_stage_options
 # sha below to the pushed commit. See MONTYFORMAT.md for details.
 trainer: &trainer
   owner: Viren6                          # github.com/Viren6/nnue-pytorch (with montyformat reader)
-  sha: 0951fbd686ae1b7630d6eba2537238dd19259d40   # montyformat reader + filters + parallel decode
+  sha: ffba5cf87ffc147714fa46ab3decea387ff52e01   # + adaptive grad-norm clipping (NaN safety net)
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -148,7 +152,7 @@ training:
           <<: [*common_run_options, *warmups_stage_options]
           one-cycle-steps: 381500
           swa-start-epoch: 240
-          lr: "1.5e-3"
+          lr: "1.0e-3"
         repetitions: 1
         resume: none
 
@@ -160,7 +164,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 1373400
-          lr: "1.3e-3"
+          lr: "0.8e-3"
           swa-start-epoch: 900
 
     # Stage 3
@@ -172,4 +176,4 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
-          lr: "0.65e-3"
+          lr: "0.4e-3"
