@@ -87,7 +87,7 @@ advanced_stage_options: &advanced_stage_options
 # sha below to the pushed commit. See MONTYFORMAT.md for details.
 trainer: &trainer
   owner: Viren6                          # github.com/Viren6/nnue-pytorch (with montyformat reader)
-  sha: ffba5cf87ffc147714fa46ab3decea387ff52e01   # + adaptive grad-norm clipping (NaN safety net)
+  sha: c3a3486a7459dc1d4dd9eebbbbfc1637885e3e1b   # + raised prefetch (3h) & DDP collective timeouts for large buffers
 
 reference_code: &reference_code
   owner: official-stockfish
