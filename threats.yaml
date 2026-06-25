@@ -262,6 +262,7 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3509800
           lr: "0.9e-3"
+          batch_size=65536
           start-lambda: 1
           end-lambda: 1
           jitter-lambda-sample: 0.0
