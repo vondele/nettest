@@ -206,7 +206,8 @@ training:
     # Stage 4 
     - <<: *common_step 
       run: 
-        <<: *common_run_fine_tune 
+        <<: *common_run_stage_two_plus
+        binpacks: *fine_tune_binpacks
         max_epochs: 50 
         other_options: 
           <<: [*common_run_options, *advanced_stage_options]
