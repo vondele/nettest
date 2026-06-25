@@ -8,7 +8,7 @@ stage_one_binpacks: &stage_one_binpacks
   - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
   - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
   - official-stockfish/master-binpacks/dfrc_n5000.binpack
-- linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
+  - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
   - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
   - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
   - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
