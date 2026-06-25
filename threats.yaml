@@ -1,11 +1,12 @@
-# Training now reads a single local interleaved binpack on the mounted drive
-# instead of the huggingface-hosted stockfish binpacks. Absolute paths are used
-# as-is by the trainer and are skipped by the huggingface download step.
+# Training reads the compact 16-bit-Gini binpack hosted on huggingface
+# (Viren6/MontySFExperiment). The ensureData job snapshot_downloads it to
+# data/<owner>/<repo>/<file> and the trainer reads it from there (owner/repo/file
+# form, NOT an absolute path -> it is fetched from HF, not read from a mount).
 stage_one_binpacks: &stage_one_binpacks
-  - /mnt/Array55T_remote/viren/interleaved-new-policy-compact.binpack
+  - Viren6/MontySFExperiment/interleaved-new-policy-compact.binpack
 
 stage_two_plus_binpacks: &stage_two_plus_binpacks
-  - /mnt/Array55T_remote/viren/interleaved-new-policy-compact.binpack
+  - Viren6/MontySFExperiment/interleaved-new-policy-compact.binpack
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
