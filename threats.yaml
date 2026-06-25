@@ -223,8 +223,8 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 152600
           lr: "2e-5"
-          start-lambda: 1
-          end-lambda: 1
-          jitter-lambda-sample: 0.0
-          jitter-lambda-batch: 0.0
-          jitter-decay-lambda-batch: 0.0
+	  start-lambda: 0.95
+          end-lambda: 0.95
+          jitter-lambda-sample: 0.001 
+          jitter-lambda-batch: 0.0005 
+          jitter-decay-lambda-batch: 0.9
