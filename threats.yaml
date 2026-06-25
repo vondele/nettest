@@ -43,6 +43,9 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
 
+fine_tune_binpacks: &fine_tune_binpacks
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
@@ -138,6 +141,11 @@ common_run_stage_two_plus: &common_run_stage_two_plus
   repetitions: 1
   resume: previous_model
 
+common_run_fine_tune: &common_run_fine_tune
+  binpacks: *fine_tune_binpacks
+  repetitions: 1
+  resume: previous_model
+
 common_run_checkpoint: &common_run_checkpoint
   <<: *common_run_stage_two_plus
   resume: previous_checkpoint
@@ -208,10 +216,7 @@ training:
     # Stage 4
     - <<: *common_step
       run:
-        binpacks:
-          - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
-        repetitions: 1
-        resume: previous_model
+        <<: *common_run_fine_tune
         max_epochs: 50
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
