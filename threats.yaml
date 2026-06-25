@@ -8,6 +8,13 @@ stage_one_binpacks: &stage_one_binpacks
   - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
   - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
   - official-stockfish/master-binpacks/dfrc_n5000.binpack
+- linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
+  - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
+  - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
+  - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
+  - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
+  - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
+  - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
 
 stage_two_plus_binpacks: &stage_two_plus_binpacks
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
@@ -15,13 +22,6 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
-  - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
-  - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-  - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-  - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-  - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
-  - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
-  - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
   - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
   - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
   - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
@@ -42,6 +42,12 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack 
+  - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack 
+  - linrock/test80-2024/test80-2024-05-may-2tb7p.min-v2.v6.binpack 
+  - linrock/test80-2024/test80-2024-06-jun-2tb7p.min-v2.v6.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+  - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
@@ -207,24 +213,3 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
           lr: "0.5e-3"
-
-    # Stage 4 
-    - <<: *common_step 
-      run: 
-        binpacks: 
-          - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
-          - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-05-may-2tb7p.min-v2.v6.binpack
-          - linrock/test80-2024/test80-2024-06-jun-2tb7p.min-v2.v6.binpack
-          - vondele/rescored/tb5dtm.binpack
-        repetitions: 1 
-        resume: previous_model 
-        max_epochs: 100 
-        other_options: 
-          <<: [*common_run_options, *advanced_stage_options] 
-          one-cycle-steps: 76300
-          one-cycle-warmup-pct: 0.01
-          one-cycle-final-div: "1e1"
-          lr: "0.45e-5" 
-  
