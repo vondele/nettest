@@ -220,7 +220,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 152600
-          lr: "2e-5
+          lr: "2e-5"
           start-lambda: 0.95
           end-lambda: 0.95
           jitter-lambda-sample: 0.001 
