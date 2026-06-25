@@ -44,7 +44,7 @@ common_step: &common_step
 
 official_code: &official_code
   owner: official-stockfish
-  sha: dd321af5dfc0789de07c4e5c64915073995eb818
+  sha: 74a0a73715322608332038f7c0151ddf0609a59a
   target: profile-build
 # ----------------------------------------------------------
 
