@@ -235,33 +235,33 @@ training:
       run:
         <<: *common_run_resume_model
         binpacks: *pretraining_binpacks_lq
-        max_epochs: 2700
+        max_epochs: 2500
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3815000
-          lr: "0.75e-3"
+          one-cycle-steps: 3509800
+          lr: "0.9e-3"
       
     # Stage 3
     - <<: *common_step
       run:
-        <<: *common_run_resume_model
+        <<: *common_run_resume_ckpt
         binpacks: *pretraining_binpacks_hq
-        max_epochs: 4700
+        max_epochs: 4400
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3815000
-          lr: "0.75e-3"
+          one-cycle-steps: 3509800
+          lr: "0.9e-3"
 
     # Stage 4
     - <<: *common_step
       run:
-        <<: *common_run_resume_model
+        <<: *common_run_resume_ckpt
         binpacks: *fine_tuning_binpacks
-        max_epochs: 5000
+        max_epochs: 4500
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 3815000
-          lr: "0.75e-3"
+          one-cycle-steps: 3509800
+          lr: "0.9e-3"
           start-lambda: 1
           end-lambda: 1
           jitter-lambda-sample: 0.0
