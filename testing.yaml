@@ -29,8 +29,8 @@ common_run_options: &common_run_options
   pc-y4: 0.75
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: e215624395d03ee3aeb9e7640c4d4570518b37ac
+  owner: TonyCongqianWang
+  sha: TonyCongqianWang:double_ft_fused
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -135,7 +135,7 @@ training:
       run:
         binpacks:
           - official-stockfish/master-binpacks/fishpack32.binpack
-        max_epochs: 7
+        max_epochs: 20
         repetitions: 2
         resume: previous_checkpoint
         other_options:
