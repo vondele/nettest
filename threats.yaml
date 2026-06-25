@@ -214,11 +214,11 @@ training:
           - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
         repetitions: 1 
         resume: previous_model 
-        max_epochs: 50 
+        max_epochs: 100
         other_options: 
           <<: [*common_run_options, *advanced_stage_options] 
           one-cycle-steps: 76300
-          one-cycle-warmup-pct: 0.01
-          one-cycle-final-div: "1e1"
-          lr: "6e-6" 
+          one-cycle-warmup-pct: 0.02
+          one-cycle-final-div: "5e1"
+          lr: "2e-5" 
   
