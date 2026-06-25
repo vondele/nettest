@@ -82,7 +82,7 @@ advanced_stage_options: &advanced_stage_options
 # sha below to the pushed commit. See MONTYFORMAT.md for details.
 trainer: &trainer
   owner: Viren6                          # github.com/Viren6/nnue-pytorch (with montyformat reader)
-  sha: 58473206cf0092c21ccdc1af5f3935bd74be5762   # montyformat reader commit
+  sha: f63ea5d3ed54695b159c2dad8fcb2a7e5d48ecfb   # montyformat reader + Gini/capture/check filter
 
 reference_code: &reference_code
   owner: official-stockfish
