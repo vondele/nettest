@@ -221,8 +221,8 @@ training:
         max_epochs: 50
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 76300
-          lr: "3e-5"
+          one-cycle-steps: 152600
+          lr: "2e-5"
           start-lambda: 1
           end-lambda: 1
           jitter-lambda-sample: 0.0
