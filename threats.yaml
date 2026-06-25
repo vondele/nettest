@@ -8,13 +8,6 @@ stage_one_binpacks: &stage_one_binpacks
   - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
   - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
   - official-stockfish/master-binpacks/dfrc_n5000.binpack
-
-stage_two_plus_binpacks: &stage_two_plus_binpacks
-  - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
-  - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
-  - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
-  - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
-  - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
   - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
   - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
   - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
@@ -22,6 +15,13 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
   - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
   - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
+
+stage_two_plus_binpacks: &stage_two_plus_binpacks
+  - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
+  - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
+  - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
+  - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
+  - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
   - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
   - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
   - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
@@ -42,11 +42,17 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack 
+  - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack 
+  - linrock/test80-2024/test80-2024-05-may-2tb7p.min-v2.v6.binpack 
+  - linrock/test80-2024/test80-2024-06-jun-2tb7p.min-v2.v6.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+  - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -83,8 +89,8 @@ warmups_stage_options: &warmups_stage_options
   ply-y3: 0.50
   ply-x4: 29.5
   ply-y4: 0.80
-  one-cycle-warmup-pct: 0.25
-  one-cycle-final-div: "3e1"
+  one-cycle-warmup-pct: 0.35
+  one-cycle-final-div: "2e1"
   start-lambda: 1.0
   end-lambda: 0.75
 
@@ -112,16 +118,18 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.74
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 89d572575441c927947fdc8b98c41719c530d120
+  owner: TonyCongqianWang
+  sha: a22e8b35b273891c0ac407bc7e551a0ba6a60c06
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
-  target: profile-build
+  sha: 74a0a73715322608332038f7c0151ddf0609a59a
+  target: build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: TonyCongqianWang
+  sha: 68bed47d9aceba895b404453246e5261518135aa
+  target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -164,9 +172,10 @@ testing:
       nElo_interval_width: 2
   reference:
     code: *reference_code
-  steps: last
+  steps: all
   testing:
     code: *testing_code
+
 
 training:
   steps:
@@ -179,7 +188,7 @@ training:
           <<: [*common_run_options, *warmups_stage_options]
           one-cycle-steps: 381500
           swa-start-epoch: 240
-          lr: "1.5e-3"
+          lr: "1.0e-3"
         repetitions: 1
         resume: none
 
@@ -191,7 +200,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 1373400
-          lr: "1.3e-3"
+          lr: "0.8e-3"
           swa-start-epoch: 900
 
     # Stage 3
@@ -203,4 +212,4 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
-          lr: "0.65e-3"
+          lr: "0.5e-3"
