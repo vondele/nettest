@@ -120,7 +120,7 @@ trainer: &trainer
   sha: 89d572575441c927947fdc8b98c41719c530d120
 
 reference_code: &reference_code
-  owner: official-stockfish
+  owner: xu-shawn
   sha: 4f50a93020e33556eb6763c8b420f7e2e4a32986
   target: profile-build
 
