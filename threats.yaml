@@ -30,8 +30,8 @@ common_run_options: &common_run_options
   <<: *model_config
   factorized-weight-decay: 0.001
   random-fen-skipping: 10
-  early-fen-skipping: 18
-  soft-early-fen_skipping: 32
+  early-fen-skipping: -18   # no hard opening cutoff
+  soft-early-fen_skipping: 14   # soft early-ply ramp shifted 18 plies earlier (orig 32 - 18; ply-x* below also -18)
   pc-y0: -0.20
   pc-y1: 0.45
   pc-y2: 1.0
@@ -39,27 +39,27 @@ common_run_options: &common_run_options
   pc-y4: 0.75
 
 warmups_stage_options: &warmups_stage_options
-  ply-x1: 0.0
+  ply-x1: -18.0
   ply-y1: 0.01
-  ply-x2: 14.0
+  ply-x2: -4.0
   ply-y2: 0.20
-  ply-x3: 18.5
+  ply-x3: 0.5
   ply-y3: 0.50
-  ply-x4: 29.5
+  ply-x4: 11.5
   ply-y4: 0.80
   one-cycle-warmup-pct: 0.25
   one-cycle-final-div: "3e1"
   start-lambda: 1.0
-  end-lambda: 0.75
+  end-lambda: 1.0   # score-only (lambda=1 => target is purely the search score, no game result)
 
 advanced_stage_options: &advanced_stage_options
-  ply-x1: 0.00
+  ply-x1: -18.0
   ply-y1: 0.025
-  ply-x2: 22.0
+  ply-x2: 4.0
   ply-y2: 0.05
-  ply-x3: 25.5
+  ply-x3: 7.5
   ply-y3: 0.20
-  ply-x4: 29.5
+  ply-x4: 11.5
   ply-y4: 0.80
   pow-exp: 2.435
   qp-asymmetry: 0.23
@@ -69,11 +69,11 @@ advanced_stage_options: &advanced_stage_options
   out-offset: 300.0
   one-cycle-warmup-pct: 0.033
   one-cycle-final-div: "2e3"
-  jitter-lambda-sample: 0.0034
-  jitter-lambda-batch: 0.0062
+  jitter-lambda-sample: 0.0   # disabled: with lambda=1 the clamp would only pull it DOWN, reintroducing game result
+  jitter-lambda-batch: 0.0
   jitter-decay-lambda-batch: 0.999
-  start-lambda: 0.74
-  end-lambda: 0.74
+  start-lambda: 1.0   # score-only (lambda=1 => target is purely the search score, no game result)
+  end-lambda: 1.0
 
 # Trainer must include the montyformat (policy) data-loader changes so the
 # interleaved-new-policy.binpack (Monty format, not Stockfish binpack) can be
