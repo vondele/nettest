@@ -127,7 +127,7 @@ warmups_stage_options: &warmups_stage_options
   ply-x4: 29.5
   ply-y4: 0.80
   one-cycle-warmup-pct: 0.5
-  one-cycle-final-div: "4e0"
+  one-cycle-final-div: "5e0"
   start-lambda: 1.0
   end-lambda: 0.70
 
@@ -224,9 +224,9 @@ training:
         max_epochs: 500
         other_options:
           <<: [*common_run_options, *warmups_stage_options]
-          one-cycle-steps: 190750
+          one-cycle-steps: 15260
           swa-start-epoch: 400
-          lr: "1.2e-3"
+          lr: "1.0e-3"
         repetitions: 1
         resume: none
 
