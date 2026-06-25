@@ -217,7 +217,7 @@ training:
         max_epochs: 100
         other_options: 
           <<: [*common_run_options, *advanced_stage_options] 
-          one-cycle-steps: 76300
+          one-cycle-steps: 152600
           one-cycle-warmup-pct: 0.02
           one-cycle-final-div: "5e1"
           lr: "2e-5" 
