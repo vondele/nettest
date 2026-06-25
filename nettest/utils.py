@@ -34,12 +34,19 @@ class MyDumper(yaml.Dumper):
         return super(MyDumper, self).increase_indent(flow, False)
 
 
-def supports_numactl() -> bool:
+def supports_numactl(cpunodebind="0", membind="0") -> bool:
     if not shutil.which("numactl"):
         return False
     try:
+        # numactl must be present AND actually able to apply the requested binding.
+        # In some containers `numactl --hardware` succeeds but `--membind` /
+        # `--cpunodebind` fail at runtime ("setting membind: Invalid argument"),
+        # e.g. when the memory cgroup doesn't expose NUMA nodes. Probe the real
+        # binding so we cleanly fall back to plain python when it can't bind.
         result = subprocess.run(
-            ["numactl", "--hardware"], capture_output=True, timeout=5
+            ["numactl", f"--cpunodebind={cpunodebind}", f"--membind={membind}", "true"],
+            capture_output=True,
+            timeout=5,
         )
         return result.returncode == 0
     except Exception:

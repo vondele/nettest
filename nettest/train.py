@@ -149,11 +149,11 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     num_gpus = len([d for d in devices.split(",") if d.strip()])
     local_devices = "".join([f"{i}," for i in range(num_gpus)])
     nproc = max(1, num_gpus)
+    cpunodebind = environment.get("train", {}).get("cpunodebind", "0")
+    membind = environment.get("train", {}).get("membind", "0")
     if nproc > 1:
         cmd = ["torchrun", f"--nproc-per-node={nproc}", "ddp_launcher.py", "train.py"]
-    elif supports_numactl():
-        cpunodebind = environment["train"].get("cpunodebind", "0")
-        membind = environment["train"].get("membind", "0")
+    elif supports_numactl(cpunodebind, membind):
         cmd = ["numactl", f"--cpunodebind={cpunodebind}", f"--membind={membind}"]
         cmd += ["python", "-u", "train.py"]
     else:
