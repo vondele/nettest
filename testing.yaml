@@ -30,7 +30,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: TonyCongqianWang:double_ft_fused
+  sha: c5e733125e7b526a1604898a7fea1e70dc143df6
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
