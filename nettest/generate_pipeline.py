@@ -173,6 +173,11 @@ def generate_ensure_data(recipe, ci_yaml_out, schedule):
 
     repos = defaultdict(list)
     for binpack in binpacks:
+        # Absolute paths point to local binpacks (e.g. on a mounted drive) that
+        # the trainer reads as-is; they are not hosted on huggingface, so skip
+        # them in the data-download step.
+        if Path(binpack).is_absolute():
+            continue
         owner, repo, filename = binpack.split("/", 2)
         repos[(owner, repo)].append(filename)
 
