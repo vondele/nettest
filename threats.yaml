@@ -160,6 +160,10 @@ trainer: &trainer
   owner: TonyCongqianWang
   sha: e1d94e7c990ea2e3b5cf40e0485327c5e73a6801
 
+trainer2: &trainer2
+  owner: TonyCongqianWang
+  sha: a22e8b35b273891c0ac407bc7e551a0ba6a60c06
+
 reference_code: &reference_code
   owner: official-stockfish
   sha: 74a0a73715322608332038f7c0151ddf0609a59a
@@ -254,6 +258,7 @@ training:
 
     # Stage 4
     - <<: *common_step
+      trainer: *trainer2
       run:
         <<: *common_run_resume_ckpt
         binpacks: *fine_tuning_binpacks
