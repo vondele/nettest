@@ -1,5 +1,4 @@
 stage_one_binpacks: &stage_one_binpacks
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
@@ -42,6 +41,10 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+
+fine_tune_binpacks: &fine_tune_binpacks
+  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
@@ -116,8 +119,8 @@ trainer: &trainer
   sha: 89d572575441c927947fdc8b98c41719c530d120
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: b1053e60b7e0fe3187006c4d7f38dbd22eaff763
+  owner: xu-shawn
+  sha: 4f50a93020e33556eb6763c8b420f7e2e4a32986
   target: profile-build
 
 testing_code: &testing_code
@@ -135,6 +138,11 @@ common_step: &common_step
 
 common_run_stage_two_plus: &common_run_stage_two_plus
   binpacks: *stage_two_plus_binpacks
+  repetitions: 1
+  resume: previous_model
+
+common_run_fine_tune: &common_run_fine_tune
+  binpacks: *fine_tune_binpacks
   repetitions: 1
   resume: previous_model
 
@@ -204,3 +212,18 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
           lr: "0.65e-3"
+
+    # Stage 4
+    - <<: *common_step
+      run:
+        <<: *common_run_fine_tune
+        max_epochs: 100
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 152600
+          lr: "2e-5"
+          start-lambda: 0.95
+          end-lambda: 0.95
+          jitter-lambda-sample: 0.001 
+          jitter-lambda-batch: 0.0005 
+          jitter-decay-lambda-batch: 0.9
