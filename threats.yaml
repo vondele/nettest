@@ -162,7 +162,7 @@ trainer: &trainer
 
 trainer2: &trainer2
   owner: TonyCongqianWang
-  sha: a22e8b35b273891c0ac407bc7e551a0ba6a60c06
+  sha: b75e57e728d8869ec0ad6b1bf6a3e6d111ab222a
 
 reference_code: &reference_code
   owner: official-stockfish
