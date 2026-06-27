@@ -121,7 +121,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: 4f50a93020e33556eb6763c8b420f7e2e4a32986
+  sha: 12eb6e6cfb517b839649169ae968fe898c7827a5
   target: profile-build
 
 testing_code: &testing_code
