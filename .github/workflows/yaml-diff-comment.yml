@@ -142,13 +142,29 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const upstreamOwner = 'official-stockfish';
             const owner = context.repo.owner;
             const repo = context.repo.repo;
+            const repoDefaults = new Map();
 
             const trainerChanges = JSON.parse(`${{ steps.changed-files.outputs.trainer_changes }}` || '[]');
             const stockfishChanges = JSON.parse(`${{ steps.changed-files.outputs.stockfish_changes }}` || '[]');
 
             if (trainerChanges.length === 0 && stockfishChanges.length === 0) return;
+
+            async function getDefaultBranch(owner, repo) {
+              const key = `${owner}/${repo}`;
+              if (!repoDefaults.has(key)) {
+                const { data } = await github.rest.repos.get({ owner, repo });
+                repoDefaults.set(key, data.default_branch);
+              }
+              return repoDefaults.get(key);
+            }
+
+            async function buildMainCompare(owner, repo, sha) {
+              const defaultBranch = await getDefaultBranch(owner, repo);
+              return `[vs ${defaultBranch}](https://github.com/${owner}/${repo}/compare/${defaultBranch}...${sha})`;
+            }
 
             let body = '';
 
@@ -156,10 +172,11 @@ jobs:
               body += '### 🧠 Trainer Changes (nnue-pytorch)\n';
               for (const change of trainerChanges) {
                 const stepLabel = change.step ? `Step ${change.step}` : 'Trainer';
+                const mainCompare = await buildMainCompare(upstreamOwner, 'nnue-pytorch', change.new_sha);
                 if (change.old_sha) {
-                  body += `- **${change.file}** (${stepLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/nnue-pytorch/compare/${change.old_sha}...${change.new_sha})\n`;
+                  body += `- **${change.file}** (${stepLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/nnue-pytorch/compare/${change.old_sha}...${change.new_sha}) (${mainCompare})\n`;
                 } else {
-                   body += `- **${change.file}** (${stepLabel}): New trainer [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/nnue-pytorch/compare/master...${change.new_sha})\n`;
+                   body += `- **${change.file}** (${stepLabel}): New trainer [${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/nnue-pytorch/commit/${change.new_sha}) (${mainCompare})\n`;
                 }
               }
               body += '\n';
@@ -169,10 +186,11 @@ jobs:
               body += '### ♟️ Stockfish Changes\n';
               for (const change of stockfishChanges) {
                 const typeLabel = change.type.charAt(0).toUpperCase() + change.type.slice(1);
+                const mainCompare = await buildMainCompare(upstreamOwner, 'Stockfish', change.new_sha);
                 if (change.old_sha) {
-                  body += `- **${change.file}** (${typeLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/Stockfish/compare/${change.old_sha}...${change.new_sha})\n`;
+                  body += `- **${change.file}** (${typeLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/Stockfish/compare/${change.old_sha}...${change.new_sha}) (${mainCompare})\n`;
                 } else {
-                  body += `- **${change.file}** (${typeLabel}): New [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/Stockfish/compare/master...${change.new_sha})\n`;
+                  body += `- **${change.file}** (${typeLabel}): New [${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/Stockfish/commit/${change.new_sha}) (${mainCompare})\n`;
                 }
               }
             }
