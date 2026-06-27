@@ -228,3 +228,4 @@ training:
           jitter-lambda-sample: 0.0
           jitter-lambda-batch: 0.0
           jitter-decay-lambda-batch: 0.0
+          pow-exp: 2.7
