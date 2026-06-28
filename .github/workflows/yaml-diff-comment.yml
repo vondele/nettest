@@ -46,6 +46,11 @@ jobs:
 
           trainer_changes = []
           stockfish_changes = []
+          repo_refs = set()
+
+          def add_repo_ref(owner, repo, sha, file):
+              if owner and repo and sha:
+                  repo_refs.add((owner, repo, sha, file))
 
           for file in changed_files:
               try:
@@ -80,16 +85,18 @@ jobs:
                   
                   old_sha = old_trainer.get('sha', '')
                   new_sha = new_trainer.get('sha', '')
-                  old_owner = old_trainer.get('owner', 'official-stockfish')
                   new_owner = new_trainer.get('owner', 'official-stockfish')
                   
+                  add_repo_ref(new_owner, 'nnue-pytorch', new_sha, file)
+
                   if new_sha and old_sha != new_sha:
                       trainer_changes.append({
                           'file': file,
                           'step': i + 1,
                           'old_sha': old_sha,
                           'new_sha': new_sha,
-                          'owner': new_owner
+                          'owner': new_owner,
+                          'repo': 'nnue-pytorch'
                       })
                   elif new_sha and not old_sha:
                       trainer_changes.append({
@@ -98,51 +105,102 @@ jobs:
                           'old_sha': '',
                           'new_sha': new_sha,
                           'owner': new_owner,
+                          'repo': 'nnue-pytorch',
                           'is_new': True
                       })
               
               # Extract Stockfish reference/testing
               old_testing = old_content.get('testing', {}) if old_content else {}
               new_testing = new_content.get('testing', {}) if new_content else {}
-              
+
+              # Crosscheck trainer
+              new_crosscheck_trainer = new_testing.get('crosscheck', {}).get('trainer', {}) if new_testing else {}
+              add_repo_ref(new_crosscheck_trainer.get('owner', 'official-stockfish'), 'nnue-pytorch', new_crosscheck_trainer.get('sha', ''), file)
+               
               # Reference
               old_ref = old_testing.get('reference', {}).get('code', {}) if old_testing else {}
               new_ref = new_testing.get('reference', {}).get('code', {}) if new_testing else {}
               
+              add_repo_ref(new_ref.get('owner', 'official-stockfish'), 'Stockfish', new_ref.get('sha', ''), file)
+
               if new_ref.get('sha') and old_ref.get('sha') != new_ref.get('sha'):
                   stockfish_changes.append({
                       'file': file,
                       'type': 'reference',
                       'old_sha': old_ref.get('sha', ''),
                       'new_sha': new_ref.get('sha', ''),
-                      'owner': new_ref.get('owner', 'official-stockfish')
+                      'owner': new_ref.get('owner', 'official-stockfish'),
+                      'repo': 'Stockfish'
                   })
               
               # Testing
               old_test = old_testing.get('testing', {}).get('code', {}) if old_testing else {}
               new_test = new_testing.get('testing', {}).get('code', {}) if new_testing else {}
               
+              add_repo_ref(new_test.get('owner', 'official-stockfish'), 'Stockfish', new_test.get('sha', ''), file)
+
               if new_test.get('sha') and old_test.get('sha') != new_test.get('sha'):
                   stockfish_changes.append({
                       'file': file,
                       'type': 'testing',
                       'old_sha': old_test.get('sha', ''),
                       'new_sha': new_test.get('sha', ''),
-                      'owner': new_test.get('owner', 'official-stockfish')
+                      'owner': new_test.get('owner', 'official-stockfish'),
+                      'repo': 'Stockfish'
                   })
+
+              # Fastchess
+              new_fastchess = new_testing.get('fastchess', {}).get('code', {}) if new_testing else {}
+              add_repo_ref(new_fastchess.get('owner'), 'fastchess', new_fastchess.get('sha', ''), file)
 
           # Output results
           with open(os.environ.get('GITHUB_OUTPUT', '/dev/null'), 'a') as f:
               f.write(f"changed_files<<EOF\n{' '.join(changed_files)}\nEOF\n")
               f.write(f"trainer_changes<<EOF\n{json.dumps(trainer_changes)}\nEOF\n")
               f.write(f"stockfish_changes<<EOF\n{json.dumps(stockfish_changes)}\nEOF\n")
+              f.write(f"repo_refs<<EOF\n{json.dumps(sorted(repo_refs))}\nEOF\n")
+
+      - name: Validate referenced SHAs exist in declared repos
+        if: steps.changed-files.outputs.changed_files != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const refs = JSON.parse(`${{ steps.changed-files.outputs.repo_refs }}` || '[]');
+
+            if (refs.length === 0) return;
+
+            const seen = new Set();
+            const missing = [];
+
+            for (const [owner, repo, sha, file] of refs) {
+              const key = `${owner}/${repo}@${sha}`;
+              if (seen.has(key)) continue;
+              seen.add(key);
+
+              try {
+                await github.rest.repos.getCommit({ owner, repo, ref: sha });
+              } catch (error) {
+                if (error.status === 404) {
+                  missing.push(`- ${file}: \`${owner}/${repo}@${sha}\` was not found`);
+                  continue;
+                }
+                throw error;
+              }
+            }
+
+            if (missing.length > 0) {
+              core.setFailed([
+                'Some referenced SHAs do not exist in the repos declared by the YAML:',
+                ...missing,
+                'This usually means the commit exists locally but has not been pushed yet.'
+              ].join('\n'));
+            }
 
       - name: Comment PR with diff links
         if: steps.changed-files.outputs.changed_files != ''
         uses: actions/github-script@v7
         with:
           script: |
-            const upstreamOwner = 'official-stockfish';
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const repoDefaults = new Map();
@@ -172,11 +230,11 @@ jobs:
               body += '### 🧠 Trainer Changes (nnue-pytorch)\n';
               for (const change of trainerChanges) {
                 const stepLabel = change.step ? `Step ${change.step}` : 'Trainer';
-                const mainCompare = await buildMainCompare(upstreamOwner, 'nnue-pytorch', change.new_sha);
+                const mainCompare = await buildMainCompare(change.owner, change.repo, change.new_sha);
                 if (change.old_sha) {
-                  body += `- **${change.file}** (${stepLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/nnue-pytorch/compare/${change.old_sha}...${change.new_sha}) (${mainCompare})\n`;
+                  body += `- **${change.file}** (${stepLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/${change.repo}/compare/${change.old_sha}...${change.new_sha}) (${mainCompare})\n`;
                 } else {
-                   body += `- **${change.file}** (${stepLabel}): New trainer [${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/nnue-pytorch/commit/${change.new_sha}) (${mainCompare})\n`;
+                   body += `- **${change.file}** (${stepLabel}): New trainer [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/${change.repo}/commit/${change.new_sha}) (${mainCompare})\n`;
                 }
               }
               body += '\n';
@@ -186,11 +244,11 @@ jobs:
               body += '### ♟️ Stockfish Changes\n';
               for (const change of stockfishChanges) {
                 const typeLabel = change.type.charAt(0).toUpperCase() + change.type.slice(1);
-                const mainCompare = await buildMainCompare(upstreamOwner, 'Stockfish', change.new_sha);
+                const mainCompare = await buildMainCompare(change.owner, change.repo, change.new_sha);
                 if (change.old_sha) {
-                  body += `- **${change.file}** (${typeLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/Stockfish/compare/${change.old_sha}...${change.new_sha}) (${mainCompare})\n`;
+                  body += `- **${change.file}** (${typeLabel}): [${change.old_sha.substring(0, 7)}...${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/${change.repo}/compare/${change.old_sha}...${change.new_sha}) (${mainCompare})\n`;
                 } else {
-                  body += `- **${change.file}** (${typeLabel}): New [${change.new_sha.substring(0, 7)}](https://github.com/${upstreamOwner}/Stockfish/commit/${change.new_sha}) (${mainCompare})\n`;
+                  body += `- **${change.file}** (${typeLabel}): New [${change.new_sha.substring(0, 7)}](https://github.com/${change.owner}/${change.repo}/commit/${change.new_sha}) (${mainCompare})\n`;
                 }
               }
             }
