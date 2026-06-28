@@ -4,6 +4,7 @@ import re
 import hashlib
 import time
 import shutil
+from functools import lru_cache
 
 
 def find_most_recent(root, file):
@@ -22,6 +23,42 @@ def sha256sum(filename):
         for chunk in iter(lambda: f.read(8192), b""):
             hash_sha256.update(chunk)
     return hash_sha256.hexdigest()
+
+
+@lru_cache(maxsize=1)
+def github_ssh_available() -> bool:
+    if not shutil.which("ssh"):
+        return False
+
+    try:
+        result = subprocess.run(
+            [
+                "ssh",
+                "-o",
+                "BatchMode=yes",
+                "-o",
+                "StrictHostKeyChecking=accept-new",
+                "-T",
+                "git@github.com",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except Exception:
+        return False
+
+    output = (result.stdout or "") + (result.stderr or "")
+    return (
+        result.returncode == 1
+        and "successfully authenticated" in output
+    )
+
+
+def github_repo_url(owner: str, repo: str) -> str:
+    if github_ssh_available():
+        return f"git@github.com:{owner}/{repo}.git"
+    return f"https://github.com/{owner}/{repo}.git"
 
 
 class MyDumper(yaml.Dumper):
