@@ -5,7 +5,7 @@ stage_one_binpacks: &stage_one_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
-  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
+  - vondele/master-binpacks_relabel/wrongIsRight_nodes5000pv2.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
 
@@ -205,13 +205,3 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
           lr: "0.65e-3"
-
-    # Stage 4
-    - <<: *common_step
-      run:
-        <<: *common_run_fine_tune
-        max_epochs: 50
-        other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 76300
-          lr: "3e-5"
