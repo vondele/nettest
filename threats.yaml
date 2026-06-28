@@ -228,10 +228,10 @@ training:
     - <<: *common_step
       run:
         <<: *common_run_fine_tune
-        max_epochs: 50
+        max_epochs: 500
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 76300
+          one-cycle-steps: 763000
           lr: "3e-5"
           start-lambda: 1
           end-lambda: 1
