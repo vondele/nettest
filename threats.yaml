@@ -9,39 +9,15 @@ pretraining_binpacks_lq: &pretraining_binpacks_lq
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
   - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
-  - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
-  - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
-  - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
-  - linrock/test78/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.binpack
-  - linrock/test79/test79-2022-04-apr-16tb7p.v6-dd.min.binpack
-  - linrock/test79/test79-2022-05-may-16tb7p.v6-dd.min.binpack
-  - linrock/test78/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.binpack
-  - linrock/test80-2022/test80-2022-06-jun-16tb7p.v6-dd.min.binpack
-  - linrock/test80-2022/test80-2022-07-jul-16tb7p.v6-dd.min.binpack
-  - linrock/test80-2022/test80-2022-08-aug-16tb7p.v6-dd.min.binpack
-  - linrock/test80-2022/test80-2022-09-sep-16tb7p.v6-dd.min.binpack
-  - linrock/test80-2022/test80-2022-10-oct-16tb7p.v6-dd.binpack
-  - linrock/test80-2022/test80-2022-11-nov-16tb7p.v6-dd.min.binpack
-  - linrock/test80-2023/test80-2023-01-jan-16tb7p.v6-sk20.min.binpack
-  - linrock/test80-2023/test80-2023-02-feb-16tb7p.v6-dd.min.binpack
-  - linrock/test80-2023/test80-2023-03-mar-2tb7p.v6-sk16.min.binpack
-  - linrock/test80-2023/test80-2023-04-apr-2tb7p.v6-sk16.min.binpack
-  - linrock/test80-2023/test80-2023-05-may-2tb7p.v6.min.binpack
-  - linrock/test80-2023/test80-2023-06-jun-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2023/test80-2023-07-jul-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2023/test80-2023-08-aug-2tb7p.v6.min.binpack
-  - linrock/test80-2023/test80-2023-09-sep-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2023/test80-2023-10-oct-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2023/test80-2023-11-nov-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2024/test80-2024-05-may-2tb7p.min-v2.v6.binpack
-  - linrock/test80-2024/test80-2024-06-jun-2tb7p.min-v2.v6.binpack
-  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
-  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
+  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
 
 pretraining_binpacks_hq: &pretraining_binpacks_hq
@@ -76,15 +52,73 @@ pretraining_binpacks_hq: &pretraining_binpacks_hq
   - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-05-may-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-06-jun-2tb7p.min-v2.v6.binpack
-  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
-  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
+  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
 
-fine_tuning_binpacks: &fine_tuning_binpacks
+fine_tuning_binpacks_lq: &fine_tuning_binpacks_lq
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
+  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
+  - vondele/rescored/tb5dtm.binpack
+  - vondele/linrock_relabel_1/test60-2021-11-nov-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test60-2021-12-dec-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test77-2021-12-dec-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test79-2022-04-apr-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test79-2022-05-may-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-06-jun-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-07-jul-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-08-aug-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-09-sep-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-10-oct-16tb7p.v6-dd.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-11-nov-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-01-jan-16tb7p.v6-sk20.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-02-feb-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-03-mar-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-04-apr-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-05-may-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-07-jul-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-08-aug-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-09-sep-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-10-oct-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-11-nov-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
-  - vondele/rescored/tb5dtm.binpack
 
+fine_tuning_binpacks_hq: &fine_tuning_binpacks_hq
+  - vondele/linrock_relabel_2/test80-2023-01-jan-16tb7p.v6-sk20.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-02-feb-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-03-mar-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-04-apr-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-05-may-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-07-jul-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-08-aug-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-09-sep-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-10-oct-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-11-nov-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
@@ -158,20 +192,16 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: e1d94e7c990ea2e3b5cf40e0485327c5e73a6801
-
-trainer2: &trainer2
-  owner: TonyCongqianWang
-  sha: b75e57e728d8869ec0ad6b1bf6a3e6d111ab222a
+  sha: 6cd6ed4e6de7a6bb260e60f1cde02464b3049212
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 74a0a73715322608332038f7c0151ddf0609a59a
+  sha: 9d2ba2bed507057425559aaefc5e1a14441e8d6d
   target: build
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: 68bed47d9aceba895b404453246e5261518135aa
+  sha: aba6aa871369db95d9d129043d8c42ba2a5cb107
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -239,7 +269,7 @@ training:
       run:
         <<: *common_run_resume_model
         binpacks: *pretraining_binpacks_lq
-        max_epochs: 2500
+        max_epochs: 2000
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3509800
@@ -250,7 +280,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *pretraining_binpacks_hq
-        max_epochs: 4400
+        max_epochs: 3600
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3509800
@@ -258,11 +288,29 @@ training:
 
     # Stage 4
     - <<: *common_step
-      trainer: *trainer2
+      trainer: *trainer
       run:
         <<: *common_run_resume_ckpt
-        binpacks: *fine_tuning_binpacks
-        max_epochs: 4500
+        binpacks: *fine_tuning_binpacks_lq
+        max_epochs: 4900
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 3509800
+          lr: "0.9e-3"
+          batch_size: 65536
+          start-lambda: 1
+          end-lambda: 1
+          jitter-lambda-sample: 0.0
+          jitter-lambda-batch: 0.0
+          jitter-decay-lambda-batch: 0.0
+
+    # Stage 5
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *fine_tuning_binpacks_hq
+        max_epochs: 4100
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3509800
