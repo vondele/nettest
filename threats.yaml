@@ -51,6 +51,7 @@ model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
   l2: 31
+  num-value-bins: 128
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -116,8 +117,8 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.74
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 89d572575441c927947fdc8b98c41719c530d120
+  owner: daniel-monroe
+  sha: 850d3a9b07804c3a1e49e05d67b93b66cd01f9f6
 
 reference_code: &reference_code
   owner: xu-shawn
