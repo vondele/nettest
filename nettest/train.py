@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 import torch
 import time
-from .utils import execute, MyDumper, sha256sum, find_most_recent, supports_numactl, flatten_cmd
+from .utils import execute, MyDumper, sha256sum, find_most_recent, supports_numactl, flatten_cmd, github_repo_url
 from .default_environment import get_default_environment
 import uuid
 import yaml
@@ -19,7 +19,7 @@ def ensure_trainer(trainer):
 
     sha = trainer["sha"]
     owner = trainer["owner"]
-    repo = f"https://github.com/{owner}/nnue-pytorch.git"
+    repo = github_repo_url(owner, "nnue-pytorch")
 
     trainer_dir = Path.cwd() / f"scratch/packages/trainer/{sha}"
     nnue_pytorch_dir = trainer_dir / "nnue-pytorch"

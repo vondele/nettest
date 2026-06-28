@@ -1,7 +1,7 @@
 import yaml
 import re
 from pathlib import Path
-from .utils import execute, flatten_cmd
+from .utils import execute, flatten_cmd, github_repo_url
 from .default_environment import get_default_environment
 from .train import ensure_trainer
 import shutil
@@ -21,7 +21,7 @@ def ensure_fastchess(fastchess):
 
     sha = fastchess["code"]["sha"]
     owner = fastchess["code"]["owner"]
-    repo = f"https://github.com/{owner}/fastchess.git"
+    repo = github_repo_url(owner, "fastchess")
 
     base_dir = Path.cwd() / f"scratch/packages/fastchess/{sha}"
     fastchess_binary = base_dir / "fastchess" / "fastchess"
@@ -104,7 +104,7 @@ def ensure_stockfish(target, test):
     sha = target_config["code"]["sha"]
     owner = target_config["code"]["owner"]
     target_build = target_config["code"].get("target", "profile-build")
-    repo = f"https://github.com/{owner}/Stockfish.git"
+    repo = github_repo_url(owner, "Stockfish")
 
     target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}-{target_build}"
     stockfish_binary = target_dir / "Stockfish" / "src" / "stockfish"

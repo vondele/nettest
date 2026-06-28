@@ -99,6 +99,10 @@ docker run -u $(id -u):$(id -g) -it --ipc=host --ulimit memlock=-1 --ulimit stac
        "python -m nettest.execute_recipe --executor local --recipe nettest/testing.yaml"
 ```
 
+Nettest fetches GitHub dependencies such as `nnue-pytorch`, `Stockfish`, and
+`fastchess` over HTTPS by default. If `git@github.com` SSH authentication is
+already available on the machine, it will use SSH instead.
+
 It is also possible to mount a local directory over `/workspace/nettest/` to be
 able to easily modify and test recipes.
 
