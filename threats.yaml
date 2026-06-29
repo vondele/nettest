@@ -104,6 +104,11 @@ fine_tuning_binpacks_lq: &fine_tuning_binpacks_lq
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
 
 fine_tuning_binpacks_hq: &fine_tuning_binpacks_hq
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_4.relabel-BT4-tf13tune.binpack
   - vondele/linrock_relabel_1/test60-2021-11-nov-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
   - vondele/linrock_relabel_1/test60-2021-12-dec-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
   - vondele/linrock_relabel_1/test77-2021-12-dec-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
@@ -254,7 +259,7 @@ testing:
       tc: 10+0.1
   reference:
     code: *reference_code
-  steps: new 
+  steps: new
   testing:
     code: *testing_code
 
@@ -284,7 +289,7 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3509800
           lr: "0.9e-3"
-      
+
     # Stage 3
     - <<: *common_step
       run:
