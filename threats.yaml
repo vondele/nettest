@@ -1,20 +1,26 @@
-stage_one_binpacks: &stage_one_binpacks
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
-  - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-  - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
-  - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
-  - official-stockfish/master-binpacks/dfrc_n5000.binpack
-
-stage_two_plus_binpacks: &stage_two_plus_binpacks
+pretraining_binpacks_lq: &pretraining_binpacks_lq
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_0.binpack
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_1.binpack
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_2.binpack
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_3.binpack
   - vondele/from_kaggle_1/leela96-filt-v2.min.split_4.binpack
+  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
+  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
+  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
+  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
+  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
+  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
+  - vondele/rescored/tb5dtm.binpack
+
+pretraining_binpacks_hq: &pretraining_binpacks_hq
   - linrock/test60/test60-2021-11-nov-12tb7p.min-v2.binpack
   - linrock/test60/test60-2021-12-dec-12tb7p.min-v2.binpack
   - linrock/test77/test77-2021-12-dec-16tb7p.v6-dd.min.binpack
@@ -42,15 +48,71 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
   - linrock/test80-2023/test80-2023-12-dec-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-01-jan-2tb7p.min-v2.v6.binpack
   - linrock/test80-2024/test80-2024-02-feb-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-03-mar-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-04-apr-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-05-may-2tb7p.min-v2.v6.binpack
+  - linrock/test80-2024/test80-2024-06-jun-2tb7p.min-v2.v6.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
+  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
+  - vondele/rescored/tb5dtm.binpack
 
-fine_tune_binpacks: &fine_tune_binpacks
+fine_tuning_binpacks: &fine_tuning_binpacks
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
+  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
+  - vondele/rescored/tb5dtm.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test60-2021-11-nov-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test60-2021-12-dec-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test77-2021-12-dec-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test79-2022-04-apr-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test79-2022-05-may-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-06-jun-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-07-jul-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-08-aug-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-09-sep-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-10-oct-16tb7p.v6-dd.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-11-nov-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-01-jan-16tb7p.v6-sk20.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-02-feb-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-03-mar-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-04-apr-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-05-may-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-07-jul-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-08-aug-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-09-sep-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-10-oct-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-11-nov-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
+
 
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -65,8 +127,8 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 common_run_options: &common_run_options
   optimizer-name: rangerlite
   validation-size: 250000000
-  check-val-every-n-epoch: 25
-  batch-size: 65536
+  check-val-every-n-epoch: 50
+  batch-size: 131072
   <<: *model_config
   factorized-weight-decay: 0.001
   random-fen-skipping: 10
@@ -87,10 +149,10 @@ warmups_stage_options: &warmups_stage_options
   ply-y3: 0.50
   ply-x4: 29.5
   ply-y4: 0.80
-  one-cycle-warmup-pct: 0.25
-  one-cycle-final-div: "3e1"
+  one-cycle-warmup-pct: 0.5
+  one-cycle-final-div: "4e0"
   start-lambda: 1.0
-  end-lambda: 0.75
+  end-lambda: 0.70
 
 advanced_stage_options: &advanced_stage_options
   ply-x1: 0.00
@@ -101,31 +163,35 @@ advanced_stage_options: &advanced_stage_options
   ply-y3: 0.20
   ply-x4: 29.5
   ply-y4: 0.80
-  pow-exp: 2.435
-  qp-asymmetry: 0.23
-  in-scaling: 300.0
-  out-scaling: 350.0
-  in-offset: 300.0
-  out-offset: 300.0
+  w1: 3.3553547771220007
+  w2: 0.7006821612968052
+  pow-exp: 2.4340402395048404
+  qp-asymmetry: 0.22866886710086187
+  in-scaling: 295.6539508488627
+  out-scaling: 379.98724077106635
+  in-offset: 285.2706341467852
+  out-offset: 289.1258344152218
   one-cycle-warmup-pct: 0.033
   one-cycle-final-div: "2e3"
-  jitter-lambda-sample: 0.0034
-  jitter-lambda-batch: 0.0062
+  jitter-lambda-sample: 0.0034284671121657256
+  jitter-lambda-batch: 0.0061980291754002
   jitter-decay-lambda-batch: 0.999
-  start-lambda: 0.74
-  end-lambda: 0.74
+  start-lambda: 0.7401424425915776
+  end-lambda: 0.7401424425915776
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 89d572575441c927947fdc8b98c41719c530d120
+  owner: TonyCongqianWang
+  sha: 6cd6ed4e6de7a6bb260e60f1cde02464b3049212
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 9d2ba2bed507057425559aaefc5e1a14441e8d6d
+  sha: 4488343cf67b39b68c8dc41c91f26796b98df673
   target: profile-build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: TonyCongqianWang
+  sha: aba6aa871369db95d9d129043d8c42ba2a5cb107
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -137,18 +203,12 @@ common_step: &common_step
   convert: *common_convert
   trainer: *trainer
 
-common_run_stage_two_plus: &common_run_stage_two_plus
-  binpacks: *stage_two_plus_binpacks
+common_run_resume_model: &common_run_resume_model
   repetitions: 1
   resume: previous_model
 
-common_run_fine_tune: &common_run_fine_tune
-  binpacks: *fine_tune_binpacks
-  repetitions: 1
-  resume: previous_model
-
-common_run_checkpoint: &common_run_checkpoint
-  <<: *common_run_stage_two_plus
+common_run_resume_ckpt: &common_run_resume_ckpt
+  <<: *common_run_resume_model
   resume: previous_checkpoint
 
 # ----------------------------------------------------------
@@ -166,63 +226,64 @@ testing:
       sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 40000
+      max_rounds: 30000
       tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: 0
-      nElo_interval_width: 2
   reference:
     code: *reference_code
-  steps: last
+  steps: new
   testing:
     code: *testing_code
+
 
 training:
   steps:
     # Stage 1
     - <<: *common_step
       run:
-        binpacks: *stage_one_binpacks
-        max_epochs: 250
+        binpacks: *pretraining_binpacks_lq
+        max_epochs: 500
         other_options:
           <<: [*common_run_options, *warmups_stage_options]
-          one-cycle-steps: 381500
-          swa-start-epoch: 240
-          lr: "1.5e-3"
+          one-cycle-steps: 190750
+          swa-start-epoch: 400
+          lr: "0.8e-3"
         repetitions: 1
         resume: none
 
     # Stage 2
     - <<: *common_step
       run:
-        <<: *common_run_stage_two_plus
-        max_epochs: 950
+        <<: *common_run_resume_model
+        binpacks: *pretraining_binpacks_lq
+        max_epochs: 2000
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 1373400
-          lr: "1.3e-3"
-          swa-start-epoch: 900
+          one-cycle-steps: 3509800
+          lr: "0.9e-3"
 
     # Stage 3
     - <<: *common_step
       run:
-        <<: *common_run_stage_two_plus
-        max_epochs: 3000
-        repetitions: 3
+        <<: *common_run_resume_ckpt
+        binpacks: *pretraining_binpacks_hq
+        max_epochs: 3600
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 4578000
-          lr: "0.65e-3"
+          one-cycle-steps: 3509800
+          lr: "0.9e-3"
 
     # Stage 4
     - <<: *common_step
+      trainer: *trainer
       run:
-        <<: *common_run_fine_tune
-        max_epochs: 50
+        <<: *common_run_resume_ckpt
+        binpacks: *fine_tuning_binpacks
+        max_epochs: 4100
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 76300
-          lr: "3e-5"
+          one-cycle-steps: 3509800
+          lr: "0.9e-3"
+          batch_size: 65536
           start-lambda: 1
           end-lambda: 1
           jitter-lambda-sample: 0.0
