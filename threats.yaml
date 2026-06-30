@@ -259,7 +259,7 @@ testing:
       tc: 10+0.1
   reference:
     code: *reference_code
-  steps: new
+  steps: 4
   testing:
     code: *testing_code
 
