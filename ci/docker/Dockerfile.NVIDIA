@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir  nevergrad
 RUN pip install --no-cache-dir "firecrest-executor>=0.3.1"
 
 # enabler for hf downloads
-RUN pip install huggingface_hub zstandard
+RUN pip install huggingface_hub zstandard hf_xet
 
 # for cdbdirect
 RUN pip install pybind11
