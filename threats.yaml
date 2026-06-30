@@ -1,4 +1,4 @@
-stage_one_binpacks: &stage_one_binpacks
+training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
@@ -8,8 +8,6 @@ stage_one_binpacks: &stage_one_binpacks
   - vondele/master-binpacks_relabel/wrongIsRight_nodes5000pv2.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
-
-stage_two_plus_binpacks: &stage_two_plus_binpacks
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_1.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_2.relabel-BT4-tf13tune.binpack
@@ -47,7 +45,7 @@ stage_two_plus_binpacks: &stage_two_plus_binpacks
 model_config: &model_config
   features: Full_Threats+HalfKAv2_hm^
   l1: 1024
-  l2: 31
+  l2: 32
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -116,16 +114,18 @@ advanced_stage_options: &advanced_stage_options
   jitter-decay-lambda-batch: 0.0
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 89d572575441c927947fdc8b98c41719c530d120
+  owner: TonyCongqianWang
+  sha: 6cd6ed4e6de7a6bb260e60f1cde02464b3049212
 
 reference_code: &reference_code
-  owner: xu-shawn
-  sha: 4f50a93020e33556eb6763c8b420f7e2e4a32986
+  owner: official-stockfish
+  sha: 4488343cf67b39b68c8dc41c91f26796b98df673
   target: profile-build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: TonyCongqianWang
+  sha: aba6aa871369db95d9d129043d8c42ba2a5cb107
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -138,7 +138,7 @@ common_step: &common_step
   trainer: *trainer
 
 common_run_stage_two_plus: &common_run_stage_two_plus
-  binpacks: *stage_two_plus_binpacks
+  binpacks: *training_binpacks
   repetitions: 1
   resume: previous_model
 
@@ -177,7 +177,7 @@ training:
     # Stage 1
     - <<: *common_step
       run:
-        binpacks: *stage_one_binpacks
+        binpacks: *training_binpacks
         max_epochs: 250
         other_options:
           <<: [*common_run_options, *warmups_stage_options]
