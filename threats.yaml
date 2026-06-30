@@ -282,7 +282,6 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 3509800
-          pow-exp: 2.7
           lr: "0.9e-3"
           batch_size: 65536
           start-lambda: 1
