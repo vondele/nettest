@@ -58,7 +58,7 @@ fine_tune_binpacks: &fine_tune_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
 
 model_config: &model_config
-  features: Full_Threats+HalfKAv2_hm^
+  features: Full_Threats+K16Q2^
   l1: 1024
   l2: 31
 
@@ -126,16 +126,18 @@ advanced_stage_options: &advanced_stage_options
   end-lambda: 0.74
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 89d572575441c927947fdc8b98c41719c530d120
+  owner: TonyCongqianWang
+  sha: a39943d0a974e76608e541b31efeade0042936a5
 
 reference_code: &reference_code
-  owner: xu-shawn
-  sha: 4f50a93020e33556eb6763c8b420f7e2e4a32986
-  target: profile-build
+  owner: official-stockfish
+  sha: 9d2ba2bed507057425559aaefc5e1a14441e8d6d
+  target: build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: TonyCongqianWang
+  sha: 53ffa51099cb5f084cc29397265a7c905e3d41d1
+  target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -183,7 +185,7 @@ testing:
       nElo_interval_width: 2
   reference:
     code: *reference_code
-  steps: last
+  steps: all
   testing:
     code: *testing_code
 
