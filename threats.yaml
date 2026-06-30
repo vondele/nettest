@@ -121,7 +121,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: 4f50a93020e33556eb6763c8b420f7e2e4a32986
+  sha: 068550eea4a36e42353ecefd61f267eb8711a039
   target: profile-build
 
 testing_code: &testing_code
@@ -208,3 +208,13 @@ training:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4578000
           lr: "0.65e-3"
+
+    # Stage 4
+    - <<: *common_step
+      run:
+        <<: *common_run_stage_two_plus
+        max_epochs: 50
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 76300
+          lr: "3e-5"
