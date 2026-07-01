@@ -185,6 +185,8 @@ ft_options: &ft_options
   w1: 2.0
   start-lambda: 1
   end-lambda: 1
+  tb_remap_base: 7000.0
+  tb_remap_scale: 13000.0
   jitter-lambda-sample: 0.0
   jitter-lambda-batch: 0.0
   jitter-decay-lambda-batch: 0.0
