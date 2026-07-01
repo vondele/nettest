@@ -3,7 +3,7 @@
 This repo aims to capture the workflow needed to train a NNUE network in a
 single yaml file. It contains these yaml files (recipes) and the tools to
 execute the workflow in a reproducible manner. Ultimately the goal is to
-reproduce the workflows needed to create (near?) master-strength networks for
+reproduce the workflows needed to create master-strength networks for
 [Stockfish](https://github.com/official-stockfish/Stockfish).
 
 ## Overview
