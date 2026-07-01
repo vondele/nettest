@@ -213,7 +213,7 @@ def run_fastchess(
         [f"{stockfish_reference}"],
         match_dir,
         False,
-        filter_re=r"^.*EvalFile.*$",
+        filter_re=r"^(?:(?!EvalFile).)*$",
         stdin_lines=["uci", "quit"],
     )
 
