@@ -179,6 +179,16 @@ advanced_stage_options: &advanced_stage_options
   start-lambda: 0.7401424425915776
   end-lambda: 0.7401424425915776
 
+ft_options: &ft_options
+  batch_size: 65536
+  qp-asymmetry: 0.12
+  w1: 2.0
+  start-lambda: 1
+  end-lambda: 1
+  jitter-lambda-sample: 0.0
+  jitter-lambda-batch: 0.0
+  jitter-decay-lambda-batch: 0.0
+
 trainer: &trainer
   owner: TonyCongqianWang
   sha: 6cd6ed4e6de7a6bb260e60f1cde02464b3049212
@@ -280,12 +290,6 @@ training:
         binpacks: *fine_tuning_binpacks
         max_epochs: 4100
         other_options:
-          <<: [*common_run_options, *advanced_stage_options]
+          <<: [*ft_options, *common_run_options, *advanced_stage_options]
           one-cycle-steps: 3509800
           lr: "0.9e-3"
-          batch_size: 65536
-          start-lambda: 1
-          end-lambda: 1
-          jitter-lambda-sample: 0.0
-          jitter-lambda-batch: 0.0
-          jitter-decay-lambda-batch: 0.0
