@@ -207,9 +207,26 @@ def run_fastchess(
     std_nnue = final_config["std_nnue"]
     assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
 
+    # extract the reference engine nnue
+    uci_output = execute(
+        f"Extract EvalFile of Stockfish reference {stockfish_reference}",
+        [f"{stockfish_reference}"],
+        match_dir,
+        False,
+        filter_re=r"^(?:(?!EvalFile).)*$",
+        stdin_lines=["uci", "quit"],
+    )
+
+    reference_nnue = None
+    for line in uci_output:
+        match = re.search(r"option name EvalFile.*?default\s+(.*)", line)
+        if match:
+            reference_nnue = match.group(1).strip()
+            print(f"Reference EvalFile: {reference_nnue}")
+
     # generate bench output
     execute(
-        f"Run bench for Stockfish reference {stockfish_reference}",
+        f"Run bench for Stockfish reference {stockfish_reference} with net {reference_nnue}",
         [f"{stockfish_reference}"],
         match_dir,
         False,
@@ -321,7 +338,7 @@ def run_fastchess(
             cmd += [f"option.{option}"]
 
     # reference engine
-    cmd += ["-engine", "name=reference", f"cmd={stockfish_reference}"]
+    cmd += ["-engine", f"name=reference_{reference_nnue}", f"cmd={stockfish_reference}"]
 
     if "options" in test["reference"]:
         for option in test["reference"]["options"]:

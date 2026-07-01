@@ -30,7 +30,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: official-stockfish
-  sha: e215624395d03ee3aeb9e7640c4d4570518b37ac
+  sha: ae6e2876a336267a74d9ad85c05eac719bdefd66
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -44,7 +44,7 @@ common_step: &common_step
 
 official_code: &official_code
   owner: official-stockfish
-  sha: dd321af5dfc0789de07c4e5c64915073995eb818
+  sha: 6088838797d6333711c17fe2c0962fa0858517ec
   target: profile-build
 # ----------------------------------------------------------
 
@@ -60,7 +60,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 541aef889206882de4823cf5a676d53ac5171c6f
+      sha: f08ca0251066003c0e1f39382fe62578e5c12eb9
     options:
       hash: 16
       max_rounds: 20
