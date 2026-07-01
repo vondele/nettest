@@ -1,11 +1,11 @@
 stage_one_binpacks: &stage_one_binpacks
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_0.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_1.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_2.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_3.binpack
-  - vondele/from_kaggle_2/T60T70wIsRightFarseerT60T74T75T76.split_4.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
   - official-stockfish/master-binpacks/nodes5000pv2_UHO.binpack
-  - official-stockfish/master-binpacks/wrongIsRight_nodes5000pv2.binpack
+  - anematode/bt4-relabel/wrongIsRight_nodes5000pv2-rescored.binpack
   - official-stockfish/master-binpacks/multinet_pv-2_diff-100_nodes-5000.binpack
   - official-stockfish/master-binpacks/dfrc_n5000.binpack
 
@@ -130,8 +130,8 @@ trainer: &trainer
   sha: 89d572575441c927947fdc8b98c41719c530d120
 
 reference_code: &reference_code
-  owner: xu-shawn
-  sha: 4f50a93020e33556eb6763c8b420f7e2e4a32986
+  owner: official-stockfish
+  sha: 9d2ba2bed507057425559aaefc5e1a14441e8d6d
   target: profile-build
 
 testing_code: &testing_code
