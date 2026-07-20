@@ -43,7 +43,7 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
 
 model_config: &model_config
-  features: Full_Threats+HalfKAv2_hm^
+  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
   l2: 32
 
@@ -83,8 +83,6 @@ advanced_stage_options: &advanced_stage_options
   ply-y3: 0.20
   ply-x4: 29.5
   ply-y4: 0.80
-  w1: 3.3553547771220007
-  w2: 0.7006821612968052
   pow-exp: 2.4340402395048404
   qp-asymmetry: 0.22866886710086187
   in-scaling: 295.6539508488627
@@ -93,23 +91,28 @@ advanced_stage_options: &advanced_stage_options
   out-offset: 289.1258344152218
   one-cycle-warmup-pct: 0.05
   one-cycle-final-div: "1e3"
+  lambda-cycle-jitter: true
   jitter-lambda-sample: 0.0034284671121657256
   jitter-lambda-batch: 0.0061980291754002
   jitter-decay-lambda-batch: 0.999
-  start-lambda: 0.7401424425915776
-  end-lambda: 0.7401424425915776
+  start-lambda: 1.0
+  end-lambda: 1.0
+  lambda-cycle-warmup-pct: 0.2
+  lambda-cycle-delta: -0.3
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 6cd6ed4e6de7a6bb260e60f1cde02464b3049212
+  sha: 44b17fa049b584500eb958da6e334b75b0c5be34
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: d5bbc6b67d3184fc39fa87a18596e77e92af990c
+  sha: 924d29d3cab85f45a877a5da0eeeb73a52cb4b62
   target: profile-build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: anematode
+  sha: df3ee125629b13b240d8e6d777ea192bf15d4847
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -144,14 +147,15 @@ testing:
       sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 30000
+      max_rounds: 80000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: 0.0
+      nElo_interval_midpoint: -0.75
       nElo_interval_width: 2
+
   reference:
     code: *reference_code
-  steps: last
+  steps: all
   testing:
     code: *testing_code
 
@@ -168,6 +172,7 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4096000
+          lambda-schedule-steps: 3584000
           lr: "0.9e-3"
 
     # Finetuning
