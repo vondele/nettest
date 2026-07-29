@@ -24,7 +24,8 @@ training_binpacks: &training_binpacks
   - vondele/linrock_relabel_1/test80-2022-07-jul-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
   - vondele/linrock_relabel_1/test80-2022-08-aug-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
   - vondele/linrock_relabel_1/test80-2022-09-sep-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
-  - vondele/linrock_relabel_1/test80-2022-10-oct-16tb7p.v6-dd.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-10-oct-16tb7p.v6-dd.relabel-BT4-tf13tune.part_0.binpack
+  - vondele/linrock_relabel_1/test80-2022-10-oct-16tb7p.v6-dd.relabel-BT4-tf13tune.part_1.binpac
   - vondele/linrock_relabel_1/test80-2022-11-nov-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
   - vondele/linrock_relabel_2/test80-2023-01-jan-16tb7p.v6-sk20.min.relabel-BT4-tf13tune.binpack
   - vondele/linrock_relabel_2/test80-2023-02-feb-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
