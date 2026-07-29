@@ -30,7 +30,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: sscg13
-  sha: 8e85dbaf5bc695c1e9cf42863b5a2f7777acb064
+  sha: 978e2fb2add7f1468f6ac3f76033e8503adbd1b7
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -49,7 +49,7 @@ official_code: &official_code
 
 engine: &engine
   owner: sscg13
-  sha: 77399c0314ac7af6ad65f174557cac685926fb30
+  sha: 5c1ef5633ca1e5f2ab021d29866e9ed52ef812ae
   target: profile-build
 # ----------------------------------------------------------
 
