@@ -113,7 +113,7 @@ reference_code: &reference_code
 testing_code: &testing_code
   owner: sscg13
   sha: 5c1ef5633ca1e5f2ab021d29866e9ed52ef812ae
-  target: profile-build
+  target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert

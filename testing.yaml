@@ -50,7 +50,7 @@ official_code: &official_code
 engine: &engine
   owner: sscg13
   sha: 5c1ef5633ca1e5f2ab021d29866e9ed52ef812ae
-  target: profile-build
+  target: build
 # ----------------------------------------------------------
 
 testing:
