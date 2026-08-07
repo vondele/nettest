@@ -189,14 +189,14 @@ training:
           one-cycle-steps: 4096000
           lr: "0.9e-3"
           batch_size: 65536
-          start-lambda: 0.911902236673223
-          end-lambda: 0.911902236673223
-          pow-exp: 2.611533478325054
-          qp-asymmetry: 0.2477999304064044
-          in-scaling: 294.8529588488496
-          out-scaling: 379.61700187247595
-          in-offset: 327.5602413187309
-          out-offset: 335.0013360484346
+          start-lambda: 0.9503892002439775
+          end-lambda: 0.9503892002439775
+          pow-exp: 2.668009297185151
+          qp-asymmetry: 0.22369912985146664
+          in-scaling: 289.90217140359584
+          out-scaling: 348.91625615320396
+          in-offset: 298.1388835438116
+          out-offset: 291.1882526096272
           jitter-lambda-sample: 0.0
           jitter-lambda-batch: 0.0
           jitter-decay-lambda-batch: 0.0
