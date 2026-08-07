@@ -1,3 +1,4 @@
+
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -65,7 +66,7 @@ common_run_options: &common_run_options
   check-val-every-n-epoch: 50
   batch-size: 131072
   <<: *model_config
-  factorized-weight-decay: 0.001
+  #factorized-weight-decay: 0.001
   random-fen-skipping: 10
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -107,12 +108,12 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 23cf5d827388e84d4389b40025ef401db4925f25
+  sha: c5aef2bf1f77d94a3dd476f276af68fd71a0ac07
   target: profile-build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: 23cf5d827388e84d4389b40025ef401db4925f25
+  sha: c5aef2bf1f77d94a3dd476f276af68fd71a0ac07
   target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -145,18 +146,18 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: ea901931eaff9745b7df8172eb542239cc5b58e3
+      sha: 74deac23aadc6718fa0f8e24ac95d16392d79444
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 40000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: -0.75
+      nElo_interval_midpoint: 1.0
       nElo_interval_width: 2
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
@@ -188,8 +189,14 @@ training:
           one-cycle-steps: 4096000
           lr: "0.9e-3"
           batch_size: 65536
-          start-lambda: 1
-          end-lambda: 1
+          start-lambda: 0.911902236673223
+          end-lambda: 0.911902236673223
+          pow-exp: 2.611533478325054
+          qp-asymmetry: 0.2477999304064044
+          in-scaling: 294.8529588488496
+          out-scaling: 379.61700187247595
+          in-offset: 327.5602413187309
+          out-offset: 335.0013360484346
           jitter-lambda-sample: 0.0
           jitter-lambda-batch: 0.0
           jitter-decay-lambda-batch: 0.0
