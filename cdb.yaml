@@ -105,7 +105,7 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 6000
-        repetitions: 5
+        max_epochs: 8400
+        repetitions: 7
         other_options:
           <<: *common_run_options
