@@ -92,14 +92,12 @@ advanced_stage_options: &advanced_stage_options
   out-offset: 289.1258344152218
   one-cycle-warmup-pct: 0.05
   one-cycle-final-div: "1e3"
-  lambda-cycle-jitter: true
-  jitter-lambda-sample: 0.0034284671121657256
-  jitter-lambda-batch: 0.0061980291754002
-  jitter-decay-lambda-batch: 0.999
-  start-lambda: 1.0
-  end-lambda: 1.0
-  lambda-cycle-warmup-pct: 0.2
-  lambda-cycle-delta: -0.3
+  lambda-cycle-jitter: false
+  start-lambda: 1
+  end-lambda: 1
+  jitter-lambda-sample: 0.0
+  jitter-lambda-batch: 0.0
+  jitter-decay-lambda-batch: 0.0
 
 trainer: &trainer
   owner: official-stockfish
@@ -173,7 +171,6 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4096000
-          lambda-schedule-steps: 3584000
           lr: "0.9e-3"
 
     # Finetuning
@@ -188,8 +185,3 @@ training:
           one-cycle-steps: 4096000
           lr: "0.9e-3"
           batch_size: 65536
-          start-lambda: 1
-          end-lambda: 1
-          jitter-lambda-sample: 0.0
-          jitter-lambda-batch: 0.0
-          jitter-decay-lambda-batch: 0.0
