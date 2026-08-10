@@ -44,7 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
+  features: P_hm
   l1: 1024
   l2: 32
 
@@ -102,8 +102,8 @@ advanced_stage_options: &advanced_stage_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 9f72946529c4187d3679014036cd22c3be419716
+  owner: sscg13
+  sha: 1a81735b332898ad0ffc73021b1842a729fc2973
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -111,8 +111,8 @@ reference_code: &reference_code
   target: profile-build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 23cf5d827388e84d4389b40025ef401db4925f25
+  owner: sscg13
+  sha: f8b5062a4f61cc6ec87d20e16c72c7771ea13dee
   target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
