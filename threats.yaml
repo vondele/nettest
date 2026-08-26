@@ -46,7 +46,6 @@ training_binpacks: &training_binpacks
 model_config: &model_config
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
-  l2: 32
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -59,13 +58,14 @@ checkpoint2nnue_options: &checkpoint2nnue_options
   ft-compression: leb128
 
 common_run_options: &common_run_options
-  optimizer-name: rangerlite
+  optimizer-name: adamw
   epoch-size: 134217728
   validation-size: 268435456
   check-val-every-n-epoch: 50
   batch-size: 131072
   <<: *model_config
-  factorized-weight-decay: 0.001
+  dense-weight-decay: "1.0e-5"
+  factorized-weight-decay: "4.0e-5"
   random-fen-skipping: 10
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -93,27 +93,27 @@ advanced_stage_options: &advanced_stage_options
   one-cycle-warmup-pct: 0.05
   one-cycle-final-div: "1e3"
   lambda-cycle-jitter: true
-  jitter-lambda-sample: 0.0034284671121657256
-  jitter-lambda-batch: 0.0061980291754002
+  jitter-lambda-sample: 0.0035
+  jitter-lambda-batch: 0.0070
   jitter-decay-lambda-batch: 0.999
   start-lambda: 1.0
   end-lambda: 1.0
-  lambda-cycle-warmup-pct: 0.2
+  lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 9f72946529c4187d3679014036cd22c3be419716
+  owner: TonyCongqianWang
+  sha: 7d51c81c6b119cf33a91d5d886da30563e1f8a57
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 23cf5d827388e84d4389b40025ef401db4925f25
+  sha: 229f6339e537a097a79831cd06dbfdb3e623d4ac
   target: profile-build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 23cf5d827388e84d4389b40025ef401db4925f25
-  target: profile-build
+  owner: TonyCongqianWang
+  sha: 00c7941d802ee63337f602c336150b032c42b4c3
+  target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -149,9 +149,9 @@ testing:
     options:
       hash: 16
       max_rounds: 80000
-      tc: 10+0.1
+      nodes: 60000
     sprt:
-      nElo_interval_midpoint: -0.75
+      nElo_interval_midpoint: 1.5
       nElo_interval_width: 2
 
   reference:
@@ -168,13 +168,27 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 3500
-        repetitions: 3
+        max_epochs: 500
+        repetitions: 1
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4096000
           lambda-schedule-steps: 3584000
-          lr: "0.9e-3"
+          lr: "0.4e-3"
+
+    # Finetuning
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
+        max_epochs: 3500
+        repetitions: 2
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 4096000
+          lambda-schedule-steps: 3584000
+          lr: "0.4e-3"
 
     # Finetuning
     - <<: *common_step
@@ -186,10 +200,6 @@ training:
         other_options:
           <<: [*common_run_options, *advanced_stage_options]
           one-cycle-steps: 4096000
-          lr: "0.9e-3"
+          lambda-schedule-steps: 3584000
+          lr: "0.4e-3"
           batch_size: 65536
-          start-lambda: 1
-          end-lambda: 1
-          jitter-lambda-sample: 0.0
-          jitter-lambda-batch: 0.0
-          jitter-decay-lambda-batch: 0.0
