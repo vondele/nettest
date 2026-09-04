@@ -8,6 +8,7 @@ training_binpacks: &training_binpacks
   - vondele/master-binpacks_relabel/wrongIsRight_nodes5000pv2.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpack_relabel/fishpack32.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_1.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_2.relabel-BT4-tf13tune.binpack
