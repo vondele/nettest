@@ -104,7 +104,7 @@ advanced_stage_options: &advanced_stage_options
 
 trainer: &trainer
   owner: Disservin
-  sha: f7cddb6de5a7
+  sha: f7cddb6de5a74b0d5e66d41e966912beb20e4d5b
 
 reference_code: &reference_code
   owner: official-stockfish
