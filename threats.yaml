@@ -47,6 +47,7 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
   l2: 32
+  factorize-heads: true
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -102,8 +103,8 @@ advanced_stage_options: &advanced_stage_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
+  owner: Disservin
+  sha: f7cddb6de5a7
 
 reference_code: &reference_code
   owner: official-stockfish
