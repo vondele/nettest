@@ -8,7 +8,6 @@ training_binpacks: &training_binpacks
   - vondele/master-binpacks_relabel/wrongIsRight_nodes5000pv2.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
-  - vondele/master-binpacks_relabel/fishpack32.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_1.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_2.relabel-BT4-tf13tune.binpack
@@ -43,6 +42,9 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel.binpack
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel.binpack
   - vondele/rescored/tb5dtm.binpack
+
+ltc_finetune_binpacks: &ltc_finetune_binpacks
+  - vondele/master-binpacks_relabel/fishpack32.relabel-BT4-tf13tune.binpack
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
@@ -188,3 +190,18 @@ training:
           lambda-schedule-steps: 3584000
           lr: "0.4e-3"
           batch_size: 65536
+
+    # Finetuning 2 --- SF LTC games
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *ltc_finetune_binpacks
+        max_epochs: 50
+        other_options:
+          <<: [*common_run_options, *advanced_stage_options]
+          one-cycle-steps: 5500
+          lambda-schedule-steps: 48000
+          lr: "0.2e-5"
+          batch_size: 65536
+
