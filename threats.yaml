@@ -107,7 +107,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 23cf5d827388e84d4389b40025ef401db4925f25
+  sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
   target: profile-build
 
 testing_code: &testing_code
