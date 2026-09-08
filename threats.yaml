@@ -44,6 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
+  rule50: ft
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
   l2: 32
@@ -59,7 +60,7 @@ checkpoint2nnue_options: &checkpoint2nnue_options
   ft-compression: leb128
 
 common_run_options: &common_run_options
-  optimizer-name: adamw
+  optimizer-name: rangerlite
   epoch-size: 134217728
   validation-size: 268435456
   check-val-every-n-epoch: 50
@@ -102,16 +103,18 @@ advanced_stage_options: &advanced_stage_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
+  owner: sscg13
+  sha: 586aaacf4766c7d5aa8cb31e2fe158b142cffd86
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: 23cf5d827388e84d4389b40025ef401db4925f25
-  target: profile-build
+  owner: sscg13
+  sha: edb0d9db6731067ec50ce619ff372b463bc4dd5d
+  target: build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: sscg13
+  sha: a18e65d6598052d04f3f9ef48e38f8754aeea402
+  target: rule50-ft-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
