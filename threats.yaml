@@ -45,7 +45,7 @@ training_binpacks: &training_binpacks
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
-  l1: 1024
+  l1: 1152
   l2: 32
 
 optimize_flags: &optimize_flags
