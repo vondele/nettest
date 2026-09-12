@@ -105,7 +105,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
+  sha: 59aae690f91d6f69aac194f447d84b4a2c3be778
   target: profile-build
 
 testing_code: &testing_code
@@ -144,7 +144,7 @@ testing:
       sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 40000
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.0
@@ -157,8 +157,8 @@ testing:
     code: *testing_code
 
 training_length_options: &training_length_options
-  one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  one-cycle-steps: 6108000
+  lambda-schedule-steps: 6052000
   lr: "0.4e-3"
 
 training:
@@ -168,7 +168,7 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 4500
+        max_epochs: 5500
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
@@ -179,7 +179,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 4750
+        max_epochs: 5750
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
