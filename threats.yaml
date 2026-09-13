@@ -74,8 +74,6 @@ common_run_options: &common_run_options
   pc-y2: 1.0
   pc-y3: 0.95
   pc-y4: 0.75
-
-advanced_stage_options: &advanced_stage_options
   ply-x1: 0.00
   ply-y1: 0.025
   ply-x2: 22.0
@@ -143,7 +141,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: ea901931eaff9745b7df8172eb542239cc5b58e3
+      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
       max_rounds: 80000
@@ -158,6 +156,10 @@ testing:
   testing:
     code: *testing_code
 
+training_length_options: &training_length_options
+  one-cycle-steps: 5108000
+  lambda-schedule-steps: 5052000
+  lr: "0.4e-3"
 
 training:
   steps:
@@ -166,13 +168,10 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 3500
+        max_epochs: 4500
         repetitions: 3
         other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 4096000
-          lambda-schedule-steps: 3584000
-          lr: "0.4e-3"
+          <<: [*training_length_options, *common_run_options]
 
     # Finetuning
     - <<: *common_step
@@ -180,10 +179,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 3750
+        max_epochs: 4750
         other_options:
-          <<: [*common_run_options, *advanced_stage_options]
-          one-cycle-steps: 4096000
-          lambda-schedule-steps: 3584000
-          lr: "0.4e-3"
+          <<: [*training_length_options, *common_run_options]
           batch_size: 65536
