@@ -183,3 +183,17 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+
+    # Finetuning
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks:
+          - vondele/master-binpacks_relabel/fishpack32.relabel-BT4-tf13tune.binpack
+        max_epochs: 4800
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          batch_size: 65536
+          start-lambda: 0.9
+          end-lambda: 0.9
