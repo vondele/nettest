@@ -152,7 +152,7 @@ testing:
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
