@@ -45,7 +45,7 @@ training_binpacks: &training_binpacks
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
-  l1: 1024
+  l1: 1152
   l2: 32
 
 optimize_flags: &optimize_flags
@@ -105,11 +105,13 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
+  sha: 031dfeb437fa6b06cdbdf4ef89dfb82f6b83c4d3
   target: profile-build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: xu-shawn
+  sha: 0bd1514ea1962494a750dc623cd3a4d04e603933
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
