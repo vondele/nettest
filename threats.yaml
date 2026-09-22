@@ -152,7 +152,7 @@ testing:
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
@@ -182,4 +182,21 @@ training:
         max_epochs: 4750
         other_options:
           <<: [*training_length_options, *common_run_options]
+          batch_size: 65536
+
+    # Finetuning
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
+        max_epochs: 4800
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          pc-y0: -0.20
+          pc-y1: 0.6
+          pc-y2: 1.0
+          pc-y3: 0.85
+          pc-y4: 0.65
+          lr: "0.4e-4"
           batch_size: 65536
