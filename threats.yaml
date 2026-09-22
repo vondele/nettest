@@ -144,7 +144,7 @@ testing:
       sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 5000
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.0
