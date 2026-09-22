@@ -193,7 +193,10 @@ training:
         max_epochs: 4800
         other_options:
           <<: [*training_length_options, *common_run_options]
+          pc-y0: -0.20
+          pc-y1: 0.6
+          pc-y2: 1.0
+          pc-y3: 0.85
+          pc-y4: 0.65
           lr: "0.4e-4"
           batch_size: 65536
-          start-lambda: 0.9
-          end-lambda: 0.9
