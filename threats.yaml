@@ -103,6 +103,10 @@ trainer: &trainer
   owner: TonyCongqianWang
   sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
 
+trainer_test: &trainer
+  owner: xu-shawn
+  sha: 99f372e3a2578f80895e7facdcb3484d4cc7d470.
+
 reference_code: &reference_code
   owner: official-stockfish
   sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
@@ -193,10 +197,4 @@ training:
         max_epochs: 4800
         other_options:
           <<: [*training_length_options, *common_run_options]
-          pc-y0: -0.20
-          pc-y1: 0.6
-          pc-y2: 1.0
-          pc-y3: 0.85
-          pc-y4: 0.65
-          lr: "0.4e-4"
           batch_size: 65536
