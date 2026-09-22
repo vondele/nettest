@@ -103,7 +103,7 @@ trainer: &trainer
   owner: TonyCongqianWang
   sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
 
-trainer_test: &trainer
+trainer_test: &trainer_test
   owner: xu-shawn
   sha: 99f372e3a2578f80895e7facdcb3484d4cc7d470.
 
@@ -190,7 +190,7 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
+      trainer: *trainer_test
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
