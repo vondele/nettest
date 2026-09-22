@@ -105,7 +105,7 @@ trainer: &trainer
 
 trainer_test: &trainer_test
   owner: xu-shawn
-  sha: 99f372e3a2578f80895e7facdcb3484d4cc7d470.
+  sha: 99f372e3a2578f80895e7facdcb3484d4cc7d470
 
 reference_code: &reference_code
   owner: official-stockfish
