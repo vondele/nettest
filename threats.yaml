@@ -196,4 +196,4 @@ training:
           lr: "0.4e-4"
           batch_size: 65536
           start-lambda: 0.9
-          end-lambda: 0.9
+          end-lambda: 0.8
