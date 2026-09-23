@@ -169,7 +169,16 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 5000
+        max_epochs: 4900
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
+
+    # Finetuning 
+     - <<: *common_step
+       run: 
+         <<: *common_run_resume_ckpt 
+         binpacks: *training_binpacks 
+         max_epochs: 5000
+         other_options: 
+           <<: [*training_length_options, *common_run_options]
