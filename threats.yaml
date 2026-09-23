@@ -105,7 +105,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
+  sha: 0a215d6c9e48856ef630013b8ab8312941a59057
   target: profile-build
 
 testing_code: &testing_code
@@ -141,18 +141,18 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 5000
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.0
-      nElo_interval_width: 2
+      nElo_interval_width: 4
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
@@ -183,3 +183,4 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+          lr: "0.1e-3"
