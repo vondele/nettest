@@ -8,6 +8,7 @@ training_binpacks: &training_binpacks
   - vondele/master-binpacks_relabel/wrongIsRight_nodes5000pv2.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
   - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/fishpack32.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_1.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_2.relabel-BT4-tf13tune.binpack
@@ -95,7 +96,7 @@ common_run_options: &common_run_options
   jitter-lambda-batch: 0.0070
   jitter-decay-lambda-batch: 0.999
   start-lambda: 1.0
-  end-lambda: 1.0
+  end-lambda: 0.9
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
 
@@ -158,7 +159,7 @@ testing:
 
 training_length_options: &training_length_options
   one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  lambda-schedule-steps: 5108000
   lr: "0.4e-3"
 
 training:
@@ -168,18 +169,16 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 4500
+        max_epochs: 4900
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 4750
+        max_epochs: 5000
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
