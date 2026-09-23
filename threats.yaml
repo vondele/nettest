@@ -100,12 +100,12 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
+  owner: vondele
+  sha: 7b2e649e678b28c687d21d8c35927b406382725b
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
+  sha: 0a215d6c9e48856ef630013b8ab8312941a59057
   target: profile-build
 
 testing_code: &testing_code
@@ -141,7 +141,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
     options:
       hash: 16
       max_rounds: 80000
