@@ -101,7 +101,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: vondele
-  sha: 7b2e649e678b28c687d21d8c35927b406382725b
+  sha: 97d474c786aa81b5fc787dd68e7a758585935b54
 
 reference_code: &reference_code
   owner: official-stockfish
