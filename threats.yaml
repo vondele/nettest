@@ -101,7 +101,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
+  sha: eba1ed889d5a6a87d897362c829e7da204fbdfcc
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -109,7 +109,9 @@ reference_code: &reference_code
   target: profile-build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: TonyCongqianWang
+  sha: 3e572e81a396df462892b808a026b27b8432bd1a
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
