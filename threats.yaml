@@ -105,12 +105,12 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
+  sha: 0a215d6c9e48856ef630013b8ab8312941a59057
   target: profile-build
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: 3e572e81a396df462892b808a026b27b8432bd1a
+  sha: da0639aff09ae3e8414d8ec0411f6362bdad2f6f
   target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
