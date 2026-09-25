@@ -1,3 +1,5 @@
+# TT-aligned 12-bucket rule50 embedding at the feature transformer.
+# Buckets: 0..13, then 14..21, ..., 86..93, and 94+.
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -44,6 +46,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
+  rule50: ft
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
   l2: 32
@@ -100,8 +103,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
+  owner: sscg13
+  sha: 96fc4587c4475a17ff6d9641b3798db6421ae585
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -109,7 +112,9 @@ reference_code: &reference_code
   target: profile-build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: sscg13
+  sha: 8dba51bf7c3a5084c2bce91330cca4e8b2f7dac6
+  target: rule50-ft-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
