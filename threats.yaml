@@ -100,8 +100,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: eba1ed889d5a6a87d897362c829e7da204fbdfcc
+  owner: xu-shawn
+  sha: 1dea4632070793588127714d7171db44c18baee4
 
 reference_code: &reference_code
   owner: official-stockfish
