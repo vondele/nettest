@@ -147,18 +147,18 @@ testing:
       max_rounds: 5000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: -0.0
+      nElo_interval_midpoint: 1.0
       nElo_interval_width: 4
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
 training_length_options: &training_length_options
   one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  lambda-schedule-steps: 5108000
   lr: "0.4e-3"
 
 training:
@@ -179,7 +179,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 4750
+        max_epochs: 5000
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
+          lr: "0.4e-4"
