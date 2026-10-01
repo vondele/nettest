@@ -101,12 +101,12 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: c8c6f7d4f227cfef46477f4c5a0131c76a11393e
+  owner: official-stockfish
+  sha: e5d36bb072bb3559e50b5889285862fb1bc6ff4e # from 2026-10-01
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: f21610e51a436b69fabdcc89d8fe25ff0c2d5731
+  sha: 49ea5ded38315cff8e67f4a677a9e7811612fbf6 # from 2026-09-30
   target: profile-build
 
 testing_code: &testing_code
@@ -142,14 +142,14 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 5000
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.0
-      nElo_interval_width: 2
+      nElo_interval_width: 4
 
   reference:
     code: *reference_code
