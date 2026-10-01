@@ -100,18 +100,16 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: TonyCongqianWang
-  sha: eba1ed889d5a6a87d897362c829e7da204fbdfcc
+  owner: official-stockfish
+  sha: e5d36bb072bb3559e50b5889285862fb1bc6ff4e # from 2026-10-01
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 0a215d6c9e48856ef630013b8ab8312941a59057
+  sha: 49ea5ded38315cff8e67f4a677a9e7811612fbf6 # from 2026-09-30
   target: profile-build
 
 testing_code: &testing_code
-  owner: TonyCongqianWang
-  sha: da0639aff09ae3e8414d8ec0411f6362bdad2f6f
-  target: profile-build
+  <<: *reference_code
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -143,14 +141,14 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: b9008d08b9f375ef7810dc55da6ff223a3992cc2
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
     options:
       hash: 16
-      max_rounds: 80000
+      max_rounds: 5000
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.0
-      nElo_interval_width: 2
+      nElo_interval_width: 4
 
   reference:
     code: *reference_code
