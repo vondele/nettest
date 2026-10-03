@@ -145,11 +145,11 @@ testing:
       sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
     options:
       hash: 16
-      max_rounds: 5000
+      max_rounds: 80000
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.0
-      nElo_interval_width: 4
+      nElo_interval_width: 2
 
   reference:
     code: *reference_code
