@@ -66,7 +66,7 @@ common_run_options: &common_run_options
   batch-size: 131072
   <<: *model_config
   factorized-weight-decay: "4.0e-5"
-  random-fen-skipping: 10
+  random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
   pc-y0: -0.20
@@ -101,7 +101,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: official-stockfish
-  sha: e5d36bb072bb3559e50b5889285862fb1bc6ff4e # from 2026-10-01
+  sha: 13b44569e0674fe7267122396ea7bd0946f10115 # from 2026-10-03
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -144,11 +144,11 @@ testing:
       sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
     options:
       hash: 16
-      max_rounds: 5000
+      max_rounds: 30000
       tc: 10+0.1
     sprt:
       nElo_interval_midpoint: -0.0
-      nElo_interval_width: 4
+      nElo_interval_width: 2
 
   reference:
     code: *reference_code
