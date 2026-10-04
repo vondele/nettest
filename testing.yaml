@@ -122,7 +122,7 @@ training_length_options: &training_length_options
 
 training:
   steps:
-    # Pretraining
+    # Pretraining (step 1)
     - <<: *common_step
       run:
         resume: none
