@@ -101,7 +101,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: official-stockfish
-  sha: 13b44569e0674fe7267122396ea7bd0946f10115 # from 2026-10-03
+  sha: f7d86f1915c1e4d233b61b8abf799e37afebb79d # from 2026-10-04
 
 reference_code: &reference_code
   owner: official-stockfish

@@ -1,36 +1,74 @@
-optimize_flags: &optimize_flags
+training_binpacks: &training_binpacks
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/rescored/tb5dtm.binpack
+
+model_config: &model_config
   features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
   l2: 32
+
+optimize_flags: &optimize_flags
+  <<: *model_config
   ft-optimize-count: 100000
   ft-optimize: true
   ft-compression: leb128
 
 checkpoint2nnue_options: &checkpoint2nnue_options
-  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
-  l1: 1024
-  l2: 32
+  <<: *model_config
   ft-compression: leb128
 
 common_run_options: &common_run_options
-  batch-size: 8192
-  epoch-size: 100000
-  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
-  l1: 1024
-  l2: 32
-  random-fen-skipping: 10
+  optimizer-name: adamw
+  epoch-size: 134217728
+  validation-size: 268435456
+  check-val-every-n-epoch: 50
+  batch-size: 131072
+  <<: *model_config
+  factorized-weight-decay: "4.0e-5"
+  random-fen-skipping: 3
+  early-fen-skipping: 18
   soft-early-fen_skipping: 32
-  w1: 3.3553547771220007
-  w2: 0.7006821612968052
   pc-y0: -0.20
   pc-y1: 0.45
   pc-y2: 1.0
   pc-y3: 0.95
   pc-y4: 0.75
+  ply-x1: 0.00
+  ply-y1: 0.025
+  ply-x2: 22.0
+  ply-y2: 0.05
+  ply-x3: 25.5
+  ply-y3: 0.20
+  ply-x4: 29.5
+  ply-y4: 0.80
+  pow-exp: 2.4340402395048404
+  qp-asymmetry: 0.22866886710086187
+  in-scaling: 295.6539508488627
+  out-scaling: 379.98724077106635
+  in-offset: 285.2706341467852
+  out-offset: 289.1258344152218
+  one-cycle-warmup-pct: 0.05
+  one-cycle-final-div: "1e3"
+  lambda-cycle-jitter: true
+  jitter-lambda-sample: 0.0035
+  jitter-lambda-batch: 0.0070
+  jitter-decay-lambda-batch: 0.999
+  start-lambda: 1.0
+  end-lambda: 1.0
+  lambda-cycle-warmup-pct: 0.25
+  lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: sscg13
-  sha: 8e85dbaf5bc695c1e9cf42863b5a2f7777acb064
+  owner: official-stockfish
+  sha: f7d86f1915c1e4d233b61b8abf799e37afebb79d # from 2026-10-04
+
+reference_code: &reference_code
+  owner: official-stockfish
+  sha: 49ea5ded38315cff8e67f4a677a9e7811612fbf6 # from 2026-09-30
+  target: profile-build
+
+testing_code: &testing_code
+  <<: *reference_code
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -42,15 +80,14 @@ common_step: &common_step
   convert: *common_convert
   trainer: *trainer
 
-official_code: &official_code
-  owner: official-stockfish
-  sha: d5bbc6b67d3184fc39fa87a18596e77e92af990c
-  target: profile-build
+common_run_resume_model: &common_run_resume_model
+  repetitions: 1
+  resume: previous_model
 
-engine: &engine
-  owner: sscg13
-  sha: 77399c0314ac7af6ad65f174557cac685926fb30
-  target: profile-build
+common_run_resume_ckpt: &common_run_resume_ckpt
+  <<: *common_run_resume_model
+  resume: previous_checkpoint
+
 # ----------------------------------------------------------
 
 testing:
@@ -58,110 +95,49 @@ testing:
     trainer: *trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     other_options:
-      features: Full_Threats+PP_3Wide+HalfKAv2_hm^
-      l1: 1024
-      l2: 32
-      count: 5000
+      <<: *model_config
+      count: 20000
   fastchess:
     code:
       owner: Disservin
-      sha: f08ca0251066003c0e1f39382fe62578e5c12eb9
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
     options:
       hash: 16
-      max_rounds: 20
-      tc: 3+0.03
+      max_rounds: 30000
+      tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: -0.75
+      nElo_interval_midpoint: -0.0
       nElo_interval_width: 2
+
   reference:
-    code: *official_code
+    code: *reference_code
   steps: all
   testing:
-    code: *engine
+    code: *testing_code
+
+training_length_options: &training_length_options
+  one-cycle-steps: 5108000
+  lambda-schedule-steps: 5052000
+  lr: "0.4e-3"
 
 training:
   steps:
-    # Stage 1
+    # Pretraining
     - <<: *common_step
       run:
-        binpacks:
-          - official-stockfish/master-binpacks/fishpack32.binpack
-        max_epochs: 3
-        repetitions: 2
         resume: none
+        binpacks: *training_binpacks
+        max_epochs: 5
         other_options:
-          <<: *common_run_options
-          lr: 4.375e-4
-          gamma: 0.995
-          start-lambda: 1.0
-          end-lambda: 0.75
-          early-fen-skipping: 10
-          ply-x1: 0.0
-          ply-y1: 0.01
-          ply-x2: 14.0
-          ply-y2: 0.20
-          ply-x3: 18.5
-          ply-y3: 0.50
-          ply-x4: 29.5
-          ply-y4: 0.80
+          <<: [*training_length_options, *common_run_options]
 
-    # Stage 2
+    # Finetuning
     - <<: *common_step
+      trainer: *trainer
       run:
-        binpacks:
-          - official-stockfish/master-binpacks/fishpack32.binpack
-        max_epochs: 3
-        repetitions: 1
-        resume: previous_model
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
+        max_epochs: 10
         other_options:
-          <<: *common_run_options
-          lr: 0.0010783148702050778
-          gamma: 0.994446435229841
-          pow-exp: 2.442037790427722
-          qp-asymmetry: 0.15795949371005746
-          start-lambda: 0.8460635942002347
-          end-lambda: 0.7490913625693039
-          in-scaling: 294.7193839807687
-          out-scaling: 352.8750799744594
-          in-offset: 281.4186220835457
-          out-offset: 279.93991915496105
-          early-fen-skipping: 18
-          ply-x1: 0.00
-          ply-y1: 0.025
-          ply-x2: 22.0
-          ply-y2: 0.05
-          ply-x3: 25.5
-          ply-y3: 0.20
-          ply-x4: 29.5
-          ply-y4: 0.80
-
-    # Stage 3
-    - <<: *common_step
-      run:
-        binpacks:
-          - official-stockfish/master-binpacks/fishpack32.binpack
-        max_epochs: 7
-        repetitions: 2
-        resume: previous_checkpoint
-        other_options:
-          <<: *common_run_options
-          lr: 0.0010783148702050778
-          gamma: 0.994446435229841
-          pow-exp: 2.442037790427722
-          qp-asymmetry: 0.15795949371005746
-          start-lambda: 0.8460635942002347
-          end-lambda: 0.7490913625693039
-          in-scaling: 294.7193839807687
-          out-scaling: 352.8750799744594
-          in-offset: 281.4186220835457
-          out-offset: 279.93991915496105
-          early-fen-skipping: 18
-          ply-x1: 0.00
-          ply-y1: 0.025
-          ply-x2: 22.0
-          ply-y2: 0.05
-          ply-x3: 25.5
-          ply-y3: 0.20
-          ply-x4: 29.5
-          ply-y4: 0.80
-
+          <<: [*training_length_options, *common_run_options]
+          batch_size: 65536
