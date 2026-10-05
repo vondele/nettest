@@ -59,8 +59,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: f7d86f1915c1e4d233b61b8abf799e37afebb79d # from 2026-10-04
+  owner: vondele
+  sha: 6b33cc6a3e6342ebcc8ec6d4aa1b1b686745450d # from 2026-10-05
 
 reference_code: &reference_code
   owner: official-stockfish
