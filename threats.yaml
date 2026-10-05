@@ -91,8 +91,8 @@ common_run_options: &common_run_options
   one-cycle-warmup-pct: 0.05
   one-cycle-final-div: "1e3"
   lambda-cycle-jitter: true
-  jitter-lambda-sample: 0.004
-  jitter-lambda-batch: 0.006
+  jitter-lambda-sample: 0.0035
+  jitter-lambda-batch: 0.007
   jitter-decay-lambda-batch: 0.999
   start-lambda: 0.95
   end-lambda: 0.95
@@ -158,7 +158,7 @@ testing:
 
 training_length_options: &training_length_options
   one-cycle-steps: 5120000
-  lambda-schedule-steps: 5222400
+  lambda-schedule-steps: 5120000
   lr: "0.4e-3"
 
 training:
