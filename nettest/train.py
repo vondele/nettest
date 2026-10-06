@@ -191,7 +191,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     max_epochs = int(run["max_epochs"])
     cmd.append(f"--max_epochs={max_epochs}")
-    cmd.append(f"--network-save-period={min(max_epochs, 20)}")
+    cmd.append(f"--network-save-period={run.get('network-save-period', min(max_epochs, 20))}")
     cmd.append("--save_top_k=1")
     cmd.append("--save_last_network=True")
 
