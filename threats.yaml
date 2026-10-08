@@ -100,7 +100,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 4dce37d0f9260f2e2c00efdd3768bda83e89398e # from 2026-10-07
+  sha: e5c83c610f0618b97549140a8edf02ab56a5e6c9 # from 2026-10-08
 
 reference_code: &reference_code
   owner: official-stockfish
