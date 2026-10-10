@@ -19,8 +19,8 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 
 common_run_options: &common_run_options
   optimizer-name: adamw
-  epoch-size: 1073741824
-  validation-size: 268435456
+  epoch-size: 10485760
+  validation-size: 2621440
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
@@ -127,7 +127,7 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 1
+        max_epochs: 5
         other_options:
           <<: [*training_length_options, *common_run_options]
 
@@ -137,7 +137,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 1
+        max_epochs: 5
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
