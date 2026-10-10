@@ -59,8 +59,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: fbd2de1a52dd2e6dd46cf52a3945f9f0367f6065 # from 2026-10-06
+  owner: vondele
+  sha: da8f61316a5f895f13f504996fe9d017fa4662e4 # from 2026-10-10, nnue-pytorch fp16-combined (W+G)
 
 reference_code: &reference_code
   owner: official-stockfish
