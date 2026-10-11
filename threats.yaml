@@ -100,16 +100,18 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: fbd2de1a52dd2e6dd46cf52a3945f9f0367f6065 # from 2026-10-06
+  owner: sscg13
+  sha: cee405a7c8e482d5ac9ccb9bcf7a9167c0afce41
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 49ea5ded38315cff8e67f4a677a9e7811612fbf6 # from 2026-09-30
-  target: profile-build
+  sha: dcf1cd5a8045d49866c0cc56df5b8ba6fe41a659
+  target: build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: sscg13
+  sha: 133cc332a2cb3b307abf119cb0ec7a9e43c08f0f
+  target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
