@@ -51,11 +51,11 @@ optimize_flags: &optimize_flags
   <<: *model_config
   ft-optimize-count: 100000
   ft-optimize: true
-  compression: zlib
+  compression: none
 
 checkpoint2nnue_options: &checkpoint2nnue_options
   <<: *model_config
-  compression: zlib
+  compression: none
 
 common_run_options: &common_run_options
   optimizer-name: adamw
@@ -100,7 +100,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: e5c83c610f0618b97549140a8edf02ab56a5e6c9 # from 2026-10-08
+  sha: be8f001431fe8a2a84d40ea8ba53b880bab0df77 # from 2026-10-12
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -109,7 +109,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: c6105755a2aca60958f36ec8c97a8973f49bdfaf # from 2026-10-07
+  sha: 4fd531f0dd4a724e418e1094d2d9195b102ba7e9 # from 2026-10-11
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
