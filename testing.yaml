@@ -63,8 +63,8 @@ trainer: &trainer
   sha: 8fb7a47392c54c7ca2472bb9f0d1f1a2d9401ffc
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: dcf1cd5a8045d49866c0cc56df5b8ba6fe41a659
+  owner: xu-shawn
+  sha: 8d5eecb5a5bc4ed146b1a9a6d1bc4d3bf0ccc3c7 # Stockfish PR 7215 head (K32Q2 net)
   target: build
 
 testing_code: &testing_code
