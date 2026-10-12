@@ -69,47 +69,54 @@ executes it. The CI service is described in these [docs](https://docs.cscs.ch/se
 ### Execution in a container environment
 
 The workflows are executed in a [container](ci/docker/Dockerfile.NVIDIA) with
-proper mounts. In particular, the container contains this repo as
-`/workspace/nettest/`, and mounted directories `/workspace/data/`,
-`/workspace/scratch/`, and `/workspace/cidir/`. The former will be used to store
+proper mounts. The container image contains only the static dependencies,
+while the nettest sources of the git checkout under test are provided via a
+mount (in CI: `/workspace/cidir/` pointing at the checkout; locally: the repo
+mounted at `/workspace/nettest/`, see below). Further mounted directories are
+`/workspace/data/` and `/workspace/scratch/`. The former will be used to store
 and cache data downloaded from huggingface data repositories (and must offer
-fast access, e.g. SSD), while the latter contain training and testing run
+fast access, e.g. SSD), while the latter contains training and testing run
 intermediate data, checkpoints and nets.
 
 #### local execution
 
 Assuming a working docker setup (exposing the GPU of the host, allowing for the
-sys_nice capability), and local directories `/mnt/ssd/XYZ/` that can be mounted
-into the container, the following is thus all what is needed to build the
-docker container and run a recipe locally:
+sys_nice capability), and local directories under `DATA_PREFIX` that can be
+mounted into the container, the following is thus all what is needed to build
+the docker container and run a recipe locally:
 
 ```bash
 # clone the repo
 git clone https://github.com/vondele/nettest.git
-# build the container
+# build the container (contains the static dependencies, not the sources)
 cd nettest
 docker build -t nettest.docker -f ci/docker/Dockerfile.NVIDIA .
-# local execution, adjust data, scratch and cidir mounts as needed
+# local execution, run from within the repo directory (it is mounted into
+# the container via $(pwd) and used through PYTHONPATH)
+# DATA_PREFIX holds the data, scratch and cidir directories and should be
+# on a fast disk (e.g. SSD)
+export DATA_PREFIX=/mnt/ssd/
 docker run -u $(id -u):$(id -g) -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 \
        --gpus all --cap-add=sys_nice \
-       -v /mnt/ssd/data/:/workspace/data \
-       -v /mnt/ssd/scratch/:/workspace/scratch \
-       -v /mnt/ssd/cidir/:/workspace/cidir \
+       -v $DATA_PREFIX/data:/workspace/data \
+       -v $DATA_PREFIX/scratch:/workspace/scratch \
+       -v $DATA_PREFIX/cidir:/workspace/cidir \
+       -v $(pwd):/workspace/nettest -e PYTHONPATH=/workspace/nettest \
        nettest.docker /bin/bash -c \
-       "python -m nettest.execute_recipe --executor local --recipe nettest/testing.yaml"
+       "python -m nettest.execute_recipe --executor local --recipe /workspace/nettest/testing.yaml"
 ```
 
 Nettest fetches GitHub dependencies such as `nnue-pytorch`, `Stockfish`, and
 `fastchess` over HTTPS by default. If `git@github.com` SSH authentication is
 already available on the machine, it will use SSH instead.
 
-It is also possible to mount a local directory over `/workspace/nettest/` to be
-able to easily modify and test recipes.
+Recipes and sources can be modified and tested easily, as the container uses
+the repo from the mount rather than a baked-in copy.
 
 For more advanced hardware environments (e.g. multi GPUs, multi socket), it is
 possible to influence the resource allocation by adding the argument
-`--environment nettest/environments/local.yaml` (or a suitably modified yaml
-file).
+`--environment /workspace/nettest/environments/local.yaml` (or a suitably
+modified yaml file).
 
 #### remote execution
 

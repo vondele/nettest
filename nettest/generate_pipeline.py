@@ -3,6 +3,7 @@ import yaml
 import hashlib
 import json
 import argparse
+import os
 from pathlib import Path
 from collections import defaultdict
 from .utils import MyDumper
@@ -140,7 +141,11 @@ def generate_job_base():
     """
     Generate a base ci yaml setup for a computational job
     """
+    # the nettest sources are taken from the git checkout at $CI_PROJECT_DIR,
+    # they are not part of the container image
     variables = {
+        "GIT_STRATEGY": "clone",
+        "PYTHONPATH": "$CI_PROJECT_DIR",
         "SLURM_JOB_NUM_NODES": 1,
         "SLURM_NTASKS": 1,
         "SLURM_TIMELIMIT": "12:00:00",
@@ -149,7 +154,7 @@ def generate_job_base():
     job = {
         "timeout": "48h",
         "extends": ".container-runner-clariden-gh200",
-        "image": "$PERSIST_IMAGE_NAME",
+        "image": os.environ.get("PERSIST_IMAGE_NAME", "$PERSIST_IMAGE_NAME"),
         "variables": variables,
     }
 

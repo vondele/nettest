@@ -6,17 +6,23 @@ stages:
   - generateSchedule
   - runTraining
 
-# image and mounts
+# mounts
 variables:
-  PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/nettest:$CI_COMMIT_SHA
   CSCS_ADDITIONAL_MOUNTS: '["/iopsstor/scratch/cscs/vjoost/nettest/data:/workspace/data", "/iopsstor/scratch/cscs/vjoost/nettest/cdb/:/workspace/cdb/", "/capstor/scratch/cscs/vjoost/nettest/scratch:/workspace/scratch"]'
 
-# build the container image
+# build the base container image: it only contains static dependencies (no
+# nettest sources), and is tagged with the hash of the Dockerfile. Due to the
+# default CSCS_REBUILD_POLICY=if-not-exists it is rebuilt only when
+# ci/docker/Dockerfile.NVIDIA changes, otherwise the job just verifies the
+# image exists in the registry and exits. The actual image name (with the
+# hash tag) is exported as BASE_IMAGE to later jobs via a dotenv artifact.
 build:
   stage: build
-  extends: .container-builder-cscs-gh200
+  extends: [.container-builder-cscs-gh200, .dynamic-image-name]
   variables:
     DOCKERFILE: ci/docker/Dockerfile.NVIDIA
+    PERSIST_IMAGE_NAME: $CSCS_REGISTRY_PATH/base/nettest  # no tag, it is appended from the Dockerfile hash
+    WATCH_FILECHANGES: 'ci/docker/Dockerfile.NVIDIA'
     KUBERNETES_MEMORY_REQUEST: '64Gi'
     KUBERNETES_MEMORY_LIMIT: '64Gi'
 
@@ -25,13 +31,21 @@ generateSchedule:
   timeout: 24h
   stage: generateSchedule
   extends: .container-runner-clariden-gh200
-  image: $PERSIST_IMAGE_NAME
+  image: $BASE_IMAGE
   script:
     - cd /workspace/
     - ln -s $CI_PROJECT_DIR ./cidir
-    - python -u -m nettest.generate_pipeline --environment /workspace/nettest/environments/clariden.yaml nettest/${RECIPE:-threats}.yaml ./cidir/training_schedule.yaml ./cidir/training_recipe.yaml
+    # pass the base image name on to the generated pipeline
+    - export PERSIST_IMAGE_NAME=$BASE_IMAGE
+    # the environment file path is passed through to the generated jobs
+    # verbatim: keep it quoted so it stays unexpanded, and each job resolves
+    # $CI_PROJECT_DIR against its own checkout (jobs get different build dirs)
+    - python -u -m nettest.generate_pipeline --environment '$CI_PROJECT_DIR/environments/clariden.yaml' $CI_PROJECT_DIR/${RECIPE:-threats}.yaml ./cidir/training_schedule.yaml ./cidir/training_recipe.yaml
     - cat ./cidir/training_schedule.yaml
   variables:
+    GIT_STRATEGY: clone
+    # the nettest sources are used from the git checkout, not from the image
+    PYTHONPATH: $CI_PROJECT_DIR
     SLURM_JOB_NUM_NODES: 1
     SLURM_NTASKS: 1
     SLURM_TIMELIMIT: '00:30:00'
