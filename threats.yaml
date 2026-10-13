@@ -159,7 +159,7 @@ testing:
 
 training_length_options: &training_length_options
   one-cycle-steps: 5108000
-  lambda-schedule-steps: 5108000
+  lambda-schedule-steps: 5052000
   lr: "0.4e-3"
 
 training:
@@ -185,4 +185,3 @@ training:
         network-save-period: 10
         other_options:
           <<: [*training_length_options, *common_run_options]
-          lr: "0.4e-4"
