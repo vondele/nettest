@@ -3,7 +3,6 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+HalfKAv2_hm^
   l1: 1024
   l2: 32
 
@@ -11,11 +10,11 @@ optimize_flags: &optimize_flags
   <<: *model_config
   ft-optimize-count: 100000
   ft-optimize: true
-  ft-compression: leb128
+  compression: none
 
 checkpoint2nnue_options: &checkpoint2nnue_options
   <<: *model_config
-  ft-compression: leb128
+  compression: none
 
 common_run_options: &common_run_options
   optimizer-name: adamw
@@ -60,15 +59,17 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: official-stockfish
-  sha: fbd2de1a52dd2e6dd46cf52a3945f9f0367f6065 # from 2026-10-06
+  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 49ea5ded38315cff8e67f4a677a9e7811612fbf6 # from 2026-09-30
-  target: profile-build
+  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  target: build
 
 testing_code: &testing_code
-  <<: *reference_code
+  owner: official-stockfish
+  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -127,7 +128,7 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 10
+        max_epochs: 15
         other_options:
           <<: [*training_length_options, *common_run_options]
 
@@ -137,7 +138,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 10
+        max_epochs: 15
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
