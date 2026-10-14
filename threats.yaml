@@ -104,6 +104,13 @@ trainer: &trainer
   owner: TonyCongqianWang
   sha: e5c83c610f0618b97549140a8edf02ab56a5e6c9 # from 2026-10-08
 
+# Stage 2 runs on the NGC 26.09 CI image, where torch.compile breaks the CuPy kernel launchers of
+# e5c83c6. This is e5c83c6 plus the launcher guard of official-stockfish/nnue-pytorch 10f82b6: it
+# changes no training behaviour and keeps the optimizer layout of the stage 1 checkpoint.
+trainer_stage2: &trainer_stage2
+  owner: xu-shawn
+  sha: b4774d2fca4ee6242bbe29132054cfdf1130e8ba
+
 # Stockfish PR 7215. Its net nn-c9e480e92425 is the stage 2 that PR 494's CI run trained from the
 # same stage 1, so the match compares the two stage 2 variants on identical engine code.
 reference_code: &reference_code
@@ -136,7 +143,7 @@ common_run_resume_ckpt: &common_run_resume_ckpt
 
 testing:
   crosscheck:
-    trainer: *trainer
+    trainer: *trainer_stage2
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     other_options:
       <<: *model_config
@@ -179,7 +186,7 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
+      trainer: *trainer_stage2
       convert:
         <<: *common_convert
         checkpoint2nnue:
