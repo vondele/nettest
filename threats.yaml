@@ -65,6 +65,8 @@ common_run_options: &common_run_options
   batch-size: 131072
   <<: *model_config
   factorized-weight-decay: "4.0e-5"
+  virtual-ft-weight-decay: "4.0e-5"
+  input-clipping-interval: 128
   random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -93,14 +95,14 @@ common_run_options: &common_run_options
   jitter-lambda-sample: 0.0035
   jitter-lambda-batch: 0.0070
   jitter-decay-lambda-batch: 0.999
-  start-lambda: 1.0
-  end-lambda: 1.0
+  start-lambda: 0.95
+  end-lambda: 0.95
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
   owner: official-stockfish
-  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
+  sha: 008d20f5e63c13ab535d7508e2fa67d382ffe1ed # from 2026-10-14
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -148,7 +150,7 @@ testing:
       max_rounds: 30000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: -0.0
+      nElo_interval_midpoint: 1.0
       nElo_interval_width: 2
 
   reference:
@@ -158,8 +160,8 @@ testing:
     code: *testing_code
 
 training_length_options: &training_length_options
-  one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  one-cycle-steps: 5120000
+  lambda-schedule-steps: 5120000
   lr: "0.4e-3"
 
 training:
@@ -169,7 +171,7 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 560
+        max_epochs: 610
         network-save-period: 10
         repetitions: 3
         other_options:
@@ -181,8 +183,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 600
+        max_epochs: 625
         network-save-period: 10
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
