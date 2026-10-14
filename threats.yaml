@@ -47,15 +47,17 @@ model_config: &model_config
   l1: 1024
   l2: 32
 
+# Stage 1 is the one trained by the CI run of PR 494 (step 9ec4ad226aa5). Its trainer commit and
+# its export options are part of the step hash, so both stay exactly as that run had them.
 optimize_flags: &optimize_flags
   <<: *model_config
   ft-optimize-count: 100000
   ft-optimize: true
-  compression: none
+  compression: zlib
 
 checkpoint2nnue_options: &checkpoint2nnue_options
   <<: *model_config
-  compression: none
+  compression: zlib
 
 common_run_options: &common_run_options
   optimizer-name: adamw
@@ -99,18 +101,25 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
+  owner: TonyCongqianWang
+  sha: e5c83c610f0618b97549140a8edf02ab56a5e6c9 # from 2026-10-08
 
+# Stage 2 runs on the NGC 26.09 CI image, where torch.compile breaks the CuPy kernel launchers of
+# e5c83c6. This is e5c83c6 plus the launcher guard of official-stockfish/nnue-pytorch 10f82b6: it
+# changes no training behaviour and keeps the optimizer layout of the stage 1 checkpoint.
+trainer_stage2: &trainer_stage2
+  owner: xu-shawn
+  sha: b4774d2fca4ee6242bbe29132054cfdf1130e8ba
+
+# Stockfish PR 7215. Its net nn-c9e480e92425 is the stage 2 that PR 494's CI run trained from the
+# same stage 1, so the match compares the two stage 2 variants on identical engine code.
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  owner: TonyCongqianWang
+  sha: 4fd531f0dd4a724e418e1094d2d9195b102ba7e9 # from 2026-10-11
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
-  target: build
+  <<: *reference_code
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -134,7 +143,7 @@ common_run_resume_ckpt: &common_run_resume_ckpt
 
 testing:
   crosscheck:
-    trainer: *trainer
+    trainer: *trainer_stage2
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     other_options:
       <<: *model_config
@@ -153,7 +162,7 @@ testing:
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
@@ -177,12 +186,19 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
+      trainer: *trainer_stage2
+      convert:
+        <<: *common_convert
+        checkpoint2nnue:
+          <<: *checkpoint2nnue_options
+          compression: none
+        optimize:
+          <<: *optimize_flags
+          compression: none
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 600
+        max_epochs: 620
         network-save-period: 10
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
