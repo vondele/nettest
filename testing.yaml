@@ -19,6 +19,8 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 common_run_options: &common_run_options
   optimizer-name: adamw
   epoch-size: 10485760
+  # clip the feature-transformer weights every 1024 steps, as with the epochs before #497
+  input-clipping-interval: 1024
   validation-size: 2621440
   check-val-every-n-epoch: 10
   batch-size: 131072
