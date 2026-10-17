@@ -55,7 +55,7 @@ common_run_options: &common_run_options
   start-lambda: 1.0
   end-lambda: 1.0
   lambda-cycle-warmup-pct: 0.25
-  lambda-cycle-delta: -0.3
+  lambda-cycle-delta: -0.15
 
 trainer: &trainer
   owner: official-stockfish
