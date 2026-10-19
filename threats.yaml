@@ -44,7 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide^+K32Q2^
+  features: Full_Threats+PP_K8^+K32Q2^
   l1: 1024
   l2: 32
   l3: 32
@@ -102,7 +102,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: sscg13
-  sha: 1abe648e30de8fc07a0cb158017bf3c2a526ecfc # eight PP king buckets and shared factorizer
+  sha: 277c515e3bef60f7de8952c16aa3d5002fea4484 # eight PP king buckets and shared factorizer
 
 reference_code: &reference_code
   owner: sscg13
