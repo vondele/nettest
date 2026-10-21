@@ -40,6 +40,8 @@ common_run_options: &common_run_options
   ply-y3: 0.20
   ply-x4: 29.5
   ply-y4: 0.80
+  wld-model-scale: 1.0
+  wld-min-prob: 0.4
   pow-exp: 2.4340402395048404
   qp-asymmetry: 0.22866886710086187
   in-scaling: 295.6539508488627
@@ -58,8 +60,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
+  owner: xu-shawn
+  sha: 06e5d930b27759835e241a6a90442c39d59c9474 # wdl-filter-hard, official 140fd799 + WLD skip options
 
 reference_code: &reference_code
   owner: official-stockfish
