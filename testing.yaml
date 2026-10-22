@@ -3,8 +3,10 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
+  features: Full_Threats+PP_K8^+K32Q2^
   l1: 1024
   l2: 32
+  l3: 32
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -58,18 +60,20 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
+  owner: sscg13
+  sha: 277c515e3bef60f7de8952c16aa3d5002fea4484 # eight PP king buckets and shared factorizer
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  owner: sscg13
+  sha: effdc3fd3f6de6e75fe1374a51a7a7eed66f880b # matching master baseline
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
-  target: build
+  owner: sscg13
+  sha: fb356a0c7ac4e7b31b363d86fdfae7ae926aaa82 # eight PP king buckets
+  target: all
+  make-options:
+    EXTRACXXFLAGS: -DNNUE_EMBEDDING_OFF
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
