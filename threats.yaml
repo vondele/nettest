@@ -147,6 +147,7 @@ testing:
       hash: 16
       max_rounds: 30000
       tc: 10+0.1
+      nodes: 30000
     sprt:
       nElo_interval_midpoint: -0.0
       nElo_interval_width: 2
