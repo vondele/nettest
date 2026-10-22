@@ -129,6 +129,7 @@ training:
         resume: none
         binpacks: *training_binpacks
         max_epochs: 15
+        network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
 
@@ -139,6 +140,7 @@ training:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
         max_epochs: 15
+        network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
