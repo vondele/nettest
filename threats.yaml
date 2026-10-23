@@ -44,7 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  l1: 1024
+  l1: 1152
   l2: 32
 
 optimize_flags: &optimize_flags
@@ -108,8 +108,8 @@ reference_code: &reference_code
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  owner: xu-shawn
+  sha: fbf1ad1f928e3e5beaea032a12a0cb4345138732 # master 5c4cef0b with L1 1152
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
