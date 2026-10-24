@@ -86,7 +86,11 @@ def workspace_status(recipe):
             step["status"] = "Final"
             with open(final_status_file) as f:
                 final_info = yaml.safe_load(f)
-                step["std_nnue"] = final_info["std_nnue"]
+            step["std_nnue"] = final_info["std_nnue"]
+            if "artifact_url" in final_info:
+                print(f"Final net of step {step['sha']}: {final_info['artifact_url']}")
+            else:
+                print(f"⚠️  no stored URL for final step {step['sha']}")
         else:
             step["status"] = "New"  # TODO might need to deal with running steps etc.
             step_yaml = step_dir / "step.yaml"
@@ -159,6 +163,69 @@ def generate_job_base():
     }
 
     return job
+
+
+def selected_testing_shas(recipe):
+    """
+    The shas of the training steps that will be tested, given the testing
+    stage's 'steps' selection (all, last, new, last_N, or an explicit list).
+    """
+
+    if "testing" not in recipe:
+        return []
+
+    test_steps_raw = str(recipe["testing"].get("steps", "new")).strip()
+
+    # Pre-parse selection criteria
+    target_indices = set()
+    last_n = None
+    is_explicit_list = False
+
+    if test_steps_raw.startswith("last_"):
+        try:
+            last_n = int(test_steps_raw.split("_")[1])
+        except (IndexError, ValueError):
+            raise ValueError(f"Invalid format for last_N: {test_steps_raw}")
+    elif "," in test_steps_raw or test_steps_raw.isdigit():
+        try:
+            target_indices = {int(x) for x in test_steps_raw.split(",")}
+            is_explicit_list = True
+        except ValueError:
+            raise ValueError(f"Invalid format for stage list: {test_steps_raw}")
+    else:
+        # Fallback for standard named modes
+        assert test_steps_raw in ["new", "all", "last"], (
+            f"testing steps must be 'new', 'all', 'last', 'last_N', or "
+            f"'1,2,4,5'. Got: {test_steps_raw}"
+        )
+
+    shas = []
+    steps = 0
+    step_number = len(recipe["training"]["steps"])
+
+    for step in reversed(recipe["training"]["steps"]):
+        use_step = False
+
+        if test_steps_raw == "all":
+            use_step = True
+        elif test_steps_raw == "last" and steps == 0:
+            use_step = True
+        elif test_steps_raw == "new" and (step["status"] != "Final" or steps == 0):
+            use_step = True
+        elif last_n is not None:
+            if steps < last_n:
+                use_step = True
+        elif is_explicit_list:
+            if step_number in target_indices:
+                use_step = True
+
+        if use_step:
+            steps += 1
+            shas.append(step["sha"])
+
+        step_number -= 1
+
+    return shas
 
 
 def generate_ensure_data(recipe, ci_yaml_out, schedule):
@@ -240,6 +307,12 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
             stage_name = f"{stage_base_name}_rep_{rep}"
             job["stage"] = stage_name
 
+            # the repetitions are retry attempts: a failure of an early rep
+            # should not block the pipeline, but the last rep failing means
+            # the step could not be completed
+            if rep < repetitions - 1:
+                job["allow_failure"] = True
+
             job["script"] = [
                 "cd /workspace/",
                 "ln -s $CI_PROJECT_DIR ./cidir",
@@ -253,7 +326,10 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
                 }
             )
 
+            # the converting repetition uploads the net of this step as the
+            # single uploader, salvaged even when the job fails afterwards
             job["artifacts"] = {
+                "when": "always",
                 "expire_in": "1 month",
                 "paths": [f"step_{current_sha}"],
             }
@@ -278,86 +354,51 @@ def generate_testing_stage(
         return
 
     test_config_sha = recipe["testing"]["sha"]
-    # Strip the input string as requested
-    test_steps_raw = str(recipe["testing"].get("steps", "new")).strip()
 
-    # Pre-parse selection criteria
-    target_indices = set()
-    last_n = None
-    is_explicit_list = False
-
-    if test_steps_raw.startswith("last_"):
-        try:
-            last_n = int(test_steps_raw.split("_")[1])
-        except (IndexError, ValueError):
-            raise ValueError(f"Invalid format for last_N: {test_steps_raw}")
-    elif "," in test_steps_raw or test_steps_raw.isdigit():
-        try:
-            target_indices = {int(x) for x in test_steps_raw.split(",")}
-            is_explicit_list = True
-        except ValueError:
-            raise ValueError(f"Invalid format for stage list: {test_steps_raw}")
-    else:
-        # Fallback for standard named modes
-        assert test_steps_raw in ["new", "all", "last"], \
-            f"testing steps must be 'new', 'all', 'last', 'last_N', or '1,2,4,5'. Got: {test_steps_raw}"
+    selected = set(selected_testing_shas(recipe))
 
     envarg = f"--environment {environment}" if environment else ""
 
     # pass the last training step sha as input, and all other steps that were computed in this run
-    steps = 0
     step_number = len(recipe["training"]["steps"])
 
     for step in reversed(recipe["training"]["steps"]):
-        use_step = False
+        if step["sha"] not in selected:
+            step_number -= 1
+            continue
 
-        if test_steps_raw == "all":
-            use_step = True
-        elif test_steps_raw == "last" and steps == 0:
-            use_step = True
-        elif test_steps_raw == "new" and (step["status"] != "Final" or steps == 0):
-            use_step = True
-        elif last_n is not None:
-            if steps < last_n:
-                use_step = True
-        elif is_explicit_list:
-            if step_number in target_indices:
-                use_step = True
+        testing_sha = step["sha"]
+        task = f"python -u -m nettest.test {envarg} {test_config_sha} {testing_sha}"
 
-        if use_step:
-            steps += 1
-            testing_sha = step["sha"]
-            task = f"python -u -m nettest.test {envarg} {test_config_sha} {testing_sha}"
+        job = generate_job_base()
+        job["stage"] = "testing"
+        job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
+        job["script"].append(task)
 
-            job = generate_job_base()
-            job["stage"] = "testing"
-            job["script"] = ["cd /workspace/", "ln -s $CI_PROJECT_DIR ./cidir"]
-            job["script"].append(task)
+        job["artifacts"] = {
+            "expire_in": "1 month",
+            "paths": [f"test_{test_config_sha}_result"],
+        }
 
-            job["artifacts"] = {
-                "expire_in": "1 month",
-                "paths": [f"test_{test_config_sha}_result"],
+        # Establish explicit DAG dependencies to bypass stage wait times
+        needs = []
+        if "ensureDataJob" in ci_yaml_out:
+            needs.append("ensureDataJob")
+
+        if testing_sha in training_jobs_by_sha:
+            needs.extend(training_jobs_by_sha[testing_sha])
+
+        if needs:
+            job["needs"] = needs
+
+        ci_yaml_out[f"step_{step_number}_{testing_sha}_test"] = job
+
+        schedule["test"].append(
+            {
+                "test_config_sha": test_config_sha,
+                "testing_sha": testing_sha,
             }
-
-            # Establish explicit DAG dependencies to bypass stage wait times
-            needs = []
-            if "ensureDataJob" in ci_yaml_out:
-                needs.append("ensureDataJob")
-
-            if testing_sha in training_jobs_by_sha:
-                needs.extend(training_jobs_by_sha[testing_sha])
-
-            if needs:
-                job["needs"] = needs
-
-            ci_yaml_out[f"step_{step_number}_{testing_sha}_test"] = job
-
-            schedule["test"].append(
-                {
-                    "test_config_sha": test_config_sha,
-                    "testing_sha": testing_sha,
-                }
-            )
+        )
 
         step_number -= 1
 

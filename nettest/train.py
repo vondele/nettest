@@ -3,7 +3,16 @@ from pathlib import Path
 import shutil
 import torch
 import time
-from .utils import execute, MyDumper, sha256sum, find_most_recent, supports_numactl, flatten_cmd, github_repo_url
+from .utils import (
+    execute,
+    MyDumper,
+    sha256sum,
+    find_most_recent,
+    supports_numactl,
+    flatten_cmd,
+    github_repo_url,
+    net_url,
+)
 from .default_environment import get_default_environment
 import uuid
 import yaml
@@ -336,6 +345,7 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
         "short_nnue": f"{short_nnue}",
         "std_nnue": f"{std_nnue}",
         "checkpoint": f"{checkpoint}",
+        "artifact_url": net_url(current_sha, short_nnue),
     }
 
     with Path(final_file).open(mode="w", encoding="utf-8") as f:
