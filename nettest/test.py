@@ -500,9 +500,12 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     binpack = Path.cwd() / "data" / test["crosscheck"]["binpack"]
     assert binpack.exists(), f"Binpack {binpack} does not exist"
 
-    # TODO the trainer could be inserted automatically based on the step being tested.
-    assert "trainer" in test["crosscheck"], "crosscheck config must include trainer"
-    nnue_pytorch_dir = ensure_trainer(test["crosscheck"]["trainer"])
+    # the step's trainer, so that checkpoint and network serialize consistently
+    step_file = Path.cwd() / "scratch" / testing_sha / "step.yaml"
+    assert step_file.exists(), f"{step_file} does not exist"
+    with open(step_file) as f:
+        step = yaml.safe_load(f)
+    nnue_pytorch_dir = ensure_trainer(step["trainer"])
 
     # configure and run cross_check_eval
     # TODO: make device respect 'device'
