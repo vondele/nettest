@@ -341,11 +341,13 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
     print(f"nnue available as artifact step_{current_sha}")
 
     final_file = Path.cwd() / "scratch" / current_sha / "final.yaml"
+    artifact_url = net_url(current_sha, short_nnue)
+    print(f"Net download (live at job end): {artifact_url}")
     final = {
         "short_nnue": f"{short_nnue}",
         "std_nnue": f"{std_nnue}",
         "checkpoint": f"{checkpoint}",
-        "artifact_url": net_url(current_sha, short_nnue),
+        "artifact_url": artifact_url,
     }
 
     with Path(final_file).open(mode="w", encoding="utf-8") as f:
