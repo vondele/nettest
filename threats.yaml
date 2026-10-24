@@ -99,9 +99,13 @@ common_run_options: &common_run_options
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
 
-trainer: &trainer
+trainer_stage1: &trainer_stage1
   owner: TonyCongqianWang
   sha: 3f90ba1e6b9384726c8d98ad3ebf302c50ec545d
+
+trainer: &trainer
+  owner: TonyCongqianWang
+  sha: 7faedb2794fef41bca63cfd77281bb568a8b11d1
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -118,6 +122,10 @@ common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
   optimize: *optimize_flags
+
+common_step_stage1: &common_step_stage1
+  convert: *common_convert
+  trainer: *trainer_stage1
 
 common_step: &common_step
   convert: *common_convert
@@ -166,7 +174,7 @@ training_length_options: &training_length_options
 training:
   steps:
     # Pretraining
-    - <<: *common_step
+    - <<: *common_step_stage1
       run:
         resume: none
         binpacks: *training_binpacks
@@ -178,7 +186,6 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
@@ -187,3 +194,6 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+          dense-weight-decay: "1.0e-6"
+          dynamic-bias-weight-decay: "1.0e-6"
+
