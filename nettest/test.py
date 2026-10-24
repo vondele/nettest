@@ -600,6 +600,17 @@ def run_test(environment, test_config_sha, testing_sha):
     stockfish_testing = ensure_stockfish("testing", test)
     matecheck, classic_epd = ensure_matecheck()
 
+    # the converting job of this step uploaded the net as the single
+    # uploader; reference its permanent download URL
+    final_yaml_file = Path.cwd() / "scratch" / testing_sha / "final.yaml"
+    with open(final_yaml_file) as f:
+        final_info = yaml.safe_load(f)
+    if "artifact_url" in final_info:
+        download_url = final_info["artifact_url"]
+    else:
+        download_url = f"no stored URL for final step {testing_sha}"
+
+    print(f"Net download: {download_url}")
     run_cross_check_eval(environment, test, testing_sha, stockfish_testing)
 
     run_matecheck(
@@ -615,6 +626,7 @@ def run_test(environment, test_config_sha, testing_sha):
         stockfish_reference,
         stockfish_testing,
     )
+    print(f"Net download: {download_url}")
 
     # store as an artifact for this run
     artifact_dir = Path.cwd() / "cidir" / f"test_{test_config_sha}_result"

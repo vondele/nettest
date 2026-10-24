@@ -4,7 +4,21 @@ import re
 import hashlib
 import time
 import shutil
+import os
 from functools import lru_cache
+
+
+def net_url(sha, net_name):
+    """
+    The direct download URL of a published net; it goes live when the job
+    that published it finishes and the runner uploads the artifacts.
+    """
+
+    return (
+        f"{os.environ.get('CI_PROJECT_URL', '')}/-/jobs/"
+        f"{os.environ.get('CI_JOB_ID', '?')}"
+        f"/artifacts/raw/step_{sha}/{net_name}"
+    )
 
 
 def find_most_recent(root, file):
