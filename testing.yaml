@@ -93,7 +93,6 @@ common_run_resume_ckpt: &common_run_resume_ckpt
 
 testing:
   crosscheck:
-    trainer: *trainer
     binpack: official-stockfish/master-binpacks/fishpack32.binpack
     other_options:
       <<: *model_config
