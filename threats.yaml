@@ -44,6 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
+  features: Full_Threats+PP_3Wide+Ghost_Pawn_Threats+K32Q2^
   l1: 1024
   l2: 32
 
@@ -99,8 +100,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
+  owner: TonyCongqianWang
+  sha: 8edd3b1b5bc05919ba55b58db8e47981555d7f69 # Ghost_Pawn_Threats trainer
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -108,8 +109,8 @@ reference_code: &reference_code
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  owner: TonyCongqianWang
+  sha: e3b50ca73c141d9f5f3827dbdf3f2cda6e2b7372 # Compatible Ghost_Pawn_Threats engine
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
