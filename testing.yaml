@@ -3,7 +3,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
 
@@ -59,17 +59,17 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 568c7fbdff25412423947041ab3fa3f2037b0bac
+  owner: xu-shawn
+  sha: 6adac7dc9c907438f76bcc19ba7e3b4a3d51d0c4 # ram-k32h3: compact heavy-piece psq buckets (K32H3) and Ram_Ram on heavy-buckets cb2a4cc
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  sha: dbe600b7438662e9ade60b31fa0625259dcd0077 # master from 2026-10-24, the testing engine's base
   target: build
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
+  sha: bd16e30e0e26d831f6a0b80d8342b958acc338f2 # ram-k32h3: Ram_Ram and compact K32H3 inputs on dbe600b7
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
