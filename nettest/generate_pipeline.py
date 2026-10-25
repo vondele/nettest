@@ -417,6 +417,20 @@ def parse_recipe(recipe, environment):
     # expand the meta recipe, i.e. handle the <repeat_last> directives and apply the overrides in the training steps sequentially.
     recipe = expand_meta_recipe(recipe)
 
+    # yaml can not concatenate lists: a recipe like 'binpacks: [*training_binpacks, extra.binpack]'
+    # arrives as a nested list. Flatten it here, so that shas, step.yaml, ensureData and
+    # training all see a plain list of binpack strings.
+    if "training" in recipe:
+        for step in recipe["training"]["steps"]:
+            if "run" in step and isinstance(step["run"].get("binpacks"), list):
+                flat = []
+                for item in step["run"]["binpacks"]:
+                    if isinstance(item, list):
+                        flat.extend(item)
+                    else:
+                        flat.append(item)
+                step["run"]["binpacks"] = flat
+
     # insert shas that uniquely identify each step based on the full history of the training recipe
     insert_shas(recipe)
 

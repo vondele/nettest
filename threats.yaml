@@ -180,7 +180,7 @@ training:
       trainer: *trainer
       run:
         <<: *common_run_resume_ckpt
-        binpacks: *training_binpacks
+        binpacks: [*training_binpacks, vondele/rescored/tb6dtm.binpack]
         max_epochs: 600
         network-save-period: 0
         other_options:
