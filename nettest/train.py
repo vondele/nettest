@@ -149,6 +149,10 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     # some architecture specific options
     run_env = os.environ.copy()
+    # torchrun warns and forces OMP_NUM_THREADS=1 for each process when the
+    # variable is unset; setting it explicitly (matching the value the trainer
+    # applies per rank anyway) avoids the warning
+    run_env.setdefault("OMP_NUM_THREADS", "1")
     if "train" in environment and "devices" in environment["train"]:
         devices = environment["train"]["devices"]
         run_env["CUDA_VISIBLE_DEVICES"] = devices
