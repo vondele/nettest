@@ -101,7 +101,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 5632d9e7f157224912fceb0d80685ac9a4184b64
+  sha: 164fe964a01f6354fcf5d32849ac9d2b79f262f0
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -110,7 +110,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: 3cc15912f32d5aac54ba33df5caecf2e4c89737e
+  sha: 6e1ad7a707b7f8b30cb3ffd675dd49ed3289948b
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -169,20 +169,30 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 560
+        max_epochs: 100
         network-save-period: 0
-        repetitions: 3
+        repetitions: 1
         other_options:
           <<: [*training_length_options, *common_run_options]
 
-    # Finetuning
-    - <<: *common_step
-      run:
-        <<: *common_run_resume_ckpt
-        binpacks: *training_binpacks
-        max_epochs: 600
-        network-save-period: 0
-        other_options:
-          <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
+    # - <<: *common_step
+    #   run:
+    #     <<: *common_run_resume_ckpt
+    #     binpacks: *training_binpacks
+    #     max_epochs: 560
+    #     network-save-period: 0
+    #     repetitions: 3
+    #     other_options:
+    #       <<: [*training_length_options, *common_run_options]
+    #       batch_size: 65536
 
+    # # Finetuning
+    # - <<: *common_step
+    #   run:
+    #     <<: *common_run_resume_ckpt
+    #     binpacks: *training_binpacks
+    #     max_epochs: 600
+    #     network-save-period: 0
+    #     other_options:
+    #       <<: [*training_length_options, *common_run_options]
+    #       batch_size: 65536
