@@ -338,7 +338,13 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
     print(f"nnue available as {std_nnue}")
 
     # store as an artifact for this run
-    artifact_dir = Path.cwd() / "cidir" / f"step_{current_sha}"
+    cidir = Path.cwd() / "cidir"
+    if not cidir.is_dir():
+        raise RuntimeError(
+            f"The CI checkout directory {cidir} is unavailable - the runner "
+            "slot was likely recycled during this job."
+        )
+    artifact_dir = cidir / f"step_{current_sha}"
     artifact_dir.mkdir(parents=True, exist_ok=True)
     artifact_nnue = artifact_dir / short_nnue
     shutil.copy(nnue, artifact_nnue)
