@@ -47,6 +47,7 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
+  ls-factors: "band:queen"
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -101,7 +102,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 6adac7dc9c907438f76bcc19ba7e3b4a3d51d0c4 # ram-k32h3: compact heavy-piece psq buckets (K32H3) and Ram_Ram on heavy-buckets cb2a4cc
+  sha: ae1cdfe8fd7ce9098b29a3e35fdebcb3e246a4d1 # ram-k32h3-lsf: factorized layer stacks (band, queen) on ram-k32h3 6adac7d
 
 reference_code: &reference_code
   owner: official-stockfish
