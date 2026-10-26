@@ -68,6 +68,9 @@ common_run_options: &common_run_options
   dynamic-bias-weight-decay: "4.0e-5"
   moe-weight-balance-cost: 0.001
   moe-bias-balance-cost: 0.004
+  moe-weight-diversity-cost: 0.01
+  moe-bias-diversity-cost: 0.02
+  moe-reseed-ema-decay: 0.998
   moe-reseed-min-relative-utilization: 0.064
   random-fen-skipping: 3
   early-fen-skipping: 18
@@ -104,7 +107,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 29296b7097f66e70163077496fca9cb56cdb8ecd
+  sha: 1968c983b61ed72ec145d2bbcc6a953f1f1618d9
 
 reference_code: &reference_code
   owner: official-stockfish
