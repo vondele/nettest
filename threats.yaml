@@ -158,7 +158,7 @@ testing:
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
@@ -191,5 +191,5 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
-          pow-exp-endgame-reduction: 0.05
+          pow-exp-endgame-reduction: 0.25
           pow-exp-reference-error: 0.12
