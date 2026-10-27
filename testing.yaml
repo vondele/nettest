@@ -6,6 +6,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "half:offi"
+  ls-factors: "base:half:offi"
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -60,7 +62,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 6adac7dc9c907438f76bcc19ba7e3b4a3d51d0c4 # ram-k32h3: compact heavy-piece psq buckets (K32H3) and Ram_Ram on heavy-buckets cb2a4cc
+  sha: 670cf8bbcacce3df6831a073662a24d55d7b80cf # ram-k32h3-lskeys: layer-stack keys --ls-keys (half, offi, imb3) on ram-k32h3-imb3 3b11d0d
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -69,7 +71,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: bd16e30e0e26d831f6a0b80d8342b958acc338f2 # ram-k32h3: Ram_Ram and compact K32H3 inputs on dbe600b7
+  sha: 85d0015dd8475c12236625ffe795b7d418f1799b # ram-k32h3-halfoffi: 192 layer stacks by pawn halves x officers on ram-k32h3 bd16e30e
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
