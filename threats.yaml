@@ -44,6 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
+  features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
 
@@ -73,6 +74,7 @@ common_run_options: &common_run_options
   pc-y2: 1.0
   pc-y3: 0.95
   pc-y4: 0.75
+  cell-filter: vltc
   ply-x1: 0.00
   ply-y1: 0.025
   ply-x2: 22.0
@@ -99,17 +101,17 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
+  owner: xu-shawn
+  sha: 57093a23e62766065f9a8c680ba996633e1c3ed1 # pv-cell-filter: training positions filtered toward VLTC PV nodes (--cell-filter vltc), on ram-k32h3 6adac7d
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  sha: dbe600b7438662e9ade60b31fa0625259dcd0077 # master from 2026-10-24, the testing engine's base
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  owner: xu-shawn
+  sha: bd16e30e0e26d831f6a0b80d8342b958acc338f2 # ram-k32h3: Ram_Ram and compact K32H3 inputs on dbe600b7
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
