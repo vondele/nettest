@@ -110,7 +110,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 08634e1b82ac288598a7313aff43350fb78a6104
+  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
