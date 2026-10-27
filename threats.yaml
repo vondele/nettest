@@ -47,6 +47,7 @@ model_config: &model_config
   l1: 1024
   l2: 32
   weight-scale-l1: 256
+  weight-scale-l2: 128
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -65,8 +66,8 @@ common_run_options: &common_run_options
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
-  dense-weight-decay: "4.0e-5"
-  dynamic-bias-weight-decay: "4.0e-4"
+  dense-weight-decay: "1.0e-6"
+  dynamic-bias-weight-decay: "1.0e-3"
   moe-weight-balance-cost: 0.001
   moe-bias-balance-cost: 0.004
   moe-weight-diversity-cost: 0.01
@@ -108,7 +109,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 51a23c63af9471fa2e22f99e355c13e0eecec334
+  sha: f942f1c9c1ebb121d91d7fccb6e6410a3607ce22
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -117,7 +118,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: d95b2b6a44c586414dc8b94c12fef4f475ad3cfa
+  sha: c6599e71968615292f8ed709a531b4c284decc16
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -182,24 +183,23 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
 
-    # - <<: *common_step
-    #   run:
-    #     <<: *common_run_resume_ckpt
-    #     binpacks: *training_binpacks
-    #     max_epochs: 560
-    #     network-save-period: 0
-    #     repetitions: 3
-    #     other_options:
-    #       <<: [*training_length_options, *common_run_options]
-    #       batch_size: 65536
+    - <<: *common_step
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
+        max_epochs: 560
+        network-save-period: 0
+        repetitions: 3
+        other_options:
+          <<: [*training_length_options, *common_run_options]
 
-    # # Finetuning
-    # - <<: *common_step
-    #   run:
-    #     <<: *common_run_resume_ckpt
-    #     binpacks: *training_binpacks
-    #     max_epochs: 600
-    #     network-save-period: 0
-    #     other_options:
-    #       <<: [*training_length_options, *common_run_options]
-    #       batch_size: 65536
+    # Finetuning
+    - <<: *common_step
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
+        max_epochs: 600
+        network-save-period: 0
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          batch-size: 65536
