@@ -33,6 +33,7 @@ common_run_options: &common_run_options
   pc-y2: 1.0
   pc-y3: 0.95
   pc-y4: 0.75
+  cell-filter: vltc
   ply-x1: 0.00
   ply-y1: 0.025
   ply-x2: 22.0
@@ -60,7 +61,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 6adac7dc9c907438f76bcc19ba7e3b4a3d51d0c4 # ram-k32h3: compact heavy-piece psq buckets (K32H3) and Ram_Ram on heavy-buckets cb2a4cc
+  sha: 57093a23e62766065f9a8c680ba996633e1c3ed1 # pv-cell-filter: training positions filtered toward VLTC PV nodes (--cell-filter vltc), on ram-k32h3 6adac7d
 
 reference_code: &reference_code
   owner: official-stockfish
