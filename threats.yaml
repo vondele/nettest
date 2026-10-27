@@ -47,6 +47,7 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
+  ls-imbalance: true
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -101,7 +102,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 6adac7dc9c907438f76bcc19ba7e3b4a3d51d0c4 # ram-k32h3: compact heavy-piece psq buckets (K32H3) and Ram_Ram on heavy-buckets cb2a4cc
+  sha: 3b11d0d0fcfa79602a01093ec6b40447c8d19f2e # ram-k32h3-imb3: layer stacks routed by material balance (96 = 32 x 3), --ls-imbalance, on ram-k32h3-lsf ae1cdfe
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -110,7 +111,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: bd16e30e0e26d831f6a0b80d8342b958acc338f2 # ram-k32h3: Ram_Ram and compact K32H3 inputs on dbe600b7
+  sha: 0e066b3dbcca9965e18c41a7318aa6280c75650d # ram-k32h3-imb3: 96 layer stacks routed by material balance on ram-k32h3 bd16e30e
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
