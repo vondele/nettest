@@ -47,6 +47,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
+  weight-scale-l1: 256
+  weight-scale-l2: 128
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -65,7 +67,14 @@ common_run_options: &common_run_options
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
-  factorized-weight-decay: "4.0e-5"
+  dense-weight-decay: "1.0e-6"
+  dynamic-bias-weight-decay: "1.0e-3"
+  moe-weight-balance-cost: 0.001
+  moe-bias-balance-cost: 0.004
+  moe-weight-diversity-cost: 0.01
+  moe-bias-diversity-cost: 0.02
+  moe-reseed-ema-decay: 0.998
+  moe-reseed-min-relative-utilization: 0.064
   random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -100,17 +109,17 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: fedf67523f8d67122eb19ac5bcd8361615d75c3a
+  owner: TonyCongqianWang
+  sha: f897a98748803242069cbbe7215ac8e992009a81
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  sha: ff7cee4244ec96ea488c402669e3674c0574dce6 # upstream SFNNv19
   target: build
 
 testing_code: &testing_code
-  owner: xu-shawn
-  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
+  owner: TonyCongqianWang
+  sha: bf5abf077a65ae07850dd66d158eefa79718b779
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -169,6 +178,16 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
+        max_epochs: 100
+        network-save-period: 0
+        repetitions: 1
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+
+    - <<: *common_step
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
         max_epochs: 560
         network-save-period: 0
         repetitions: 3
@@ -177,7 +196,6 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
@@ -185,4 +203,4 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
+          batch-size: 65536
