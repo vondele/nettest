@@ -65,7 +65,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: f09d8d6553f22575927061561641875bc9e96c9b
+  sha: 5589e755f61f359669b619a20516490a35617165
 
 reference_code: &reference_code
   owner: official-stockfish
