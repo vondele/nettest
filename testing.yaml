@@ -3,6 +3,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
+  features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
 
@@ -58,17 +59,17 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 140fd799ef4c63576833c15a7fe52ab88ba411b6 # from 2026-10-14
+  owner: xu-shawn
+  sha: fedf67523f8d67122eb19ac5bcd8361615d75c3a
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 5c4cef0bfe61fb3249178b2bcf21f5673557efe7 # from 2026-10-13
+  owner: xu-shawn
+  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
