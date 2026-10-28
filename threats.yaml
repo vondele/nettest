@@ -1,3 +1,4 @@
+# Experimental composition-conditioned material. No strength result is implied.
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -44,7 +45,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: "Full_Threats+PP_3Wide+K32H3^+Composition"
   l1: 1024
   l2: 32
 
@@ -66,6 +67,8 @@ common_run_options: &common_run_options
   batch-size: 131072
   <<: *model_config
   factorized-weight-decay: "4.0e-5"
+  # Decay shared bases and bucket corrections independently of spatial weights.
+  composition-weight-decay: "4.0e-5"
   random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -100,17 +103,17 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: fedf67523f8d67122eb19ac5bcd8361615d75c3a
+  owner: TonyCongqianWang
+  sha: edd5b08d3bed867104b27abaeeb0268ac42a166b # composition material, pins engine CI
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  owner: TonyCongqianWang
+  sha: ff7cee4244ec96ea488c402669e3674c0574dce6 # freshly fetched baseline default
   target: build
 
 testing_code: &testing_code
-  owner: xu-shawn
-  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
+  owner: TonyCongqianWang
+  sha: afeed3ab470035d96ae3b82070c6349e0a9a7fe6 # composition material engine
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
