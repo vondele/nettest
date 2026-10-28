@@ -65,16 +65,16 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: f09d8d6553f22575927061561641875bc9e96c9b # halfoffi-compact: Ram_Ram, layer-stack keys and factors, compact stacks (table counted on fishpack32 at the start of training) on master b261450
+  sha: f09d8d6553f22575927061561641875bc9e96c9b
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff7cee4244ec96ea488c402669e3674c0574dce6 # master with SFNNv19, the testing engine's base
+  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
   target: build
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 1d980487308801de786f42db9bbe27a07240c37f # halfoffi-compact: Ram_Ram, 192 raw layer-stack buckets by pawn halves x officers, stacks and table read from the net, on master ff7cee42
+  sha: 1d980487308801de786f42db9bbe27a07240c37f
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
