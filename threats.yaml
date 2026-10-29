@@ -177,7 +177,9 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
+      trainer:
+        owner: TonyCongqianWang
+        sha: 41e548a564fc59aa3fdba883c9e72ccabcb1b6cd
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
@@ -186,3 +188,8 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+          tb-probability-decay: 0.9999
+          outcome-smoothing: 0.05
+          draw-boost: 0.15
+          draw-boost-width: 15.0
+          lambda-cycle-delta: -0.3333333333333333
