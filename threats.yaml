@@ -47,8 +47,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
-  ls-keys: "half:offi"
-  ls-factors: "base:half:offi"
+  ls-keys: "imb3:half:offi"
+  ls-factors: "base:imb3:half:offi"
   ls-compact: true
   ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
   ls-remap-min: 50
@@ -115,7 +115,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 1d980487308801de786f42db9bbe27a07240c37f
+  sha: 86f81e7ba1cfaad6c49e248f33bf685edb50471d
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
