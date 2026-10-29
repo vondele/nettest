@@ -3,9 +3,14 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "imb3:half:offi"
+  ls-factors: "base:imb3:half:offi"
+  ls-compact: true
+  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
+  ls-remap-min: 50
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -60,16 +65,16 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: fedf67523f8d67122eb19ac5bcd8361615d75c3a
+  sha: 5589e755f61f359669b619a20516490a35617165
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
   target: build
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
+  sha: 86f81e7ba1cfaad6c49e248f33bf685edb50471d
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
