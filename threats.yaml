@@ -50,6 +50,28 @@ histfix_binpacks: &histfix_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-04-apr-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
   - xushawn/test80-bt4-relabel/test80-2024-05-may-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
   - xushawn/test80-bt4-relabel/test80-2024-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2025-11-nov-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2025-11-nov-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2025-12-dec-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2025-12-dec-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-01-jan-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-01-jan-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-02-feb-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-02-feb-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-03-mar-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-03-mar-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-04-apr-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-04-apr-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-05-may-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-05-may-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-06-jun-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-06-jun-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-07-jul-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-07-jul-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-08-aug-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-08-aug-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-10-oct-150gb6p.v6.c960.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/t91-lgs/binpacks/v6-bt4/test91-2026-10-oct-150gb6p.v6.relabel-BT4-tf13tune-histfix.binpack
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
@@ -197,7 +219,7 @@ training:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
 
-    # Finetuning on the histfix relabels to the end of the learning-rate schedule
+    # Finetuning on the histfix relabels (test80 2024, T91) to the end of the learning-rate schedule
     - <<: *common_step
       trainer: *trainer
       run:
