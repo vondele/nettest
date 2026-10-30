@@ -188,10 +188,7 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
-          in-scaling: 310
-          out-scaling: 380
-          tb-probability-decay: 0.99995
-          outcome-smoothing: 0.05
-          draw-boost: 0.3
+          tb-probability-decay: 0.99997
+          outcome-smoothing: 0.01
+          draw-boost: 0.2
           draw-boost-width: 5.0
-          lambda-cycle-delta: -0.4
