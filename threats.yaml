@@ -68,6 +68,7 @@ common_run_options: &common_run_options
   batch-size: 131072
   <<: *model_config
   dense-weight-decay: "1.0e-6"
+  virtual-ft-weight-decay: "1.0e-6"
   dynamic-bias-weight-decay: "1.0e-3"
   moe-weight-balance-cost: 0.001
   moe-bias-balance-cost: 0.004
@@ -110,7 +111,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 345fb00f7646967f6e4e3a6e359a980c8ee48454
+  sha: f181cc19f43a3bc1366ea04ba5283611144b0c37
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -119,7 +120,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  sha: efcde32f721cc51c6543d227fc41a32fcddeff29
+  sha: c9bc9c1c62ab51563b16bd08b384db0afd5e018b
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
