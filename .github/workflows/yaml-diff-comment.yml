@@ -25,9 +25,9 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install PyYAML and CPU PyTorch
+      - name: Install PyYAML, tyro, and CPU PyTorch
         run: |
-          pip install pyyaml
+          pip install pyyaml tyro numpy
           pip install torch --index-url https://download.pytorch.org/whl/cpu
 
       - name: Get changed YAML files and extract trainer/stockfish info
