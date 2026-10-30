@@ -257,6 +257,13 @@ jobs:
                   subprocess.run(
                       ["git", "checkout", "-q", "--detach", "FETCH_HEAD"], check=True, cwd=repo_dir,
                   )
+                  # install the trainer's requirements (torch stays the CPU wheel)
+                  req = os.path.join(repo_dir, "requirements.txt")
+                  if os.path.isfile(req):
+                      subprocess.run(
+                          ["pip", "install", "-q", "-r", req],
+                          check=True,
+                      )
 
               base_cfg = change["base_config"]
               head_cfg = change["head_config"]
@@ -277,7 +284,10 @@ jobs:
                   )
                   if proc.returncode != 0:
                       sizes[label] = None
-                      sizes["error"] = proc.stderr.strip()[-500:]
+                      # sanitize: no raw newlines in the JSON (breaks the parse)
+                      sizes["error"] = (
+                          proc.stderr.strip()[-500:].replace("\n", " | ")
+                      )
                       break
                   # parse: Estimated .nnue size: N bytes
                   import re
