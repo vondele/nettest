@@ -43,6 +43,14 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
 
+histfix_binpacks: &histfix_binpacks
+  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-03-mar-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-04-apr-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-05-may-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+
 model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
@@ -184,6 +192,18 @@ training:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
         max_epochs: 600
+        network-save-period: 0
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          batch_size: 65536
+
+    # Finetuning on the histfix relabels to the end of the learning-rate schedule
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *histfix_binpacks
+        max_epochs: 624
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]

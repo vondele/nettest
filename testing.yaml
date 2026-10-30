@@ -2,6 +2,9 @@ training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
 
+histfix_binpacks: &histfix_binpacks
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+
 model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
@@ -142,6 +145,18 @@ training:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
         max_epochs: 4
+        network-save-period: 0
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          batch_size: 65536
+
+    # Finetuning on the histfix relabels to the end of the learning-rate schedule
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *histfix_binpacks
+        max_epochs: 5
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
