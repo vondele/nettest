@@ -98,10 +98,15 @@ common_run_options: &common_run_options
   end-lambda: 1.0
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
+  tb-probability-decay: 0.99997
+  outcome-smoothing: 0.01
+  draw-boost: 0.2
+  draw-boost-width: 5.0
+
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: b26145006e54e6461cb4b51944ab05cc4850c580
+  owner: TonyCongqianWang
+  sha: 41e548a564fc59aa3fdba883c9e72ccabcb1b6cd
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -177,9 +182,6 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer:
-        owner: TonyCongqianWang
-        sha: 41e548a564fc59aa3fdba883c9e72ccabcb1b6cd
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
@@ -188,7 +190,4 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
-          tb-probability-decay: 0.99997
-          outcome-smoothing: 0.01
-          draw-boost: 0.2
-          draw-boost-width: 5.0
+          
