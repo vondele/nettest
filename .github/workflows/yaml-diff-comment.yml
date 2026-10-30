@@ -308,9 +308,20 @@ jobs:
             const repo = context.repo.repo;
             const repoDefaults = new Map();
 
-            const trainerChanges = JSON.parse(`${{ steps.changed-files.outputs.trainer_changes }}` || '[]');
-            const stockfishChanges = JSON.parse(`${{ steps.changed-files.outputs.stockfish_changes }}` || '[]');
-            const nnueSizes = JSON.parse(`${{ steps.estimate-sizes.outputs.nnue_sizes }}` || '[]');
+            // Defensive parsing: a malformed output must degrade gracefully,
+            // not crash the whole comment step.
+            function safeParse(name, raw) {
+              try {
+                return JSON.parse(raw || '[]');
+              } catch (e) {
+                core.warning(`Malformed ${name} output (${e.message}); falling back to []. Raw: ${raw}`);
+                return [];
+              }
+            }
+
+            const trainerChanges = safeParse('trainer_changes', `${{ steps.changed-files.outputs.trainer_changes }}`);
+            const stockfishChanges = safeParse('stockfish_changes', `${{ steps.changed-files.outputs.stockfish_changes }}`);
+            const nnueSizes = safeParse('nnue_sizes', `${{ steps.estimate-sizes.outputs.nnue_sizes }}`);
 
             if (trainerChanges.length === 0 && stockfishChanges.length === 0) return;
 
