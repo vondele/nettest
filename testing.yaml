@@ -66,7 +66,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 670cf8bbcacce3df6831a073662a24d55d7b80cf # ram-k32h3-lskeys: layer-stack keys --ls-keys (half, offi, imb3) on ram-k32h3-imb3 3b11d0d
+  sha: 7f2b49335cef65515b2fca12ea34aaf115550225 # ram-k32h3-lskeys-est: 670cf8b + upstream serialize.py --estimate-size (#566), numpy unpinned
 
 reference_code: &reference_code
   owner: official-stockfish
