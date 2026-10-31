@@ -47,6 +47,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "piececount:queen:pawnhalf:manyoffi"
+  ls-factors: "piececount+queen:pawnhalf:manyoffi"
 
 optimize_flags: &optimize_flags
   <<: *model_config
