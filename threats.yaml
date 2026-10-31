@@ -103,16 +103,16 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 670cf8bbcacce3df6831a073662a24d55d7b80cf # ram-k32h3-lskeys: layer-stack keys --ls-keys (half, offi, imb3) on ram-k32h3-imb3 3b11d0d
+  sha: 670cf8bbcacce3df6831a073662a24d55d7b80cf
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: dbe600b7438662e9ade60b31fa0625259dcd0077 # master from 2026-10-24, the testing engine's base
+  sha: dbe600b7438662e9ade60b31fa0625259dcd0077
   target: build
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 85d0015dd8475c12236625ffe795b7d418f1799b # ram-k32h3-halfoffi: 192 layer stacks by pawn halves x officers on ram-k32h3 bd16e30e
+  sha: 85d0015dd8475c12236625ffe795b7d418f1799b
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
