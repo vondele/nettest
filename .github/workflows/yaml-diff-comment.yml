@@ -358,7 +358,8 @@ jobs:
                 const limitBytes = 200 * 2**20;
                 const mib = (x) => (x / 2**20).toFixed(1);
                 if (size.error) {
-                  body += `- ⚠️ ${size.file} (step ${size.step}): estimate unavailable (${size.error})\n`;
+                  core.warning(`Estimator failed for ${size.file} (step ${size.step}): ${size.error}`);
+                  body += `- ⚠️ ${size.file} (step ${size.step}): estimate unavailable (see action log)\n`;
                 } else if (size.head > limitBytes) {
                   body += `- ❌ ${size.file} (step ${size.step}): ${mib(size.base)} MiB (master) → ${mib(size.head)} MiB (new) — exceeds the 200 MiB limit\n`;
                 } else {
