@@ -43,10 +43,20 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
 
+histfix_binpacks: &histfix_binpacks
+  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-03-mar-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-04-apr-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-05-may-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune-histfix.binpack
+
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "half:offi"
+  ls-factors: "base:half:offi"
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -101,16 +111,16 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: fedf67523f8d67122eb19ac5bcd8361615d75c3a
+  sha: 7f2b49335cef65515b2fca12ea34aaf115550225 # ram-k32h3-lskeys-est: 670cf8b + upstream serialize.py --estimate-size (#566), numpy unpinned
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  sha: dbe600b7438662e9ade60b31fa0625259dcd0077 # master from 2026-10-24, the testing engine's base
   target: build
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
+  sha: 85d0015dd8475c12236625ffe795b7d418f1799b # ram-k32h3-halfoffi: 192 layer stacks by pawn halves x officers on ram-k32h3 bd16e30e
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -182,6 +192,18 @@ training:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
         max_epochs: 600
+        network-save-period: 0
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          batch_size: 65536
+
+    # Finetuning on the histfix relabels to the end of the learning-rate schedule
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *histfix_binpacks
+        max_epochs: 624
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
