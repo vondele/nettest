@@ -144,3 +144,10 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+          # Lambda 1 uses only search scores (zero game-result/WDL weight).
+          start-lambda: 1.0
+          end-lambda: 1.0
+          lambda-cycle-delta: 0.0
+          jitter-lambda-sample: 0.0
+          jitter-lambda-batch: 0.0
+          wld-filtered: false
