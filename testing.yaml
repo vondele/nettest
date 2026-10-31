@@ -59,8 +59,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 568c7fbdff25412423947041ab3fa3f2037b0bac
+  owner: xu-shawn
+  sha: 8a30f962e9f8c18491b0e87d1cab0ace5e688cb8
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -132,6 +132,8 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
+          fake-quant-warmup-steps: 255400
+          init-seed: 1
 
     # Finetuning
     - <<: *common_step
