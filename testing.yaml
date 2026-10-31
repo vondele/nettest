@@ -8,6 +8,9 @@ model_config: &model_config
   l2: 32
   ls-keys: "piececount:queen:pawnhalf:manyoffi"
   ls-factors: "piececount+queen:pawnhalf:manyoffi"
+  ls-compact: true
+  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
+  ls-remap-min: 50
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -62,7 +65,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 07758a53f5c404cbe393bec87ddab8f04fe9331c
+  sha: 0ddaa29bcef4578c994099efced9f993ab086c6f
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -71,7 +74,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 3aa2ab85bbe8cd8ba39b52491af5780029c02947
+  sha: 43a000411db2de3dc8cde2efe3c7d3ab1def1a18
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
