@@ -6,7 +6,7 @@ import argparse
 import os
 from pathlib import Path
 from collections import defaultdict
-from .utils import MyDumper
+from .utils import MyDumper, final_path
 from .meta_recipe import expand_meta_recipe
 
 
@@ -86,7 +86,7 @@ def workspace_status(recipe):
             step["status"] = "Final"
             with open(final_status_file) as f:
                 final_info = yaml.safe_load(f)
-            step["std_nnue"] = final_info["std_nnue"]
+            step["std_nnue"] = str(final_path(final_info["std_nnue"], step["sha"]))
             if "artifact_url" in final_info:
                 print(f"Final net of step {step['sha']}: {final_info['artifact_url']}")
             else:

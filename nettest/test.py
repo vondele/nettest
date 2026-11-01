@@ -1,7 +1,7 @@
 import yaml
 import re
 from pathlib import Path
-from .utils import execute, flatten_cmd, github_repo_url
+from .utils import execute, final_path, flatten_cmd, github_repo_url
 from .default_environment import get_default_environment
 from .train import ensure_trainer
 import shutil
@@ -283,7 +283,7 @@ def run_fastchess(
     with open(final_yaml_file) as f:
         final_config = yaml.safe_load(f)
     short_nnue = final_config["short_nnue"]
-    std_nnue = final_config["std_nnue"]
+    std_nnue = final_path(final_config["std_nnue"], testing_sha)
     assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
 
     # extract the reference engine nnue
@@ -490,9 +490,9 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     assert final_yaml_file.exists(), f"{final_yaml_file} does not exist"
     with open(final_yaml_file) as f:
         final_config = yaml.safe_load(f)
-    std_nnue = final_config["std_nnue"]
+    std_nnue = final_path(final_config["std_nnue"], testing_sha)
     assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
-    checkpoint = final_config["checkpoint"]
+    checkpoint = final_path(final_config["checkpoint"], testing_sha)
     assert Path(checkpoint).exists(), f"{checkpoint} does not exist"
 
     # test positions
@@ -543,7 +543,7 @@ def run_matecheck(
     with open(final_yaml_file) as f:
         final_config = yaml.safe_load(f)
     short_nnue = final_config["short_nnue"]
-    std_nnue = final_config["std_nnue"]
+    std_nnue = final_path(final_config["std_nnue"], testing_sha)
     assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
 
     cmd = [

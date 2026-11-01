@@ -6,6 +6,7 @@ import time
 import shutil
 import os
 from functools import lru_cache
+from pathlib import Path
 
 
 def net_url(sha, net_name):
@@ -19,6 +20,24 @@ def net_url(sha, net_name):
         f"{os.environ.get('CI_JOB_ID', '?')}"
         f"/artifacts/raw/step_{sha}/{net_name}"
     )
+
+
+def final_path(recorded, sha):
+    """
+    The file named by a path recorded in scratch/<sha>/final.yaml, as this run
+    sees it. The path is absolute under the working directory of the run that
+    finished the step, which may share the scratch through another mount or
+    symlink and so use a different prefix. The part after /scratch/<sha>/ is
+    resolved in this run's scratch; the recorded path is kept if that fails.
+    """
+
+    recorded = Path(recorded)
+    _, marker, rel = str(recorded).rpartition(f"/scratch/{sha}/")
+    if marker:
+        local = Path.cwd() / "scratch" / sha / rel
+        if local.exists():
+            return local
+    return recorded
 
 
 def find_most_recent(root, file):
