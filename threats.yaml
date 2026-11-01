@@ -190,4 +190,9 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+          lambda-cycle-delta: -0.35
+          tb-probability-decay: 0.99998
+          outcome-smoothing: 0.01
+          draw-boost: 0.15
+          draw-boost-width: 5.0
           
