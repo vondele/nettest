@@ -44,7 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
+  features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
   ls-keys: "piececount:queen:pawnhalf:manyoffi"
@@ -115,7 +115,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 43a000411db2de3dc8cde2efe3c7d3ab1def1a18
+  sha: 01765d6fdabaa767f69f281f4c17757e5bba75df
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
