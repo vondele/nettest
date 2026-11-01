@@ -6,8 +6,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
-  ls-keys: "piececount:queen:pawnhalf:manyoffi"
-  ls-factors: "piececount+queen:pawnhalf:manyoffi"
+  ls-keys: "piececount:queen:imb3:pawnhalf:manyoffi"
+  ls-factors: "piececount+queen:imb3:pawnhalf:manyoffi"
   ls-compact: true
   ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
   ls-remap-min: 50
@@ -65,7 +65,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 0ddaa29bcef4578c994099efced9f993ab086c6f
+  sha: 98081b69c9803a0fff9e384f0c867dfa5f9af61c
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -74,7 +74,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 01765d6fdabaa767f69f281f4c17757e5bba75df
+  sha: bfaf7281a20db3044150f1bf4830ba4771b76cc8
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
