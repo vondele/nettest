@@ -103,10 +103,12 @@ common_run_options: &common_run_options
   end-lambda: 1.0
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
+  ft-bucket-lr-mult: 0.25
+  threat-lr-mult: 0.5
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 0ddaa29bcef4578c994099efced9f993ab086c6f
+  sha: 52962e463338e21d9c647a6f66dc6a6b4d7a9de7 # halfoffi-warmup-compact-ftlr: per-component FT learning rates
 
 reference_code: &reference_code
   owner: official-stockfish
