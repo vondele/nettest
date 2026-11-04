@@ -70,6 +70,7 @@ common_run_options: &common_run_options
   dense-weight-decay: "1.0e-6"
   factorized-weight-decay: "4.0e-5"
   virtual-ft-weight-decay: "4.0e-6"
+  input-clipping-interval: 128
   moe-weight-balance-cost: 0.001
   moe-weight-diversity-cost: 0.01
   moe-reseed-ema-decay: 0.998
