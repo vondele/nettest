@@ -2,6 +2,7 @@ import yaml
 import subprocess
 import re
 import hashlib
+import json
 import time
 import shutil
 import os
@@ -38,6 +39,64 @@ def final_path(recorded, sha):
         if local.exists():
             return local
     return recorded
+
+
+def reroot_path(recorded, base=None):
+    """
+    The recorded absolute path, as this run sees it. The path was recorded
+    under the working directory of the run that wrote it, which may share
+    its scratch or data through another mount or symlink and so use a
+    different prefix. The part after the run-dir markers is re-rooted onto
+    this run's working directory, keeping the recorded path if that fails.
+    """
+
+    recorded = Path(recorded)
+
+    if recorded.exists():
+        return recorded
+
+    base = Path(base) if base else Path.cwd()
+
+    for marker in ("/scratch/", "/data/"):
+        head, found, tail = str(recorded).rpartition(marker)
+        if found and head:
+            local = base / marker[1:] / tail
+            if local.exists():
+                return local
+
+    return recorded
+
+
+def reroot_config_paths(config_file, destination):
+    """
+    A copy of the fastchess config.json with the engine, net and book paths
+    re-rooted onto this run, for resuming a match that was started under
+    another mount or symlink. Returns the destination.
+    """
+
+    with open(config_file) as f:
+        config = json.load(f)
+
+    for engine in config.get("engines", []):
+        for key in ("cmd", "dir"):
+            if engine.get(key):
+                engine[key] = str(reroot_path(engine[key]))
+
+        for option in engine.get("options", []):
+            if (
+                isinstance(option, list)
+                and len(option) == 2
+                and option[0] == "EvalFile"
+            ):
+                option[1] = str(reroot_path(option[1]))
+
+    if config.get("opening", {}).get("file"):
+        config["opening"]["file"] = str(reroot_path(config["opening"]["file"]))
+
+    with open(destination, mode="w", encoding="utf-8") as f:
+        json.dump(config, f, indent=4)
+
+    return destination
 
 
 def find_most_recent(root, file):

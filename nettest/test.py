@@ -1,14 +1,24 @@
-import yaml
+import hashlib
+import json
+import os
 import re
+import shutil
+import time
+import uuid
 from pathlib import Path
-from .utils import execute, final_path, flatten_cmd, github_repo_url
+
+import yaml
+
 from .default_environment import get_default_environment
 from .train import ensure_trainer
-import shutil
-import uuid
-import time
-import os
-import random
+from .utils import (
+    MyDumper,
+    execute,
+    final_path,
+    flatten_cmd,
+    github_repo_url,
+    reroot_config_paths,
+)
 
 
 def ensure_matecheck():
@@ -257,6 +267,58 @@ def ensure_stockfish(target, test):
                 raise
 
 
+def resolve_match(test_config_sha, test, testing_sha, stockfish_reference):
+    """
+    The directory of the fastchess match for this net, unique to the testing
+    and reference engines and nets, as well as the game playing options.
+    Resuming an interrupted match continues the state fastchess saved there.
+    """
+
+    # the net to be tested
+    final_yaml_file = Path.cwd() / "scratch" / testing_sha / "final.yaml"
+    assert final_yaml_file.exists(), f"{final_yaml_file} does not exist"
+    with open(final_yaml_file) as f:
+        final_config = yaml.safe_load(f)
+    short_nnue = final_config["short_nnue"]
+
+    # extract the reference engine nnue
+    uci_output = execute(
+        f"Extract EvalFile of Stockfish reference {stockfish_reference}",
+        [f"{stockfish_reference}"],
+        Path.cwd(),
+        False,
+        filter_re=r"^(?:(?!EvalFile).)*$",
+        stdin_lines=["uci", "quit"],
+    )
+
+    reference_nnue = None
+    for line in uci_output:
+        match = re.search(r"option name EvalFile.*?Default\s+(.*)", line)
+        if match:
+            reference_nnue = match.group(1).strip()
+            print(f"Reference EvalFile: {reference_nnue}")
+
+    # the match key: unique to the engines, nets and game playing options
+    key_data = {
+        "testing": test["testing"]["code"],
+        "testing_net": short_nnue,
+        "reference": test["reference"]["code"],
+        "reference_net": reference_nnue,
+        "fastchess": test["fastchess"]["code"]["sha"],
+        "options": test["fastchess"].get("options", {}),
+        "sprt": test["fastchess"].get("sprt", {}),
+        "book": "UHO_Lichess_4852_v1.epd",
+    }
+    match_key = hashlib.sha256(
+        json.dumps(key_data, sort_keys=True).encode("utf-8")
+    ).hexdigest()[:12]
+
+    match_dir = Path.cwd() / "scratch" / test_config_sha / "match" / match_key
+    match_dir.mkdir(parents=True, exist_ok=True)
+
+    return match_dir
+
+
 def run_fastchess(
     environment,
     test_config_sha,
@@ -265,6 +327,7 @@ def run_fastchess(
     fastchess,
     stockfish_reference,
     stockfish_testing,
+    match_dir,
 ):
     """
     Run fastchess to rank nets relative to the reference
@@ -273,9 +336,6 @@ def run_fastchess(
     assert stockfish_reference.exists()
     assert stockfish_testing.exists()
     assert fastchess.exists()
-
-    match_dir = Path.cwd() / "scratch" / test_config_sha / "match" / testing_sha
-    match_dir.mkdir(parents=True, exist_ok=True)
 
     # net to be tested
     final_yaml_file = Path.cwd() / "scratch" / testing_sha / "final.yaml"
@@ -386,6 +446,37 @@ def run_fastchess(
             "-use-affinity",
             f"{affinity}",
         ]
+    else:
+        affinity = None
+
+    # an interrupted match left its state behind: resume it, re-rooting the
+    # recorded engine, net and book paths onto this run
+    config_file = match_dir / "config.json"
+    local_config = match_dir / "config.local.json"
+    resume = False
+    if config_file.exists():
+        try:
+            with open(config_file) as f:
+                saved = json.load(f)
+            resume = all(key in saved for key in ("engines", "stats", "seed"))
+        except json.JSONDecodeError:
+            resume = False
+        if resume:
+            reroot_config_paths(config_file, local_config)
+
+    if resume:
+        # the loaded configuration replaces the command line, so a resume
+        # restarts from the recorded engines, nets and stats; the
+        # environment options are re-applied so they also override the
+        # loaded values
+        resume_cmd = [f"{fastchess}", "-config", f"file={local_config}"]
+        resume_cmd += ["-concurrency", f"{concurrency}"]
+        if affinity is not None:
+            resume_cmd += ["-use-affinity", f"{affinity}"]
+
+    # the match key doubles as a deterministic opening seed, so a restart
+    # without saved state replays the same book order
+    srand = int(match_dir.name, 16)
 
     cmd += [
         "-rounds",
@@ -394,7 +485,7 @@ def run_fastchess(
         "2",
         "-repeat",
         "-srand",
-        f"{random.randint(0, 10000)}",
+        f"{srand}",
     ]
     cmd += sprt_options
     cmd += ["-ratinginterval", "100"]
@@ -440,7 +531,7 @@ def run_fastchess(
     # Done setup, run fastchess
     output = execute(
         f"Run fastchess match for {testing_sha}: {short_nnue}",
-        cmd,
+        resume_cmd if resume else cmd,
         match_dir,
         False,
         r"Finished game|Started game",
@@ -461,6 +552,12 @@ def run_fastchess(
         match = pattern.search(line)
         if match:
             nElo = float(match.group(1))
+
+    # the match is final: later runs of the same recipe skip it, like a
+    # finished training step
+    result = {"winning_net": winning_net, "nElo": nElo}
+    with open(match_dir / "result.yaml", mode="w", encoding="utf-8") as f:
+        yaml.dump(result, f, Dumper=MyDumper, default_flow_style=False)
 
     return winning_net, nElo
 
@@ -611,6 +708,23 @@ def run_test(environment, test_config_sha, testing_sha):
         download_url = f"no stored URL for final step {testing_sha}"
 
     print(f"Net download: {download_url}")
+
+    # the match directory, unique to the testing and reference engines and
+    # nets, as well as the game playing options
+    match_dir = resolve_match(test_config_sha, test, testing_sha, stockfish_reference)
+
+    # a finished match is final, like a finished training step
+    result_file = match_dir / "result.yaml"
+    if result_file.exists():
+        with open(result_file) as f:
+            result = yaml.safe_load(f)
+        print(
+            f"⚠️  Match for {testing_sha} is already final "
+            f"({result['winning_net']}, {result['nElo']} nElo), "
+            f"no work to be done, quick return!"
+        )
+        return result["winning_net"], result["nElo"]
+
     run_cross_check_eval(environment, test, testing_sha, stockfish_testing)
 
     run_matecheck(
@@ -625,6 +739,7 @@ def run_test(environment, test_config_sha, testing_sha):
         fastchess,
         stockfish_reference,
         stockfish_testing,
+        match_dir,
     )
     print(f"Net download: {download_url}")
 
