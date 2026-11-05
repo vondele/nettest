@@ -204,5 +204,6 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
+          input-clipping-interval: 16384
           batch-size: 65536
           final-validation-multiplier: 4
