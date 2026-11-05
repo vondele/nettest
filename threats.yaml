@@ -47,6 +47,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
+  weight-scale-l1: 256
+  weight-scale-l2: 128
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -65,7 +67,13 @@ common_run_options: &common_run_options
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
+  dense-weight-decay: "1.0e-6"
   factorized-weight-decay: "4.0e-5"
+  virtual-ft-weight-decay: "4.0e-6"
+  moe-weight-balance-cost: 0.001
+  moe-weight-diversity-cost: 0.01
+  moe-reseed-ema-decay: 0.998
+  moe-reseed-min-relative-utilization: 0.064
   random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -100,17 +108,17 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: ec2ead9feeb5677b828536fc53000d1379a1d207
+  owner: TonyCongqianWang
+  sha: 8799e15832421d029a728e5ef5d9aacd388d34a1
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
+  sha: ff7cee4244ec96ea488c402669e3674c0574dce6 # upstream SFNNv19
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
+  owner: TonyCongqianWang
+  sha: ef95b13dd6feb625a8580e775dc433b956273328
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -144,6 +152,7 @@ testing:
       owner: Disservin
       sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
     options:
+      nodes: 100000
       hash: 16
       max_rounds: 30000
       tc: 10+0.1
@@ -169,6 +178,16 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
+        max_epochs: 100
+        network-save-period: 0
+        repetitions: 1
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+
+    - <<: *common_step
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
         max_epochs: 560
         network-save-period: 0
         repetitions: 3
@@ -177,7 +196,6 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
@@ -185,4 +203,5 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
+          batch-size: 65536
+          final-validation-multiplier: 4
