@@ -47,6 +47,11 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "piececount:queen:pawnhalf:manyoffi"
+  ls-factors: "piececount+queen:pawnhalf:manyoffi"
+  ls-compact: true
+  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
+  ls-remap-min: 50
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -98,10 +103,12 @@ common_run_options: &common_run_options
   end-lambda: 1.0
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
+  ft-bucket-lr-mult: 0.25
+  threat-lr-mult: 0.5
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: ec2ead9feeb5677b828536fc53000d1379a1d207
+  owner: xu-shawn
+  sha: 52962e463338e21d9c647a6f66dc6a6b4d7a9de7 # halfoffi-warmup-compact-ftlr: per-component FT learning rates
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -109,8 +116,8 @@ reference_code: &reference_code
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
+  owner: xu-shawn
+  sha: 01765d6fdabaa767f69f281f4c17757e5bba75df
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -174,6 +181,8 @@ training:
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
+          fake-quant-warmup-steps: 255400
+          init-seed: 1
 
     # Finetuning
     - <<: *common_step
