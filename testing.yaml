@@ -3,9 +3,14 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+Ram_Ram+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "piececount:queen:pawnhalf:manyoffi"
+  ls-factors: "piececount+queen:pawnhalf:manyoffi"
+  ls-compact: true
+  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
+  ls-remap-min: 50
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -59,8 +64,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 568c7fbdff25412423947041ab3fa3f2037b0bac
+  owner: xu-shawn
+  sha: 0ddaa29bcef4578c994099efced9f993ab086c6f
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -69,7 +74,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
+  sha: 43a000411db2de3dc8cde2efe3c7d3ab1def1a18
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -132,6 +137,8 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
+          fake-quant-warmup-steps: 255400
+          init-seed: 1
 
     # Finetuning
     - <<: *common_step
