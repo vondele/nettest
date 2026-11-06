@@ -162,7 +162,7 @@ testing:
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
@@ -194,8 +194,17 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
 
-    # Finetuning
+    # MoE8.5 verification: reuse the original two stages unchanged, then
+    # rerun finetuning and export with the compatible runtime fixes.
     - <<: *common_step
+      trainer:
+        owner: TonyCongqianWang
+        sha: f654d95e963b424ca580e73fa12e25f5cbcf7ad6
+      convert:
+        <<: *common_convert
+        runtime:
+          device: auto
+          matmul-precision: auto
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
@@ -205,3 +214,4 @@ training:
           <<: [*training_length_options, *common_run_options]
           batch-size: 65536
           final-validation-multiplier: 4
+          matmul-precision: auto
