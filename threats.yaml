@@ -199,7 +199,7 @@ training:
     - <<: *common_step
       trainer:
         owner: TonyCongqianWang
-        sha: 5a4649363f93f683907b76b648f5c4ebb572f64a
+        sha: 769a65cc981457a8ed1ad11c99d96424be845bbb
       convert:
         <<: *common_convert
         runtime:
