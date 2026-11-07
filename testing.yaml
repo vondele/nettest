@@ -64,14 +64,18 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
   ft-bucket-lr-mult: 0.25
   threat-lr-mult: 0.5
+  lr-floor: 0.16
+  lr-floor-start: 3831000
+  swa-start-epoch: 467
+  swa-carry: true
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 52962e463338e21d9c647a6f66dc6a6b4d7a9de7 # halfoffi-warmup-compact-ftlr: per-component FT learning rates
+  sha: 7757f0f3e611c6712ba109a811221cf79f51524f
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  owner: xu-shawn
+  sha: d5a2bda7f028430f79e1789d47ae3228defb843b
   target: build
 
 testing_code: &testing_code
@@ -141,6 +145,7 @@ training:
           <<: [*training_length_options, *common_run_options]
           fake-quant-warmup-steps: 255400
           init-seed: 1
+          swa-finalize: false
 
     # Finetuning
     - <<: *common_step
