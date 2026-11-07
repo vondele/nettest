@@ -105,14 +105,16 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
   ft-bucket-lr-mult: 0.25
   threat-lr-mult: 0.5
+  ft-weight-decay: 0.02
+  virtual-ft-weight-decay: 0.02
 
 trainer: &trainer
   owner: xu-shawn
   sha: 52962e463338e21d9c647a6f66dc6a6b4d7a9de7 # halfoffi-warmup-compact-ftlr: per-component FT learning rates
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
+  owner: xu-shawn
+  sha: d5a2bda7f028430f79e1789d47ae3228defb843b
   target: build
 
 testing_code: &testing_code
