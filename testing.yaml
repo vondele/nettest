@@ -67,7 +67,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 52962e463338e21d9c647a6f66dc6a6b4d7a9de7 # halfoffi-warmup-compact-ftlr: per-component FT learning rates
+  sha: 67563a611c4c354890054361ea7bd127e7d95d0d
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -76,7 +76,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 01765d6fdabaa767f69f281f4c17757e5bba75df
+  sha: 57a49641b8532a45a297ab105f59489cffb2fb72
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -108,7 +108,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
     options:
       hash: 16
       max_rounds: 30000
