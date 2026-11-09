@@ -44,7 +44,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+Knight_MobCover+Knight_Blockade+Bishop_Triangle+K32H3^
   l1: 1024
   l2: 32
   ls-keys: "piececount:queen:pawnhalf:manyoffi"
@@ -108,7 +108,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 67563a611c4c354890054361ea7bd127e7d95d0d
+  sha: 12f322aac82580493280d6e77aed21880d4aac01
 
 reference_code: &reference_code
   owner: xu-shawn
