@@ -43,6 +43,17 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
 
+tuning_binpacks: &tuning_binpacks
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test77-2021-12-dec-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-07-jul-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-11-nov-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-04-apr-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+
 model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
@@ -114,7 +125,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: d5a2bda7f028430f79e1789d47ae3228defb843b
+  sha: 73fe1eaca99ac4a09252c876aa6b1cceeaf7c4c7
   target: build
 
 testing_code: &testing_code
@@ -197,3 +208,20 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+
+    # Tuning
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_model
+        binpacks: *tuning_binpacks
+        max_epochs: 5
+        network-save-period: 0
+        other_options:
+          <<: *common_run_options
+          batch_size: 65536
+          lr: "1.0e-5"
+          one-cycle-steps: 81920
+          lambda-schedule-steps: 81920
+          lambda-cycle-delta: 0.0
+          check-val-every-n-epoch: 5

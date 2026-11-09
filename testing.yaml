@@ -73,7 +73,7 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: d5a2bda7f028430f79e1789d47ae3228defb843b
+  sha: 73fe1eaca99ac4a09252c876aa6b1cceeaf7c4c7
   target: build
 
 testing_code: &testing_code
@@ -155,3 +155,20 @@ training:
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+
+    # Tuning
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_model
+        binpacks: *training_binpacks
+        max_epochs: 2
+        network-save-period: 0
+        other_options:
+          <<: *common_run_options
+          batch_size: 65536
+          lr: "1.0e-5"
+          one-cycle-steps: 320
+          lambda-schedule-steps: 320
+          lambda-cycle-delta: 0.0
+          check-val-every-n-epoch: 2
