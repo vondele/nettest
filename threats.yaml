@@ -44,9 +44,14 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+Knight_MobCover+Knight_Blockade+Bishop_Triangle+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "piececount:queen:pawnhalf:manyoffi"
+  ls-factors: "piececount+queen:pawnhalf:manyoffi"
+  ls-compact: true
+  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
+  ls-remap-min: 50
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -98,19 +103,21 @@ common_run_options: &common_run_options
   end-lambda: 1.0
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
+  ft-bucket-lr-mult: 0.25
+  threat-lr-mult: 0.5
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: ec2ead9feeb5677b828536fc53000d1379a1d207
+  owner: xu-shawn
+  sha: 12f322aac82580493280d6e77aed21880d4aac01
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
+  owner: xu-shawn
+  sha: 57a49641b8532a45a297ab105f59489cffb2fb72
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: ff7cee4244ec96ea488c402669e3674c0574dce6
+  owner: xu-shawn
+  sha: e4cffc7a726fd34e5e1e07225b86ac8660552a1f
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -142,7 +149,7 @@ testing:
   fastchess:
     code:
       owner: Disservin
-      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
     options:
       hash: 16
       max_rounds: 30000
@@ -174,6 +181,8 @@ training:
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
+          fake-quant-warmup-steps: 255400
+          init-seed: 1
 
     # Finetuning
     - <<: *common_step
