@@ -107,14 +107,15 @@ common_run_options: &common_run_options
   threat-lr-mult: 0.5
   ft-weight-decay: 0.02
   virtual-ft-weight-decay: 0.02
+  ft-lazy-weight-decay: true
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 52962e463338e21d9c647a6f66dc6a6b4d7a9de7 # halfoffi-warmup-compact-ftlr: per-component FT learning rates
+  sha: 48bcacea980dfd9eefa15e0d1ff3fcbd8a69508a
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: d5a2bda7f028430f79e1789d47ae3228defb843b
+  sha: 73fe1eaca99ac4a09252c876aa6b1cceeaf7c4c7
   target: build
 
 testing_code: &testing_code
