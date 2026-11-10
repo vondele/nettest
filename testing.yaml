@@ -6,6 +6,11 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
+  ls-keys: "piececount:queen:pawnhalf:manyoffi"
+  ls-factors: "piececount+queen:pawnhalf:manyoffi"
+  ls-compact: true
+  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
+  ls-remap-min: 50
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -57,19 +62,24 @@ common_run_options: &common_run_options
   end-lambda: 1.0
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
+  ft-bucket-lr-mult: 0.25
+  threat-lr-mult: 0.5
+  ft-weight-decay: 0.02
+  virtual-ft-weight-decay: 0.02
+  ft-lazy-weight-decay: true
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 568c7fbdff25412423947041ab3fa3f2037b0bac
+  owner: xu-shawn
+  sha: 48bcacea980dfd9eefa15e0d1ff3fcbd8a69508a
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  owner: xu-shawn
+  sha: 73fe1eaca99ac4a09252c876aa6b1cceeaf7c4c7
   target: build
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: c7e8fdf5bf18e3de6685c3e8aaeb14deeac07273
+  sha: 01765d6fdabaa767f69f281f4c17757e5bba75df
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -132,6 +142,8 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
+          fake-quant-warmup-steps: 255400
+          init-seed: 1
 
     # Finetuning
     - <<: *common_step
