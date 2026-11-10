@@ -94,7 +94,7 @@ common_run_options: &common_run_options
   in-offset: 285.2706341467852
   out-offset: 289.1258344152218
   one-cycle-warmup-pct: 0.05
-  one-cycle-final-div: "1e3"
+  one-cycle-final-div: "800"
   lambda-cycle-jitter: true
   jitter-lambda-sample: 0.0035
   jitter-lambda-batch: 0.0070
@@ -114,12 +114,12 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: d5a2bda7f028430f79e1789d47ae3228defb843b
+  sha: 73fe1eaca99ac4a09252c876aa6b1cceeaf7c4c7
   target: build
 
 testing_code: &testing_code
   owner: xu-shawn
-  sha: 01765d6fdabaa767f69f281f4c17757e5bba75df
+  sha: 73fe1eaca99ac4a09252c876aa6b1cceeaf7c4c7
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -167,8 +167,8 @@ testing:
     code: *testing_code
 
 training_length_options: &training_length_options
-  one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  one-cycle-steps: 4915200
+  lambda-schedule-steps: 4593750
   lr: "0.4e-3"
 
 training:
@@ -196,4 +196,3 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
