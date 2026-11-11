@@ -164,6 +164,7 @@ testing:
       owner: Disservin
       sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3 # # from 2026-09-12
     options:
+      nodes: 100000
       hash: 16
       max_rounds: 30000
       tc: 10+0.1
