@@ -63,8 +63,8 @@ common_run_options: &common_run_options
   lambda-cycle-delta: -0.3
   ft-bucket-lr-mult: 0.25
   threat-lr-mult: 0.5
-  ft-weight-decay: 0.02
-  virtual-ft-weight-decay: 0.02
+  ft-weight-decay: 0.04
+  virtual-ft-weight-decay: 0.04
 
 trainer: &trainer
   owner: official-stockfish
