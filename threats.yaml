@@ -1,3 +1,4 @@
+# MoE10 A — 100-epoch FC0 specialization experiment
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -47,10 +48,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
-  ls-keys: "piececount:queen:pawnhalf:manyoffi"
-  ls-factors: "piececount+queen:pawnhalf:manyoffi"
-  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
-  ls-remap-min: 50
+  weight-scale-l1: 256
+  weight-scale-l2: 128
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -69,7 +68,21 @@ common_run_options: &common_run_options
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
-  factorized-weight-decay: "4.0e-5"
+  dense-weight-decay: 0.001
+  factorized-weight-decay: 0.002
+  ft-weight-decay: 0.02
+  virtual-ft-weight-decay: 0.02
+  ft-bucket-lr-mult: 0.25
+  threat-lr-mult: 0.5
+  fake-quant-warmup-steps: 255400
+  init-seed: 1
+  input-clipping-interval: 1024
+  matmul-precision: &moe9_precision high
+  moe-fc0-balance-kl-cost: 0.0005
+  moe-tail-balance-kl-cost: 0.001
+  moe-weight-diversity-cost: 0.01
+  moe-reseed-ema-decay: 0.998
+  moe-reseed-min-relative-utilization: 0.064
   random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -93,7 +106,7 @@ common_run_options: &common_run_options
   in-offset: 285.2706341467852
   out-offset: 289.1258344152218
   one-cycle-warmup-pct: 0.05
-  one-cycle-final-div: "1e3"
+  one-cycle-final-div: 800
   lambda-cycle-jitter: true
   jitter-lambda-sample: 0.0035
   jitter-lambda-batch: 0.0070
@@ -102,68 +115,22 @@ common_run_options: &common_run_options
   end-lambda: 1.0
   lambda-cycle-warmup-pct: 0.25
   lambda-cycle-delta: -0.3
-  ft-bucket-lr-mult: 0.25
-  threat-lr-mult: 0.5
-  ft-weight-decay: 0.02
-  virtual-ft-weight-decay: 0.02
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 0a1c697da5e76096c556b991013042f64c17ad4f
+  owner: TonyCongqianWang
+  sha: 15ce08ae16bd44eb1c2c439060079e8561faeacd
 
-reference_code: &reference_code
-  owner: official-stockfish
-  sha: 26647279081cdc39d72ef9f10c33289a7da4a5e9
-  target: build
-
-testing_code: &testing_code
-  owner: official-stockfish
-  sha: 26647279081cdc39d72ef9f10c33289a7da4a5e9
-  target: build
-
-# --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
   optimize: *optimize_flags
+  runtime:
+    device: cuda:0
+    matmul-precision: *moe9_precision
 
 common_step: &common_step
   convert: *common_convert
   trainer: *trainer
-
-common_run_resume_model: &common_run_resume_model
-  repetitions: 1
-  resume: previous_model
-
-common_run_resume_ckpt: &common_run_resume_ckpt
-  <<: *common_run_resume_model
-  resume: previous_checkpoint
-
-# ----------------------------------------------------------
-
-testing:
-  crosscheck:
-    binpack: official-stockfish/master-binpacks/fishpack32.binpack
-    other_options:
-      <<: *model_config
-      count: 20000
-  fastchess:
-    code:
-      owner: Disservin
-      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
-    options:
-      hash: 16
-      max_rounds: 30000
-      tc: 10+0.1
-    sprt:
-      nElo_interval_midpoint: -0.0
-      nElo_interval_width: 2
-
-  reference:
-    code: *reference_code
-  steps: all
-  testing:
-    code: *testing_code
 
 training_length_options: &training_length_options
   one-cycle-steps: 5108000
@@ -172,27 +139,13 @@ training_length_options: &training_length_options
 
 training:
   steps:
-    # Pretraining
     - <<: *common_step
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 560
+        max_epochs: 100
         network-save-period: 0
-        repetitions: 3
+        repetitions: 1
         other_options:
           <<: [*training_length_options, *common_run_options]
-          fake-quant-warmup-steps: 255400
-          init-seed: 1
-
-    # Finetuning
-    - <<: *common_step
-      trainer: *trainer
-      run:
-        <<: *common_run_resume_ckpt
-        binpacks: *training_binpacks
-        max_epochs: 600
-        network-save-period: 0
-        other_options:
-          <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
+          final-validation-multiplier: 4
