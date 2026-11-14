@@ -1,4 +1,4 @@
-# MoE10 A — 100-epoch FC0 specialization experiment
+# MoE10 A — second 100-epoch experiment
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -78,8 +78,10 @@ common_run_options: &common_run_options
   init-seed: 1
   input-clipping-interval: 1024
   matmul-precision: &moe9_precision high
-  moe-fc0-balance-kl-cost: 0.0005
-  moe-tail-balance-kl-cost: 0.001
+  moe-fc0-balance-kl-cost: 0.00025
+  moe-tail-balance-kl-cost: 0.0005
+  moe-fc0-bottleneck-diversity-cost: 0.0001
+  moe-tail-bottleneck-diversity-cost: 0.0001
   moe-weight-diversity-cost: 0.01
   moe-reseed-ema-decay: 0.998
   moe-reseed-min-relative-utilization: 0.064
@@ -118,7 +120,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 15ce08ae16bd44eb1c2c439060079e8561faeacd
+  sha: 437d542fd5889934de0ea3c6908c4e22729a3cea
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
