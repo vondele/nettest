@@ -10,6 +10,7 @@ from pathlib import Path
 import yaml
 
 from .default_environment import get_default_environment
+from .runtime import runtime_command
 from .train import ensure_trainer
 from .utils import (
     MyDumper,
@@ -570,14 +571,8 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     if "crosscheck" not in test:
         return
 
-    # use environment to pick GPU, ignore thread affinity for now
+    # Use the same visible-device mapping as training and export.
     assert environment is not None, "Environment is required for crosscheck"
-    if "train" in environment and "devices" in environment["train"]:
-        device = [
-            int(x) for x in environment["train"]["devices"].rstrip(",").split(",")
-        ][0]
-    else:
-        device = 0  # default to GPU 0 if not specified
 
     # needed testing engine, able to load the net.
     assert stockfish_testing.exists()
@@ -605,7 +600,6 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
     nnue_pytorch_dir = ensure_trainer(step["trainer"])
 
     # configure and run cross_check_eval
-    # TODO: make device respect 'device'
     cmd = [
         "python",
         "-u",
@@ -616,6 +610,12 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
         f"{binpack}",
         "--device=cuda",
     ]
+    runtime_env = None
+    runtime = final_config.get("runtime")
+    if runtime is not None:
+        runtime_args, runtime_env = runtime_command(environment, runtime)
+        cmd = [arg for arg in cmd if not arg.startswith("--device=")]
+        cmd += runtime_args
 
     # add options to specify count and features
     if "other_options" in test["crosscheck"]:
@@ -623,7 +623,7 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
 
     cmd_nnue = cmd + ["--net", f"{std_nnue}"]
     cmd_ckpt = cmd_nnue + ["--checkpoint", f"{checkpoint}"]
-    execute("Run cross check eval from .ckpt ", cmd_ckpt, nnue_pytorch_dir, False)
+    execute("Run cross check eval from .ckpt ", cmd_ckpt, nnue_pytorch_dir, False, env=runtime_env)
 
 
 def run_matecheck(
