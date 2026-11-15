@@ -1,4 +1,4 @@
-# MoE10 A — third 100-epoch experiment
+# MoE10 A — restored material context, 100 epochs
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -77,10 +77,10 @@ common_run_options: &common_run_options
   init-seed: 1
   input-clipping-interval: 1024
   matmul-precision: &moe9_precision high
-  moe-fc0-balance-kl-cost: 0.00025
-  moe-tail-balance-kl-cost: 0.0005
-  moe-fc0-bottleneck-diversity-cost: 0.0001
-  moe-tail-bottleneck-diversity-cost: 0.0001
+  moe-fc0-balance-kl-cost: 0.000125
+  moe-tail-balance-kl-cost: 0.00025
+  moe-fc0-bottleneck-diversity-cost: 0.0002
+  moe-tail-bottleneck-diversity-cost: 0.0002
   moe-weight-diversity-cost: 0.0
   moe-reseed-ema-decay: 0.998
   moe-reseed-min-relative-utilization: 0.064
@@ -119,12 +119,13 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 38570369aab46bc81bd77a827c169702cea914d2
+  sha: c3d37e33bd281424ba31b13e769fbf9755ddb5c3
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
   optimize: *optimize_flags
+  export_diagnostics: true
   runtime:
     device: cuda:0
     matmul-precision: *moe9_precision
