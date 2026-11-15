@@ -141,11 +141,9 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     game_binpacks = run["binpacks"]
     tree_binpacks = run.get("search_tree_binpacks", [])
-    if set(game_binpacks).intersection(tree_binpacks):
-        raise ValueError("Game and search-tree binpack lists must be disjoint")
 
     # first check all binpacks are available in non-compressed form
-    for binpack in dict.fromkeys([*game_binpacks, *tree_binpacks]):
+    for binpack in [*game_binpacks, *tree_binpacks]:
         full_path = data_dir / binpack
         # check if it is available in compressed form, and uncompress as needed
         if not full_path.exists():
