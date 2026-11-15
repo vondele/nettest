@@ -139,11 +139,10 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     data_dir = Path.cwd() / "data"
 
-    # A recipe can designate search-tree files from a shared binpacks list
-    # or supply additional ones for this stage.
+    game_binpacks = run["binpacks"]
     tree_binpacks = run.get("search_tree_binpacks", [])
-    tree_paths = set(tree_binpacks)
-    game_binpacks = [path for path in run["binpacks"] if path not in tree_paths]
+    if set(game_binpacks).intersection(tree_binpacks):
+        raise ValueError("Game and search-tree binpack lists must be disjoint")
 
     # first check all binpacks are available in non-compressed form
     for binpack in dict.fromkeys([*game_binpacks, *tree_binpacks]):
