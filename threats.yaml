@@ -42,6 +42,23 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.000.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.001.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.002.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.003.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.004.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.005.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.006.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.007.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.008.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.009.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.010.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.011.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.012.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.013.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.014.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.015.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.016.relabel-BT4-tf13tune.binpack
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
@@ -106,19 +123,20 @@ common_run_options: &common_run_options
   threat-lr-mult: 0.5
   ft-weight-decay: 0.02
   virtual-ft-weight-decay: 0.02
+  tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 0a1c697da5e76096c556b991013042f64c17ad4f
+  owner: xu-shawn
+  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: 26647279081cdc39d72ef9f10c33289a7da4a5e9
+  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
   target: build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: 26647279081cdc39d72ef9f10c33289a7da4a5e9
+  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
