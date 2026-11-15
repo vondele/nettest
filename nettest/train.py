@@ -139,8 +139,14 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     data_dir = Path.cwd() / "data"
 
+    # A recipe can designate search-tree files from a shared binpacks list
+    # or supply additional ones for this stage.
+    tree_binpacks = run.get("search_tree_binpacks", [])
+    tree_paths = set(tree_binpacks)
+    game_binpacks = [path for path in run["binpacks"] if path not in tree_paths]
+
     # first check all binpacks are available in non-compressed form
-    for binpack in run["binpacks"]:
+    for binpack in dict.fromkeys([*game_binpacks, *tree_binpacks]):
         full_path = data_dir / binpack
         # check if it is available in compressed form, and uncompress as needed
         if not full_path.exists():
@@ -176,8 +182,10 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     else:
         cmd = ["python", "-u", "train.py"]
 
-    for binpack in run["binpacks"]:
+    for binpack in game_binpacks:
         cmd.append(str(data_dir / binpack))
+    for binpack in tree_binpacks:
+        cmd.append(f"--search-tree-datasets={data_dir / binpack}")
 
     if "train" in environment and "threads" in environment["train"]:
         num_threads = environment["train"]["threads"]
