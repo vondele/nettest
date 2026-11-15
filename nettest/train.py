@@ -313,6 +313,11 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
     ]
     cmd = cmd + flatten_cmd(convert["checkpoint2nnue"])
     cmd += runtime_args
+    diagnostics = None
+    if convert.get("export_diagnostics", False):
+        diagnostics = destination.with_suffix(".diagnostics.json")
+        diagnostics.unlink(missing_ok=True)
+        cmd.append(f"--diagnostics-path={diagnostics}")
     execute("Convert to nnue", cmd, nnue_pytorch_dir, False, env=runtime_env)
 
     # optimize as a second step (see https://github.com/official-stockfish/nnue-pytorch/issues/322)
@@ -365,6 +370,13 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
     artifact_nnue = artifact_dir / short_nnue
     shutil.copy(nnue, artifact_nnue)
     print(f"nnue available as artifact step_{current_sha}")
+
+    if diagnostics is not None:
+        if not 0 < diagnostics.stat().st_size <= 20_000_000:
+            raise ValueError("Export diagnostics must be nonempty and at most 20 MB")
+        artifact_diagnostics = artifact_nnue.with_suffix(".diagnostics.json")
+        shutil.copyfile(diagnostics, artifact_diagnostics)
+        print(f"Diagnostics download (live at job end): {net_url(current_sha, artifact_diagnostics.name)}")
 
     final_file = Path.cwd() / "scratch" / current_sha / "final.yaml"
     artifact_url = net_url(current_sha, short_nnue)
