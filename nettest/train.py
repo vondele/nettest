@@ -139,8 +139,11 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
 
     data_dir = Path.cwd() / "data"
 
+    game_binpacks = run["binpacks"]
+    tree_binpacks = run.get("search_tree_binpacks", [])
+
     # first check all binpacks are available in non-compressed form
-    for binpack in run["binpacks"]:
+    for binpack in [*game_binpacks, *tree_binpacks]:
         full_path = data_dir / binpack
         # check if it is available in compressed form, and uncompress as needed
         if not full_path.exists():
@@ -176,8 +179,10 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
     else:
         cmd = ["python", "-u", "train.py"]
 
-    for binpack in run["binpacks"]:
+    for binpack in game_binpacks:
         cmd.append(str(data_dir / binpack))
+    for binpack in tree_binpacks:
+        cmd.append(f"--search-tree-datasets={data_dir / binpack}")
 
     if "train" in environment and "threads" in environment["train"]:
         num_threads = environment["train"]["threads"]
