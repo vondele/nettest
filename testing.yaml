@@ -67,8 +67,8 @@ common_run_options: &common_run_options
   virtual-ft-weight-decay: 0.02
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 0a1c697da5e76096c556b991013042f64c17ad4f
+  owner: xu-shawn
+  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
 
 reference_code: &reference_code
   owner: official-stockfish

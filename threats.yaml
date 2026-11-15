@@ -1,4 +1,3 @@
-# MoE10 C — restored material context, 100 epochs
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -43,6 +42,23 @@ training_binpacks: &training_binpacks
   - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
   - vondele/rescored/tb5dtm.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.000.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.001.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.002.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.003.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.004.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.005.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.006.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.007.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.008.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.009.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.010.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.011.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.012.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.013.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.014.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.015.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.016.relabel-BT4-tf13tune.binpack
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
@@ -76,6 +92,7 @@ common_run_options: &common_run_options
   fake-quant-warmup-steps: 255400
   init-seed: 1
   input-clipping-interval: 1024
+  tree-sample-accept: 0.12
   matmul-precision: &moe9_precision high
   moe-fc0-balance-kl-cost: 0.000125
   moe-tail-balance-kl-cost: 0.0001625
@@ -120,7 +137,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: c3d37e33bd281424ba31b13e769fbf9755ddb5c3
+  sha: f57c533b06275243c0b99cd155addf38e19d113f
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
