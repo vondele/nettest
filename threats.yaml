@@ -205,12 +205,33 @@ training:
 
     # Finetuning
     - <<: *common_step
-      trainer: *trainer
+      trainer:
+        owner: TonyCongqianWang
+        sha: a92a12cf899fab0a8ec74c60cbb1bd4906eb1f6f
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
+        search_tree_binpacks:
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.000.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.001.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.002.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.003.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.004.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.005.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.006.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.007.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.008.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.009.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.010.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.011.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.012.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.013.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.014.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.015.relabel-BT4-tf13tune.binpack
+          - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.016.relabel-BT4-tf13tune.binpack
         max_epochs: 600
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+          search-tree-fraction: 0.08
