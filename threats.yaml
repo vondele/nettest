@@ -64,6 +64,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
+  moe-shared-router: true
+  moe-tail-experts: 64
   moe-fc0-direct: true
   weight-scale-l1: 256
   weight-scale-l2: 128
@@ -95,11 +97,8 @@ common_run_options: &common_run_options
   input-clipping-interval: 1024
   tree-sample-accept: 0.12
   matmul-precision: &moe9_precision high
-  moe-fc0-balance-kl-cost: 0.000005
   moe-tail-balance-kl-cost: 0.000005
-  moe-fc0-balance-kl-smoothing: 0.001
   moe-tail-balance-kl-smoothing: 0.001
-  moe-tail-bottleneck-diversity-cost: 0.004
   moe-weight-diversity-cost: 0.0
   moe-reseed-ema-decay: 0.998
   moe-reseed-min-relative-utilization: 0.064
@@ -138,7 +137,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: b56cc1625645a88ae8d46e67d83b6bbfdd0f6e77
+  sha: 4e1fabcc93302ff7a7fcab93ec1dac9ff16bac03
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
