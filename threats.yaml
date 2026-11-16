@@ -61,7 +61,7 @@ training_binpacks: &training_binpacks
   - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.016.relabel-BT4-tf13tune.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+Knight_MobCover+Knight_Blockade+Bishop_Triangle+K32H3^
   l1: 1024
   l2: 32
   ls-keys: "piececount:queen:pawnhalf:manyoffi"
@@ -127,7 +127,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  sha: 0685cf76de85a4bee44b9e6a8dd241f73a6d38b0
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -135,8 +135,8 @@ reference_code: &reference_code
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  owner: xu-shawn
+  sha: c7b669e1aa82e82c8ecddcae506ea61482a7499b
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
