@@ -341,13 +341,13 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
-  target: build
+  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
+  target: profile-build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
-  target: build
+  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -379,7 +379,7 @@ testing:
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
