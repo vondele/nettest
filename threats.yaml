@@ -393,7 +393,7 @@ full_run_options: &full_run_options
   fake-quant-warmup-steps: 255400
   init-seed: 1
   tree-sample-accept: 0.1
-  search-tree-schedule: "0:0.06,0.5:0.12,0.75:0.25,0.875:0.50,1:0.50"
+  search-tree-schedule: "0:0.02,0.5:0.04,0.75:0.06,0.875:0.08,1:0.0.08"
   search-tree-schedule-steps: 4915200
 
 training:
