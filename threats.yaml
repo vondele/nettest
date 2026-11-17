@@ -97,7 +97,7 @@ common_run_options: &common_run_options
   input-clipping-interval: 1024
   tree-sample-accept: 0.12
   matmul-precision: &moe9_precision high
-  moe-tail-balance-kl-cost: 0.000005
+  moe-tail-balance-kl-cost: 0.0000025
   moe-tail-balance-kl-smoothing: 0.001
   moe-weight-diversity-cost: 0.0
   moe-reseed-ema-decay: 0.998
