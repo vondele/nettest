@@ -96,10 +96,10 @@ common_run_options: &common_run_options
   input-clipping-interval: 1024
   tree-sample-accept: 0.12
   matmul-precision: &moe9_precision high
-  moe-tail-balance-kl-cost: 0.00002
+  moe-tail-balance-kl-cost: 0.00001
   moe-tail-balance-kl-smoothing: 0.001
-  moe-tail-bottleneck-diversity-cost: 0.004
-  moe-fc0-bottleneck-diversity-cost: 0.004
+  moe-tail-bottleneck-diversity-cost: 0.002
+  moe-fc0-bottleneck-diversity-cost: 0.002
   moe-diversity-space: weights
   moe-weight-diversity-cost: 0.0
   moe-reseed-ema-decay: 0.998
