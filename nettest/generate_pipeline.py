@@ -239,9 +239,9 @@ def generate_ensure_data(recipe, ci_yaml_out, schedule):
         for step in recipe["training"]["steps"]:
             if "convert" in step and "binpack" in step["convert"]:
                 binpacks.add(step["convert"]["binpack"])
-            if "run" in step and "binpacks" in step["run"]:
-                for binpack in step["run"]["binpacks"]:
-                    binpacks.add(binpack)
+            run = step.get("run", {})
+            binpacks.update(run.get("binpacks", []))
+            binpacks.update(run.get("search_tree_binpacks", []))
 
     repos = defaultdict(list)
     for binpack in binpacks:
