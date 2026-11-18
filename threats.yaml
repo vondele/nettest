@@ -126,8 +126,8 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: official-stockfish
-  sha: 8d30ed74a1dbcb9670f400fbd1c712f940c20198
+  owner: sscg13
+  sha: e236cb4f6bb8e6022b6344f07f4f0e9fb47065f1
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -135,9 +135,11 @@ reference_code: &reference_code
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
-  target: build
+  owner: sscg13
+  sha: 9925f43d4e0b81443f99ca405394b19083afaade
+  target: all
+  make-options:
+    EXTRACXXFLAGS: -DNNUE_EMBEDDING_OFF
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert

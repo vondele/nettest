@@ -189,13 +189,19 @@ def ensure_stockfish(target, test):
     max_retries = 3
     retry_delay = 30
 
-    target_config = test[target]
-    sha = target_config["code"]["sha"]
-    owner = target_config["code"]["owner"]
-    target_build = target_config["code"].get("target", "profile-build")
+    code = test[target]["code"]
+    sha = code["sha"]
+    owner = code["owner"]
+    target_build = code.get("target", "profile-build")
+    make_options = code.get("make-options", {})
+    make_args = [f"{name}={value}" for name, value in sorted(make_options.items())]
     repo = github_repo_url(owner, "Stockfish")
 
-    target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}-{target_build}"
+    build_key = f"{sha}-{target_build}"
+    if make_args:
+        options_hash = hashlib.sha256(json.dumps(make_args).encode()).hexdigest()[:12]
+        build_key = f"{build_key}-{options_hash}"
+    target_dir = Path.cwd() / "scratch/packages/stockfish" / build_key
     stockfish_binary = target_dir / "Stockfish" / "src" / "stockfish"
 
     if stockfish_binary.exists():
@@ -241,7 +247,7 @@ def ensure_stockfish(target, test):
             # explicitly define ARCH, as the variable exists in the CI environment
             execute(
                 f"[attempt {attempt}] build Stockfish",
-                ["make", "-j", f"{target_build}", "ARCH=native"],
+                ["make", "-j", target_build, "ARCH=native", *make_args],
                 temp_stockfish_src_dir,
                 False,
             )
