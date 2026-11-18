@@ -66,6 +66,11 @@ model_config: &model_config
   l2: 32
   moe-shared-router: true
   moe-tail-experts: 64
+  moe-balance-power: 0.4658379531227075
+  moe-fc0-bottleneck-diversity-cost: 0.004
+  moe-tail-bottleneck-diversity-cost: 0.004
+  moe-fc0-weight-diversity-cost: 0.002
+  moe-tail-weight-diversity-cost: 0.002
   weight-scale-l1: 256
   weight-scale-l2: 128
 
@@ -98,9 +103,6 @@ common_run_options: &common_run_options
   matmul-precision: &moe9_precision high
   moe-tail-balance-kl-cost: 0.00001
   moe-tail-balance-kl-smoothing: 0.001
-  moe-tail-bottleneck-diversity-cost: 0.002
-  moe-fc0-bottleneck-diversity-cost: 0.002
-  moe-diversity-space: weights
   moe-weight-diversity-cost: 0.0
   moe-reseed-ema-decay: 0.998
   moe-reseed-min-relative-utilization: 0.064
@@ -139,7 +141,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 3dc8191eb8648622675c53ec47f0ab70ec3adfc3
+  sha: a71de6744c93dc152c9236dab658d6ebe9c833a1
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
