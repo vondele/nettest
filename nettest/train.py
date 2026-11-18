@@ -8,6 +8,7 @@ from .utils import (
     MyDumper,
     sha256sum,
     find_most_recent,
+    final_path,
     supports_numactl,
     flatten_cmd,
     github_repo_url,
@@ -108,9 +109,12 @@ def ckpt_reached_end(ckpt_path, max_epochs):
     reached_end = False
     if ckpt_path is not None:
         ckpt = torch.load(ckpt_path, map_location="cpu")
-        epoch = ckpt["epoch"]
-        print(f"The {ckpt_path} was trained for {epoch + 1} epochs")
-        reached_end = epoch + 1 >= max_epochs
+        # checkpoints written mid-epoch (e.g. on SIGTERM) carry
+        # epoch_finished=False; older trainers only write epoch-end checkpoints
+        finished = ckpt.get("epoch_finished", True)
+        epochs_done = ckpt["epoch"] + (1 if finished else 0)
+        print(f"The {ckpt_path} was trained for {epochs_done} epochs")
+        reached_end = epochs_done >= max_epochs
 
     return reached_end
 
@@ -238,7 +242,7 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
             )
             with open(final_yaml_file) as f:
                 final = yaml.safe_load(f)
-            previous_checkpoint = Path(final["checkpoint"])
+            previous_checkpoint = final_path(final["checkpoint"], previous_sha)
 
             if run["resume"].lower() == "previous_checkpoint":
                 cmd.append(f"--resume-from-checkpoint={previous_checkpoint}")
