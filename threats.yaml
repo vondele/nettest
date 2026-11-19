@@ -136,7 +136,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
