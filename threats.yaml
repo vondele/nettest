@@ -108,6 +108,7 @@ common_run_options: &common_run_options
   moe-balance-rate: 0.001
   moe-balance-warmup-rate: 0.01
   moe-balance-warmup-steps: 2048
+  moe-balance-batch-shrink: 0.25
   moe-balance-smoothing: 0.01
   moe-balance-max-range: 4.0
   moe-reseed-interval: 256
@@ -148,7 +149,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 9e9fd07230a0fe270696635d67b34e2b37589b2d
+  sha: 75003e1988c5be562b6bd4487f02aa86e5a172f5
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
