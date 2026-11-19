@@ -103,7 +103,7 @@ common_run_options: &common_run_options
   input-clipping-interval: 1024
   tree-sample-accept: 0.12
   matmul-precision: &moe9_precision high
-  moe-tail-balance-kl-cost: 0.00001
+  moe-tail-balance-kl-cost: 0.00002
   moe-tail-balance-kl-smoothing: 0.001
   moe-weight-diversity-cost: 0.0
   moe-reseed-ema-decay: 0.998
@@ -143,7 +143,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: d4c380aabb0dbdf0392d5aca46cf00a3d450eb88
+  sha: 44bcc776fe0a138ca285de0fb37cabc61bb0a056
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
