@@ -105,9 +105,11 @@ common_run_options: &common_run_options
   matmul-precision: &moe9_precision high
   moe-context-commitment-cost: 0.0002
   moe-centroid-commitment-cost: 0.0001
-  moe-balance-rate: 0.0001
+  moe-balance-rate: 0.001
+  moe-balance-warmup-rate: 0.01
+  moe-balance-warmup-steps: 2048
   moe-balance-smoothing: 0.01
-  moe-balance-max-range: 0.5
+  moe-balance-max-range: 4.0
   moe-reseed-interval: 256
   moe-reseed-ema-decay: 0.99
   moe-reseed-min-relative-utilization: 0.064
@@ -146,7 +148,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 2a1a16058a734072dba2b98169a9141ac16085ef
+  sha: 9e9fd07230a0fe270696635d67b34e2b37589b2d
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -172,7 +174,7 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 100
+        max_epochs: 50
         network-save-period: 0
         repetitions: 1
         other_options:
