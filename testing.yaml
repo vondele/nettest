@@ -72,12 +72,12 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
   target: build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: 26647279081cdc39d72ef9f10c33289a7da4a5e9
+  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -149,8 +149,15 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 4
+        max_epochs: 8
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
           batch_size: 65536
+          # Lambda 1 uses only search scores (zero game-result/WDL weight).
+          start-lambda: 1.0
+          end-lambda: 1.0
+          lambda-cycle-delta: 0.0
+          jitter-lambda-sample: 0.0
+          jitter-lambda-batch: 0.0
+          wld-filtered: false
