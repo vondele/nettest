@@ -141,6 +141,22 @@ single training runs are hard-coded to run for 12h at most, to be compatible wit
 and remote execution, and repetitions ensure that max_epochs are nevertheless
 reached.
 
+### K20H3 experiment
+
+[threats.yaml](threats.yaml) trains K20H3 through epoch 560 and fine-tunes
+through epoch 600. Fastchess tests the final net at 10+0.1 against Stockfish
+master at `5d03b6e5` with its bundled K32H3 net `nn-bddd9d57eb87.nnue`.
+The candidate engine loads its exported net via UCI EvalFile. Nettest also
+runs the trainer-to-engine evaluation cross-check and matecheck.
+
+[testing.yaml](testing.yaml) exercises the same matchup with the smaller
+smoke recipe. Training uses the recipe's random FEN skipping. The occupancy
+scan disabled it to collect a larger measurement sample.
+
+Nettest fetches the pinned candidate trainer and engine commits from the
+configured GitHub forks. Those commits must be available to the runner before
+submitting either recipe.
+
 ### External Tools and Data
 
 The pipeline requires three main tools and can the recipes will specify which

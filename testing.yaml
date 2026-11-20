@@ -3,7 +3,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: Full_Threats+PP_3Wide+K20H3^
   l1: 1024
   l2: 32
   ls-keys: "piececount:queen:pawnhalf:manyoffi"
@@ -67,18 +67,20 @@ common_run_options: &common_run_options
   virtual-ft-weight-decay: 0.02
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  owner: sscg13
+  sha: 6c8e48cc507f303c6fe75419266c578538309afa
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
+  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 26647279081cdc39d72ef9f10c33289a7da4a5e9
-  target: build
+  owner: sscg13
+  sha: 81435d2e418bc6151c19a5455846b0c10a29e0e8
+  target: all
+  make-options:
+    EXTRACXXFLAGS: -DNNUE_EMBEDDING_OFF
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
