@@ -143,16 +143,15 @@ reached.
 
 ### K20H3 experiment
 
-[threats.yaml](threats.yaml) trains K32H3 and K20H3 from scratch with the same
-trainer revision, binpacks, filters, seed, and schedule. Each arm pretrains
-through epoch 560 and fine-tunes through epoch 600. The last step is tested
-against the trained K32H3 net from step 2 at 10+0.1. The engine builds load
-their respective exported nets via UCI EvalFile. The test also runs the
-trainer-to-engine evaluation cross-check and matecheck.
+[threats.yaml](threats.yaml) trains K20H3 through epoch 560 and fine-tunes
+through epoch 600. Fastchess tests the final net at 10+0.1 against Stockfish
+master at `5d03b6e5` with its bundled K32H3 net `nn-bddd9d57eb87.nnue`.
+The candidate engine loads its exported net via UCI EvalFile. Nettest also
+runs the trainer-to-engine evaluation cross-check and matecheck.
 
-[testing.yaml](testing.yaml) exercises the same two-arm setup with the smaller
-smoke recipe. Normal training uses the inherited random FEN skipping. The
-occupancy scan disabled it to collect a larger measurement sample.
+[testing.yaml](testing.yaml) exercises the same matchup with the smaller
+smoke recipe. Training uses the recipe's random FEN skipping. The occupancy
+scan disabled it to collect a larger measurement sample.
 
 Nettest fetches the pinned candidate trainer and engine commits from the
 configured GitHub forks. Those commits must be available to the runner before

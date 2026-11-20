@@ -47,8 +47,7 @@ Supported Meta-Tokens:
 Constraints & Edge Cases:
 -------------------------
 - The first step in a sequence cannot use `<repeat_last>`.
-- The script enforces that the first step has `run.resume: none`. A standalone
-  step may also explicitly use `none` to start an independent run. Other steps
+- The script enforces that the first step has `run.resume: none`. Subsequent steps
   default to `previous_checkpoint` if not explicitly set.
 - Directives like <extend> and <replace> must contain a dictionary of fields to operate on.
 - Attempting to <extend> a non-list field in the base object will raise a ValueError.
@@ -236,8 +235,7 @@ def expand_meta_recipe(recipe):
         # Handle completely new standalone step
         else:
             new_step = copy.deepcopy(step)
-            if new_step.get("run", {}).get("resume") != "none":
-                enforce_resume_constraint(new_step, is_first_step=False, step_index=step_index)
+            enforce_resume_constraint(new_step, is_first_step=False, step_index=step_index)
             expanded_steps.append(new_step)
             previous_step = new_step
 
