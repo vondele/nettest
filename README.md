@@ -141,6 +141,23 @@ single training runs are hard-coded to run for 12h at most, to be compatible wit
 and remote execution, and repetitions ensure that max_epochs are nevertheless
 reached.
 
+### K20H3 experiment
+
+[threats.yaml](threats.yaml) trains K32H3 and K20H3 from scratch with the same
+trainer revision, binpacks, filters, seed, and schedule. Each arm pretrains
+through epoch 560 and fine-tunes through epoch 600. The last step is tested
+against the trained K32H3 net from step 2 at 10+0.1. The engine builds load
+their respective exported nets via UCI EvalFile. The test also runs the
+trainer-to-engine evaluation cross-check and matecheck.
+
+[testing.yaml](testing.yaml) exercises the same two-arm setup with the smaller
+smoke recipe. Normal training uses the inherited random FEN skipping. The
+occupancy scan disabled it to collect a larger measurement sample.
+
+Nettest fetches the pinned candidate trainer and engine commits from the
+configured GitHub forks. Those commits must be available to the runner before
+submitting either recipe.
+
 ### External Tools and Data
 
 The pipeline requires three main tools and can the recipes will specify which

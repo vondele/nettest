@@ -3,7 +3,7 @@ training_binpacks: &training_binpacks
   - vondele/rescored/tb5dtm.binpack
 
 model_config: &model_config
-  features: Full_Threats+PP_3Wide+K32H3^
+  features: &candidate_features Full_Threats+PP_3Wide+K20H3^
   l1: 1024
   l2: 32
   ls-keys: "piececount:queen:pawnhalf:manyoffi"
@@ -67,24 +67,36 @@ common_run_options: &common_run_options
   virtual-ft-weight-decay: 0.02
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  owner: sscg13
+  sha: 6c8e48cc507f303c6fe75419266c578538309afa
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: ff3a6c508ed731f0dcf253f4ddf646df19a62f84
-  target: build
+  sha: 5d03b6e578a5eedc822e4563bdbb89e762fc2a59
+  target: all
+  make-options: &external_network
+    EXTRACXXFLAGS: -DNNUE_EMBEDDING_OFF
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: 26647279081cdc39d72ef9f10c33289a7da4a5e9
-  target: build
+  owner: sscg13
+  sha: 81435d2e418bc6151c19a5455846b0c10a29e0e8
+  target: all
+  make-options: *external_network
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
   optimize: *optimize_flags
+
+control_convert: &control_convert
+  <<: *common_convert
+  checkpoint2nnue:
+    <<: *checkpoint2nnue_options
+    features: &control_features Full_Threats+PP_3Wide+K32H3^
+  optimize:
+    <<: *optimize_flags
+    features: *control_features
 
 common_step: &common_step
   convert: *common_convert
@@ -120,6 +132,7 @@ testing:
 
   reference:
     code: *reference_code
+    step: 2
   steps: last
   testing:
     code: *testing_code
@@ -131,26 +144,43 @@ training_length_options: &training_length_options
 
 training:
   steps:
-    # Pretraining
+    # K32H3 control
     - <<: *common_step
-      run:
+      convert: *control_convert
+      run: &pretrain
         resume: none
         binpacks: *training_binpacks
         max_epochs: 4
         network-save-period: 0
-        other_options:
+        other_options: &pretrain_options
           <<: [*training_length_options, *common_run_options]
+          features: *control_features
           fake-quant-warmup-steps: 255400
           init-seed: 1
 
-    # Finetuning
     - <<: *common_step
-      trainer: *trainer
-      run:
+      convert: *control_convert
+      run: &finetune
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
         max_epochs: 4
         network-save-period: 0
-        other_options:
+        other_options: &finetune_options
           <<: [*training_length_options, *common_run_options]
+          features: *control_features
           batch_size: 65536
+
+    # K20H3 candidate
+    - <<: *common_step
+      run:
+        <<: *pretrain
+        other_options:
+          <<: *pretrain_options
+          features: *candidate_features
+
+    - <<: *common_step
+      run:
+        <<: *finetune
+        other_options:
+          <<: *finetune_options
+          features: *candidate_features

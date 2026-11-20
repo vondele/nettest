@@ -32,6 +32,8 @@ def insert_shas(recipe):
     if "training" in recipe:
         stepHash = ""
         for step in recipe["training"]["steps"]:
+            if step.get("run", {}).get("resume") == "none":
+                stepHash = ""
             step_content = json.dumps(step, sort_keys=True)
             combined = stepHash + step_content
             stepHash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:12]
@@ -40,6 +42,13 @@ def insert_shas(recipe):
     if "testing" in recipe:
         stepHash = ""
         step = recipe["testing"]
+        reference = step.get("reference", {})
+        if "step" in reference:
+            index = reference["step"]
+            training_steps = recipe.get("training", {}).get("steps", [])
+            if type(index) is not int or not 1 <= index <= len(training_steps):
+                raise ValueError("testing.reference.step must be a 1-based training step")
+            reference["step-sha"] = training_steps[index - 1]["sha"]
         step_content = json.dumps(step, sort_keys=True)
         combined = stepHash + step_content
         stepHash = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:12]
@@ -282,6 +291,8 @@ def generate_training_stages(recipe, environment, ci_yaml_out, schedule):
     for step in recipe["training"]["steps"]:
         step_number += 1
         current_sha = step["sha"]
+        if step["run"].get("resume") == "none":
+            previous_sha = "None"
         print(
             f"Step {step_number} : starting from {previous_sha} leading to {current_sha}",
             flush=True,
@@ -356,6 +367,9 @@ def generate_testing_stage(
     test_config_sha = recipe["testing"]["sha"]
 
     selected = set(selected_testing_shas(recipe))
+    reference_sha = recipe["testing"].get("reference", {}).get("step-sha")
+    if reference_sha in selected:
+        raise ValueError("The reference training step cannot also be a testing step")
 
     envarg = f"--environment {environment}" if environment else ""
 
@@ -387,6 +401,8 @@ def generate_testing_stage(
 
         if testing_sha in training_jobs_by_sha:
             needs.extend(training_jobs_by_sha[testing_sha])
+        if reference_sha in training_jobs_by_sha:
+            needs.extend(training_jobs_by_sha[reference_sha])
 
         if needs:
             job["needs"] = needs

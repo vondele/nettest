@@ -193,9 +193,17 @@ def ensure_stockfish(target, test):
     sha = target_config["code"]["sha"]
     owner = target_config["code"]["owner"]
     target_build = target_config["code"].get("target", "profile-build")
+    make_options = target_config["code"].get("make-options", {})
+    make_args = [f"{name}={value}" for name, value in sorted(make_options.items())]
     repo = github_repo_url(owner, "Stockfish")
 
-    target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}-{target_build}"
+    build_key = f"{sha}-{target_build}"
+    if make_options:
+        options_hash = hashlib.sha256(
+            json.dumps(make_options, sort_keys=True).encode()
+        ).hexdigest()[:12]
+        build_key += f"-{options_hash}"
+    target_dir = Path.cwd() / "scratch" / "packages" / "stockfish" / build_key
     stockfish_binary = target_dir / "Stockfish" / "src" / "stockfish"
 
     if stockfish_binary.exists():
@@ -241,7 +249,7 @@ def ensure_stockfish(target, test):
             # explicitly define ARCH, as the variable exists in the CI environment
             execute(
                 f"[attempt {attempt}] build Stockfish",
-                ["make", "-j", f"{target_build}", "ARCH=native"],
+                ["make", "-j", target_build, "ARCH=native", *make_args],
                 temp_stockfish_src_dir,
                 False,
             )
@@ -267,7 +275,33 @@ def ensure_stockfish(target, test):
                 raise
 
 
-def resolve_match(test_config_sha, test, testing_sha, stockfish_reference):
+def reference_network(test, stockfish_reference):
+    reference_sha = test["reference"].get("step-sha")
+    if reference_sha is not None:
+        final_yaml_file = Path.cwd() / "scratch" / reference_sha / "final.yaml"
+        with final_yaml_file.open() as f:
+            final_config = yaml.safe_load(f)
+        net = final_path(final_config["std_nnue"], reference_sha)
+        if not net.is_file():
+            raise FileNotFoundError(f"Reference training step {reference_sha}: {net}")
+        return final_config["short_nnue"], net.resolve()
+
+    uci_output = execute(
+        f"Extract EvalFile of Stockfish reference {stockfish_reference}",
+        [f"{stockfish_reference}"],
+        Path.cwd(),
+        False,
+        filter_re=r"^(?:(?!EvalFile).)*$",
+        stdin_lines=["uci", "quit"],
+    )
+    for line in uci_output:
+        match = re.search(r"option name EvalFile\s+.*?\bdefault\s+(.*)", line, re.I)
+        if match:
+            return match.group(1).strip(), None
+    return None, None
+
+
+def resolve_match(test_config_sha, test, testing_sha, reference_nnue):
     """
     The directory of the fastchess match for this net, unique to the testing
     and reference engines and nets, as well as the game playing options.
@@ -280,23 +314,6 @@ def resolve_match(test_config_sha, test, testing_sha, stockfish_reference):
     with open(final_yaml_file) as f:
         final_config = yaml.safe_load(f)
     short_nnue = final_config["short_nnue"]
-
-    # extract the reference engine nnue
-    uci_output = execute(
-        f"Extract EvalFile of Stockfish reference {stockfish_reference}",
-        [f"{stockfish_reference}"],
-        Path.cwd(),
-        False,
-        filter_re=r"^(?:(?!EvalFile).)*$",
-        stdin_lines=["uci", "quit"],
-    )
-
-    reference_nnue = None
-    for line in uci_output:
-        match = re.search(r"option name EvalFile.*?Default\s+(.*)", line)
-        if match:
-            reference_nnue = match.group(1).strip()
-            print(f"Reference EvalFile: {reference_nnue}")
 
     # the match key: unique to the engines, nets and game playing options
     key_data = {
@@ -328,6 +345,8 @@ def run_fastchess(
     stockfish_reference,
     stockfish_testing,
     match_dir,
+    reference_nnue,
+    reference_file,
 ):
     """
     Run fastchess to rank nets relative to the reference
@@ -346,31 +365,17 @@ def run_fastchess(
     std_nnue = final_path(final_config["std_nnue"], testing_sha)
     assert Path(std_nnue).exists(), f"{std_nnue} does not exist"
 
-    # extract the reference engine nnue
-    uci_output = execute(
-        f"Extract EvalFile of Stockfish reference {stockfish_reference}",
-        [f"{stockfish_reference}"],
-        match_dir,
-        False,
-        filter_re=r"^(?:(?!EvalFile).)*$",
-        stdin_lines=["uci", "quit"],
-    )
-
-    reference_nnue = None
-    for line in uci_output:
-        match = re.search(r"option name EvalFile.*?default\s+(.*)", line)
-        if match:
-            reference_nnue = match.group(1).strip()
-            print(f"Reference EvalFile: {reference_nnue}")
-
     # generate bench output
+    reference_bench = ["bench", "quit"]
+    if reference_file is not None:
+        reference_bench.insert(0, f"setoption name EvalFile value {reference_file}")
     execute(
         f"Run bench for Stockfish reference {stockfish_reference} with net {reference_nnue}",
         [f"{stockfish_reference}"],
         match_dir,
         False,
         filter_re=r"^(?!.*Nodes).*$",
-        stdin_lines=["bench", "quit"],
+        stdin_lines=reference_bench,
     )
     execute(
         f"Run bench for Stockfish testing {stockfish_testing} with net {short_nnue}",
@@ -513,6 +518,8 @@ def run_fastchess(
     if "options" in test["reference"]:
         for option in test["reference"]["options"]:
             cmd += [f"option.{option}"]
+    if reference_file is not None:
+        cmd.append(f"option.EvalFile={reference_file}")
 
     # econfigs used for both engines
     cmd += [
@@ -627,7 +634,12 @@ def run_cross_check_eval(environment, test, testing_sha, stockfish_testing):
 
 
 def run_matecheck(
-    matecheck, classic_epd, testing_sha, stockfish_reference, stockfish_testing
+    matecheck,
+    classic_epd,
+    testing_sha,
+    stockfish_reference,
+    stockfish_testing,
+    reference_file,
 ):
     assert matecheck.exists(), f"{matecheck} does not exist"
     assert classic_epd.exists(), f"{classic_epd} does not exist"
@@ -654,6 +666,8 @@ def run_matecheck(
         "--epdFile",
         f"{classic_epd}",
     ]
+    if reference_file is not None:
+        cmd += ["--evalFile", f"{reference_file}"]
     execute(
         f"Run matecheck on reference engine for {classic_epd.name}",
         cmd,
@@ -695,6 +709,7 @@ def run_test(environment, test_config_sha, testing_sha):
     fastchess = ensure_fastchess(test["fastchess"])
     stockfish_reference = ensure_stockfish("reference", test)
     stockfish_testing = ensure_stockfish("testing", test)
+    reference_nnue, reference_file = reference_network(test, stockfish_reference)
     matecheck, classic_epd = ensure_matecheck()
 
     # the converting job of this step uploaded the net as the single
@@ -711,7 +726,7 @@ def run_test(environment, test_config_sha, testing_sha):
 
     # the match directory, unique to the testing and reference engines and
     # nets, as well as the game playing options
-    match_dir = resolve_match(test_config_sha, test, testing_sha, stockfish_reference)
+    match_dir = resolve_match(test_config_sha, test, testing_sha, reference_nnue)
 
     # a finished match is final, like a finished training step
     result_file = match_dir / "result.yaml"
@@ -728,7 +743,12 @@ def run_test(environment, test_config_sha, testing_sha):
     run_cross_check_eval(environment, test, testing_sha, stockfish_testing)
 
     run_matecheck(
-        matecheck, classic_epd, testing_sha, stockfish_reference, stockfish_testing
+        matecheck,
+        classic_epd,
+        testing_sha,
+        stockfish_reference,
+        stockfish_testing,
+        reference_file,
     )
 
     winning_net, nElo = run_fastchess(
@@ -740,6 +760,8 @@ def run_test(environment, test_config_sha, testing_sha):
         stockfish_reference,
         stockfish_testing,
         match_dir,
+        reference_nnue,
+        reference_file,
     )
     print(f"Net download: {download_url}")
 
