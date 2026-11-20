@@ -70,7 +70,7 @@ model_config: &model_config
   moe-fc0-codebook-dim: 64
   moe-tail-codebook-dim: 64
   moe-balance-power: 0.4658379531227075
-  moe-adapter-diversity-cost: 0.016
+  moe-adapter-diversity-cost: 0.012
   moe-fc0-weight-diversity-cost: 0.002
   moe-tail-weight-diversity-cost: 0.002
   weight-scale-l1: 256
@@ -106,9 +106,11 @@ common_run_options: &common_run_options
   moe-context-commitment-cost: 0.0002
   moe-centroid-commitment-cost: 0.0001
   moe-balance-strength: 0.25
+  moe-balance-max-strength: 0.75
+  moe-balance-ema-smoothing: 0.01
   moe-balance-max-range: 4.0
   moe-reseed-interval: 256
-  moe-reseed-ema-decay: 0.99
+  moe-reseed-ema-decay: 0.95
   moe-reseed-min-relative-utilization: 0.064
   random-fen-skipping: 3
   early-fen-skipping: 18
@@ -145,7 +147,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 08e68cdbc3adb9e8bc91c5758165fbf5a1288565
+  sha: 3fcd8b2af09865da1f17ab2ccf13f5504aa26d4f
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
@@ -171,7 +173,7 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 50
+        max_epochs: 100
         network-save-period: 0
         repetitions: 1
         other_options:
