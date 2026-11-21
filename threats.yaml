@@ -150,6 +150,16 @@ trainer: &trainer
   owner: TonyCongqianWang
   sha: 8aebf5693f16a896189c26c7ee0fc89fc45da681
 
+reference_code: &reference_code
+  owner: official-stockfish
+  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  target: build
+
+testing_code: &testing_code
+  owner: TonyCongqianWang
+  sha: 4644f61b6966c7471b47d2fe9f7afe3597ee8fa4
+  target: build
+
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
@@ -168,8 +178,34 @@ training_length_options: &training_length_options
   lambda-schedule-steps: 5052000
   lr: "0.4e-3"
 
+# Keep testing and the full schedule here. For diagnostic runs, comment/uncomment
+# the relevant blocks instead of deleting them.
+testing:
+  crosscheck:
+    binpack: official-stockfish/master-binpacks/fishpack32.binpack
+    other_options:
+      <<: *model_config
+      count: 20000
+  fastchess:
+    code:
+      owner: Disservin
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
+    options:
+      hash: 16
+      max_rounds: 30000
+      tc: 10+0.1
+    sprt:
+      nElo_interval_midpoint: -0.0
+      nElo_interval_width: 2
+  reference:
+    code: *reference_code
+  steps: all
+  testing:
+    code: *testing_code
+
 training:
   steps:
+    # Retain the diagnostic checkpoint; all later stages resume it rather than restart.
     - <<: *common_step
       run:
         resume: none
@@ -179,4 +215,29 @@ training:
         repetitions: 1
         other_options:
           <<: [*training_length_options, *common_run_options]
+          final-validation-multiplier: 4
+
+    # Continue pretraining from the saved 100-epoch checkpoint.
+    - <<: *common_step
+      run:
+        resume: previous_checkpoint
+        binpacks: *training_binpacks
+        max_epochs: 560
+        network-save-period: 0
+        repetitions: 3
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          final-validation-multiplier: 4
+
+    # Smaller batch size belongs only in this final stage.
+    - <<: *common_step
+      run:
+        resume: previous_checkpoint
+        binpacks: *training_binpacks
+        max_epochs: 600
+        network-save-period: 0
+        repetitions: 1
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          batch-size: 65536
           final-validation-multiplier: 4
