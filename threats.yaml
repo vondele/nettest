@@ -126,8 +126,8 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  owner: Disservin
+  sha: 57e0fad99f754c5db76f1397646a859c6f199120
 
 reference_code: &reference_code
   owner: official-stockfish
