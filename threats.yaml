@@ -105,7 +105,7 @@ common_run_options: &common_run_options
   matmul-precision: &moe9_precision high
   moe-context-commitment-cost: 0.0002
   moe-centroid-commitment-cost: 0.0001
-  moe-balance-strength: 0.15
+  moe-balance-strength: 0.3
   moe-balance-max-strength: 0.95
   moe-balance-ema-smoothing: 0.01
   moe-balance-max-range: 4.0
