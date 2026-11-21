@@ -148,7 +148,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 6965f9bdc645a522be0dc1eaacc07cf42644913b
+  sha: 8aebf5693f16a896189c26c7ee0fc89fc45da681
 
 common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
