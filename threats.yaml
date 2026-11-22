@@ -130,8 +130,8 @@ trainer: &trainer
   sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  owner: xu-shawn
+  sha: 0ab35d304bb33c748e80128944e2b64ff29e14ad
   target: build
 
 testing_code: &testing_code
@@ -179,7 +179,7 @@ testing:
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
@@ -213,4 +213,5 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
+          batch_size: 131072
+          epoch-size: 2147483648
