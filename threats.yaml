@@ -126,12 +126,12 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  owner: official-stockfish
+  sha: 2e1ab8560ca058d7f720242f5e13584bb9e423eb
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  owner: xu-shawn
+  sha: 0ab35d304bb33c748e80128944e2b64ff29e14ad
   target: build
 
 testing_code: &testing_code
@@ -184,8 +184,8 @@ testing:
     code: *testing_code
 
 training_length_options: &training_length_options
-  one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  one-cycle-steps: 1702667
+  lambda-schedule-steps: 1684000
   lr: "0.4e-3"
 
 training:
@@ -195,12 +195,12 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 560
+        max_epochs: 187
         network-save-period: 0
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
-          fake-quant-warmup-steps: 255400
+          fake-quant-warmup-steps: 85133
           init-seed: 1
 
     # Finetuning
@@ -209,7 +209,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 600
+        max_epochs: 200
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
