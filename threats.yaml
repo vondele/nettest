@@ -337,7 +337,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: fa69ab243bfdd2310354e2ea603d9f1b648d9d5b
+  sha: 6c6cc91df2da7badcf75ea3d5011bc41738feeeb
 
 reference_code: &reference_code
   owner: official-stockfish
@@ -393,7 +393,7 @@ full_run_options: &full_run_options
   fake-quant-warmup-steps: 255400
   init-seed: 1
   tree-sample-accept: 0.1
-  search-tree-schedule: "0:0.02,0.5:0.04,0.75:0.06,0.875:0.08,1.0:0.08"
+  search-tree-schedule: "0:0.0,0.5:0.1,0.75:0.05,1.0:0.05"
   search-tree-schedule-steps: 4915200
 
 training:
