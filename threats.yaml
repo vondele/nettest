@@ -86,7 +86,8 @@ common_run_options: &common_run_options
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
-  factorized-weight-decay: "4.0e-5"
+  factorized-weight-decay: "4.0e-3"
+  dense-weight-decay: "1.0e-3"
   random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -110,7 +111,7 @@ common_run_options: &common_run_options
   in-offset: 285.2706341467852
   out-offset: 289.1258344152218
   one-cycle-warmup-pct: 0.05
-  one-cycle-final-div: "1e3"
+  one-cycle-final-div: "800"
   lambda-cycle-jitter: true
   jitter-lambda-sample: 0.0035
   jitter-lambda-batch: 0.0070
@@ -126,18 +127,18 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  owner: official-stockfish
+  sha: ef684e9aae2e894df0673b8cfd0062b123289fdd
 
 reference_code: &reference_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
-  target: build
+  sha: 3e8fde75412e7c47fc140cd82022a395bc681d92
+  target: profile-build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
-  target: build
+  sha: 3e8fde75412e7c47fc140cd82022a395bc681d92
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -184,8 +185,8 @@ testing:
     code: *testing_code
 
 training_length_options: &training_length_options
-  one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  one-cycle-steps: 4915200
+  lambda-schedule-steps: 4593750
   lr: "0.4e-3"
 
 training:
@@ -213,4 +214,3 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
