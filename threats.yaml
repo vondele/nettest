@@ -62,7 +62,7 @@ training_binpacks: &training_binpacks
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
-  l1: 1024
+  l1: 512
   l2: 32
   ls-keys: "piececount:queen:pawnhalf:manyoffi"
   ls-factors: "piececount+queen:pawnhalf:manyoffi"
@@ -126,17 +126,17 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  owner: Disservin
+  sha: a660dc06d49808858713f67083c9f3e37f77def8
 
 reference_code: &reference_code
-  owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  owner: Disservin
+  sha: 16f032c3fb500426068f91869f6c5e3b26860ed0
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  owner: Disservin
+  sha: 16f032c3fb500426068f91869f6c5e3b26860ed0
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -184,8 +184,8 @@ testing:
     code: *testing_code
 
 training_length_options: &training_length_options
-  one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  one-cycle-steps: 1277000
+  lambda-schedule-steps: 1263000
   lr: "0.4e-3"
 
 training:
@@ -195,12 +195,12 @@ training:
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 560
+        max_epochs: 140
         network-save-period: 0
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
-          fake-quant-warmup-steps: 255400
+          fake-quant-warmup-steps: 63850
           init-seed: 1
 
     # Finetuning
@@ -209,7 +209,7 @@ training:
       run:
         <<: *common_run_resume_ckpt
         binpacks: *training_binpacks
-        max_epochs: 600
+        max_epochs: 150
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
