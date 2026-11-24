@@ -193,9 +193,11 @@ def ensure_stockfish(target, test):
     sha = target_config["code"]["sha"]
     owner = target_config["code"]["owner"]
     target_build = target_config["code"].get("target", "profile-build")
-    repo = github_repo_url(owner, "Stockfish")
+    repo = target_config["code"].get("repo") or github_repo_url(owner, "Stockfish")
+    make_options = target_config["code"].get("make_options", [])
+    build_key = hashlib.sha256(json.dumps(target_config["code"], sort_keys=True).encode()).hexdigest()[:12]
 
-    target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}-{target_build}"
+    target_dir = Path.cwd() / f"scratch/packages/stockfish/{sha}-{target_build}-{build_key}"
     stockfish_binary = target_dir / "Stockfish" / "src" / "stockfish"
 
     if stockfish_binary.exists():
@@ -241,7 +243,7 @@ def ensure_stockfish(target, test):
             # explicitly define ARCH, as the variable exists in the CI environment
             execute(
                 f"[attempt {attempt}] build Stockfish",
-                ["make", "-j", f"{target_build}", "ARCH=native"],
+                ["make", "-j", f"{target_build}", "ARCH=native", *make_options],
                 temp_stockfish_src_dir,
                 False,
             )

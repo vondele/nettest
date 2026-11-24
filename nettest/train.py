@@ -29,7 +29,7 @@ def ensure_trainer(trainer):
 
     sha = trainer["sha"]
     owner = trainer["owner"]
-    repo = github_repo_url(owner, "nnue-pytorch")
+    repo = trainer.get("repo") or github_repo_url(owner, "nnue-pytorch")
 
     trainer_dir = Path.cwd() / f"scratch/packages/trainer/{sha}"
     nnue_pytorch_dir = trainer_dir / "nnue-pytorch"

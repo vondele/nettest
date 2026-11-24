@@ -1,0 +1,223 @@
+# Derived from upstream/main threats.yaml at 6b75d7968ee9eb0a3cf98fd30db90cce37aedc28.
+# All training hyperparameters and binpacks preserved; only routing/factor/remap and code pins differ.
+# Local repo fields make unpublished commits usable without pushing.
+# 95/5 is analysis weighting. Observe layer_stack_traffic.jsonl; tree acceptance is not mixture control.
+training_binpacks: &training_binpacks
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/nodes5000pv2_UHO.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/wrongIsRight_nodes5000pv2.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/multinet_pv-2_diff-100_nodes-5000.relabel-BT4-tf13tune.binpack
+  - vondele/master-binpacks_relabel/dfrc_n5000.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_0.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_1.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_2.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_3.relabel-BT4-tf13tune.binpack
+  - vondele/from_kaggle_1_relabel/leela96-filt-v2.min.split_4.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test60-2021-11-nov-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test60-2021-12-dec-12tb7p.min-v2.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test77-2021-12-dec-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test78-2022-01-to-05-jantomay-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test79-2022-04-apr-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test79-2022-05-may-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test78-2022-06-to-09-juntosep-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-06-jun-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-07-jul-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-08-aug-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-09-sep-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-10-oct-16tb7p.v6-dd.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_1/test80-2022-11-nov-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-01-jan-16tb7p.v6-sk20.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-02-feb-16tb7p.v6-dd.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-03-mar-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-04-apr-2tb7p.v6-sk16.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-05-may-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-06-jun-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-07-jul-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-08-aug-2tb7p.v6.min.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-09-sep-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-10-oct-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-11-nov-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/linrock_relabel_2/test80-2023-12-dec-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-01-jan-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - xushawn/test80-bt4-relabel/test80-2024-02-feb-2tb7p.min-v2.v6.relabel-BT4-tf13tune.binpack
+  - vondele/rescored/tb5dtm.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.000.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.001.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.002.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.003.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.004.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.005.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.006.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.007.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.008.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.009.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.010.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.011.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.012.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.013.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.014.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.015.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.016.relabel-BT4-tf13tune.binpack
+
+model_config: &model_config
+  features: Full_Threats+PP_3Wide+K32H3^
+  l1: 1024
+  l2: 32
+  ls-keys: "tree128"
+  ls-factors: ""
+  ls-remap-data: ""
+  ls-remap-min: 50
+
+optimize_flags: &optimize_flags
+  <<: *model_config
+  ft-optimize-count: 100000
+  ft-optimize: true
+  compression: none
+
+checkpoint2nnue_options: &checkpoint2nnue_options
+  <<: *model_config
+  compression: none
+
+common_run_options: &common_run_options
+  optimizer-name: adamw
+  epoch-size: 1073741824
+  validation-size: 268435456
+  check-val-every-n-epoch: 10
+  batch-size: 131072
+  <<: *model_config
+  factorized-weight-decay: "4.0e-5"
+  random-fen-skipping: 3
+  early-fen-skipping: 18
+  soft-early-fen_skipping: 32
+  pc-y0: -0.20
+  pc-y1: 0.45
+  pc-y2: 1.0
+  pc-y3: 0.95
+  pc-y4: 0.75
+  ply-x1: 0.00
+  ply-y1: 0.025
+  ply-x2: 22.0
+  ply-y2: 0.05
+  ply-x3: 25.5
+  ply-y3: 0.20
+  ply-x4: 29.5
+  ply-y4: 0.80
+  pow-exp: 2.4340402395048404
+  qp-asymmetry: 0.22866886710086187
+  in-scaling: 295.6539508488627
+  out-scaling: 379.98724077106635
+  in-offset: 285.2706341467852
+  out-offset: 289.1258344152218
+  one-cycle-warmup-pct: 0.05
+  one-cycle-final-div: "1e3"
+  lambda-cycle-jitter: true
+  jitter-lambda-sample: 0.0035
+  jitter-lambda-batch: 0.0070
+  jitter-decay-lambda-batch: 0.999
+  start-lambda: 1.0
+  end-lambda: 1.0
+  lambda-cycle-warmup-pct: 0.25
+  lambda-cycle-delta: -0.3
+  ft-bucket-lr-mult: 0.25
+  threat-lr-mult: 0.5
+  ft-weight-decay: 0.02
+  virtual-ft-weight-decay: 0.02
+  tree-sample-accept: 0.12
+
+trainer: &trainer
+  owner: TonyCongqianWang
+  repo: /home/twang/projects/repos/stockfish/data/frozen_tree128/worktrees/nnue-pytorch
+  sha: da78bfedfec54e859d68f740d9d3153e925515cf
+
+reference_code: &reference_code
+  owner: official-stockfish
+  sha: 3e8fde75412e7c47fc140cd82022a395bc681d92
+  target: build
+
+testing_code: &testing_code
+  owner: TonyCongqianWang
+  repo: /home/twang/projects/repos/stockfish/data/frozen_tree128/worktrees/Stockfish
+  sha: 37434b422a8e385d43d5940a45a26e751d73e98c
+  target: build
+  make_options: ["CPPFLAGS=-DNNUE_EMBEDDING_OFF", "-o", "net"]
+
+# --- Grouped Structure Anchors for Redundancy Reduction ---
+common_convert: &common_convert
+  binpack: official-stockfish/master-binpacks/fishpack32.binpack
+  checkpoint2nnue: *checkpoint2nnue_options
+  optimize: *optimize_flags
+
+common_step: &common_step
+  convert: *common_convert
+  trainer: *trainer
+
+common_run_resume_model: &common_run_resume_model
+  repetitions: 1
+  resume: previous_model
+
+common_run_resume_ckpt: &common_run_resume_ckpt
+  <<: *common_run_resume_model
+  resume: previous_checkpoint
+
+# ----------------------------------------------------------
+
+testing:
+  crosscheck:
+    binpack: official-stockfish/master-binpacks/fishpack32.binpack
+    other_options:
+      <<: *model_config
+      count: 20000
+  fastchess:
+    code:
+      owner: Disservin
+      sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
+    options:
+      hash: 16
+      max_rounds: 30000
+      tc: 10+0.1
+    sprt:
+      nElo_interval_midpoint: -0.0
+      nElo_interval_width: 2
+
+  reference:
+    code: *reference_code
+  steps: all
+  testing:
+    code: *testing_code
+
+training_length_options: &training_length_options
+  one-cycle-steps: 5108000
+  lambda-schedule-steps: 5052000
+  lr: "0.4e-3"
+
+training:
+  steps:
+    # Pretraining
+    - <<: *common_step
+      run:
+        resume: none
+        binpacks: *training_binpacks
+        max_epochs: 560
+        network-save-period: 0
+        repetitions: 3
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          fake-quant-warmup-steps: 255400
+          init-seed: 1
+
+    # Finetuning
+    - <<: *common_step
+      trainer: *trainer
+      run:
+        <<: *common_run_resume_ckpt
+        binpacks: *training_binpacks
+        max_epochs: 600
+        network-save-period: 0
+        other_options:
+          <<: [*training_length_options, *common_run_options]
+          batch_size: 65536
