@@ -126,8 +126,8 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: Disservin
-  sha: b2cb9d23794430d64168f0fcc9784e7dff678a7d
+  owner: official-stockfish
+  sha: ef684e9aae2e894df0673b8cfd0062b123289fdd
 
 reference_code: &reference_code
   owner: Disservin
