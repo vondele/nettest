@@ -1,6 +1,6 @@
 # Derived from upstream/main threats.yaml at 6b75d7968ee9eb0a3cf98fd30db90cce37aedc28.
 # All training hyperparameters and binpacks preserved; only routing/factor/remap and code pins differ.
-# Local repo fields make unpublished commits usable without pushing.
+# Fork URLs fetch the pinned implementation commits.
 # 95/5 is analysis weighting. Observe layer_stack_traffic.jsonl; tree acceptance is not mixture control.
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
@@ -131,7 +131,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  repo: /home/twang/projects/repos/stockfish/data/frozen_tree128/worktrees/nnue-pytorch
+  repo: https://github.com/TonyCongqianWang/nnue-pytorch.git
   sha: da78bfedfec54e859d68f740d9d3153e925515cf
 
 reference_code: &reference_code
@@ -141,7 +141,7 @@ reference_code: &reference_code
 
 testing_code: &testing_code
   owner: TonyCongqianWang
-  repo: /home/twang/projects/repos/stockfish/data/frozen_tree128/worktrees/Stockfish
+  repo: https://github.com/TonyCongqianWang/Stockfish.git
   sha: 37434b422a8e385d43d5940a45a26e751d73e98c
   target: build
   make_options: ["CPPFLAGS=-DNNUE_EMBEDDING_OFF", "-o", "net"]

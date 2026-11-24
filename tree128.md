@@ -14,11 +14,9 @@ The reference is the current official Stockfish upstream/master pin
   extra group factors. Compare this with the unfactorized tree to isolate
   routing/count; compare the two tree arms to measure ancestry factorization.
 
-Trainer/engine SHAs pin the local implementation commits. The optional `repo`
-field points to an independent local git checkout, enabling normal recipe
-fetch/build without publishing these commits. For a future remote run, publish
-only when authorized, then replace `repo` with the published repository URL
-and confirm the commit pins. `make_options` is included in the engine build
+Trainer/engine SHAs pin the implementation commits. The `repo` fields point
+to the published forks, enabling the normal recipe fetch/build flow.
+`make_options` is included in the engine build
 cache identity so the master control cannot reuse a tree executable.
 Testing engines build without embedding and use the normal exported-network
 EvalFile path. The unchanged official reference builds normally.
