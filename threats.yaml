@@ -123,9 +123,9 @@ common_run_options: &common_run_options
   threat-lr-mult: 0.5
   ft-weight-decay: 0.02
   virtual-ft-weight-decay: 0.02
-  tree-sample-accept: 0.12
+  tree-sample-accept: 0.107
   decided-score: 1000
-  decided-accept: 0.3
+  decided-accept: 0.1
 
 trainer: &trainer
   owner: xu-shawn
@@ -133,12 +133,12 @@ trainer: &trainer
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: 0ab35d304bb33c748e80128944e2b64ff29e14ad
+  sha: 053134bee97773433583a55289f195a2d02aef22
   target: build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  sha: 3e8fde75412e7c47fc140cd82022a395bc681d92
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
