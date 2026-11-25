@@ -106,9 +106,9 @@ common_run_options: &common_run_options
   pow-exp: 2.4340402395048404
   qp-asymmetry: 0.22866886710086187
   in-scaling: 295.6539508488627
-  out-scaling: 379.98724077106635
+  out-scaling: 228
   in-offset: 285.2706341467852
-  out-offset: 289.1258344152218
+  out-offset: 366
   one-cycle-warmup-pct: 0.05
   one-cycle-final-div: "1e3"
   lambda-cycle-jitter: true
@@ -126,8 +126,8 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 289991ed8fe7a926533c153dd7bbeef9ac737161
+  owner: official-stockfish
+  sha: 7f3cbe3101ec4e44e2e186b1e8d351567a58b58d
 
 reference_code: &reference_code
   owner: official-stockfish
