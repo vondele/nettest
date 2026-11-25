@@ -59,6 +59,228 @@ training_binpacks: &training_binpacks
   - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.014.relabel-BT4-tf13tune.binpack
   - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.015.relabel-BT4-tf13tune.binpack
   - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.016.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.017.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.018.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.019.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.020.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.021.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.022.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.023.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.024.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.025.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.026.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.027.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.028.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.029.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.030.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.031.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.032.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.033.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.034.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.035.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.036.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.037.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.038.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.039.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.040.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.041.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.042.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.043.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.044.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.045.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.046.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.047.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.048.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.049.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.050.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.051.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.052.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.053.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.054.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.055.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.056.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.057.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.058.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.059.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.060.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.061.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.062.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.063.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.064.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.065.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.066.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.067.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.068.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.069.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.070.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.071.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.072.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.073.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.074.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.075.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.076.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.077.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.078.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.079.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.080.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.081.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.082.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.083.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.084.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.085.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.086.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.087.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.088.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.089.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.090.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.091.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.092.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.093.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.094.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.095.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.096.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.097.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.098.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.099.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.100.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.101.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.102.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.103.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.104.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.105.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.106.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.107.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.108.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.109.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.110.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.111.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.112.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.113.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.114.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.115.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.116.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.117.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.118.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.119.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.120.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.121.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.122.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.123.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.124.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.125.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.126.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.127.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.128.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.129.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.130.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.131.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.132.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.133.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.134.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.135.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.136.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.137.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.138.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.139.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.140.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.141.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.142.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.143.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.144.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.145.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.146.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.147.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.148.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.149.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.150.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.151.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.152.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.153.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.154.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.155.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.156.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.157.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.158.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.159.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.160.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.161.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.162.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.163.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.164.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.165.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.166.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.167.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.168.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.169.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.170.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.171.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.172.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.173.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.174.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.175.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.176.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.177.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.178.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.179.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.180.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.181.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.182.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.183.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.184.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.185.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.186.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.187.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.188.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.189.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.190.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.191.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.192.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.193.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.194.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.195.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.196.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.197.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.198.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.199.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.200.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.201.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.202.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.203.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.204.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.205.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.206.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.207.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.208.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.209.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.210.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.211.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.212.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.213.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.214.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.215.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.216.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.217.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.218.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.219.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.220.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.221.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.222.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.223.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.224.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.225.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.226.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.227.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.228.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.229.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.230.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.231.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.232.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.233.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.234.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.235.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.236.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.237.relabel-BT4-tf13tune.binpack
+  - xushawn/sf-searchtree-bt4/sf-searchtree-n200k.238.relabel-BT4-tf13tune.binpack
 
 model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
@@ -123,22 +345,24 @@ common_run_options: &common_run_options
   threat-lr-mult: 0.5
   ft-weight-decay: 0.02
   virtual-ft-weight-decay: 0.02
-  tree-sample-accept: 0.12
+  tree-sample-accept: 0.037
+  tree-decided-score: 1212
+  tree-decided-accept: 0.23
   decided-score: 1000
   decided-accept: 0.3
 
 trainer: &trainer
   owner: xu-shawn
-  sha: 8c89449e27d90fd72357167e1722ba93095b490b
+  sha: 05b1a5cceefb75911eec5f631bc9e539db698587
 
 reference_code: &reference_code
   owner: xu-shawn
-  sha: 0ab35d304bb33c748e80128944e2b64ff29e14ad
+  sha: 053134bee97773433583a55289f195a2d02aef22
   target: build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  sha: 3e8fde75412e7c47fc140cd82022a395bc681d92
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
