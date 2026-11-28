@@ -1,3 +1,7 @@
+# MOE11 50-epoch diagnostic run using the full recipe's opening schedule.
+# Trainer base 3f95157e4f2009dcb49facdbcc9e5945142f685e
+# Engine base 7a41728ab05c68e2d3028813ed0d5e2c027fa9d6
+# Nettest base 3d0c03966d196f14765a2086899f076ff74d250b
 training_binpacks: &training_binpacks
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_0.relabel-BT4-tf13tune.binpack
   - vondele/from_kaggle_2_relabel/T60T70wIsRightFarseerT60T74T75T76.split_1.relabel-BT4-tf13tune.binpack
@@ -64,10 +68,8 @@ model_config: &model_config
   features: Full_Threats+PP_3Wide+K32H3^
   l1: 1024
   l2: 32
-  ls-keys: "piececount:queen:pawnhalf:manyoffi"
-  ls-factors: "piececount+queen:pawnhalf:manyoffi"
-  ls-remap-data: official-stockfish/master-binpacks/fishpack32.binpack
-  ls-remap-min: 50
+  moe11: true
+  ls-factors: ""
 
 optimize_flags: &optimize_flags
   <<: *model_config
@@ -86,10 +88,17 @@ common_run_options: &common_run_options
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
+  moe11-alpha: 1.0
+  moe11-temperature: 1.0
+  moe11-exploration: 0.05
+  moe11-probe-seed: 11
+  moe11-balance: true
+  moe11-dispatch: batch
+  matmul-precision: &moe11_precision high
   factorized-weight-decay: "4.0e-5"
   random-fen-skipping: 3
   early-fen-skipping: 18
-  soft-early-fen_skipping: 32
+  soft-early-fen-skipping: 32
   pc-y0: -0.20
   pc-y1: 0.45
   pc-y2: 1.0
@@ -128,17 +137,17 @@ common_run_options: &common_run_options
   decided-accept: 0.3
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 8c89449e27d90fd72357167e1722ba93095b490b
+  owner: TonyCongqianWang
+  sha: 8b416a3e9955206f66ea8e145991d37324c37474
 
 reference_code: &reference_code
-  owner: xu-shawn
-  sha: 0ab35d304bb33c748e80128944e2b64ff29e14ad
+  owner: TonyCongqianWang
+  sha: 7a41728ab05c68e2d3028813ed0d5e2c027fa9d6
   target: build
 
 testing_code: &testing_code
-  owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
+  owner: TonyCongqianWang
+  sha: 4890ab51e5fdd59ecaa148c7108a7f90df666a85
   target: build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
@@ -146,18 +155,14 @@ common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
   optimize: *optimize_flags
+  routing_diagnostics: true
+  runtime:
+    device: cuda:0
+    matmul-precision: *moe11_precision
 
 common_step: &common_step
   convert: *common_convert
   trainer: *trainer
-
-common_run_resume_model: &common_run_resume_model
-  repetitions: 1
-  resume: previous_model
-
-common_run_resume_ckpt: &common_run_resume_ckpt
-  <<: *common_run_resume_model
-  resume: previous_checkpoint
 
 # ----------------------------------------------------------
 
@@ -192,27 +197,15 @@ training_length_options: &training_length_options
 
 training:
   steps:
-    # Pretraining
+    # First 50 epochs of the full recipe
     - <<: *common_step
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 560
+        max_epochs: 50
         network-save-period: 0
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
           fake-quant-warmup-steps: 255400
           init-seed: 1
-
-    # Finetuning
-    - <<: *common_step
-      trainer: *trainer
-      run:
-        <<: *common_run_resume_ckpt
-        binpacks: *training_binpacks
-        max_epochs: 600
-        network-save-period: 0
-        other_options:
-          <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
