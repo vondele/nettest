@@ -15,6 +15,7 @@ from .utils import (
     net_url,
 )
 from .default_environment import get_default_environment
+from .runtime import runtime_command, runtime_environment
 import uuid
 import yaml
 
@@ -152,14 +153,16 @@ def run_trainer(environment, current_sha, previous_sha, run, nnue_pytorch_dir):
                 assert False, f"The following binpack could not be found: {binpack}"
 
     # some architecture specific options
-    run_env = os.environ.copy()
+    matched_runtime = "matmul-precision" in run.get("other_options", {})
+    run_env = runtime_environment(environment) if matched_runtime else os.environ.copy()
     # torchrun warns and forces OMP_NUM_THREADS=1 for each process when the
     # variable is unset; setting it explicitly (matching the value the trainer
     # applies per rank anyway) avoids the warning
     run_env.setdefault("OMP_NUM_THREADS", "1")
     if "train" in environment and "devices" in environment["train"]:
         devices = environment["train"]["devices"]
-        run_env["CUDA_VISIBLE_DEVICES"] = devices
+        if not matched_runtime:
+            run_env["CUDA_VISIBLE_DEVICES"] = devices
     else:
         devices = "0,"
 
@@ -278,6 +281,11 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
     checkpoint = find_most_recent(root_dir, "last.ckpt")
     assert checkpoint is not None, "No checkpoint found in the run directory"
 
+    runtime = convert.get("runtime")
+    runtime_args, runtime_env = (
+        runtime_command(environment, runtime) if runtime is not None else ([], None)
+    )
+
     # run the conversion to model
     model = checkpoint.with_suffix(".pt")
     cmd = [
@@ -288,7 +296,9 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
         f"{model}",
     ]
     cmd = cmd + flatten_cmd(convert["checkpoint2nnue"])
-    execute("Convert to pt", cmd, nnue_pytorch_dir, False)
+    execute(
+        "Convert to pt", cmd + runtime_args, nnue_pytorch_dir, False, env=runtime_env
+    )
 
     # run the conversion to nnue, no optimization here
     if "optimize" in convert:
@@ -304,7 +314,9 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
         f"{destination}",
     ]
     cmd = cmd + flatten_cmd(convert["checkpoint2nnue"])
-    execute("Convert to nnue", cmd, nnue_pytorch_dir, False)
+    execute(
+        "Convert to nnue", cmd + runtime_args, nnue_pytorch_dir, False, env=runtime_env
+    )
 
     # optimize as a second step (see https://github.com/official-stockfish/nnue-pytorch/issues/322)
     if "optimize" in convert:
@@ -312,12 +324,6 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
         binpack = Path.cwd() / "data" / convert["binpack"]
         source = destination
         nnue = checkpoint.with_suffix(".nnue")
-        if "train" in environment and "devices" in environment["train"]:
-            device = [
-                int(x) for x in environment["train"]["devices"].rstrip(",").split(",")
-            ][0]
-        else:
-            device = "0"
         cmd = [
             "python",
             "-u",
@@ -325,10 +331,13 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
             f"{source}",
             f"{nnue}",
             f"--ft_optimize_data={binpack}",
-            f"--device={device}",
         ]
-        cmd = cmd + flatten_cmd(convert["optimize"])
-        execute("Optimize nnue", cmd, nnue_pytorch_dir, False)
+        if runtime is None:
+            devices = environment.get("train", {}).get("devices", "0")
+            device = int(str(devices).split(",")[0])
+            cmd.append(f"--device={device}")
+        cmd += flatten_cmd(convert["optimize"]) + runtime_args
+        execute("Optimize nnue", cmd, nnue_pytorch_dir, False, env=runtime_env)
     else:
         nnue = destination
 
@@ -363,6 +372,9 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
         "checkpoint": f"{checkpoint}",
         "artifact_url": artifact_url,
     }
+
+    if runtime is not None:
+        final["runtime"] = runtime
 
     with Path(final_file).open(mode="w", encoding="utf-8") as f:
         yaml.dump(final, f, Dumper=MyDumper, default_flow_style=False, width=300)

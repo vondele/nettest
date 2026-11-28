@@ -14,21 +14,6 @@ Currently, the repo contains the main recipe:
 
 and an auxiliary one for testing and experimentation.
 
-[moe11.yaml](moe11.yaml) uses the joint 64-expert MOE11 trainer and engine.
-The training, conversion, and crosscheck flags are shared through
-`model_config`. The source pins identify the MOE11 implementation and the
-fetched master Stockfish reference. The original `threats.yaml` is the
-default-recipe baseline.
-
-For a capacity-matched control, copy `moe11.yaml`, replace `moe11: true` in
-`model_config` with `ls-keys: piececount:queen:manyoffi`, and remove the
-`moe11-*` training options. Retain the empty `ls-factors` and the same
-trainer, engine, data filters, seeds, and schedule. For the balancing-only
-ablation, change `moe11-alpha` to `0.0` and keep the full challenger pass.
-For the persistent-dispatch ablation, set `moe11-dispatch: persistent`.
-It still solves each training batch and applies the bias update on the next
-batch.
-
 There are currently three ways to execute such a pipeline:
 
 * Through a local containerized setup: for most users.
