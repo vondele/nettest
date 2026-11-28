@@ -81,12 +81,14 @@ checkpoint2nnue_options: &checkpoint2nnue_options
 
 common_run_options: &common_run_options
   optimizer-name: adamw
+  adamw-beta2: 0.9999
   epoch-size: 1073741824
   validation-size: 268435456
   check-val-every-n-epoch: 10
   batch-size: 131072
   <<: *model_config
   factorized-weight-decay: "4.0e-5"
+  dense-weight-decay: "1.0e-2"
   random-fen-skipping: 3
   early-fen-skipping: 18
   soft-early-fen_skipping: 32
@@ -106,9 +108,9 @@ common_run_options: &common_run_options
   pow-exp: 2.4340402395048404
   qp-asymmetry: 0.22866886710086187
   in-scaling: 295.6539508488627
-  out-scaling: 379.98724077106635
+  out-scaling: 228
   in-offset: 285.2706341467852
-  out-offset: 289.1258344152218
+  out-offset: 366
   one-cycle-warmup-pct: 0.05
   one-cycle-final-div: "1e3"
   lambda-cycle-jitter: true
@@ -126,6 +128,7 @@ common_run_options: &common_run_options
   tree-sample-accept: 0.12
   decided-score: 1000
   decided-accept: 0.3
+  w1: 2
 
 trainer: &trainer
   owner: xu-shawn
