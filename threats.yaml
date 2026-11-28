@@ -128,18 +128,18 @@ common_run_options: &common_run_options
   decided-accept: 0.3
 
 trainer: &trainer
-  owner: xu-shawn
-  sha: 8c89449e27d90fd72357167e1722ba93095b490b
+  owner: official-stockfish
+  sha: 3f95157e4f2009dcb49facdbcc9e5945142f685e
 
 reference_code: &reference_code
-  owner: xu-shawn
-  sha: 0ab35d304bb33c748e80128944e2b64ff29e14ad
-  target: build
+  owner: official-stockfish
+  sha: 7a41728ab05c68e2d3028813ed0d5e2c027fa9d6
+  target: profile-build
 
 testing_code: &testing_code
   owner: official-stockfish
-  sha: def601cc156f7d41f9ddea76d74515eddf232aaf
-  target: build
+  sha: 7a41728ab05c68e2d3028813ed0d5e2c027fa9d6
+  target: profile-build
 
 # --- Grouped Structure Anchors for Redundancy Reduction ---
 common_convert: &common_convert
@@ -173,21 +173,21 @@ testing:
       sha: 60d7a7a26c6b0582a15c112fb29a1829bef2adb3
     options:
       hash: 16
-      max_rounds: 30000
+      max_rounds: 60000
       tc: 10+0.1
     sprt:
-      nElo_interval_midpoint: -0.0
+      nElo_interval_midpoint: -0.25
       nElo_interval_width: 2
 
   reference:
     code: *reference_code
-  steps: all
+  steps: last
   testing:
     code: *testing_code
 
 training_length_options: &training_length_options
-  one-cycle-steps: 5108000
-  lambda-schedule-steps: 5052000
+  one-cycle-steps: 4915200
+  lambda-schedule-steps: 4593750
   lr: "0.4e-3"
 
 training:
@@ -215,4 +215,3 @@ training:
         network-save-period: 0
         other_options:
           <<: [*training_length_options, *common_run_options]
-          batch_size: 65536
