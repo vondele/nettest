@@ -382,6 +382,22 @@ def run_conversion(environment, current_sha, convert, nnue_pytorch_dir):
     return
 
 
+def publish_routing_diagnostics(current_sha):
+    root = Path.cwd()
+    run_dir = root / "scratch" / current_sha / "run"
+    cidir = root / "cidir"
+    if not cidir.is_dir():
+        print(f"Routing diagnostics directory: {run_dir}")
+        return
+    for name in ("routing-settings.json", "routing-history.csv", "final-routing.csv"):
+        source = run_dir / name
+        if source.is_file():
+            destination = cidir / f"step_{current_sha}" / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, destination)
+            print(f"Routing diagnostics: {net_url(current_sha, name)}", flush=True)
+
+
 def run_step(environment, current_sha, previous_sha):
     """
     Driver to run the step
@@ -399,17 +415,20 @@ def run_step(environment, current_sha, previous_sha):
     assert step["sha"] == current_sha
 
     nnue_pytorch_dir = ensure_trainer(step["trainer"])
-    reached_end = run_trainer(
-        environment, current_sha, previous_sha, step["run"], nnue_pytorch_dir
-    )
-
-    if reached_end:
-        run_conversion(
-            environment,
-            current_sha,
-            step["convert"],
-            nnue_pytorch_dir,
+    try:
+        reached_end = run_trainer(
+            environment, current_sha, previous_sha, step["run"], nnue_pytorch_dir
         )
+        if reached_end:
+            run_conversion(
+                environment,
+                current_sha,
+                step["convert"],
+                nnue_pytorch_dir,
+            )
+    finally:
+        if step["convert"].get("routing_diagnostics"):
+            publish_routing_diagnostics(current_sha)
 
     return
 

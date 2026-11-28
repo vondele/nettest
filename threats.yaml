@@ -1,4 +1,4 @@
-# MOE11 starts from the 2026-11-28 threats recipe.
+# MOE11 50-epoch diagnostic run using the full recipe's opening schedule.
 # Trainer base 3f95157e4f2009dcb49facdbcc9e5945142f685e
 # Engine base 7a41728ab05c68e2d3028813ed0d5e2c027fa9d6
 # Nettest base 3d0c03966d196f14765a2086899f076ff74d250b
@@ -138,7 +138,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: a628d359d31f393bdb28262cb4f2f94d4333fb1c
+  sha: 8b416a3e9955206f66ea8e145991d37324c37474
 
 reference_code: &reference_code
   owner: TonyCongqianWang
@@ -155,6 +155,7 @@ common_convert: &common_convert
   binpack: official-stockfish/master-binpacks/fishpack32.binpack
   checkpoint2nnue: *checkpoint2nnue_options
   optimize: *optimize_flags
+  routing_diagnostics: true
   runtime:
     device: cuda:0
     matmul-precision: *moe11_precision
@@ -162,14 +163,6 @@ common_convert: &common_convert
 common_step: &common_step
   convert: *common_convert
   trainer: *trainer
-
-common_run_resume_model: &common_run_resume_model
-  repetitions: 1
-  resume: previous_model
-
-common_run_resume_ckpt: &common_run_resume_ckpt
-  <<: *common_run_resume_model
-  resume: previous_checkpoint
 
 # ----------------------------------------------------------
 
@@ -204,27 +197,15 @@ training_length_options: &training_length_options
 
 training:
   steps:
-    # Pretraining
+    # First 50 epochs of the full recipe
     - <<: *common_step
       run:
         resume: none
         binpacks: *training_binpacks
-        max_epochs: 560
+        max_epochs: 50
         network-save-period: 0
         repetitions: 3
         other_options:
           <<: [*training_length_options, *common_run_options]
           fake-quant-warmup-steps: 255400
           init-seed: 1
-
-    # Finetuning
-    - <<: *common_step
-      trainer: *trainer
-      run:
-        <<: *common_run_resume_ckpt
-        binpacks: *training_binpacks
-        max_epochs: 600
-        network-save-period: 0
-        other_options:
-          <<: [*training_length_options, *common_run_options]
-          batch-size: 65536
