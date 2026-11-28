@@ -25,6 +25,9 @@ For a capacity-matched control, copy `moe11.yaml`, replace `moe11: true` in
 `moe11-*` training options. Retain the empty `ls-factors` and the same
 trainer, engine, data filters, seeds, and schedule. For the balancing-only
 ablation, change `moe11-alpha` to `0.0` and keep the full challenger pass.
+For the persistent-dispatch ablation, set `moe11-dispatch: persistent`.
+It still solves each training batch and applies the bias update on the next
+batch.
 
 There are currently three ways to execute such a pipeline:
 

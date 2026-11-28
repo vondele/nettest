@@ -93,6 +93,7 @@ common_run_options: &common_run_options
   moe11-exploration: 0.05
   moe11-probe-seed: 11
   moe11-balance: true
+  moe11-dispatch: batch
   factorized-weight-decay: "4.0e-5"
   random-fen-skipping: 3
   early-fen-skipping: 18
@@ -136,7 +137,7 @@ common_run_options: &common_run_options
 
 trainer: &trainer
   owner: TonyCongqianWang
-  sha: 1497a8adf8d738d6439e4ac67fe94c9df5fd70ca
+  sha: a5b7889b2aa49989cedc5e89f3f9ceff559311d6
 
 reference_code: &reference_code
   owner: TonyCongqianWang
